@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../components/employees/Header";
 import Hero from "../components/employees/Hero";
 import ProofImage from "../components/employees/ProofImage";
@@ -9,11 +9,39 @@ import DigitalWallet from "../components/employees/DigitalWallet";
 import Testimonials from "../components/employees/Testimonials";
 import Survey from "../components/employees/Survey";
 import FinalBand from "../components/employees/FinalBand";
+import JoinScreen from "../components/employees/JoinScreen";
 
 const PROOF_IMAGE_URL = "https://media.base44.com/images/public/user_6873bc3c3e8d221ea3308e3a/2caa7313a_-2026-03-16T131338488.png";
 const WALLET_IMAGE_URL = "https://media.base44.com/images/public/user_6873bc3c3e8d221ea3308e3a/5cd836c23_-2026-03-15T125003543.png";
 
 export default function EmployeesLanding() {
+  const [showJoin, setShowJoin] = useState(false);
+  const [joinParams, setJoinParams] = useState({ orgKey: "", orgName: "" });
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const sign = params.get("sign");
+    const org = params.get("org");
+    const orgName = params.get("orgName") || org || "";
+    if (sign === "1" && org) {
+      setJoinParams({ orgKey: org, orgName: decodeURIComponent(orgName) });
+      setShowJoin(true);
+    }
+  }, []);
+
+  if (showJoin) {
+    return (
+      <div className="font-heebo" dir="rtl">
+        <Header />
+        <JoinScreen
+          orgKey={joinParams.orgKey}
+          orgName={joinParams.orgName}
+          onContinue={() => setShowJoin(false)}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen font-heebo" dir="rtl">
       <Header />

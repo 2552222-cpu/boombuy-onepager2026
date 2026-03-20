@@ -2,6 +2,7 @@ import React, { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Copy, Share2, Check } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import CollectiveBlock from "./CollectiveBlock";
 
 function buildMessage(answers) {
   const expense = answers[0] || "";
@@ -106,6 +107,8 @@ export default function ResultScreen({ answers }) {
               שתף עם חברים מהעבודה
             </button>
           </div>
+
+          <CollectiveBlock />
         </motion.div>
       </div>
     </section>
