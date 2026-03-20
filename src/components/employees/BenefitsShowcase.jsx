@@ -114,22 +114,42 @@ export default function BenefitsShowcase() {
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: (i + 1) * 0.08 }}
             >
-              <div className={`bg-gradient-to-br ${b.bg} rounded-2xl p-5 h-full min-h-[140px] flex flex-col justify-between text-white relative overflow-hidden`}>
-                <div>
-                  <span className="text-xs font-semibold opacity-60 uppercase tracking-wider">{b.category}</span>
-                  <h3 className="text-lg font-bold leading-snug mt-1">{b.title}</h3>
-                  <p className="text-xs opacity-70 mt-1">{b.subtitle}</p>
+              {b.image ? (
+                <div className="rounded-2xl overflow-hidden h-full min-h-[140px] flex flex-col relative border border-border/30 shadow-sm bg-white">
+                  <div className="relative flex-1 min-h-[100px]">
+                    <img src={b.image} alt={b.title} className="w-full h-full object-cover object-top" style={{maxHeight: 160}} />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                    <div className="absolute bottom-0 right-0 left-0 p-3">
+                      <span className="text-[10px] font-semibold text-white/70 uppercase tracking-wider">{b.category}</span>
+                      <h3 className="text-sm font-bold text-white leading-snug">{b.title}</h3>
+                      <p className="text-[11px] text-white/70 mt-0.5">{b.subtitle}</p>
+                    </div>
+                  </div>
+                  <div className="px-3 py-2 bg-white flex items-center justify-between">
+                    <span className={`inline-block bg-gradient-to-r ${b.bg} text-white text-xs font-bold px-2.5 py-1 rounded-full`}>
+                      {b.tag}
+                    </span>
+                    {b.highlight && <span className="text-xl font-black text-foreground">{b.highlight}</span>}
+                  </div>
                 </div>
-                <div className="flex items-center justify-between mt-3">
-                  <span className="inline-block bg-white/20 text-white text-xs font-bold px-2.5 py-1 rounded-full">
-                    {b.tag}
-                  </span>
-                  {b.highlight && (
-                    <span className="text-2xl font-black text-white">{b.highlight}</span>
-                  )}
+              ) : (
+                <div className={`bg-gradient-to-br ${b.bg} rounded-2xl p-5 h-full min-h-[140px] flex flex-col justify-between text-white relative overflow-hidden`}>
+                  <div>
+                    <span className="text-xs font-semibold opacity-60 uppercase tracking-wider">{b.category}</span>
+                    <h3 className="text-lg font-bold leading-snug mt-1">{b.title}</h3>
+                    <p className="text-xs opacity-70 mt-1">{b.subtitle}</p>
+                  </div>
+                  <div className="flex items-center justify-between mt-3">
+                    <span className="inline-block bg-white/20 text-white text-xs font-bold px-2.5 py-1 rounded-full">
+                      {b.tag}
+                    </span>
+                    {b.highlight && (
+                      <span className="text-2xl font-black text-white">{b.highlight}</span>
+                    )}
+                  </div>
+                  <div className="absolute top-3 left-3 text-4xl opacity-10">{b.emoji}</div>
                 </div>
-                <div className="absolute top-3 left-3 text-4xl opacity-10">{b.emoji}</div>
-              </div>
+              )}
             </motion.div>
           ))}
         </div>
