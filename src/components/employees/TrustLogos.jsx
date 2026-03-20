@@ -42,15 +42,19 @@ export default function TrustLogos() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="flex flex-wrap justify-center items-center gap-x-6 gap-y-5"
+          className="flex flex-col gap-6"
         >
-          {logos.map((logo, i) => (
-            <div key={i} className="h-10 flex items-center justify-center opacity-50 hover:opacity-80 transition-opacity">
-              <img
-                src={logo.url}
-                alt={logo.name}
-                className="h-8 w-auto object-contain max-w-[90px] grayscale"
-              />
+          {[logos.slice(0, 10), logos.slice(10)].map((row, rowIdx) => (
+            <div key={rowIdx} className="flex justify-center items-center gap-8">
+              {row.map((logo, i) => (
+                <div key={i} className="flex items-center justify-center opacity-60 hover:opacity-90 transition-opacity flex-shrink-0">
+                  <img
+                    src={logo.url}
+                    alt={logo.name}
+                    className="h-10 w-auto object-contain max-w-[110px] grayscale"
+                  />
+                </div>
+              ))}
             </div>
           ))}
         </motion.div>
