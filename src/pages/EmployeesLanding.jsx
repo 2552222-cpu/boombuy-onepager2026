@@ -11,7 +11,7 @@ import Survey from "../components/employees/Survey";
 import FinalBand from "../components/employees/FinalBand";
 import JoinScreen from "../components/employees/JoinScreen";
 
-const PROOF_IMAGE_URL = "https://media.base44.com/images/public/user_6873bc3c3e8d221ea3308e3a/2caa7313a_-2026-03-16T131338488.png";
+const PROOF_IMAGE_URL = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e5b27b9ef_-2026-03-16T131338488.png";
 const WALLET_IMAGE_URL = "https://media.base44.com/images/public/user_6873bc3c3e8d221ea3308e3a/5cd836c23_-2026-03-15T125003543.png";
 
 export default function EmployeesLanding() {
