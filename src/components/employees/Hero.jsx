@@ -95,15 +95,15 @@ export default function Hero() {
           className="flex-1 flex flex-col items-center relative"
           >
           <div className="relative flex items-center justify-center">
-            {/* Purple glow behind */}
-            <div className="absolute inset-0 rounded-full bg-purple-400/30 blur-3xl scale-110 pointer-events-none" />
+              {/* Purple glow behind */}
+              <div className="absolute w-[340px] h-[340px] md:w-[420px] md:h-[420px] rounded-full bg-purple-400/40 blur-[80px] pointer-events-none" />
 
-            <div className="relative max-w-[280px] md:max-w-[320px] mx-auto drop-shadow-2xl">
-              <img
-                src={HERO_IMAGE}
-                alt="הטבה יומית אמיתית"
-                className="w-full h-auto block"
-              />
+              <div className="relative max-w-[280px] md:max-w-[340px] mx-auto">
+                <img
+                  src={HERO_IMAGE}
+                  alt="הטבה יומית אמיתית"
+                  className="w-full h-auto block drop-shadow-2xl"
+                />
             </div>
 
             {/* Micro label - top right */}
