@@ -86,23 +86,27 @@ export default function BenefitsShowcase() {
             transition={{ duration: 0.5 }}
             className="md:row-span-2 md:col-span-1"
           >
-            <div className={`bg-gradient-to-br ${mainBenefit.bg} rounded-3xl p-6 h-full min-h-[320px] flex flex-col justify-between text-white relative overflow-hidden`}>
-              <div>
-                <span className="text-xs font-semibold opacity-60 uppercase tracking-wider">{mainBenefit.category}</span>
-                <div className="mt-3">
-                  <span className="inline-block bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full mb-3">
+            <div className="rounded-3xl overflow-hidden h-full min-h-[320px] flex flex-col border border-border/30 shadow-md bg-white">
+              <div className="relative flex-1">
+                <img
+                  src={mainBenefit.image}
+                  alt={mainBenefit.title}
+                  className="w-full h-full object-cover object-top"
+                  style={{ maxHeight: 280 }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <div className="absolute bottom-0 right-0 left-0 p-4">
+                  <span className="inline-block bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full mb-2">
                     {mainBenefit.tag}
                   </span>
+                  <h3 className="text-2xl font-black text-white leading-tight mb-1">{mainBenefit.title}</h3>
+                  <p className="text-sm text-white/70">{mainBenefit.subtitle}</p>
                 </div>
-                <h3 className="text-2xl font-black leading-tight mb-1">{mainBenefit.title}</h3>
-                <p className="text-sm opacity-70 mb-4">{mainBenefit.subtitle}</p>
               </div>
-              <div>
-                <p className="text-sm opacity-50 line-through mb-1">{mainBenefit.strikethrough}</p>
-                <p className="text-xl font-black text-emerald-300">{mainBenefit.highlight}</p>
+              <div className="px-4 py-3 bg-white flex items-center justify-between">
+                <p className="text-sm text-muted-foreground line-through">{mainBenefit.strikethrough}</p>
+                <p className="text-lg font-black text-emerald-600">{mainBenefit.highlight}</p>
               </div>
-              <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/20 to-transparent rounded-b-3xl" />
-              <div className="absolute top-4 left-4 text-5xl opacity-10">{mainBenefit.emoji}</div>
             </div>
           </motion.div>
 
