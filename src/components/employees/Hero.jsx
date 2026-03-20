@@ -57,7 +57,7 @@ export default function Hero() {
               className="text-muted-foreground"
             >
               8% הנחה קבועה בסופר. מחיר יבואן על Apple. חופשות מסובסדות.
-              הכל כבר כלול בתקציב שמקום העבודה שלך משלם.
+              הכל כבר כלול בתוך התקציב שהארגון <strong>ממילא</strong> משלם.
             </motion.p>
 
             <motion.div
