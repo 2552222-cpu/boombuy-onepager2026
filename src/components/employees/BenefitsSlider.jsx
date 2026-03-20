@@ -21,7 +21,7 @@ const benefits = [
     category: "נופש",
     title: "חופשות בארץ ובחו״ל",
     desc: "מלונות, טיסות, חבילות נופש",
-    tag: "דילים בלעדיים",
+    tag: "הטבות בלעדיות",
     gradient: "from-sky-500 to-blue-600",
   },
   {
@@ -42,7 +42,7 @@ const benefits = [
     category: "אופנה",
     title: "בגדים ומותגי אופנה",
     desc: "שוברים למותגים מובילים",
-    tag: "מחירים בלעדיים",
+    tag: "הטבות מחיר",
     gradient: "from-amber-500 to-orange-600",
   },
 ];

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 const chips = [
   { emoji: "🛒", label: "סופר ופארם", badge: "8% תמיד" },
   { emoji: "📱", label: "חשמל ואלקטרוניקה", badge: "מחיר יבואן" },
-  { emoji: "✈️", label: "חופשות", badge: "דילים בלעדיים" },
+  { emoji: "✈️", label: "חופשות", badge: "הטבות בלעדיות" },
   { emoji: "⚡", label: "הטבה חדשה כל יום", badge: null },
 ];
 
@@ -31,10 +31,10 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-4"
+              className="text-[2.6rem] md:text-[3.4rem] lg:text-[4rem] font-black leading-[1.15] tracking-tight mb-4"
             >
               יש כסף שמחכה לך{" "}
-              <span className="text-primary">בעבודה שלך</span>
+              <span className="text-primary font-black">בעבודה שלך</span>
             </motion.h1>
 
             <motion.p
