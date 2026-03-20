@@ -18,7 +18,7 @@ export default function Hero() {
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-white to-secondary/30 py-10 md:py-16 px-4">
       <div className="max-w-6xl mx-auto">
-        <div className="flex flex-col md:flex-row items-center gap-6 md:gap-10">
+        <div className="flex flex-col md:flex-row items-center gap-8 md:gap-8">
 
           {/* TEXT SIDE */}
           <motion.div
@@ -26,18 +26,18 @@ export default function Hero() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
             className="flex-1 flex flex-col items-center md:items-start text-center md:text-right"
-            style={{ maxWidth: 600 }}
+            style={{ maxWidth: 620 }}
           >
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               style={{
-                fontSize: "clamp(2.6rem, 6vw, 5.25rem)",
-                lineHeight: 0.98,
-                letterSpacing: "-0.02em",
+                fontSize: "clamp(2.65rem, 7vw, 5.5rem)",
+                lineHeight: 0.97,
+                letterSpacing: "-0.025em",
                 fontWeight: 900,
-                marginBottom: "1rem",
+                marginBottom: "0.85rem",
               }}
             >
               יש כסף שמחכה לך{" "}
@@ -48,8 +48,13 @@ export default function Hero() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.15 }}
-              className="text-base md:text-[1.05rem] text-muted-foreground leading-[1.65] mb-5"
-              style={{ maxWidth: 380 }}
+              style={{
+                maxWidth: 360,
+                fontSize: "1.05rem",
+                lineHeight: 1.65,
+                marginBottom: "1.25rem",
+              }}
+              className="text-muted-foreground"
             >
               8% הנחה קבועה בסופר. מחיר יבואן על Apple. חופשות מסובסדות.
               הכל כבר כלול בתקציב שמקום העבודה שלך משלם.
@@ -59,7 +64,8 @@ export default function Hero() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.28 }}
-              className="flex flex-wrap justify-center md:justify-start gap-2 mb-6"
+              className="flex flex-wrap justify-center md:justify-start gap-2"
+              style={{ marginBottom: "1.25rem" }}
             >
               {chips.map((chip, i) => (
                 <div
@@ -81,7 +87,7 @@ export default function Hero() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4, delay: 0.4 }}
-              className="flex flex-col items-center md:items-start gap-2"
+              className="flex flex-col items-center md:items-start gap-1.5"
             >
               <button
                 onClick={scrollToSurvey}
@@ -103,18 +109,21 @@ export default function Hero() {
             className="flex-1 flex items-center justify-center relative"
           >
             <div className="relative flex items-center justify-center">
-              {/* Soft ambient glow — subtle, not aggressive */}
+              {/* Soft ambient glow */}
               <div
                 className="absolute rounded-full pointer-events-none"
                 style={{
-                  width: 360,
-                  height: 360,
-                  background: "radial-gradient(circle, rgba(99,120,255,0.13) 0%, transparent 70%)",
-                  filter: "blur(40px)",
+                  width: 440,
+                  height: 440,
+                  background: "radial-gradient(circle, rgba(59,130,246,0.09) 0%, transparent 68%)",
+                  filter: "blur(32px)",
                 }}
               />
 
-              <div className="relative" style={{ width: "clamp(260px, 28vw, 420px)" }}>
+              <div
+                className="relative"
+                style={{ width: "clamp(270px, 30vw, 440px)" }}
+              >
                 <img
                   src={HERO_IMAGE}
                   alt="הטבה יומית אמיתית"
@@ -126,8 +135,8 @@ export default function Hero() {
               <motion.div
                 initial={{ opacity: 0, scale: 0.85 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4, delay: 0.7 }}
-                className="absolute -top-3 -right-2 md:-right-4 bg-white border border-border shadow-md rounded-xl px-3 py-1.5 text-xs font-bold text-foreground whitespace-nowrap"
+                transition={{ duration: 0.4, delay: 0.75 }}
+                className="absolute -top-3 -right-2 md:-right-5 bg-white border border-border shadow-md rounded-xl px-3 py-1.5 text-xs font-bold text-foreground whitespace-nowrap"
               >
                 💰 הטבה יומית אמיתית
               </motion.div>
