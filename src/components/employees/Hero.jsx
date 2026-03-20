@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 
 const chips = [
-  { emoji: "🛒", label: "פארם, סופר ויוקר המחיה", badge: "8% תמיד" },
+  { emoji: "🛒", label: "פארם, סופר ויוקר המחיה", badge: "עד 8% הנחה קבועה" },
   { emoji: "📱", label: "חשמל ואלקטרוניקה", badge: "מחיר יבואן" },
   { emoji: "✈️", label: "חופשות", badge: "הטבות בלעדיות" },
   { emoji: "⚡", label: "הטבה חדשה כל יום", badge: null },
