@@ -8,7 +8,7 @@ const chips = [
   { emoji: "⚡", label: "הטבה חדשה כל יום", badge: null },
 ];
 
-const HERO_IMAGE = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/971005d6b_.png";
+const HERO_IMAGE = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/de2fe051d_1.png";
 
 export default function Hero() {
   const scrollToSurvey = () => {
