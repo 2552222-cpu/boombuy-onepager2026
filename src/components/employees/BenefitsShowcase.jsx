@@ -4,12 +4,13 @@ import { motion } from "framer-motion";
 const mainBenefit = {
   category: "אלקטרוניקה",
   title: "אייפון 16 פרו",
-  subtitle: "Apple iPhone 16 Pro 256GB",
+  subtitle: "Apple iPhone 16 Pro 256GB · אחריות רשמית DCS",
   highlight: "מחיר לעובדים: 3,890 ₪",
   strikethrough: "במקום 4,590 ₪",
   tag: "מחיר יבואן רשמי",
   bg: "from-slate-800 to-slate-950",
   emoji: "📱",
+  image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a5f930278_-2026-01-21T190449103.png",
 };
 
 const smallBenefits = [
