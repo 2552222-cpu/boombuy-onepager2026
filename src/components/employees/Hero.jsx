@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 
 const chips = [
-  { emoji: "🛒", label: "סופר ופארם", badge: "8% תמיד" },
+  { emoji: "🛒", label: "פארם, סופר ויוקר המחיה", badge: "8% תמיד" },
   { emoji: "📱", label: "חשמל ואלקטרוניקה", badge: "מחיר יבואן" },
   { emoji: "✈️", label: "חופשות", badge: "הטבות בלעדיות" },
   { emoji: "⚡", label: "הטבה חדשה כל יום", badge: null },
@@ -16,9 +16,9 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-white to-secondary/30 py-12 md:py-20 px-4">
-      <div className="max-w-5xl mx-auto">
-        <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+    <section className="relative overflow-hidden bg-gradient-to-b from-white to-secondary/30 py-10 md:py-16 px-4">
+      <div className="max-w-6xl mx-auto">
+        <div className="flex flex-col md:flex-row items-center gap-6 md:gap-10">
 
           {/* TEXT SIDE */}
           <motion.div
@@ -26,22 +26,30 @@ export default function Hero() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
             className="flex-1 flex flex-col items-center md:items-start text-center md:text-right"
+            style={{ maxWidth: 600 }}
           >
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="text-[2.6rem] md:text-[3.4rem] lg:text-[4rem] font-black leading-[1.15] tracking-tight mb-4"
+              style={{
+                fontSize: "clamp(2.6rem, 6vw, 5.25rem)",
+                lineHeight: 0.98,
+                letterSpacing: "-0.02em",
+                fontWeight: 900,
+                marginBottom: "1rem",
+              }}
             >
               יש כסף שמחכה לך{" "}
-              <span className="text-primary font-black">בעבודה שלך</span>
+              <span className="text-primary">בעבודה שלך</span>
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.15 }}
-              className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-sm mb-6"
+              className="text-base md:text-[1.05rem] text-muted-foreground leading-[1.65] mb-5"
+              style={{ maxWidth: 380 }}
             >
               8% הנחה קבועה בסופר. מחיר יבואן על Apple. חופשות מסובסדות.
               הכל כבר כלול בתקציב שמקום העבודה שלך משלם.
@@ -51,7 +59,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.28 }}
-              className="flex flex-wrap justify-center md:justify-start gap-2 mb-7"
+              className="flex flex-wrap justify-center md:justify-start gap-2 mb-6"
             >
               {chips.map((chip, i) => (
                 <div
@@ -89,43 +97,41 @@ export default function Hero() {
 
           {/* VISUAL SIDE */}
           <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          className="flex-1 flex flex-col items-center relative"
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="flex-1 flex items-center justify-center relative"
           >
-          <div className="relative flex items-center justify-center">
-              {/* Purple glow behind */}
-              <div className="absolute w-[340px] h-[340px] md:w-[420px] md:h-[420px] rounded-full bg-purple-400/40 blur-[80px] pointer-events-none" />
+            <div className="relative flex items-center justify-center">
+              {/* Soft ambient glow — subtle, not aggressive */}
+              <div
+                className="absolute rounded-full pointer-events-none"
+                style={{
+                  width: 360,
+                  height: 360,
+                  background: "radial-gradient(circle, rgba(99,120,255,0.13) 0%, transparent 70%)",
+                  filter: "blur(40px)",
+                }}
+              />
 
-              <div className="relative max-w-[280px] md:max-w-[340px] mx-auto">
+              <div className="relative" style={{ width: "clamp(260px, 28vw, 420px)" }}>
                 <img
                   src={HERO_IMAGE}
                   alt="הטבה יומית אמיתית"
                   className="w-full h-auto block drop-shadow-2xl"
                 />
+              </div>
+
+              {/* Single micro label */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.85 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4, delay: 0.7 }}
+                className="absolute -top-3 -right-2 md:-right-4 bg-white border border-border shadow-md rounded-xl px-3 py-1.5 text-xs font-bold text-foreground whitespace-nowrap"
+              >
+                💰 הטבה יומית אמיתית
+              </motion.div>
             </div>
-
-            {/* Micro label - top right */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4, delay: 0.7 }}
-              className="absolute -top-3 -right-2 md:-right-6 bg-white border border-border shadow-md rounded-xl px-3 py-1.5 text-xs font-bold text-foreground whitespace-nowrap"
-            >
-              💰 מחיר עובדים אמיתי
-            </motion.div>
-
-            {/* Micro label - bottom left */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4, delay: 0.85 }}
-              className="absolute -bottom-3 -left-2 md:-left-6 bg-primary text-primary-foreground shadow-md rounded-xl px-3 py-1.5 text-xs font-bold whitespace-nowrap"
-            >
-              ⚡ לא קופון חד פעמי
-            </motion.div>
-          </div>
           </motion.div>
 
         </div>
