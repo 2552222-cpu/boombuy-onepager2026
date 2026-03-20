@@ -153,15 +153,24 @@ function CategoryModal({ category, onClose }) {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.06 }}
-              className="flex items-center justify-between bg-secondary/50 rounded-xl px-4 py-3.5"
+              className="flex items-start gap-3 bg-secondary/50 rounded-xl overflow-hidden"
             >
-              <div>
-                <p className="font-bold text-sm">{item.title}</p>
-                <p className="text-xs text-muted-foreground mt-0.5">{item.detail}</p>
+              {item.image && (
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-24 h-24 object-cover flex-shrink-0"
+                />
+              )}
+              <div className={`flex items-center justify-between flex-1 ${item.image ? "py-3 pl-3" : "px-4 py-3.5"}`}>
+                <div>
+                  <p className="font-bold text-sm">{item.title}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">{item.detail}</p>
+                </div>
+                <span className={`${category.tagBg} text-white text-xs font-bold px-2.5 py-1 rounded-full whitespace-nowrap mr-3 flex-shrink-0`}>
+                  {item.tag}
+                </span>
               </div>
-              <span className={`${category.tagBg} text-white text-xs font-bold px-2.5 py-1 rounded-full whitespace-nowrap mr-3`}>
-                {item.tag}
-              </span>
             </motion.div>
           ))}
         </div>
