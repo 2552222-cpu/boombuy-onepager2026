@@ -89,41 +89,43 @@ export default function Hero() {
 
           {/* VISUAL SIDE */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="flex-1 flex flex-col items-center relative"
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+          className="flex-1 flex flex-col items-center relative"
           >
-            <div className="relative">
-              {/* Phone mockup frame */}
-              <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl shadow-black/25 border-4 border-slate-800 bg-slate-900 max-w-[240px] md:max-w-[260px] mx-auto">
-                <img
-                  src={HERO_IMAGE}
-                  alt="הטבה יומית אמיתית"
-                  className="w-full h-auto block"
-                />
-              </div>
+          <div className="relative flex items-center justify-center">
+            {/* Purple glow behind */}
+            <div className="absolute inset-0 rounded-full bg-purple-400/30 blur-3xl scale-110 pointer-events-none" />
 
-              {/* Micro label - top right */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4, delay: 0.7 }}
-                className="absolute -top-3 -right-4 md:-right-8 bg-white border border-border shadow-md rounded-xl px-3 py-1.5 text-xs font-bold text-foreground whitespace-nowrap"
-              >
-                💰 מחיר עובדים אמיתי
-              </motion.div>
-
-              {/* Micro label - bottom left */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4, delay: 0.85 }}
-                className="absolute -bottom-3 -left-4 md:-left-8 bg-primary text-primary-foreground border border-primary shadow-md rounded-xl px-3 py-1.5 text-xs font-bold whitespace-nowrap"
-              >
-                ⚡ לא קופון חד פעמי
-              </motion.div>
+            <div className="relative max-w-[280px] md:max-w-[320px] mx-auto drop-shadow-2xl">
+              <img
+                src={HERO_IMAGE}
+                alt="הטבה יומית אמיתית"
+                className="w-full h-auto block"
+              />
             </div>
+
+            {/* Micro label - top right */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, delay: 0.7 }}
+              className="absolute -top-3 -right-2 md:-right-6 bg-white border border-border shadow-md rounded-xl px-3 py-1.5 text-xs font-bold text-foreground whitespace-nowrap"
+            >
+              💰 מחיר עובדים אמיתי
+            </motion.div>
+
+            {/* Micro label - bottom left */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, delay: 0.85 }}
+              className="absolute -bottom-3 -left-2 md:-left-6 bg-primary text-primary-foreground shadow-md rounded-xl px-3 py-1.5 text-xs font-bold whitespace-nowrap"
+            >
+              ⚡ לא קופון חד פעמי
+            </motion.div>
+          </div>
           </motion.div>
 
         </div>

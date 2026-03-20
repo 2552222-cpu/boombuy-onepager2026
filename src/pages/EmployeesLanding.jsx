@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from "../components/employees/Header";
 import Hero from "../components/employees/Hero";
 import ProofImage from "../components/employees/ProofImage";
-import BenefitsSlider from "../components/employees/BenefitsSlider";
+import BenefitsShowcase from "../components/employees/BenefitsShowcase";
 import ValueCards from "../components/employees/ValueCards";
 import TrustLogos from "../components/employees/TrustLogos";
 import DigitalWallet from "../components/employees/DigitalWallet";
@@ -47,7 +47,7 @@ export default function EmployeesLanding() {
       <Header />
       <Hero />
       <ProofImage imageUrl={PROOF_IMAGE_URL} />
-      <BenefitsSlider />
+      <BenefitsShowcase />
       <ValueCards />
       <TrustLogos />
       <DigitalWallet imageUrl={WALLET_IMAGE_URL} />
