@@ -74,17 +74,17 @@ export default function BenefitsSlider() {
   };
 
   return (
-    <section className="py-16 md:py-20 px-4 bg-white overflow-hidden">
+    <section className="py-10 md:py-20 bg-white" style={{ overflowX: 'hidden', maxWidth: '100vw', padding: '60px 16px' }}>
       <div className="max-w-5xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-10"
+          className="text-center mb-6 md:mb-10"
         >
-          <h2 className="text-2xl md:text-3xl font-bold mb-2">הטבות שבאמת משתמשים בהן</h2>
-          <p className="text-muted-foreground">כל יום הטבות חדשות על מה שקונים ממילא</p>
+          <h2 className="text-xl md:text-3xl font-bold mb-1 md:mb-2">הטבות שבאמת משתמשים בהן</h2>
+          <p className="text-xs md:text-base text-muted-foreground">כל יום הטבות חדשות על מה שקונים ממילא</p>
         </motion.div>
 
         <div className="relative">
@@ -107,7 +107,7 @@ export default function BenefitsSlider() {
 
           <div
             ref={scrollRef}
-            className="flex gap-4 overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory"
+            className="flex gap-3 md:gap-4 overflow-x-auto scrollbar-hide pb-3 md:pb-4 snap-x snap-mandatory"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
             {benefits.map((b, i) => (
@@ -117,16 +117,16 @@ export default function BenefitsSlider() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.08 }}
-                className="flex-shrink-0 w-[260px] md:w-[280px] snap-start"
+                className="flex-shrink-0 w-[220px] md:w-[280px] snap-start"
               >
-                <div className="bg-white rounded-2xl border border-border/50 shadow-sm overflow-hidden hover:shadow-md transition-shadow h-full">
-                  <div className={`bg-gradient-to-br ${b.gradient} p-5 text-white`}>
-                    <span className="text-xs font-medium opacity-80">{b.category}</span>
-                    <h3 className="font-bold text-lg mt-1 leading-snug">{b.title}</h3>
+                <div className="bg-white rounded-lg md:rounded-2xl border border-border/50 shadow-sm overflow-hidden hover:shadow-md transition-shadow h-full flex flex-col">
+                  <div className={`bg-gradient-to-br ${b.gradient} p-3 md:p-5 text-white`}>
+                    <span className="text-[10px] md:text-xs font-medium opacity-80">{b.category}</span>
+                    <h3 className="font-bold text-sm md:text-lg mt-1 leading-snug">{b.title}</h3>
                   </div>
-                  <div className="p-4">
-                    <p className="text-sm text-muted-foreground mb-3">{b.desc}</p>
-                    <span className="inline-block bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-full">
+                  <div className="p-3 md:p-4 flex-1 flex flex-col">
+                    <p className="text-xs md:text-sm text-muted-foreground mb-2 md:mb-3">{b.desc}</p>
+                    <span className="inline-block bg-primary/10 text-primary text-[9px] md:text-xs font-bold px-2 md:px-3 py-1 rounded-full mt-auto">
                       {b.tag}
                     </span>
                   </div>
