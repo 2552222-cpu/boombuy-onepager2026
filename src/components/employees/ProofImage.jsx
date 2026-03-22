@@ -41,7 +41,7 @@ export default function ProofImage({ imageUrl }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.55 }}
-          className="text-center mb-8 md:mb-12"
+          className="text-center mb-8 md:mb-12 max-w-5xl mx-auto"
         >
           <h2 className="text-xl md:text-3xl font-bold mb-2 md:mb-3 leading-tight">
             ככה נראית הטבה אמיתית
