@@ -34,7 +34,7 @@ const TECH_EXTRA = [
 ];
 
 // מתנת חג
-const GIFT_MAIN = "https://media.base44.com/images/public/user_6873bc3c3e8d221ea3308e3a/5cd836c23_-2026-03-15T125003543.png";
+const GIFT_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e18c890ba_-2026-03-22T160649574.png";
 const GIFT_EXTRA = []; // ⚠️ PLACEHOLDER
 
 // נופש וחופשות
