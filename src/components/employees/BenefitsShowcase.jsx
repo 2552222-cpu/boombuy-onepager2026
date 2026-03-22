@@ -34,7 +34,7 @@ const CULTURE_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80b
 const CULTURE_EXTRA = []; // ⚠️ PLACEHOLDER
 
 // אופנה
-const FASHION_MAIN = null; // ⚠️ PLACEHOLDER
+const FASHION_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/82cf01fcc_87.png";
 const FASHION_EXTRA = []; // ⚠️ PLACEHOLDER
 
 // ירידים
