@@ -77,29 +77,29 @@ export default function TrustLogos() {
         </div>
 
         {/* Mobile: grid 3 columns */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.08 }}
-          className="md:hidden grid grid-cols-3 gap-4"
-          style={{ padding: "0 16px" }}
-        >
-          {logos.map((logo, i) => (
-            <div
-              key={i}
-              className="flex items-center justify-center opacity-85 hover:opacity-100 transition-opacity duration-300"
-              style={{ height: "44px" }}
-            >
-              <img
-                src={logo.url}
-                alt={logo.name}
-                className="h-full w-auto object-contain"
-                style={{ maxWidth: "100%" }}
-              />
-            </div>
-          ))}
-        </motion.div>
+         <motion.div
+           initial={{ opacity: 0, y: 12 }}
+           whileInView={{ opacity: 1, y: 0 }}
+           viewport={{ once: true }}
+           transition={{ duration: 0.6, delay: 0.08 }}
+           className="md:hidden grid grid-cols-3 gap-3"
+           style={{ padding: "0 16px" }}
+         >
+           {logos.map((logo, i) => (
+             <div
+               key={i}
+               className="flex items-center justify-center opacity-85 hover:opacity-100 transition-opacity duration-300"
+               style={{ height: "60px" }}
+             >
+               <img
+                 src={logo.url}
+                 alt={logo.name}
+                 className="h-full w-auto object-contain"
+                 style={{ maxWidth: "100%" }}
+               />
+             </div>
+           ))}
+         </motion.div>
       </div>
     </section>
   );
