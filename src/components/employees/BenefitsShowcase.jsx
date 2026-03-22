@@ -6,7 +6,13 @@ import { X, ChevronLeft } from "lucide-react";
 // כל בוקר הטבה חדשה
 const DAILY_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/133f66671_-2026-02-18T150744909.png";
 // ⚠️ PLACEHOLDERS — יש להחליף ב-URLs אמיתיים לאחר העלאה
-const DAILY_EXTRA = []; // [url1, url2, ...]
+const DAILY_EXTRA = [
+  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ccb0d029b_-2026-02-18T145838528.png",
+  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3f27a30a4_.png",
+  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3211ae300_100.png",
+  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/fa3cd7ab2_99.png",
+  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/096d0c835_70.png",
+];
 
 // פארם, סופר
 const SUPER_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/52e06185a_-2026-03-22T115442800.png";
