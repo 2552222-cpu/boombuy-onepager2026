@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import { base44 } from "@/api/base44Client";
@@ -12,6 +12,14 @@ export default function RequestModal({ isOpen, onClose, onSuccess }) {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [sessionToken, setSessionToken] = useState("");
+
+  // Get session token from Survey if available
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("sessionToken") || `survey_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    setSessionToken(token);
+  }, []);
 
   const normalizeOrgKey = (name) => {
     return name
@@ -73,6 +81,21 @@ export default function RequestModal({ isOpen, onClose, onSuccess }) {
         browserToken: browserToken,
         source: "employees",
       });
+
+      // עדכן את SurveyResponse עם orgKey ו-orgName
+      try {
+        const surveyResponses = await base44.entities.SurveyResponse.filter({ sessionToken });
+        if (surveyResponses.length > 0) {
+          for (const response of surveyResponses) {
+            await base44.entities.SurveyResponse.update(response.id, {
+              orgKey: orgKey,
+              orgName: formData.orgName,
+            });
+          }
+        }
+      } catch (err) {
+        console.error("Error updating survey response:", err);
+      }
 
       // שלח מייל על עובד ראשון אם זו בקשה חדשה
       if (existing.length === 0) {
