@@ -90,10 +90,12 @@ export default function Survey() {
       <div style={{ overflowX: 'hidden', maxWidth: '100vw' }}>
         <ResultScreen
           surveyResult={answers}
+          sessionToken={sessionToken}
           onOpenRequest={() => setShowRequestModal(true)}
         />
         <RequestModal
           isOpen={showRequestModal}
+          sessionToken={sessionToken}
           onClose={() => setShowRequestModal(false)}
           onSuccess={(group, key) => {
             handleOpenRequest(group, key);
