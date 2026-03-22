@@ -57,7 +57,7 @@ export default function Hero() {
                   lineHeight: 1.52,
                   marginBottom: "2rem",
                 }}
-                className="text-muted-foreground hidden md:block"
+                className="text-muted-foreground"
               >
                 עד 8% הנחה קבועה בסופר. מחיר יבואן על Apple. חופשות מסובסדות. הכל כבר כלול בתוך התקציב שהארגון <strong>ממילא</strong> משלם.
               </motion.p>
