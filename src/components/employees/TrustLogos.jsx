@@ -11,7 +11,7 @@ const logos = [
   { name: "בזן", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/da1504162_47.png" },
   { name: "אלבר", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/0d5a77386_2.png" },
   { name: "בנק ישראל", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/62d86b046_8.png" },
-  { name: "ZIM", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/b47147863_7.png" },
+  { name: "ZIM", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ad90fe974_-2026-03-22T223323805.png" },
   { name: "בנק יהב", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/1bca83968_6.png" },
   { name: "מזרחי טפחות", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3f66c2722_37.png" },
   { name: "Teva", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/440e21638_readytoboom93.png" },
@@ -25,7 +25,7 @@ const logos = [
   { name: "אלקטרה", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/86558f4e3_-2026-03-22T184955963.png" },
   { name: "דופלט", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6862cd610_-2026-03-22T184752919.png" },
   { name: "בנק לאומי", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/62fa4ae8e_-2026-03-22T184709815.png" },
-  { name: "אלקטרה אפיקים", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/4260d6be1_-2026-03-22T223003872.png" },
+  { name: "אלקטרה אפיקים", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/77cbb97ef_-2026-03-22T184841801.png" },
 ];
 
 export default function TrustLogos() {
