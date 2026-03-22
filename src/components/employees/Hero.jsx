@@ -34,11 +34,11 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               style={{
-                fontSize: "clamp(2.65rem, 7vw, 5.5rem)",
-                lineHeight: 0.97,
-                letterSpacing: "-0.025em",
+                fontSize: "clamp(3rem, 8vw, 6.2rem)",
+                lineHeight: 1.0,
+                letterSpacing: "-0.03em",
                 fontWeight: 900,
-                marginBottom: "0.85rem",
+                marginBottom: "0.9rem",
               }}
             >
               יש כסף שמחכה לך{" "}
@@ -50,14 +50,14 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.15 }}
               style={{
-                maxWidth: 360,
+                maxWidth: 380,
                 fontSize: "1.05rem",
                 lineHeight: 1.65,
                 marginBottom: "1.25rem",
               }}
               className="text-muted-foreground"
             >
-              8% הנחה קבועה בסופר. מחיר יבואן על Apple. חופשות מסובסדות.
+              עד 8% הנחה קבועה בסופר. מחיר יבואן על Apple. חופשות מסובסדות.
               הכל כבר כלול בתוך התקציב שהארגון <strong>ממילא</strong> משלם.
             </motion.p>
 
