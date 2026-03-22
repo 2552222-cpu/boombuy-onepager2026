@@ -278,39 +278,41 @@ function CategoryCard({ cat, index, onClick }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.4, delay: index * 0.06 }}
+      whileHover={{ y: -3, boxShadow: "0 8px 28px rgba(0,0,0,0.10)" }}
       onClick={onClick}
-      className={`bg-gradient-to-br ${cat.bg} rounded-2xl text-right overflow-hidden border border-black/5 shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5 group flex flex-col`}
+      className={`bg-gradient-to-br ${cat.bg} rounded-2xl text-right overflow-hidden border border-black/5 shadow-sm transition-shadow group flex flex-col`}
+      style={{ willChange: "transform" }}
     >
-      {/* Visual */}
-      <div className="relative w-full aspect-[4/3] overflow-hidden flex-shrink-0">
+      {/* Visual — 60% */}
+      <div className="relative w-full overflow-hidden flex-shrink-0" style={{ aspectRatio: "4/3" }}>
         {cat.mainImage ? (
           <img
             src={cat.mainImage}
             alt={cat.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
           />
         ) : (
           <PlaceholderImage label={`asset ראשי — ${cat.title}`} />
         )}
-        {/* Tag overlay */}
-        <span className={`absolute top-2 right-2 ${cat.tagBg} text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow-sm`}>
+        {/* Badge */}
+        <span className={`absolute top-2.5 right-2.5 ${cat.tagBg} text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow`}>
           {cat.tag}
         </span>
       </div>
 
-      {/* Text */}
-      <div className="p-3.5 flex-1 flex flex-col justify-between">
+      {/* Text — 40% */}
+      <div className="px-3.5 pt-3 pb-3.5 flex-1 flex flex-col justify-between">
         <div>
           <p className="font-extrabold text-sm text-foreground leading-snug">
             {cat.emoji} {cat.title}
           </p>
-          <p className="text-[11px] text-muted-foreground mt-1 leading-snug line-clamp-2">
+          <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed line-clamp-2">
             {cat.sub}
           </p>
         </div>
-        <div className="flex items-center justify-between mt-2.5 pt-2 border-t border-black/5">
-          <span className="text-[11px] font-semibold text-muted-foreground">לחצו לדוגמאות</span>
-          <ChevronLeft className="w-3.5 h-3.5 text-muted-foreground" />
+        <div className="flex items-center justify-between mt-3 pt-2.5 border-t border-black/5">
+          <span className="text-[11px] font-semibold text-primary/80">לחצו לדוגמאות</span>
+          <ChevronLeft className="w-3.5 h-3.5 text-primary/60" />
         </div>
       </div>
     </motion.button>
