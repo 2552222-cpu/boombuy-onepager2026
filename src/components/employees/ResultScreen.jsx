@@ -3,18 +3,48 @@ import { motion } from "framer-motion";
 import { Copy, MessageCircle } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
-const HR_MESSAGE = `היי, גיליתי את BoomBuy ונראה שזה יכול להיות רלוונטי גם אצלנו.
-זה מאפשר לעובדים לקבל יותר מהתקציב שכבר קיים - הטבות יומיומיות, מחירים טובים יותר, ויותר בחירה במתנות לחג - בלי שהחברה תצטרך להוסיף תקציב.
-נראה לי ששווה לבדוק:
-https://www.boombuyonepage.com`;
+const getInsights = (answer1, answer2) => {
+  const insights = [];
 
-const SHARE_MESSAGE = `חבר'ה, גיליתי את BoomBuy ונראה שזה יכול להיות רלוונטי גם אלינו.
-זה מאפשר לקבל יותר דרך מקום העבודה - סופר, חשמל, חופשות, מתנות חג ועוד - בלי שהחברה תצטרך להוסיף תקציב.
-אם גם אתם רוצים שנעביר את זה ל-HR / ועד, תיכנסו ותצטרפו:
-https://www.boombuyonepage.com/employees`;
+  // Insight 1 - based on answer1
+  if (answer1.includes("קניות")) {
+    insights.push("עם 8% הנחה קבועה — משפחה ממוצעת חוסכת ₪280-420 בחודש על קניות");
+  } else if (answer1.includes("חשמל")) {
+    insights.push("עם מחיר יבואן על אלקטרוניקה — חוסכים ממוצע של ₪150-300 בפריט");
+  } else if (answer1.includes("חופשות")) {
+    insights.push("עם מחירים בלעדיים לחופשות — משפחה חוסכת עד ₪2,000 בטיול");
+  } else if (answer1.includes("בגדים")) {
+    insights.push("עם הטבות על בגדים ומותגים — חוסכים עד 25% על כל רכישה");
+  }
+
+  // Insight 2 - based on answer2
+  if (answer2.includes("משנה לי את החודש")) {
+    insights.push("עובדים שמרגישים שהחברה דואגת להם מדווחים על 34% יותר שביעות רצון");
+  } else if (answer2.includes("דואגים")) {
+    insights.push("כשעובדים מרגישים מוערכים, הם נשארים בחברה יותר זמן");
+  } else if (answer2.includes("בדיוק")) {
+    insights.push("זה בדיוק מה שחברות מובילות משלמות עבור — עובדים מאושרים");
+  }
+
+  return insights;
+};
 
 export default function ResultScreen({ surveyResult, onOpenRequest }) {
   const { toast } = useToast();
+  const insights = getInsights(surveyResult[0] || "", surveyResult[1] || "");
+
+  const resultsLink = "https://www.boombuyonepage.com/results";
+
+  const HR_MESSAGE = `היי, [X] עובדים אצלנו ענו על סקר קצר לגבי הטבות עובדים.
+הנתונים מעניינים — שניה לראות:
+${resultsLink}
+
+BoomBuy מאפשרים לנו לקבל יותר מהתקציב שכבר קיים — בלי עלות נוספת.
+שווה 15 דקות?`;
+
+  const SHARE_MESSAGE = `חבר'ה, ענו על 3 שאלות — אנחנו בונים ביחד מה לומר ל-HR.
+30 שניות, אנונימי לחלוטין:
+${resultsLink}`;
 
   const handleCopyHR = () => {
     navigator.clipboard.writeText(HR_MESSAGE);
@@ -45,6 +75,30 @@ export default function ResultScreen({ surveyResult, onOpenRequest }) {
           transition={{ duration: 0.5 }}
           className="space-y-6 md:space-y-8"
         >
+          {/* Block 0: Personal Insights */}
+          <div className="bg-white rounded-2xl md:rounded-3xl border border-border shadow-sm overflow-hidden">
+            <div className="p-4 md:p-8">
+              <h2 className="text-xl md:text-2xl font-black mb-6 text-foreground">
+                הנה מה שגילינו עליך
+              </h2>
+              <div className="space-y-4">
+                {insights.map((insight, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.1 }}
+                    className="p-4 bg-primary/5 border border-primary/20 rounded-lg"
+                  >
+                    <p className="text-sm md:text-base font-medium text-foreground">
+                      ✓ {insight}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+
           {/* Block 1: HR Message */}
           <div className="bg-white rounded-2xl md:rounded-3xl border border-border shadow-sm overflow-hidden">
             <div className="p-4 md:p-8">
