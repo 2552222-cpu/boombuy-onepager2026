@@ -73,7 +73,7 @@ export default function ProofImage({ imageUrl }) {
               src={imageUrl}
               alt="הטבה אמיתית לעובדים"
               className="relative drop-shadow-xl mx-auto"
-              style={{ width: "clamp(160px, 24vw, 240px)" }}
+              style={{ width: "clamp(200px, 32vw, 340px)" }}
             />
           </motion.div>
 
