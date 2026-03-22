@@ -63,7 +63,7 @@ export default function TrustLogos() {
                 <div
                   key={i}
                   className="flex items-center justify-center opacity-85 hover:opacity-100 transition-opacity duration-300 flex-shrink-0"
-                  style={{ width: "calc(100% / 12 - 8px)", height: "56px", minHeight: "56px" }}
+                  style={{ width: "calc(100% / 12 - 8px)", height: "72px", minHeight: "72px" }}
                 >
                   <img
                     src={logo.url}
