@@ -37,7 +37,7 @@ const GIFT_MAIN = "https://media.base44.com/images/public/user_6873bc3c3e8d221ea
 const GIFT_EXTRA = []; // ⚠️ PLACEHOLDER
 
 // נופש וחופשות
-const VACATION_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/9fb38078a_-2026-02-18T145419883.png";
+const VACATION_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/d11fc0b42_-2026-03-22T125322010.png";
 const VACATION_EXTRA = []; // ⚠️ PLACEHOLDER
 
 // תרבות ופנאי
