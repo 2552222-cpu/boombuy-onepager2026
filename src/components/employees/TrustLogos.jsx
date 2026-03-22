@@ -11,7 +11,7 @@ const logos = [
   { name: "בזן", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/da1504162_47.png" },
   { name: "אלבר", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/0d5a77386_2.png" },
   { name: "בנק ישראל", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/62d86b046_8.png" },
-  { name: "ZIM", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/b47147863_7.png" },
+  { name: "ZIM", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ad90fe974_-2026-03-22T223323805.png" },
   { name: "בנק יהב", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/1bca83968_6.png" },
   { name: "מזרחי טפחות", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3f66c2722_37.png" },
   { name: "Teva", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/440e21638_readytoboom93.png" },
