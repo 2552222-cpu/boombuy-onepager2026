@@ -25,7 +25,7 @@ const logos = [
   { name: "אלקטרה", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/86558f4e3_-2026-03-22T184955963.png" },
   { name: "דופלט", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6862cd610_-2026-03-22T184752919.png" },
   { name: "בנק לאומי", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/62fa4ae8e_-2026-03-22T184709815.png" },
-  { name: "אלקטרה אפיקים", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/77cbb97ef_-2026-03-22T184841801.png" },
+  { name: "אלקטרה אפיקים", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/25a7e6e18_-2026-03-22T223003872.png" },
 ];
 
 export default function TrustLogos() {
