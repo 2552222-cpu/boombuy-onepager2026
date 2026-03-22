@@ -15,7 +15,7 @@ const DAILY_EXTRA = [
 ];
 
 // פארם, סופר
-const SUPER_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/b445ec32c_-2026-03-22T163009970.png";
+const SUPER_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e17bdff76_-2026-03-22T130058307.png";
 const SUPER_EXTRA = [
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/f5d40ea86_-2026-03-22T160247435.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/52e06185a_-2026-03-22T115442800.png",
@@ -26,7 +26,7 @@ const SUPER_EXTRA = [
 ];
 
 // חשמל ואלקטרוניקה
-const TECH_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6b1cd2eed_-2026-03-22T162955489.png";
+const TECH_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/9349388b9_-2026-03-22T163505767.png";
 const TECH_EXTRA = [
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/f289cdde6_-2026-03-22T160312998.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ca6b2de24_-2026-02-18T145345395.png",
