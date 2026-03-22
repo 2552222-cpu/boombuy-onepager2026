@@ -3,38 +3,37 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const { groupRequestId, milestone } = await req.json();
+    const payload = await req.json();
 
-    if (!groupRequestId || !milestone) {
-      return Response.json(
-        { error: 'Missing groupRequestId or milestone' },
-        { status: 400 }
-      );
+    const { event, data, old_data } = payload;
+
+    // בדוק אם זה update ובדוק אם ה-currentCount השתנה
+    if (!old_data || data.currentCount === old_data.currentCount) {
+      return Response.json({ skipped: true });
     }
 
-    const groupRequest = await base44.entities.GroupRequest.get(groupRequestId);
+    const newCount = data.currentCount;
+    const milestones = [3, 5, 10];
 
-    if (!groupRequest) {
-      return Response.json(
-        { error: 'GroupRequest not found' },
-        { status: 404 }
-      );
+    // שלח מייל רק אם עברנו milestone
+    if (!milestones.includes(newCount)) {
+      return Response.json({ skipped: true });
     }
 
-    const subject = `BoomBuy - הבקשה התחזקה בארגון ${groupRequest.orgName}`;
+    const subject = `BoomBuy - הבקשה התחזקה בארגון ${data.orgName}`;
 
     const body = `
-Organization: ${groupRequest.orgName}
-orgKey: ${groupRequest.orgKey}
-Current Count: ${groupRequest.currentCount}
-Event: milestone_${milestone}
-Initiator Name: ${groupRequest.initiatorName}
-Initiator Phone: ${groupRequest.initiatorPhone}
-Initiator Email: ${groupRequest.initiatorEmail || 'N/A'}
-Created At: ${groupRequest.created_date}
-Last Joined At: ${groupRequest.lastJoinedAt}
+Organization: ${data.orgName}
+orgKey: ${data.orgKey}
+Current Count: ${newCount}
+Event: milestone_${newCount}
+Initiator Name: ${data.initiatorName}
+Initiator Phone: ${data.initiatorPhone}
+Initiator Email: ${data.initiatorEmail || 'N/A'}
+Created At: ${data.created_date}
+Last Joined At: ${data.lastJoinedAt}
 HR Page: https://www.boombuyonepage.com
-Employees Page: https://www.boombuyonepage.com/employees?orgKey=${groupRequest.orgKey}
+Employees Page: https://www.boombuyonepage.com/employees?orgKey=${data.orgKey}
     `;
 
     await base44.integrations.Core.SendEmail({
@@ -43,7 +42,7 @@ Employees Page: https://www.boombuyonepage.com/employees?orgKey=${groupRequest.o
       body,
     });
 
-    return Response.json({ success: true });
+    return Response.json({ sent: true, milestone: newCount });
   } catch (error) {
     return Response.json(
       { error: error.message },
