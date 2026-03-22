@@ -223,7 +223,7 @@ function CategoryModal({ category, onClose, onCTA }) {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.35, ease: "easeOut" }}
           className="w-full flex-shrink-0 overflow-hidden rounded-t-3xl md:rounded-t-3xl"
-          style={{ background: category.imageHasTitle ? "#f5f0ea" : undefined }}
+          style={{ background: category.imageHasTitle ? "#ffffff" : undefined }}
           style={{
             aspectRatio: category.imageHasTitle ? "1/1" : "4/3",
             maxHeight: category.imageHasTitle ? "75vw" : "55vw",
