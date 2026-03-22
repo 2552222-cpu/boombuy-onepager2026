@@ -4,7 +4,7 @@ import { X, ChevronLeft } from "lucide-react";
 
 // ─── ASSETS ──────────────────────────────────────────────────────────────────
 // כל בוקר הטבה חדשה
-const DAILY_MAIN = null; // ⚠️ PLACEHOLDER
+const DAILY_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/133f66671_-2026-02-18T150744909.png";
 // ⚠️ PLACEHOLDERS — יש להחליף ב-URLs אמיתיים לאחר העלאה
 const DAILY_EXTRA = []; // [url1, url2, ...]
 
