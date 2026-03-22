@@ -110,14 +110,14 @@ export default function Hero() {
             className="flex-1 flex items-center justify-center relative"
           >
             <div className="relative flex items-center justify-center">
-              {/* Soft ambient glow */}
+              {/* Soft ambient glow — subtle */}
               <div
                 className="absolute rounded-full pointer-events-none"
                 style={{
-                  width: 440,
-                  height: 440,
-                  background: "radial-gradient(circle, rgba(59,130,246,0.09) 0%, transparent 68%)",
-                  filter: "blur(32px)",
+                  width: 400,
+                  height: 400,
+                  background: "radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 70%)",
+                  filter: "blur(40px)",
                 }}
               />
 
