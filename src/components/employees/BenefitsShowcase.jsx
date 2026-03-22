@@ -221,9 +221,9 @@ function CategoryModal({ category, onClose, onCTA }) {
         initial={{ opacity: 0, y: 70 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 70 }}
-        transition={{ type: "spring", damping: 30, stiffness: 280 }}
+        transition={{ type: "spring", damping: 28, stiffness: 260 }}
         onClick={(e) => e.stopPropagation()}
-        className="relative bg-white w-full md:max-w-xl rounded-t-3xl md:rounded-3xl shadow-2xl max-h-[92vh] flex flex-col"
+        className="relative bg-white w-full md:max-w-2xl rounded-t-3xl md:rounded-3xl shadow-2xl max-h-[96vh] flex flex-col"
       >
         {/* Close button */}
         <button
@@ -233,24 +233,24 @@ function CategoryModal({ category, onClose, onCTA }) {
           <X className="w-4 h-4" />
         </button>
 
-        {/* Main image — hero size */}
+        {/* Main image — significantly larger */}
         <motion.div
           initial={{ opacity: 0, scale: 0.97 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.35, ease: "easeOut" }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
           className="w-full flex-shrink-0 overflow-hidden rounded-t-3xl md:rounded-t-3xl"
           style={{
             background: category.imageHasTitle ? "#ffffff" : undefined,
-            aspectRatio: category.imageHasTitle ? "1/1" : "4/3",
-            maxHeight: category.maxHeight || 320,
-            minHeight: 200,
+            aspectRatio: category.imageHasTitle ? "1/1" : "16/10",
+            maxHeight: "min(72vh, 800px)",
+            minHeight: "50vh",
           }}
         >
           {category.mainImage ? (
             <img
               src={category.mainImage}
               alt={category.title}
-              className={`w-full h-full ${category.imageHasTitle ? "object-contain p-2" : "object-cover"}`}
+              className={`w-full h-full ${category.imageHasTitle ? "object-contain p-3 md:p-4" : "object-cover"}`}
             />
           ) : (
             <div className="w-full h-full bg-secondary/40 flex items-center justify-center text-3xl">🖼️</div>
@@ -258,18 +258,18 @@ function CategoryModal({ category, onClose, onCTA }) {
         </motion.div>
 
         {/* Header info */}
-        <div className="px-5 pt-4 pb-3 flex-shrink-0">
-          <div className="flex items-center gap-2 mb-1">
-            <span className={`${category.tagBg} text-white text-[10px] font-bold px-2.5 py-1 rounded-full`}>
+        <div className="px-5 pt-5 pb-4 flex-shrink-0 border-b border-border/20">
+          <div className="flex items-center gap-2 mb-2">
+            <span className={`${category.tagBg} text-white text-[10px] font-bold px-2.5 py-1.5 rounded-full`}>
               {category.tag}
             </span>
           </div>
-          <h3 className="text-lg font-black leading-snug">
+          <h3 className="text-xl md:text-2xl font-black leading-tight mb-2">
             {category.emoji} {category.title}
           </h3>
-          <p className="text-sm text-muted-foreground mt-1 leading-relaxed">{category.description}</p>
+          <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{category.description}</p>
           {category.sub && (
-            <p className="text-xs text-muted-foreground/80 mt-1 font-medium">{category.sub}</p>
+            <p className="text-xs md:text-sm text-muted-foreground/75 mt-2 font-medium">{category.sub}</p>
           )}
           {category.note && (
             <div className="mt-3 bg-primary/8 border border-primary/20 rounded-xl px-4 py-2.5 text-xs text-primary font-medium">
@@ -279,17 +279,17 @@ function CategoryModal({ category, onClose, onCTA }) {
         </div>
 
         {/* Extra images */}
-        <div className="overflow-y-auto flex-1 px-5 pb-2">
+        <div className="overflow-y-auto flex-1 px-5 py-4">
           {hasExtra ? (
             <>
-              <p className="text-xs font-semibold text-muted-foreground mb-3">דוגמאות מהשנה האחרונה</p>
+              <p className="text-xs font-semibold text-muted-foreground mb-4 uppercase tracking-wide">דוגמאות מהשנה האחרונה</p>
               <div className="grid grid-cols-2 gap-3">
                 {category.extraImages.map((url, i) => (
                   <motion.div
                     key={i}
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.1 + i * 0.07 }}
+                    transition={{ delay: 0.05 + i * 0.05 }}
                     className="aspect-square rounded-2xl overflow-hidden bg-secondary/30"
                   >
                     <img src={url} alt="" className="w-full h-full object-cover" />
@@ -298,7 +298,7 @@ function CategoryModal({ category, onClose, onCTA }) {
               </div>
             </>
           ) : (
-            <div className="flex flex-col items-center gap-2 py-4 text-center text-muted-foreground">
+            <div className="flex flex-col items-center gap-2 py-6 text-center text-muted-foreground">
               <span className="text-2xl">🖼️</span>
               <p className="text-sm font-medium">דוגמאות נוספות יתווספו בקרוב</p>
             </div>
