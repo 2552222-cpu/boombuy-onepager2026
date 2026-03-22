@@ -4,7 +4,7 @@ import { X, ChevronLeft } from "lucide-react";
 
 // ─── ASSETS ──────────────────────────────────────────────────────────────────
 // כל בוקר הטבה חדשה
-const DAILY_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/516ba6238_-2026-03-22T152453196.png";
+const DAILY_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7e52326a0_-2026-03-22T160414836.png";
 // ⚠️ PLACEHOLDERS — יש להחליף ב-URLs אמיתיים לאחר העלאה
 const DAILY_EXTRA = [
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ccb0d029b_-2026-02-18T145838528.png",
