@@ -21,12 +21,39 @@ export default function Hero() {
       <div className="max-w-7xl mx-auto h-full flex items-center px-4 md:px-6">
         <div className="w-full flex flex-col items-center md:items-start text-center md:text-right">
 
+          {/* IMAGE — center on mobile, before text */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="w-full flex justify-center relative order-first md:order-last"
+          >
+            <div className="relative flex items-center justify-center">
+              <div
+                className="absolute rounded-full pointer-events-none"
+                style={{
+                  width: 420,
+                  height: 420,
+                  background: "radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 70%)",
+                  filter: "blur(40px)",
+                }}
+              />
+              <div className="relative block" style={{ width: "clamp(280px, 35vw, 520px)" }}>
+                <img
+                  src={HERO_IMAGE}
+                  alt="הטבה יומית אמיתית"
+                  className="w-full h-auto block drop-shadow-2xl"
+                />
+              </div>
+            </div>
+          </motion.div>
+
           {/* TEXT SIDE */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="flex flex-col items-center md:items-start text-center md:text-right"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="flex flex-col items-center md:items-start text-center md:text-right w-full md:w-auto"
           >
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
