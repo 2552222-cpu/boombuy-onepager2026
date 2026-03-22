@@ -51,10 +51,10 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.15 }}
               style={{
-                maxWidth: 540,
-                fontSize: "1.125rem",
-                lineHeight: 1.6,
-                marginBottom: "1.75rem",
+                maxWidth: "540px",
+                fontSize: "clamp(16px, 2.2vw, 30px)",
+                lineHeight: 1.52,
+                marginBottom: "2rem",
               }}
               className="text-muted-foreground"
             >
