@@ -235,25 +235,18 @@ function CategoryModal({ category, onClose, onCTA }) {
         <div className="flex-1 overflow-y-auto">
           <div className="grid grid-cols-1 lg:grid-cols-[1.08fr_0.92fr] min-h-full">
             {/* צד תמונה */}
-            <div className="bg-[#f7f8fb] p-4 sm:p-6 lg:p-8 flex items-center justify-center border-b lg:border-b-0 lg:border-l border-black/5">
-              <div className="w-full max-w-[860px] rounded-[26px] bg-white border border-black/5 shadow-sm p-3 sm:p-4 lg:p-5">
-                <div
-                  className="w-full flex items-center justify-center rounded-[20px] bg-white overflow-hidden"
-                  style={{
-                    minHeight: "320px",
-                    maxHeight: "min(60vh, 680px)",
-                  }}
-                >
-                  {activeImage ? (
-                    <img
-                      src={activeImage}
-                      alt={category.title}
-                      className="block max-w-full max-h-[58vh] lg:max-h-[62vh] w-auto h-auto object-contain"
-                    />
-                  ) : (
-                    <div className="flex items-center justify-center text-6xl opacity-30">🖼️</div>
-                  )}
-                </div>
+            <div className="bg-white p-4 sm:p-6 lg:p-8 flex items-center justify-center border-b lg:border-b-0 lg:border-l border-black/5">
+              <div className="w-full flex items-center justify-center">
+                {activeImage ? (
+                  <img
+                    src={activeImage}
+                    alt={category.title}
+                    className="object-contain"
+                    style={{ maxWidth: "100%", maxHeight: "60vh", width: "auto", height: "auto" }}
+                  />
+                ) : (
+                  <div className="flex items-center justify-center text-6xl opacity-30">🖼️</div>
+                )}
               </div>
             </div>
 
@@ -301,7 +294,7 @@ function CategoryModal({ category, onClose, onCTA }) {
               </div>
 
               {hasExtra ? (
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                <div className="grid grid-cols-2 gap-3 sm:gap-4">
                   {gallery.map((url, i) => {
                     const isActive = url === activeImage;
 
@@ -313,20 +306,21 @@ function CategoryModal({ category, onClose, onCTA }) {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.06 + i * 0.04, duration: 0.22 }}
                         onClick={() => setActiveImage(url)}
-                        className={`rounded-2xl border overflow-hidden shadow-sm transition-all ${
+                        className={`rounded-3xl border overflow-hidden shadow-sm transition-all ${
                           isActive
-                            ? "border-primary ring-2 ring-primary/15 bg-primary/5"
-                            : "border-black/5 bg-[#f8f9fc] hover:border-primary/25 hover:shadow-md"
+                            ? "border-primary ring-2 ring-primary/15"
+                            : "border-black/10 hover:border-primary/25 hover:shadow-md"
                         }`}
                       >
                         <div
-                          className="w-full flex items-center justify-center p-2 sm:p-3"
-                          style={{ minHeight: "140px", maxHeight: "220px" }}
+                          className="w-full flex items-center justify-center bg-white p-2"
+                          style={{ aspectRatio: "1/1" }}
                         >
                           <img
                             src={url}
                             alt=""
-                            className="block max-w-full max-h-[160px] w-auto h-auto object-contain"
+                            className="object-contain"
+                            style={{ maxWidth: "100%", maxHeight: "100%" }}
                           />
                         </div>
                       </motion.button>
@@ -383,14 +377,15 @@ function CategoryCard({ cat, index, onClick }) {
       style={{ willChange: "transform" }}
     >
       <div
-        className="relative w-full flex items-center justify-center bg-white/70 p-2 sm:p-3"
+        className="relative w-full flex items-center justify-center bg-white p-2 sm:p-3"
         style={{ aspectRatio: "4/3" }}
       >
-        {(cat.previewImage || cat.mainImage) ? (
+        {cat.previewImage ? (
           <img
-            src={cat.previewImage || cat.mainImage}
+            src={cat.previewImage}
             alt={cat.title}
-            className="max-w-full max-h-full object-contain transition-transform duration-500 group-hover:scale-[1.02]"
+            className="object-contain transition-transform duration-500 group-hover:scale-[1.02]"
+            style={{ maxWidth: "100%", maxHeight: "100%" }}
           />
         ) : (
           <div className="flex items-center justify-center text-4xl opacity-30">🖼️</div>
