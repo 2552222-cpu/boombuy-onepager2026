@@ -29,9 +29,8 @@ const logos = [
 ];
 
 export default function TrustLogos() {
-  const row1 = logos.slice(0, 10);
-  const row2 = logos.slice(10, 20);
-  const row3 = logos.slice(20);
+  const row1 = logos.slice(0, 12);
+  const row2 = logos.slice(12, 24);
 
   return (
     <section className="py-14 md:py-20 px-4 bg-white border-t border-b border-border/30">
@@ -48,28 +47,29 @@ export default function TrustLogos() {
           </p>
         </motion.div>
 
-        {/* Desktop: 3 rows, Mobile: grid */}
+        {/* Desktop: 2 rows */}
         <div className="hidden md:flex flex-col gap-8">
-          {[row1, row2, row3].map((row, rowIdx) => (
+          {[row1, row2].map((row, rowIdx) => (
             <motion.div
               key={rowIdx}
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1 + rowIdx * 0.08 }}
-              className="flex justify-center items-center gap-10"
+              className="flex justify-center items-center"
+              style={{ gap: "32px" }}
             >
               {row.map((logo, i) => (
                 <div
                   key={i}
                   className="flex items-center justify-center opacity-85 hover:opacity-100 transition-opacity duration-300 flex-shrink-0"
-                  style={{ width: "140px", height: "56px" }}
+                  style={{ width: "180px", height: "72px" }}
                 >
                   <img
                     src={logo.url}
                     alt={logo.name}
                     className="h-auto w-full object-contain"
-                    style={{ maxHeight: "56px", maxWidth: "140px" }}
+                    style={{ maxHeight: "72px", maxWidth: "180px" }}
                   />
                 </div>
               ))}
@@ -77,25 +77,25 @@ export default function TrustLogos() {
           ))}
         </div>
 
-        {/* Mobile: grid 2 columns */}
+        {/* Mobile: grid 3 columns */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.08 }}
-          className="md:hidden grid grid-cols-2 gap-5"
+          className="md:hidden grid grid-cols-3 gap-5"
         >
           {logos.map((logo, i) => (
             <div
               key={i}
               className="flex items-center justify-center opacity-85 hover:opacity-100 transition-opacity duration-300"
-              style={{ height: "44px" }}
+              style={{ height: "56px" }}
             >
               <img
                 src={logo.url}
                 alt={logo.name}
                 className="h-full w-auto object-contain"
-                style={{ maxWidth: "140px" }}
+                style={{ maxWidth: "100%" }}
               />
             </div>
           ))}
