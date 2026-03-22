@@ -75,23 +75,25 @@ export default function TrustLogos() {
           ))}
         </div>
 
-        {/* Mobile: grid 2-3 columns */}
+        {/* Mobile: grid 2 columns */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.08 }}
-          className="md:hidden grid grid-cols-2 gap-6"
+          className="md:hidden grid grid-cols-2 gap-5"
         >
           {logos.map((logo, i) => (
             <div
               key={i}
               className="flex items-center justify-center opacity-85 hover:opacity-100 transition-opacity duration-300"
+              style={{ height: "44px" }}
             >
               <img
                 src={logo.url}
                 alt={logo.name}
-                className="h-9 w-auto object-contain max-w-[130px]"
+                className="h-full w-auto object-contain"
+                style={{ maxWidth: "140px" }}
               />
             </div>
           ))}
