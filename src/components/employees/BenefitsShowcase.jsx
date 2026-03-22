@@ -17,6 +17,7 @@ const DAILY_EXTRA = [
 // פארם, סופר
 const SUPER_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/b445ec32c_-2026-03-22T163009970.png";
 const SUPER_EXTRA = [
+  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/f5d40ea86_-2026-03-22T160247435.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/52e06185a_-2026-03-22T115442800.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6e4f9f168_-2026-03-22T130017988.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6b98c8aed_72.png",
@@ -27,6 +28,7 @@ const SUPER_EXTRA = [
 // חשמל ואלקטרוניקה
 const TECH_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6b1cd2eed_-2026-03-22T162955489.png";
 const TECH_EXTRA = [
+  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/f289cdde6_-2026-03-22T160312998.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ca6b2de24_-2026-02-18T145345395.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/c7ef06ffc_-2026-02-18T141936848.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/96816d966_92.png",
@@ -40,6 +42,7 @@ const GIFT_EXTRA = []; // ⚠️ PLACEHOLDER
 // נופש וחופשות
 const VACATION_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/1b29c5bb8_-2026-03-22T162942110.png";
 const VACATION_EXTRA = [
+  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/d11fc0b42_-2026-03-22T125322010.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/78ac452a3_-2026-03-22T130846774.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/cf3b11fa5_-2026-03-22T133529822.png",
 ];
@@ -47,6 +50,7 @@ const VACATION_EXTRA = [
 // תרבות ופנאי
 const CULTURE_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/872c80a10_image.png";
 const CULTURE_EXTRA = [
+  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7271e7a2c_-2026-01-21T190449103.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/af45cadc7_3.jpg",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3c918e2dd_-2026-03-22T124329449.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/bb4b910ed_-2026-03-22T140039783.png",
@@ -55,6 +59,7 @@ const CULTURE_EXTRA = [
 // אופנה
 const FASHION_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/1c29b0293_-2026-03-22T163623874.png";
 const FASHION_EXTRA = [
+  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/82cf01fcc_87.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6a4f8399a_90.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/69b6386a9_-2026-03-22T132245384.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3715ded54_-2026-03-22T131700657.png",
@@ -63,6 +68,7 @@ const FASHION_EXTRA = [
 // ירידים
 const FAIRS_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/dd39c6d88_-2026-03-22T163248965.png";
 const FAIRS_EXTRA = [
+  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/695e0f051_-2026-02-18T142715149.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/53f2308b8_-2026-02-18T142941224.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8cd871928_-2026-02-18T142743437.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/252939dda_-2026-01-21T194558315.png",
