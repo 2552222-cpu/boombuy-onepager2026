@@ -48,7 +48,7 @@ const VACATION_EXTRA = [
 ];
 
 // תרבות ופנאי
-const CULTURE_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/872c80a10_image.png";
+const CULTURE_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3d11c2184_-2026-03-22T165538542.png";
 const CULTURE_EXTRA = [
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7271e7a2c_-2026-01-21T190449103.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/af45cadc7_3.jpg",
