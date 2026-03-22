@@ -17,7 +17,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-white to-secondary/30 px-4" style={{ minHeight: "clamp(100vh, 85svh, 90svh)" }}>
+    <section className="relative overflow-hidden bg-gradient-to-b from-white to-secondary/30 px-4" style={{ minHeight: "100vh", paddingTop: "80px" }}>
       <div className="max-w-7xl mx-auto h-full flex items-center">
         <div className="w-full grid grid-cols-1 md:grid-cols-[1.05fr_0.95fr] items-center gap-14 md:gap-20">
 
@@ -33,7 +33,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               style={{
-                fontSize: "clamp(48px, 6vw, 96px)",
+                fontSize: "clamp(40px, 5vw, 72px)",
                 lineHeight: 0.95,
                 letterSpacing: "-0.025em",
                 fontWeight: 900,
@@ -52,7 +52,7 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 0.15 }}
               style={{
                 maxWidth: "540px",
-                fontSize: "clamp(16px, 2.2vw, 30px)",
+                fontSize: "clamp(15px, 1.6vw, 20px)",
                 lineHeight: 1.52,
                 marginBottom: "2rem",
               }}
@@ -92,8 +92,9 @@ export default function Hero() {
               className="flex flex-col items-center md:items-start gap-1.5"
             >
               <button
-                onClick={scrollToSurvey}
-                className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-lg px-10 py-4 rounded-xl shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5"
+               onClick={scrollToSurvey}
+               className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-xl shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5"
+               style={{ fontSize: "18px", padding: "16px 40px" }}
               >
                 בדוק מה מגיע לך
               </button>
@@ -124,7 +125,7 @@ export default function Hero() {
 
               <div
                 className="relative"
-                style={{ width: "clamp(280px, 22vw, 580px)" }}
+                style={{ width: "clamp(260px, 28vw, 460px)" }}
               >
                 <img
                   src={HERO_IMAGE}
