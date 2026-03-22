@@ -115,7 +115,7 @@ export default function Hero() {
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4, delay: 0.4 }}
+              transition={{ duration: 0.4, delay: 0.5 }}
               className="flex flex-col items-center md:items-start gap-1.5 w-full md:w-auto"
             >
               <button
