@@ -84,9 +84,13 @@
   }
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    max-width: 100vw;
   }
   body {
     @apply bg-background text-foreground font-heebo;
     direction: rtl;
+    overflow-x: hidden;
+    max-width: 100vw;
   }
 }

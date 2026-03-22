@@ -17,9 +17,9 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-white to-secondary/30 px-4" style={{ minHeight: "100vh", paddingTop: "80px" }}>
-      <div className="max-w-7xl mx-auto h-full flex items-center">
-        <div className="w-full grid grid-cols-1 md:grid-cols-[1.05fr_0.95fr] items-center gap-14 md:gap-20">
+    <section className="relative overflow-hidden bg-gradient-to-b from-white to-secondary/30" style={{ minHeight: "100vh", paddingTop: "80px", overflowX: 'hidden', maxWidth: '100vw' }}>
+      <div className="max-w-7xl mx-auto h-full flex items-center px-4 md:px-6">
+        <div className="w-full grid grid-cols-1 md:grid-cols-[1.05fr_0.95fr] items-center gap-8 md:gap-20">
 
           {/* TEXT SIDE */}
           <motion.div
@@ -33,7 +33,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               style={{
-                fontSize: "clamp(40px, 5vw, 72px)",
+                fontSize: "clamp(32px, 5vw, 72px)",
                 lineHeight: 0.95,
                 letterSpacing: "-0.025em",
                 fontWeight: 900,
@@ -52,7 +52,7 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 0.15 }}
               style={{
                 maxWidth: "540px",
-                fontSize: "clamp(15px, 1.6vw, 20px)",
+                fontSize: "clamp(14px, 1.6vw, 20px)",
                 lineHeight: 1.52,
                 marginBottom: "2rem",
               }}
@@ -66,13 +66,14 @@ export default function Hero() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.28 }}
-              className="flex flex-wrap justify-center md:justify-start gap-3 w-full md:w-auto"
+              className="flex flex-wrap justify-center md:justify-start gap-2 md:gap-3 w-full"
               style={{ marginBottom: "2.5rem" }}
             >
               {chips.map((chip, i) => (
                 <div
                   key={i}
-                  className="flex items-center gap-1.5 bg-white rounded-full px-3.5 py-2 shadow-sm border border-border/60 text-sm font-medium"
+                  className="flex items-center gap-1.5 bg-white rounded-full shadow-sm border border-border/60 font-medium"
+                  style={{ padding: "6px 12px", fontSize: "12px" }}
                 >
                   <span>{chip.emoji}</span>
                   <span>{chip.label}</span>
@@ -89,12 +90,12 @@ export default function Hero() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4, delay: 0.4 }}
-              className="flex flex-col items-center md:items-start gap-1.5"
+              className="flex flex-col items-center md:items-start gap-1.5 w-full md:w-auto"
             >
               <button
                onClick={scrollToSurvey}
-               className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-xl shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5"
-               style={{ fontSize: "18px", padding: "16px 40px" }}
+               className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-xl shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 w-full md:w-auto"
+               style={{ fontSize: "clamp(16px, 1.1vw, 18px)", padding: "16px 40px" }}
               >
                 בדוק מה מגיע לך
               </button>
@@ -109,7 +110,8 @@ export default function Hero() {
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="flex items-center justify-center relative w-full"
+            className="flex items-center justify-center relative w-full md:flex"
+            style={{ display: "none" }}
           >
             <div className="relative flex items-center justify-center">
               {/* Soft ambient glow — subtle */}
@@ -124,7 +126,7 @@ export default function Hero() {
               />
 
               <div
-                className="relative"
+                className="relative hidden md:block"
                 style={{ width: "clamp(260px, 28vw, 460px)" }}
               >
                 <img
