@@ -34,8 +34,8 @@ const itemVariants = {
 
 export default function ProofImage({ imageUrl }) {
   return (
-    <section className="py-10 md:py-24 bg-gradient-to-b from-white to-secondary/20" style={{ overflowX: 'hidden', maxWidth: '100vw' }}>
-      <div className="max-w-5xl mx-auto px-4 md:px-6">
+    <section className="py-10 md:py-24 bg-gradient-to-b from-white to-secondary/20" style={{ overflowX: 'hidden', maxWidth: '100vw', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <div className="w-full px-4 md:px-6" style={{ maxWidth: '100%' }}>
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
