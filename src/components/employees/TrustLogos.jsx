@@ -28,8 +28,8 @@ const logos = [
 ];
 
 export default function TrustLogos() {
-  const row1 = logos.slice(0, 10);
-  const row2 = logos.slice(10, 20);
+  const row1 = logos.slice(0, 11);
+  const row2 = logos.slice(11, 22);
 
   return (
     <section className="py-14 md:py-20 px-4 bg-white border-t border-b border-border/30">
