@@ -226,8 +226,8 @@ function CategoryModal({ category, onClose, onCTA }) {
           style={{ background: category.imageHasTitle ? "#ffffff" : undefined }}
           style={{
             aspectRatio: category.imageHasTitle ? "1/1" : "4/3",
-            maxHeight: category.imageHasTitle ? "75vw" : "55vw",
-            minHeight: 220,
+            maxHeight: 320,
+            minHeight: 200,
           }}
         >
           {category.mainImage ? (
