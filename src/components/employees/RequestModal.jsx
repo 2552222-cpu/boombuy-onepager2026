@@ -112,25 +112,26 @@ Employees Page: https://www.boombuyonepage.com/employees?orgKey=${orgKey}
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4"
       onClick={onClose}
+      style={{ overflowX: 'hidden' }}
     >
       <motion.div
         initial={{ scale: 0.95, y: 20 }}
         animate={{ scale: 1, y: 0 }}
         exit={{ scale: 0.95, y: 20 }}
         onClick={(e) => e.stopPropagation()}
-        className="relative bg-white rounded-3xl shadow-2xl border border-black/5 w-full max-w-md"
+        className="relative bg-white rounded-2xl md:rounded-3xl shadow-2xl border border-black/5 w-full max-w-md"
       >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-secondary flex items-center justify-center hover:bg-secondary/80 transition-colors"
+          className="absolute top-3 md:top-4 right-3 md:right-4 w-7 md:w-8 h-7 md:h-8 rounded-full bg-secondary flex items-center justify-center hover:bg-secondary/80 transition-colors"
         >
-          <X className="w-4 h-4" />
+          <X className="w-3.5 md:w-4 h-3.5 md:h-4" />
         </button>
 
-        <div className="p-8">
-          <h2 className="text-2xl font-black mb-6 text-foreground">פתח בקשה</h2>
+        <div className="p-5 md:p-8 max-h-[90vh] overflow-y-auto">
+          <h2 className="text-lg md:text-2xl font-black mb-4 md:mb-6 text-foreground">פתח בקשה</h2>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
             <input
               type="text"
               placeholder="שם פרטי *"
@@ -138,7 +139,7 @@ Employees Page: https://www.boombuyonepage.com/employees?orgKey=${orgKey}
               onChange={(e) =>
                 setFormData({ ...formData, initiatorName: e.target.value })
               }
-              className="w-full px-4 py-3 rounded-lg border border-border bg-white text-foreground placeholder-muted-foreground"
+              className="w-full px-3 md:px-4 py-2.5 md:py-3 rounded-lg border border-border bg-white text-foreground placeholder-muted-foreground text-sm md:text-base"
             />
 
             <input
@@ -148,7 +149,7 @@ Employees Page: https://www.boombuyonepage.com/employees?orgKey=${orgKey}
               onChange={(e) =>
                 setFormData({ ...formData, initiatorPhone: e.target.value })
               }
-              className="w-full px-4 py-3 rounded-lg border border-border bg-white text-foreground placeholder-muted-foreground"
+              className="w-full px-3 md:px-4 py-2.5 md:py-3 rounded-lg border border-border bg-white text-foreground placeholder-muted-foreground text-sm md:text-base"
             />
 
             <input
@@ -158,7 +159,7 @@ Employees Page: https://www.boombuyonepage.com/employees?orgKey=${orgKey}
               onChange={(e) =>
                 setFormData({ ...formData, orgName: e.target.value })
               }
-              className="w-full px-4 py-3 rounded-lg border border-border bg-white text-foreground placeholder-muted-foreground"
+              className="w-full px-3 md:px-4 py-2.5 md:py-3 rounded-lg border border-border bg-white text-foreground placeholder-muted-foreground text-sm md:text-base"
             />
 
             <input
@@ -168,15 +169,15 @@ Employees Page: https://www.boombuyonepage.com/employees?orgKey=${orgKey}
               onChange={(e) =>
                 setFormData({ ...formData, initiatorEmail: e.target.value })
               }
-              className="w-full px-4 py-3 rounded-lg border border-border bg-white text-foreground placeholder-muted-foreground"
+              className="w-full px-3 md:px-4 py-2.5 md:py-3 rounded-lg border border-border bg-white text-foreground placeholder-muted-foreground text-sm md:text-base"
             />
 
-            {error && <p className="text-red-600 text-sm">{error}</p>}
+            {error && <p className="text-red-600 text-xs md:text-sm">{error}</p>}
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-3 px-4 rounded-lg transition-all disabled:opacity-50"
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-2.5 md:py-3 px-4 rounded-lg transition-all disabled:opacity-50 text-sm md:text-base"
             >
               {loading ? "שליחה..." : "פתח בקשה"}
             </button>
