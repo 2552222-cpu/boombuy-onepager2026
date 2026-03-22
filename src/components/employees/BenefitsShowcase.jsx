@@ -372,36 +372,46 @@ function CategoryModal({ category, onClose, onCTA }) {
 function CategoryCard({ cat, index, onClick }) {
   return (
     <motion.button
-      initial={{ opacity: 0, y: 20 }}
+      type="button"
+      initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.4, delay: index * 0.06 }}
-      whileHover={{ y: -3, boxShadow: "0 8px 28px rgba(0,0,0,0.10)" }}
+      transition={{ duration: 0.38, delay: index * 0.05 }}
+      whileHover={{ y: -4, boxShadow: "0 10px 28px rgba(0,0,0,0.10)" }}
       onClick={onClick}
-      className={`bg-gradient-to-br ${cat.bg} rounded-2xl text-right overflow-hidden border border-black/5 shadow-sm transition-shadow group flex flex-col`}
+      className={`bg-gradient-to-br ${cat.bg} rounded-2xl text-right overflow-hidden border border-black/5 shadow-sm group flex flex-col`}
       style={{ willChange: "transform" }}
     >
-      {/* Preview Image */}
-      <div className="relative w-full overflow-hidden flex-shrink-0" style={{ aspectRatio: "4/3" }}>
-        {cat.previewImage ? (
+      <div
+        className="relative w-full flex items-center justify-center bg-white/70 p-2 sm:p-3"
+        style={{ aspectRatio: "4/3" }}
+      >
+        {(cat.previewImage || cat.mainImage) ? (
           <img
-            src={cat.previewImage}
+            src={cat.previewImage || cat.mainImage}
             alt={cat.title}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+            className="max-w-full max-h-full object-contain transition-transform duration-500 group-hover:scale-[1.02]"
           />
         ) : (
-          <PlaceholderImage label={`preview — ${cat.title}`} />
+          <div className="flex items-center justify-center text-4xl opacity-30">🖼️</div>
         )}
       </div>
 
-      {/* Text */}
-      <div className="px-3.5 pt-2.5 pb-3 flex-shrink-0 flex flex-col gap-0">
-        <p className="font-extrabold text-sm text-foreground leading-snug mb-0.5">
+      <div className="px-3.5 pt-2.5 pb-3 flex flex-col gap-1">
+        <div className="flex items-center gap-2 mb-1">
+          <span className={`${cat.tagBg} text-white text-[10px] font-bold px-2 py-1 rounded-full`}>
+            {cat.tag}
+          </span>
+        </div>
+
+        <p className="font-extrabold text-sm text-foreground leading-snug">
           {cat.emoji} {cat.title}
         </p>
-        <p className="text-[11px] text-muted-foreground leading-relaxed line-clamp-1">
+
+        <p className="text-[11px] text-muted-foreground leading-relaxed line-clamp-2 min-h-[32px]">
           {cat.sub}
         </p>
+
         <div className="flex items-center justify-between mt-2 pt-2 border-t border-black/5">
           <span className="text-[11px] font-semibold text-primary/80">לחצו לדוגמאות</span>
           <ChevronLeft className="w-3.5 h-3.5 text-primary/60" />
