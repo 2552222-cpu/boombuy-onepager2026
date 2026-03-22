@@ -332,17 +332,16 @@ https://www.boombuyonepage.com
         </motion.div>
 
         {/* Main CTA Card - Dark Blue */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="bg-gradient-to-b from-blue-900 to-blue-950 rounded-2xl md:rounded-3xl shadow-xl overflow-hidden"
-        >
-          <div className="p-6 md:p-10 text-white">
-            <h2 className="text-2xl md:text-3xl font-black mb-6">
-              עזור לנו להגיע ל-10 עובדים<br />
-              כדי שנוכל להעביר את זה ל-HR
-            </h2>
+         <motion.div
+           initial={{ opacity: 0, y: 20 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ duration: 0.5, delay: 0.1 }}
+           className="bg-gradient-to-b from-blue-900 to-blue-950 rounded-2xl md:rounded-3xl shadow-xl overflow-hidden"
+         >
+           <div className="p-5 md:p-10 text-white">
+             <h2 className="text-xl md:text-3xl font-black mb-6 leading-tight">
+               עזור לנו להגיע ל-10 עובדים כדי שנוכל להעביר את זה ל-HR
+             </h2>
 
             {/* Progress Bar */}
             <div className="mb-6">
