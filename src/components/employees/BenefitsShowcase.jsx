@@ -258,26 +258,29 @@ function CategoryModal({ category, onClose, onCTA }) {
 
         {/* Content wrapper — scrollable */}
         <div className="flex-1 overflow-y-auto flex flex-col">
-          {/* Header info — clean, compact */}
-          <div className="px-5 sm:px-7 md:px-9 pt-5 sm:pt-7 pb-4 flex-shrink-0 border-b border-border/20">
-            <div className="flex items-center gap-2 mb-2.5">
+          {/* Header section — title + description */}
+          <div className="px-5 sm:px-7 md:px-9 pt-6 sm:pt-8 pb-5 flex-shrink-0">
+            <div className="flex items-center gap-2 mb-3">
               <span className={`${category.tagBg} text-white text-[9px] font-bold px-2.5 py-1 rounded-full`}>
                 {category.tag}
               </span>
             </div>
-            <h3 className="text-xl sm:text-2xl md:text-3xl font-black leading-tight mb-2.5">
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-black leading-tight mb-3.5">
               {category.emoji} {category.title}
             </h3>
-            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-1.5">{category.description}</p>
+            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-2">{category.description}</p>
             {category.sub && (
-              <p className="text-xs sm:text-sm text-muted-foreground/75 font-medium mb-2">{category.sub}</p>
+              <p className="text-xs sm:text-sm text-muted-foreground/70 font-medium">{category.sub}</p>
             )}
             {category.note && (
-              <div className="mt-2.5 bg-primary/8 border border-primary/20 rounded-2xl px-4 py-2.5 text-xs sm:text-sm text-primary font-medium">
+              <div className="mt-3.5 bg-primary/8 border border-primary/20 rounded-2xl px-4 py-2.5 text-xs sm:text-sm text-primary font-medium">
                 💡 {category.note}
               </div>
             )}
           </div>
+
+          {/* Divider */}
+          <div className="h-px bg-border/30 flex-shrink-0"></div>
 
           {/* Extra images section */}
           {hasExtra && (
