@@ -18,10 +18,10 @@ const SUPER_EXTRA = [
 ];
 
 // חשמל ואלקטרוניקה
-const TECH_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ca6b2de24_-2026-02-18T145345395.png";
+const TECH_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3be64bac9_95.png";
 const TECH_EXTRA = [
+  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ca6b2de24_-2026-02-18T145345395.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/c7ef06ffc_-2026-02-18T141936848.png",
-  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3be64bac9_95.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/96816d966_92.png",
 ];
 
