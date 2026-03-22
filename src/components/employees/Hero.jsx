@@ -17,9 +17,9 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-white to-secondary/30 py-12 md:py-20 px-4">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row items-center gap-10 md:gap-20">
+    <section className="relative overflow-hidden bg-gradient-to-b from-white to-secondary/30 px-4" style={{ minHeight: "clamp(100vh, 85svh, 90svh)" }}>
+      <div className="max-w-7xl mx-auto h-full flex items-center">
+        <div className="w-full grid grid-cols-1 md:grid-cols-[1.05fr_0.95fr] items-center gap-14 md:gap-20">
 
           {/* TEXT SIDE */}
           <motion.div
