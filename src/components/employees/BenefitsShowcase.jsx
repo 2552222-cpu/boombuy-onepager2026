@@ -4,12 +4,12 @@ import { X, ChevronLeft } from "lucide-react";
 
 // ─── ASSETS ──────────────────────────────────────────────────────────────────
 // כל בוקר הטבה חדשה
-const DAILY_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/2ed7a77a8_79.png";
+const DAILY_MAIN = null; // ⚠️ PLACEHOLDER
 // ⚠️ PLACEHOLDERS — יש להחליף ב-URLs אמיתיים לאחר העלאה
 const DAILY_EXTRA = []; // [url1, url2, ...]
 
 // פארם, סופר
-const SUPER_MAIN = null; // ⚠️ PLACEHOLDER
+const SUPER_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/2ed7a77a8_79.png";
 const SUPER_EXTRA = []; // ⚠️ PLACEHOLDER
 
 // חשמל ואלקטרוניקה
