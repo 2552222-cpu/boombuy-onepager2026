@@ -29,7 +29,7 @@ const getInsights = (answer1, answer2) => {
   return insights;
 };
 
-export default function ResultScreen({ surveyResult, onOpenRequest }) {
+export default function ResultScreen({ surveyResult, sessionToken, onOpenRequest }) {
   const { toast } = useToast();
   const insights = getInsights(surveyResult[0] || "", surveyResult[1] || "");
 

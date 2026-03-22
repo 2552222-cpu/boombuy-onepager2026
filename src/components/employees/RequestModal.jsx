@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 
-export default function RequestModal({ isOpen, onClose, onSuccess }) {
+export default function RequestModal({ isOpen, sessionToken, onClose, onSuccess }) {
   const [formData, setFormData] = useState({
     initiatorName: "",
     initiatorPhone: "",
@@ -12,14 +12,6 @@ export default function RequestModal({ isOpen, onClose, onSuccess }) {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [sessionToken, setSessionToken] = useState("");
-
-  // Get session token from Survey if available
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get("sessionToken") || `survey_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    setSessionToken(token);
-  }, []);
 
   const normalizeOrgKey = (name) => {
     return name
