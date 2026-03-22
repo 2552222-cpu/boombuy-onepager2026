@@ -51,8 +51,8 @@ const CULTURE_EXTRA = [
 const FASHION_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/82cf01fcc_87.png";
 const FASHION_EXTRA = [
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6a4f8399a_90.png",
-  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/fd8ba7b15_-2026-02-18T150141788.png",
-  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/b136e0ed1_94.png",
+  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/69b6386a9_-2026-03-22T132245384.png",
+  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3715ded54_-2026-03-22T131700657.png",
 ];
 
 // ירידים
