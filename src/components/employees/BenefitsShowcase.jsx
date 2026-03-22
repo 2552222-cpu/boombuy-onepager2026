@@ -232,27 +232,23 @@ function CategoryModal({ category, onClose, onCTA }) {
           <X className="w-5 h-5 text-foreground" />
         </button>
 
-        {/* Main image — HERO section, no padding, full size */}
+        {/* Main image — HERO section, full size */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.35, delay: 0.08, ease: "easeOut" }}
-          className="w-full flex-shrink-0 overflow-hidden"
+          className="w-full flex-shrink-0 overflow-hidden bg-white"
           style={{
-            background: category.imageHasTitle ? "#ffffff" : "#f5f5f5",
-            aspectRatio: category.imageHasTitle ? "auto" : "16/10",
-            height: category.imageHasTitle ? "auto" : "min(75vh, 650px)",
-            minHeight: category.imageHasTitle ? "auto" : "320px",
+            aspectRatio: "16/10",
+            height: "min(75vh, 650px)",
+            minHeight: "320px",
           }}
         >
           {category.mainImage ? (
             <img
               src={category.mainImage}
               alt={category.title}
-              className={`w-full h-full ${
-                category.imageHasTitle ? "object-contain p-6 sm:p-8" : "object-cover"
-              }`}
-              style={{ maxHeight: "inherit" }}
+              className="w-full h-full object-cover"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-4xl">🖼️</div>
