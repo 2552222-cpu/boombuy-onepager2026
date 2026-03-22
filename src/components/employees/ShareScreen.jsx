@@ -3,21 +3,26 @@ import { motion } from "framer-motion";
 import { Copy, MessageCircle } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
-const SHARE_MESSAGE = `חבר'ה, גיליתי את BoomBuy ונראה שזה יכול להיות רלוונטי גם אלינו.
-זה מאפשר לקבל יותר דרך מקום העבודה - סופר, חשמל, חופשות, מתנות חג ועוד - בלי שהחברה תצטרך להוסיף תקציב.
-אם גם אתם רוצים שנעביר את זה ל-HR / ועד, תיכנסו ותצטרפו:
-https://www.boombuyonepage.com/employees`;
+const getShareMessage = (orgKey) => {
+  const resultsLink = orgKey ? `https://www.boombuyonepage.com/results?orgKey=${orgKey}` : "https://www.boombuyonepage.com";
+  
+  return `חבר'ה, ענו על 3 שאלות — אנחנו בונים ביחד מה לומר ל-HR.
+30 שניות, אנונימי לחלוטין:
+${resultsLink}`;
+};
 
 export default function ShareScreen({ groupRequest, orgKey, onContinue }) {
   const { toast } = useToast();
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(SHARE_MESSAGE);
+    navigator.clipboard.writeText(shareMessage);
     toast({ title: "הועתק ✓" });
   };
 
+  const shareMessage = getShareMessage(orgKey);
+
   const handleWhatsApp = () => {
-    const encoded = encodeURIComponent(SHARE_MESSAGE);
+    const encoded = encodeURIComponent(shareMessage);
     window.open(`https://wa.me/?text=${encoded}`, "_blank");
   };
 
@@ -59,7 +64,7 @@ export default function ShareScreen({ groupRequest, orgKey, onContinue }) {
               </h3>
 
               <div className="bg-secondary/50 rounded-lg md:rounded-2xl p-3 md:p-6 mb-4 md:mb-6 text-xs md:text-sm leading-6 md:leading-7 text-foreground whitespace-pre-wrap max-h-40 overflow-y-auto">
-                {SHARE_MESSAGE}
+                {shareMessage}
               </div>
 
               <div className="flex flex-col gap-2">
