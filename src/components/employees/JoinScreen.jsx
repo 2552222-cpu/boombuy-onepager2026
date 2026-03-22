@@ -67,34 +67,12 @@ export default function JoinScreen({ orgKey, orgName, onContinue }) {
         source: "employees",
       });
 
-      // עדכן currentCount
+      // עדכן currentCount (הautomation תטריג את notifyMilestone אם צריך)
       const newCount = (group.currentCount || 1) + 1;
       await base44.entities.GroupRequest.update(group.id, {
         currentCount: newCount,
         lastJoinedAt: new Date().toISOString(),
       });
-
-      // שלח מייל אם milestone
-      if (newCount === 3 || newCount === 5 || newCount === 10) {
-        const event = `milestone_${newCount}`;
-        await base44.integrations.Core.SendEmail({
-          to: "ari@boombuy.co.il,uriel@boombuy.co.il",
-          subject: `BoomBuy - הבקשה התחזקה בארגון ${group.orgName}`,
-          body: `
-Organization: ${group.orgName}
-orgKey: ${orgKey}
-Current Count: ${newCount}
-Event: ${event}
-Initiator Name: ${group.initiatorName}
-Initiator Phone: ${group.initiatorPhone}
-Initiator Email: ${group.initiatorEmail || "N/A"}
-Created At: ${group.created_date}
-Last Joined At: ${new Date().toISOString()}
-HR Page: https://www.boombuyonepage.com
-Employees Page: https://www.boombuyonepage.com/employees?orgKey=${orgKey}
-          `,
-        });
-      }
 
       localStorage.setItem(`groupmember_${orgKey}`, newToken);
       setSubmitted(true);
