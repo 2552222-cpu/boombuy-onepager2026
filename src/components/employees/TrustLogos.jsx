@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 const logos = [
   { name: "לאומי", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/2f10b2609_17.png" },
-  { name: "ישראייר", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/cf7b65131_63.png" },
+  { name: "ישראייר", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3375a8756_-2026-03-22T223046698.png" },
   { name: "תעש", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8003c0d5a_62.png" },
   { name: "קרן קיימת", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/dff369112_61.png" },
   { name: "Estee Lauder", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a6011911e_42.png" },
@@ -25,7 +25,7 @@ const logos = [
   { name: "אלקטרה", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/86558f4e3_-2026-03-22T184955963.png" },
   { name: "דופלט", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6862cd610_-2026-03-22T184752919.png" },
   { name: "בנק לאומי", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/62fa4ae8e_-2026-03-22T184709815.png" },
-  { name: "אלקטרה אפיקים", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/77cbb97ef_-2026-03-22T184841801.png" },
+  { name: "אלקטרה אפיקים", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/4260d6be1_-2026-03-22T223003872.png" },
 ];
 
 export default function TrustLogos() {
