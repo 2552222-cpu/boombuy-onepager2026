@@ -282,21 +282,21 @@ function CategoryModal({ category, onClose, onCTA }) {
           {/* Divider */}
           <div className="h-px bg-border/30 flex-shrink-0"></div>
 
-          {/* Extra images section */}
+          {/* Extra images section — prominent */}
           {hasExtra && (
-            <div className="px-5 sm:px-7 md:px-9 py-6 sm:py-8 flex-1">
-              <div className="mb-5">
-                <p className="text-sm font-bold text-foreground mb-0.5">עוד דוגמאות מהקטגוריה</p>
-                <p className="text-xs text-muted-foreground">מהשנה האחרונה</p>
+            <div className="px-5 sm:px-7 md:px-9 py-7 sm:py-10 flex-1 flex flex-col">
+              <div className="mb-6 sm:mb-8">
+                <p className="text-base sm:text-lg font-bold text-foreground mb-1">עוד דוגמאות מהקטגוריה</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">מהשנה האחרונה</p>
               </div>
-              <div className={`grid gap-3.5 ${category.extraImages.length > 3 ? "grid-cols-2 md:grid-cols-3" : "grid-cols-2"}`}>
+              <div className={`grid gap-4 sm:gap-5 flex-1 ${category.extraImages.length > 3 ? "grid-cols-2 md:grid-cols-3" : "grid-cols-2"}`}>
                 {category.extraImages.map((url, i) => (
                   <motion.div
                     key={i}
                     initial={{ opacity: 0, scale: 0.88 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.12 + i * 0.04, duration: 0.28 }}
-                    className="aspect-square rounded-2xl overflow-hidden bg-secondary/30 shadow-sm hover:shadow-md hover:scale-[1.03] transition-all cursor-pointer"
+                    className="aspect-video sm:aspect-square rounded-2xl overflow-hidden bg-secondary/20 shadow-md hover:shadow-lg hover:scale-[1.04] transition-all cursor-pointer border border-border/20"
                   >
                     <img src={url} alt="" className="w-full h-full object-cover" />
                   </motion.div>
@@ -306,9 +306,9 @@ function CategoryModal({ category, onClose, onCTA }) {
           )}
 
           {!hasExtra && (
-            <div className="px-5 sm:px-7 md:px-9 py-12 sm:py-14 flex-1 flex flex-col items-center justify-center text-center">
-              <span className="text-5xl sm:text-6xl opacity-35 mb-3">✨</span>
-              <p className="text-base font-semibold text-foreground mb-1">בקרוב נעלה עוד דוגמאות</p>
+            <div className="px-5 sm:px-7 md:px-9 py-14 sm:py-18 flex-1 flex flex-col items-center justify-center text-center">
+              <span className="text-6xl sm:text-7xl opacity-20 mb-4">✨</span>
+              <p className="text-lg font-semibold text-foreground mb-2">בקרוב נעלה עוד דוגמאות</p>
               <p className="text-sm text-muted-foreground">מהקטגוריה הזו</p>
             </div>
           )}
