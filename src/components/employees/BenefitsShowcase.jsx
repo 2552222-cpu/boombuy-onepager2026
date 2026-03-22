@@ -10,7 +10,7 @@ const DAILY_EXTRA = [
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ccb0d029b_-2026-02-18T145838528.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3f27a30a4_.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3211ae300_100.png",
-  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/fa3cd7ab2_99.png",
+  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a4b03713f_-2026-03-22T142532392.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/096d0c835_70.png",
 ];
 
