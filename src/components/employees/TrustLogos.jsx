@@ -69,7 +69,7 @@ export default function TrustLogos() {
                     src={logo.url}
                     alt={logo.name}
                     className="w-auto h-full object-contain"
-                    style={{ maxWidth: "90%" }}
+                    style={{ maxWidth: "90%", backgroundColor: "transparent" }}
                   />
                 </div>
               ))}
