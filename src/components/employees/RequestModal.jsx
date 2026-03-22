@@ -74,7 +74,7 @@ export default function RequestModal({ isOpen, onClose, onSuccess }) {
         source: "employees",
       });
 
-      // שלח מייל על עובד ראשון
+      // שלח מייל על עובד ראשון אם זו בקשה חדשה
       if (existing.length === 0) {
         await base44.integrations.Core.SendEmail({
           to: "ari@boombuy.co.il,uriel@boombuy.co.il",
