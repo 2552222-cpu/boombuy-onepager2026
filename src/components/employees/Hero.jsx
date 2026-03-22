@@ -21,12 +21,97 @@ export default function Hero() {
       <div className="max-w-7xl mx-auto h-full flex items-center px-4 md:px-6">
         <div className="w-full flex flex-col items-center md:items-start text-center md:text-right">
 
-          {/* IMAGE — center on mobile, before text */}
+          {/* TEXT SIDE — first on mobile */}
+          <div className="w-full order-first">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+              className="flex flex-col items-center md:items-start text-center md:text-right w-full md:w-auto"
+            >
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                style={{
+                  fontSize: "clamp(32px, 5vw, 72px)",
+                  lineHeight: 0.95,
+                  letterSpacing: "-0.025em",
+                  fontWeight: 900,
+                  marginBottom: "1.5rem",
+                  maxWidth: "710px",
+                  textWrap: "balance",
+                }}
+              >
+                יש כסף שמחכה לך{" "}
+                <span className="text-primary">בעבודה שלך</span>
+              </motion.h1>
+
+              <motion.p
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.15 }}
+                style={{
+                  maxWidth: "540px",
+                  fontSize: "clamp(14px, 1.6vw, 20px)",
+                  lineHeight: 1.52,
+                  marginBottom: "2rem",
+                }}
+                className="text-muted-foreground"
+              >
+                עד 8% הנחה קבועה בסופר. מחיר יבואן על Apple. חופשות מסובסדות. הכל כבר כלול בתוך התקציב שהארגון <strong>ממילא</strong> משלם.
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.28 }}
+                className="flex flex-wrap justify-center md:justify-start gap-2 md:gap-3 w-full"
+                style={{ marginBottom: "2.5rem" }}
+              >
+                {chips.map((chip, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center gap-1.5 bg-white rounded-full shadow-sm border border-border/60 font-medium"
+                    style={{ padding: "6px 12px", fontSize: "12px" }}
+                  >
+                    <span>{chip.emoji}</span>
+                    <span>{chip.label}</span>
+                    {chip.badge && (
+                      <span className="bg-primary/10 text-primary text-xs font-bold px-2 py-0.5 rounded-full">
+                        {chip.badge}
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4, delay: 0.5 }}
+                className="flex flex-col items-center md:items-start gap-1.5 w-full md:w-auto"
+              >
+                <button
+                 onClick={scrollToSurvey}
+                 className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-xl shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 w-full md:w-auto"
+                 style={{ fontSize: "clamp(16px, 1.1vw, 18px)", padding: "16px 40px" }}
+                >
+                  בדוק מה מגיע לך
+                </button>
+                <span className="text-xs text-muted-foreground">
+                  3 שאלות · 15 שניות · בלי הרשמה
+                </span>
+              </motion.div>
+            </motion.div>
+          </div>
+
+          {/* IMAGE — after text on mobile */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="w-full flex justify-center relative order-first md:order-last"
+            className="w-full flex justify-center relative order-last md:order-last mt-8 md:mt-0"
           >
             <div className="relative flex items-center justify-center">
               <div
