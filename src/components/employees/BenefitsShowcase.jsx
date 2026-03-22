@@ -311,36 +311,41 @@ function CategoryCard({ cat, index, onClick }) {
       className={`bg-gradient-to-br ${cat.bg} rounded-2xl text-right overflow-hidden border border-black/5 shadow-sm transition-shadow group flex flex-col`}
       style={{ willChange: "transform" }}
     >
-      {/* Visual — 60% */}
-      <div className="relative w-full overflow-hidden flex-shrink-0" style={{ aspectRatio: "4/3" }}>
+      {/* Visual */}
+      <div
+        className="relative w-full overflow-hidden flex-shrink-0"
+        style={{ aspectRatio: cat.imageHasTitle ? "1/1" : "4/3" }}
+      >
         {cat.mainImage ? (
           <img
             src={cat.mainImage}
             alt={cat.title}
-            className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
+            className={`w-full h-full transition-transform duration-500 group-hover:scale-[1.03] ${
+              cat.imageHasTitle ? "object-contain" : "object-cover"
+            }`}
           />
         ) : (
           <PlaceholderImage label={`asset ראשי — ${cat.title}`} />
         )}
-        {/* Badge */}
-        <span className={`absolute top-2.5 right-2.5 ${cat.tagBg} text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow`}>
-          {cat.tag}
-        </span>
+        {/* Badge — only for non-imageHasTitle cards */}
+        {!cat.imageHasTitle && (
+          <span className={`absolute top-2.5 right-2.5 ${cat.tagBg} text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow`}>
+            {cat.tag}
+          </span>
+        )}
       </div>
 
-      {/* Text — 40% */}
-      <div className="px-3.5 pt-3 pb-3.5 flex-1 flex flex-col justify-between">
-        <div>
-          {!cat.imageHasTitle && (
-            <p className="font-extrabold text-sm text-foreground leading-snug">
-              {cat.emoji} {cat.title}
-            </p>
-          )}
-          <p className={`text-[11px] text-muted-foreground leading-relaxed line-clamp-2 ${!cat.imageHasTitle ? "mt-1" : ""}`}>
-            {cat.sub}
+      {/* Text */}
+      <div className="px-3.5 pt-2.5 pb-3 flex-shrink-0 flex flex-col gap-0">
+        {!cat.imageHasTitle && (
+          <p className="font-extrabold text-sm text-foreground leading-snug mb-0.5">
+            {cat.emoji} {cat.title}
           </p>
-        </div>
-        <div className="flex items-center justify-between mt-3 pt-2.5 border-t border-black/5">
+        )}
+        <p className="text-[11px] text-muted-foreground leading-relaxed line-clamp-1">
+          {cat.sub}
+        </p>
+        <div className="flex items-center justify-between mt-2 pt-2 border-t border-black/5">
           <span className="text-[11px] font-semibold text-primary/80">לחצו לדוגמאות</span>
           <ChevronLeft className="w-3.5 h-3.5 text-primary/60" />
         </div>
