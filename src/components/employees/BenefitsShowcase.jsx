@@ -314,13 +314,19 @@ function CategoryModal({ category, onClose, onCTA }) {
           )}
         </div>
 
-        {/* CTA Footer — strong, always visible */}
-        <div className="px-5 sm:px-7 md:px-9 py-5 sm:py-6 border-t border-border/20 flex-shrink-0 bg-white">
+        {/* CTA Footer */}
+        <div className="px-5 sm:px-7 md:px-9 py-6 sm:py-7 border-t border-border/20 flex-shrink-0 bg-white flex gap-3">
           <button
             onClick={onCTA}
-            className="w-full bg-primary hover:bg-primary/90 active:bg-primary/95 text-primary-foreground font-bold py-3.5 sm:py-4 md:py-5 rounded-2xl transition-all shadow-lg shadow-primary/20 text-sm sm:text-base md:text-lg"
+            className="flex-1 bg-primary hover:bg-primary/90 active:bg-primary/95 text-primary-foreground font-bold py-3.5 sm:py-4 rounded-2xl transition-all shadow-lg shadow-primary/20 text-sm sm:text-base"
           >
             זה מעניין אותי — בדקו מה מגיע לי
+          </button>
+          <button
+            onClick={onClose}
+            className="px-4 sm:px-5 hover:bg-secondary text-foreground rounded-2xl transition-colors font-semibold"
+          >
+            סגור
           </button>
         </div>
       </motion.div>
