@@ -10,7 +10,11 @@ const DAILY_EXTRA = []; // [url1, url2, ...]
 
 // פארם, סופר
 const SUPER_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/2ed7a77a8_79.png";
-const SUPER_EXTRA = []; // ⚠️ PLACEHOLDER
+const SUPER_EXTRA = [
+  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/bb8747b01_73.png",
+  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6b98c8aed_72.png",
+  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ea0c9f5da_-2026-02-18T145540109.png",
+];
 
 // חשמל ואלקטרוניקה
 const TECH_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a5f930278_-2026-01-21T190449103.png";
