@@ -30,9 +30,16 @@ export default function AdminDashboard() {
 
     fetchRequests();
 
-    // Refresh every 30 seconds
-    const interval = setInterval(fetchRequests, 30000);
-    return () => clearInterval(interval);
+    // Subscribe to real-time updates
+    const unsubscribe = base44.entities.GroupRequest.subscribe((event) => {
+      if (event.type === 'update' || event.type === 'create') {
+        fetchRequests();
+      } else if (event.type === 'delete') {
+        setRequests(prev => prev.filter(req => req.id !== event.id));
+      }
+    });
+
+    return () => unsubscribe();
   }, []);
 
   if (loading) {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Header from "../components/employees/Header";
+import GlobalHeader from "../components/employees/GlobalHeader";
+import GlobalFooter from "../components/employees/GlobalFooter";
 import Hero from "../components/employees/Hero";
 import ProofImage from "../components/employees/ProofImage";
 import BenefitsShowcase from "../components/employees/BenefitsShowcase";
@@ -30,28 +31,34 @@ export default function EmployeesLanding() {
 
   if (showJoin) {
     return (
-      <div className="font-heebo" dir="rtl">
-        <Header />
+      <div className="font-heebo" dir="rtl" className="flex flex-col min-h-screen">
+        <GlobalHeader />
         <JoinScreen
           orgKey={joinParams.orgKey}
           orgName={joinParams.orgName}
           onContinue={() => setShowJoin(false)}
         />
+        <GlobalFooter />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen font-heebo" dir="rtl" style={{ overflowX: 'hidden', maxWidth: '100vw' }}>
-      <Header />
-      <Hero />
-      <ProofImage imageUrl={PROOF_IMAGE_URL} />
-      <BenefitsShowcase />
-      <TrustLogos />
-      <DigitalWallet imageUrl={WALLET_IMAGE_URL} />
-      <Testimonials />
-      <Survey />
-      <FinalBand />
+    <div className="min-h-screen font-heebo flex flex-col" dir="rtl" style={{ overflowX: 'hidden', maxWidth: '100vw' }}>
+      <GlobalHeader />
+      <div className="flex-1">
+        <Hero />
+        <ProofImage imageUrl={PROOF_IMAGE_URL} />
+        <div id="benefits-showcase">
+          <BenefitsShowcase />
+        </div>
+        <TrustLogos />
+        <DigitalWallet imageUrl={WALLET_IMAGE_URL} />
+        <Testimonials />
+        <Survey />
+        <FinalBand />
+      </div>
+      <GlobalFooter />
     </div>
   );
 }
