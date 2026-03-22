@@ -38,7 +38,10 @@ const GIFT_EXTRA = []; // ⚠️ PLACEHOLDER
 
 // נופש וחופשות
 const VACATION_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/d11fc0b42_-2026-03-22T125322010.png";
-const VACATION_EXTRA = []; // ⚠️ PLACEHOLDER
+const VACATION_EXTRA = [
+  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/78ac452a3_-2026-03-22T130846774.png",
+  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/cf3b11fa5_-2026-03-22T133529822.png",
+];
 
 // תרבות ופנאי
 const CULTURE_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7271e7a2c_-2026-01-21T190449103.png";
