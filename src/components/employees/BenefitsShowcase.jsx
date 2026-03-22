@@ -57,7 +57,7 @@ const CULTURE_EXTRA = [
 ];
 
 // אופנה
-const FASHION_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/1c29b0293_-2026-03-22T163623874.png";
+const FASHION_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/9349388b9_-2026-03-22T163505767.png";
 const FASHION_EXTRA = [
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/82cf01fcc_87.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6a4f8399a_90.png",
@@ -66,7 +66,7 @@ const FASHION_EXTRA = [
 ];
 
 // ירידים
-const FAIRS_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/dd39c6d88_-2026-03-22T163248965.png";
+const FAIRS_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a551368ec_-2026-03-22T163623874.png";
 const FAIRS_EXTRA = [
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/695e0f051_-2026-02-18T142715149.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/53f2308b8_-2026-02-18T142941224.png",
