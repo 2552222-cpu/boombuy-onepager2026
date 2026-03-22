@@ -87,19 +87,19 @@ export default function TrustLogos() {
            style={{ padding: "0 16px" }}
          >
            {logos.map((logo, i) => (
-             <div
-               key={i}
-               className="flex items-center justify-center opacity-85 hover:opacity-100 transition-opacity duration-300"
-               style={{ height: "60px" }}
-             >
-               <img
-                 src={logo.url}
-                 alt={logo.name}
-                 className="h-full w-auto object-contain"
-                 style={{ maxWidth: "100%" }}
-               />
-             </div>
-           ))}
+              <div
+                key={i}
+                className="flex items-center justify-center opacity-85 hover:opacity-100 transition-opacity duration-300"
+                style={{ height: "56px", minHeight: "56px" }}
+              >
+                <img
+                  src={logo.url}
+                  alt={logo.name}
+                  className="h-full w-auto object-contain"
+                  style={{ maxWidth: "90%" }}
+                />
+              </div>
+            ))}
          </motion.div>
       </div>
     </section>
