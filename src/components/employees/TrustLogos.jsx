@@ -48,9 +48,9 @@ export default function TrustLogos() {
           </p>
         </motion.div>
 
-        {/* Desktop: 2 rows, Mobile: grid */}
+        {/* Desktop: 3 rows, Mobile: grid */}
         <div className="hidden md:flex flex-col gap-8">
-          {[row1, row2].map((row, rowIdx) => (
+          {[row1, row2, row3].map((row, rowIdx) => (
             <motion.div
               key={rowIdx}
               initial={{ opacity: 0, y: 12 }}
