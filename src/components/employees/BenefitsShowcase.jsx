@@ -491,15 +491,8 @@ function CategoryCard({ cat, index, onClick }) {
           {cat.sub}
         </p>
 
-        <button
-          type="button"
-          onClick={onClick}
-          className="w-full mt-1 md:mt-2 py-1.5 md:py-2 rounded-lg md:rounded-xl bg-primary/10 text-primary text-[9px] md:text-xs font-bold text-center hover:bg-primary/20 transition-colors"
-        >
-          ראה דוגמאות ←
-        </button>
       </div>
-    </motion.button>
+    </motion.div>
   );
 }
 
