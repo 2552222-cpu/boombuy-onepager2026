@@ -86,93 +86,99 @@ export default function JoinScreen({ orgKey, orgName, onContinue }) {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-white to-secondary/20 py-12 px-4 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-b from-white to-secondary/20 flex items-center justify-center" style={{ overflowX: 'hidden', maxWidth: '100vw', padding: '24px 16px' }}>
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
-          className="max-w-2xl mx-auto bg-white rounded-3xl border border-border p-8 shadow-sm text-center"
+          className="max-w-2xl mx-auto bg-white rounded-2xl md:rounded-3xl border border-border shadow-sm text-center overflow-hidden"
         >
-          <h2 className="text-2xl font-black mb-4 text-foreground">
-            כל הכבוד! ✓
-          </h2>
-          <p className="text-base text-muted-foreground mb-6">
-            הצטרפת בהצלחה. כל עובד נוסף יחזק את הפנייה.
-          </p>
-          <button
-            onClick={onContinue}
-            className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-3 px-8 rounded-lg transition-all"
-          >
-            חזור לדף ראשי
-          </button>
+          <div className="p-6 md:p-8">
+            <h2 className="text-xl md:text-2xl font-black mb-3 md:mb-4 text-foreground">
+              כל הכבוד! ✓
+            </h2>
+            <p className="text-sm md:text-base text-muted-foreground mb-5 md:mb-6">
+              הצטרפת בהצלחה. כל עובד נוסף יחזק את הפנייה.
+            </p>
+            <button
+              onClick={onContinue}
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-3 md:py-4 rounded-lg md:rounded-lg transition-all text-sm md:text-base"
+            >
+              חזור לדף ראשי
+            </button>
+          </div>
         </motion.div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-secondary/20 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-b from-white to-secondary/20" style={{ overflowX: 'hidden', maxWidth: '100vw', padding: '20px 16px' }}>
       <div className="max-w-2xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="space-y-8"
+          className="space-y-6 md:space-y-8"
         >
           {/* Pitch */}
-          <div className="bg-white rounded-3xl border border-border p-8 shadow-sm text-center">
-            <h2 className="text-2xl font-black mb-4 text-foreground">
-              כבר {groupData?.currentCount || 1} עובדים מ-{orgName} הצטרפו
-            </h2>
-            <p className="text-base text-muted-foreground">
-              ביחד זה נשמע חזק יותר ל-HR.
-              רוצה להצטרף גם? זה לוקח חצי דקה.
-            </p>
+          <div className="bg-white rounded-2xl md:rounded-3xl border border-border shadow-sm text-center overflow-hidden">
+            <div className="p-6 md:p-8">
+              <h2 className="text-lg md:text-2xl font-black mb-3 md:mb-4 text-foreground">
+                כבר {groupData?.currentCount || 1} עובדים מ-{orgName} הצטרפו
+              </h2>
+              <p className="text-sm md:text-base text-muted-foreground">
+                ביחד זה נשמע חזק יותר ל-HR.
+                רוצה להצטרף גם? זה לוקח חצי דקה.
+              </p>
+            </div>
           </div>
 
           {/* Form */}
-          <div className="bg-white rounded-3xl border border-border p-8 shadow-sm">
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <input
-                type="text"
-                placeholder="שם פרטי *"
-                value={formData.memberName}
-                onChange={(e) =>
-                  setFormData({ ...formData, memberName: e.target.value })
-                }
-                className="w-full px-4 py-3 rounded-lg border border-border bg-white text-foreground placeholder-muted-foreground"
-              />
+          <div className="bg-white rounded-2xl md:rounded-3xl border border-border shadow-sm overflow-hidden">
+            <div className="p-6 md:p-8">
+              <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
+                <input
+                  type="text"
+                  placeholder="שם פרטי *"
+                  value={formData.memberName}
+                  onChange={(e) =>
+                    setFormData({ ...formData, memberName: e.target.value })
+                  }
+                  className="w-full px-3 md:px-4 py-2.5 md:py-3 rounded-lg border border-border bg-white text-foreground placeholder-muted-foreground text-sm md:text-base"
+                />
 
-              <input
-                type="tel"
-                placeholder="טלפון *"
-                value={formData.memberPhone}
-                onChange={(e) =>
-                  setFormData({ ...formData, memberPhone: e.target.value })
-                }
-                className="w-full px-4 py-3 rounded-lg border border-border bg-white text-foreground placeholder-muted-foreground"
-              />
+                <input
+                  type="tel"
+                  placeholder="טלפון *"
+                  value={formData.memberPhone}
+                  onChange={(e) =>
+                    setFormData({ ...formData, memberPhone: e.target.value })
+                  }
+                  className="w-full px-3 md:px-4 py-2.5 md:py-3 rounded-lg border border-border bg-white text-foreground placeholder-muted-foreground text-sm md:text-base"
+                />
 
-              <input
-                type="email"
-                placeholder="מייל (אופציונלי)"
-                value={formData.memberEmail}
-                onChange={(e) =>
-                  setFormData({ ...formData, memberEmail: e.target.value })
-                }
-                className="w-full px-4 py-3 rounded-lg border border-border bg-white text-foreground placeholder-muted-foreground"
-              />
+                <input
+                  type="email"
+                  placeholder="מייל (אופציונלי)"
+                  value={formData.memberEmail}
+                  onChange={(e) =>
+                    setFormData({ ...formData, memberEmail: e.target.value })
+                  }
+                  className="w-full px-3 md:px-4 py-2.5 md:py-3 rounded-lg border border-border bg-white text-foreground placeholder-muted-foreground text-sm md:text-base"
+                />
 
-              {error && <p className="text-red-600 text-sm">{error}</p>}
+                {error && <p className="text-red-600 text-xs md:text-sm">{error}</p>}
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-3 px-4 rounded-lg transition-all disabled:opacity-50"
-              >
-                {loading ? "הצטרפות..." : "אני בפנים"}
-              </button>
-            </form>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-2.5 md:py-3 px-4 rounded-lg transition-all disabled:opacity-50 text-sm md:text-base"
+                >
+                  {loading ? "הצטרפות..." : "אני בפנים"}
+                </button>
+              </form>
+            </div>
           </div>
         </motion.div>
       </div>
