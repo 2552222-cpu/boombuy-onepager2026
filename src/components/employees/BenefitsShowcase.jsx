@@ -15,7 +15,7 @@ const DAILY_EXTRA = [
 ];
 
 // פארם, סופר
-const SUPER_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/0bf56386b_-2026-03-22T130058307.png";
+const SUPER_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/f5d40ea86_-2026-03-22T160247435.png";
 const SUPER_EXTRA = [
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/52e06185a_-2026-03-22T115442800.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6e4f9f168_-2026-03-22T130017988.png",
