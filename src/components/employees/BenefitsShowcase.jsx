@@ -9,7 +9,7 @@ const DAILY_MAIN = null; // ⚠️ PLACEHOLDER
 const DAILY_EXTRA = []; // [url1, url2, ...]
 
 // פארם, סופר
-const SUPER_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/660e84e89_-2026-03-22T115039546.png";
+const SUPER_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/52e06185a_-2026-03-22T115442800.png";
 const SUPER_EXTRA = [
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/2ed7a77a8_79.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/bb8747b01_73.png",
