@@ -546,7 +546,7 @@ export default function BenefitsShowcase() {
            className="mt-10 md:mt-14 mb-8 md:mb-12 px-4 md:px-8 py-4 md:py-6 bg-primary/5 border border-primary/25 rounded-xl md:rounded-2xl"
          >
            <p className="text-center text-xs md:text-base font-semibold text-foreground leading-relaxed whitespace-normal">
-             💡 כל ההטבות ממומנות על&nbsp;ידי המערכת — לא על&nbsp;ידי המעסיק.
+             💡 כל ההטבות ממומנות ע"י המערכת — לא המעסיק.
            </p>
          </motion.div>
 
