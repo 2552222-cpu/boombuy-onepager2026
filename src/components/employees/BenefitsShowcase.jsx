@@ -4,8 +4,7 @@ import { X, ChevronLeft } from "lucide-react";
 
 // ─── ASSETS ──────────────────────────────────────────────────────────────────
 // כל בוקר הטבה חדשה
-const DAILY_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7e52326a0_-2026-03-22T160414836.png";
-// ⚠️ PLACEHOLDERS — יש להחליף ב-URLs אמיתיים לאחר העלאה
+const DAILY_PREVIEW = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7e52326a0_-2026-03-22T160414836.png";
 const DAILY_EXTRA = [
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/9ddb536b7_-2026-03-22T123739070.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/46e419525_-2026-02-18T150744909.png",
@@ -17,7 +16,7 @@ const DAILY_EXTRA = [
 ];
 
 // פארם, סופר
-const SUPER_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/d53a51271_-2026-03-22T163009970.png";
+const SUPER_PREVIEW = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/d53a51271_-2026-03-22T163009970.png";
 const SUPER_EXTRA = [
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3784ac419_-2026-03-22T130058307.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/52e06185a_-2026-03-22T115442800.png",
@@ -28,7 +27,7 @@ const SUPER_EXTRA = [
 ];
 
 // חשמל ואלקטרוניקה
-const TECH_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/db8e935e8_-2026-03-22T162955489.png";
+const TECH_PREVIEW = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/db8e935e8_-2026-03-22T162955489.png";
 const TECH_EXTRA = [
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/477510a11_-2026-02-18T150203869.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ca6b2de24_-2026-02-18T145345395.png",
@@ -38,11 +37,11 @@ const TECH_EXTRA = [
 ];
 
 // מתנת חג
-const GIFT_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28d0b6e89_-2026-03-22T163901041.png";
-const GIFT_EXTRA = []; // ⚠️ PLACEHOLDER
+const GIFT_PREVIEW = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28d0b6e89_-2026-03-22T163901041.png";
+const GIFT_EXTRA = [];
 
 // נופש וחופשות
-const VACATION_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/1b29c5bb8_-2026-03-22T162942110.png";
+const VACATION_PREVIEW = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/1b29c5bb8_-2026-03-22T162942110.png";
 const VACATION_EXTRA = [
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/d11fc0b42_-2026-03-22T125322010.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/78ac452a3_-2026-03-22T130846774.png",
@@ -50,7 +49,7 @@ const VACATION_EXTRA = [
 ];
 
 // תרבות ופנאי
-const CULTURE_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3d11c2184_-2026-03-22T165538542.png";
+const CULTURE_PREVIEW = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3d11c2184_-2026-03-22T165538542.png";
 const CULTURE_EXTRA = [
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7271e7a2c_-2026-01-21T190449103.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/af45cadc7_3.jpg",
@@ -59,7 +58,7 @@ const CULTURE_EXTRA = [
 ];
 
 // אופנה
-const FASHION_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/9349388b9_-2026-03-22T163505767.png";
+const FASHION_PREVIEW = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/9349388b9_-2026-03-22T163505767.png";
 const FASHION_EXTRA = [
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/82cf01fcc_87.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6a4f8399a_90.png",
@@ -68,7 +67,7 @@ const FASHION_EXTRA = [
 ];
 
 // ירידים
-const FAIRS_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a551368ec_-2026-03-22T163623874.png";
+const FAIRS_PREVIEW = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a551368ec_-2026-03-22T163623874.png";
 const FAIRS_EXTRA = [
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/695e0f051_-2026-02-18T142715149.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/53f2308b8_-2026-02-18T142941224.png",
