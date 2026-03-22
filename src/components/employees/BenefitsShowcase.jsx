@@ -15,7 +15,7 @@ const DAILY_EXTRA = [
 ];
 
 // פארם, סופר
-const SUPER_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/f5d40ea86_-2026-03-22T160247435.png";
+const SUPER_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/b445ec32c_-2026-03-22T163009970.png";
 const SUPER_EXTRA = [
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/52e06185a_-2026-03-22T115442800.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6e4f9f168_-2026-03-22T130017988.png",
@@ -25,7 +25,7 @@ const SUPER_EXTRA = [
 ];
 
 // חשמל ואלקטרוניקה
-const TECH_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/f289cdde6_-2026-03-22T160312998.png";
+const TECH_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6b1cd2eed_-2026-03-22T162955489.png";
 const TECH_EXTRA = [
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ca6b2de24_-2026-02-18T145345395.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/c7ef06ffc_-2026-02-18T141936848.png",
@@ -38,7 +38,7 @@ const GIFT_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f
 const GIFT_EXTRA = []; // ⚠️ PLACEHOLDER
 
 // נופש וחופשות
-const VACATION_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/d11fc0b42_-2026-03-22T125322010.png";
+const VACATION_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/1b29c5bb8_-2026-03-22T162942110.png";
 const VACATION_EXTRA = [
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/78ac452a3_-2026-03-22T130846774.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/cf3b11fa5_-2026-03-22T133529822.png",
