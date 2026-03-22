@@ -108,15 +108,15 @@ export default function Hero() {
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="flex-1 flex items-center justify-center relative"
+            className="flex items-center justify-center relative w-full"
           >
             <div className="relative flex items-center justify-center">
               {/* Soft ambient glow — subtle */}
               <div
                 className="absolute rounded-full pointer-events-none"
                 style={{
-                  width: 400,
-                  height: 400,
+                  width: 420,
+                  height: 420,
                   background: "radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 70%)",
                   filter: "blur(40px)",
                 }}
@@ -124,7 +124,7 @@ export default function Hero() {
 
               <div
                 className="relative"
-                style={{ width: "clamp(270px, 30vw, 440px)" }}
+                style={{ width: "clamp(280px, 22vw, 580px)" }}
               >
                 <img
                   src={HERO_IMAGE}
