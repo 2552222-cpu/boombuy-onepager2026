@@ -4,8 +4,9 @@ import { motion } from "framer-motion";
 const chips = [
   { emoji: "🛒", label: "פארם, סופר ויוקר המחיה", badge: "עד 8% הנחה קבועה" },
   { emoji: "📱", label: "חשמל ואלקטרוניקה", badge: "מחיר יבואן" },
-  { emoji: "✈️", label: "חופשות", badge: "הטבות בלעדיות" },
+  { emoji: "✈️", label: "חופשות", badge: "מחירים בלעדיים" },
   { emoji: "⚡", label: "הטבה חדשה כל יום", badge: null },
+  { emoji: "🎁", label: "הטבות בלעדיות", badge: null },
 ];
 
 const HERO_IMAGE = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/de2fe051d_1.png";
