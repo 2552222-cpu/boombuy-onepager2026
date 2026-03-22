@@ -330,10 +330,12 @@ function CategoryCard({ cat, index, onClick }) {
       {/* Text — 40% */}
       <div className="px-3.5 pt-3 pb-3.5 flex-1 flex flex-col justify-between">
         <div>
-          <p className="font-extrabold text-sm text-foreground leading-snug">
-            {cat.emoji} {cat.title}
-          </p>
-          <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed line-clamp-2">
+          {!cat.imageHasTitle && (
+            <p className="font-extrabold text-sm text-foreground leading-snug">
+              {cat.emoji} {cat.title}
+            </p>
+          )}
+          <p className={`text-[11px] text-muted-foreground leading-relaxed line-clamp-2 ${!cat.imageHasTitle ? "mt-1" : ""}`}>
             {cat.sub}
           </p>
         </div>
