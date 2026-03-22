@@ -30,7 +30,7 @@ const logos = [
 
 export default function TrustLogos() {
   const row1 = logos.slice(0, 12);
-  const row2 = logos.slice(12, 24);
+  const row2 = logos.slice(12);
 
   return (
     <section className="py-14 md:py-20 px-4 bg-white border-t border-b border-border/30">
