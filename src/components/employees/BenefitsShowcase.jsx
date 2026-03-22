@@ -199,65 +199,92 @@ function CategoryModal({ category, onClose, onCTA }) {
       className="fixed inset-0 z-50 flex items-end md:items-center justify-center p-0 md:p-4"
       onClick={onClose}
     >
-      <div className="absolute inset-0 bg-black/55 backdrop-blur-sm" />
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
       <motion.div
-        initial={{ opacity: 0, y: 60 }}
+        initial={{ opacity: 0, y: 70 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 60 }}
-        transition={{ type: "spring", damping: 28, stiffness: 300 }}
+        exit={{ opacity: 0, y: 70 }}
+        transition={{ type: "spring", damping: 30, stiffness: 280 }}
         onClick={(e) => e.stopPropagation()}
-        className="relative bg-white w-full md:max-w-lg rounded-t-3xl md:rounded-3xl shadow-2xl max-h-[88vh] flex flex-col"
+        className="relative bg-white w-full md:max-w-xl rounded-t-3xl md:rounded-3xl shadow-2xl max-h-[92vh] flex flex-col"
       >
-        {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-border/40 flex-shrink-0">
-          <div>
-            <p className="text-xs text-muted-foreground font-medium">{category.emoji} {category.title}</p>
-            <h3 className="text-base font-black leading-snug">{category.description}</h3>
-            {category.sub && (
-              <p className="text-xs text-muted-foreground mt-0.5">{category.sub}</p>
-            )}
-          </div>
-          <button
-            onClick={onClose}
-            className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center hover:bg-border transition-colors flex-shrink-0 mr-3"
-          >
-            <X className="w-4 h-4" />
-          </button>
-        </div>
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 left-4 z-10 w-9 h-9 rounded-full bg-white/90 backdrop-blur shadow flex items-center justify-center hover:bg-secondary transition-colors"
+        >
+          <X className="w-4 h-4" />
+        </button>
 
-        {/* Images */}
-        <div className="overflow-y-auto flex-1 p-5">
+        {/* Main image — hero size */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.97 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4 }}
+          className="w-full flex-shrink-0 overflow-hidden rounded-t-3xl md:rounded-t-3xl"
+          style={{ aspectRatio: "4/3", maxHeight: "52vw", minHeight: 200 }}
+        >
+          {category.mainImage ? (
+            <img
+              src={category.mainImage}
+              alt={category.title}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="w-full h-full bg-secondary/40 flex items-center justify-center text-3xl">🖼️</div>
+          )}
+        </motion.div>
+
+        {/* Header info */}
+        <div className="px-5 pt-4 pb-3 flex-shrink-0">
+          <div className="flex items-center gap-2 mb-1">
+            <span className={`${category.tagBg} text-white text-[10px] font-bold px-2.5 py-1 rounded-full`}>
+              {category.tag}
+            </span>
+          </div>
+          <h3 className="text-lg font-black leading-snug">
+            {category.emoji} {category.title}
+          </h3>
+          <p className="text-sm text-muted-foreground mt-1 leading-relaxed">{category.description}</p>
+          {category.sub && (
+            <p className="text-xs text-muted-foreground/80 mt-1 font-medium">{category.sub}</p>
+          )}
           {category.note && (
-            <div className="mb-4 bg-primary/8 border border-primary/20 rounded-xl px-4 py-2.5 text-xs text-primary font-medium">
+            <div className="mt-3 bg-primary/8 border border-primary/20 rounded-xl px-4 py-2.5 text-xs text-primary font-medium">
               💡 {category.note}
             </div>
           )}
+        </div>
 
+        {/* Extra images */}
+        <div className="overflow-y-auto flex-1 px-5 pb-2">
           {hasExtra ? (
-            <div className="grid grid-cols-2 gap-3">
-              {category.extraImages.map((url, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: i * 0.06 }}
-                  className="aspect-square rounded-2xl overflow-hidden bg-secondary/40"
-                >
-                  <img src={url} alt="" className="w-full h-full object-cover" />
-                </motion.div>
-              ))}
-            </div>
+            <>
+              <p className="text-xs font-semibold text-muted-foreground mb-3">דוגמאות מהשנה האחרונה</p>
+              <div className="grid grid-cols-2 gap-3">
+                {category.extraImages.map((url, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.1 + i * 0.07 }}
+                    className="aspect-square rounded-2xl overflow-hidden bg-secondary/30"
+                  >
+                    <img src={url} alt="" className="w-full h-full object-cover" />
+                  </motion.div>
+                ))}
+              </div>
+            </>
           ) : (
-            <div className="flex flex-col items-center gap-3 py-6 text-center text-muted-foreground">
-              <span className="text-3xl">🖼️</span>
-              <p className="text-sm font-medium">⚠️ assets נוספים לקטגוריה זו יתווספו בקרוב</p>
-              <p className="text-xs">יש להעלות {category.id === "daily" ? "5–6" : "3–4"} assets ולעדכן את המערכת</p>
+            <div className="flex flex-col items-center gap-2 py-4 text-center text-muted-foreground">
+              <span className="text-2xl">🖼️</span>
+              <p className="text-sm font-medium">דוגמאות נוספות יתווספו בקרוב</p>
             </div>
           )}
         </div>
 
         {/* CTA */}
-        <div className="px-5 pb-6 pt-3 border-t border-border/30 flex-shrink-0">
+        <div className="px-5 pb-6 pt-4 border-t border-border/30 flex-shrink-0">
           <button
             onClick={onCTA}
             className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-4 rounded-2xl transition-all shadow-lg shadow-primary/20 text-base"
