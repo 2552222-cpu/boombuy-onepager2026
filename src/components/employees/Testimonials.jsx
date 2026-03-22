@@ -37,19 +37,19 @@ function Stars() {
 
 export default function Testimonials() {
   return (
-    <section className="py-16 md:py-20 px-4 bg-white">
+    <section className="py-10 md:py-20 bg-white" style={{ overflowX: 'hidden', maxWidth: '100vw', padding: '60px 16px' }}>
       <div className="max-w-5xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-2xl md:text-3xl font-bold text-center mb-10"
+          className="text-xl md:text-3xl font-bold text-center mb-6 md:mb-10"
         >
           מה עובדים אומרים
         </motion.h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
           {testimonials.map((t, i) => (
             <motion.div
               key={i}
@@ -57,19 +57,19 @@ export default function Testimonials() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.45, delay: i * 0.08 }}
-              className="bg-secondary/40 rounded-2xl p-6 border border-border/30"
+              className="bg-secondary/40 rounded-lg md:rounded-2xl p-4 md:p-6 border border-border/30"
             >
               <Stars />
-              <p className="text-sm leading-relaxed mb-4 text-foreground/90">
+              <p className="text-xs md:text-sm leading-relaxed mb-3 md:mb-4 text-foreground/90">
                 "{t.text}"
               </p>
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
+                <div className="w-7 md:w-8 h-7 md:h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs md:text-sm flex-shrink-0">
                   {t.name[0]}
                 </div>
-                <div>
-                  <p className="text-sm font-semibold">{t.name}</p>
-                  <p className="text-xs text-muted-foreground">{t.org}</p>
+                <div className="min-w-0">
+                  <p className="text-xs md:text-sm font-semibold truncate">{t.name}</p>
+                  <p className="text-[10px] md:text-xs text-muted-foreground truncate">{t.org}</p>
                 </div>
               </div>
             </motion.div>
