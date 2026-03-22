@@ -22,10 +22,10 @@ const logos = [
   { name: "מילגם", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/bbde088d4_23.png" },
   { name: "AMOT", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/076c5871f_22.png" },
   { name: "MAX", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e6509fd0a_32.png" },
-  { name: "אלקטרה", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/25a7e6e18_-2026-03-22T223003872.png" },
+  { name: "אלקטרה אפיקים", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ee4dfeabe_-2026-03-22T223003872.png" },
   { name: "דופלט", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6862cd610_-2026-03-22T184752919.png" },
   { name: "בנק לאומי", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/62fa4ae8e_-2026-03-22T184709815.png" },
-  { name: "אלקטרה אפיקים", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/25a7e6e18_-2026-03-22T223003872.png" },
+  { name: "דלק", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/be9e3de1a_-2026-03-22T184841801.png" },
 ];
 
 export default function TrustLogos() {
@@ -68,8 +68,8 @@ export default function TrustLogos() {
                   <img
                     src={logo.url}
                     alt={logo.name}
-                    className="w-auto h-full object-contain"
-                    style={{ maxWidth: "90%", backgroundColor: "transparent" }}
+                    className="w-auto object-contain"
+                    style={{ maxWidth: "90%", height: "72px", backgroundColor: "transparent" }}
                   />
                 </div>
               ))}
@@ -95,8 +95,8 @@ export default function TrustLogos() {
                 <img
                   src={logo.url}
                   alt={logo.name}
-                  className="h-full w-auto object-contain"
-                  style={{ maxWidth: "90%", backgroundColor: "transparent" }}
+                  className="w-auto object-contain"
+                  style={{ maxWidth: "90%", height: "72px", backgroundColor: "transparent" }}
                 />
               </div>
             ))}
