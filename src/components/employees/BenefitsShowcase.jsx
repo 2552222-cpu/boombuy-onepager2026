@@ -221,15 +221,19 @@ function CategoryModal({ category, onClose, onCTA }) {
         <motion.div
           initial={{ opacity: 0, scale: 0.97 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4 }}
-          className="w-full flex-shrink-0 overflow-hidden rounded-t-3xl md:rounded-t-3xl"
-          style={{ aspectRatio: "4/3", maxHeight: "52vw", minHeight: 200 }}
+          transition={{ duration: 0.35, ease: "easeOut" }}
+          className="w-full flex-shrink-0 overflow-hidden rounded-t-3xl md:rounded-t-3xl bg-secondary/20"
+          style={{
+            aspectRatio: category.imageHasTitle ? "1/1" : "4/3",
+            maxHeight: category.imageHasTitle ? "75vw" : "55vw",
+            minHeight: 220,
+          }}
         >
           {category.mainImage ? (
             <img
               src={category.mainImage}
               alt={category.title}
-              className="w-full h-full object-cover"
+              className={`w-full h-full ${category.imageHasTitle ? "object-contain p-2" : "object-cover"}`}
             />
           ) : (
             <div className="w-full h-full bg-secondary/40 flex items-center justify-center text-3xl">🖼️</div>
