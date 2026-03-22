@@ -83,7 +83,7 @@ const categories = [
     emoji: "⚡",
     title: "כל בוקר הטבה חדשה",
     description: "כל יום מתחיל בהטבה חדשה שנשלחת לעובד בוואטסאפ — על מוצרי צריכה, מותגי פרימיום, חוויות ואטרקציות — תמיד במחיר הנמוך ביותר בישראל.",
-    sub: "260 הטבות חדשות בשנה · בשם הארגון",
+    sub: "260 הטבות בשנה - ישירות לווטס שלך",
     tag: "המחיר הנמוך בישראל",
     tagBg: "bg-amber-500",
     bg: "from-amber-50 to-orange-100",
@@ -546,7 +546,7 @@ export default function BenefitsShowcase() {
            className="mt-10 md:mt-14 mb-8 md:mb-12 px-4 md:px-8 py-4 md:py-6 bg-primary/5 border border-primary/25 rounded-xl md:rounded-2xl"
          >
            <p className="text-center text-xs md:text-base font-semibold text-foreground leading-relaxed whitespace-normal">
-             💡 כל ההטבות ממומנות ע"י המערכת — לא המעסיק.
+             💡 כל ההטבות ממומנות ע"י המערכת – לא המעסיק.
            </p>
          </motion.div>
 
