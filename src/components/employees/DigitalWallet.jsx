@@ -62,7 +62,15 @@ export default function DigitalWallet({ imageUrl }) {
                   <div className="w-5 md:w-6 h-5 md:h-6 rounded-full bg-primary/12 flex items-center justify-center flex-shrink-0 mt-0.5">
                     <Check className="w-3 md:w-3.5 h-3 md:h-3.5 text-primary font-bold" />
                   </div>
-                  <span className="text-xs md:text-base leading-relaxed text-foreground">{point}</span>
+                  <span className="text-xs md:text-base leading-relaxed text-foreground">
+                    {point === "העובד זכאי לבחור כמה מתנות ו/או תו לסופר" ? (
+                      <>
+                        העובד זכאי לבחור <span className="font-bold">כמה מתנות</span> ו/או תו לסופר
+                      </>
+                    ) : (
+                      point
+                    )}
+                  </span>
                 </motion.div>
               ))}
             </div>
