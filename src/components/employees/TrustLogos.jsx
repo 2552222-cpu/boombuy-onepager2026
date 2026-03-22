@@ -60,12 +60,14 @@ export default function TrustLogos() {
               {row.map((logo, i) => (
                 <div
                   key={i}
-                  className="flex items-center justify-center opacity-85 hover:opacity-100 transition-opacity duration-300 flex-shrink-0 w-32"
+                  className="flex items-center justify-center opacity-85 hover:opacity-100 transition-opacity duration-300 flex-shrink-0"
+                  style={{ width: "140px", height: "56px" }}
                 >
                   <img
                     src={logo.url}
                     alt={logo.name}
-                    className="h-14 w-auto object-contain max-w-[165px]"
+                    className="h-auto w-full object-contain"
+                    style={{ maxHeight: "56px", maxWidth: "140px" }}
                   />
                 </div>
               ))}
