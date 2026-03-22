@@ -66,8 +66,8 @@ export default function Hero() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.28 }}
-              className="flex flex-wrap justify-center md:justify-start gap-2.5 w-full md:w-auto"
-              style={{ marginBottom: "2rem" }}
+              className="flex flex-wrap justify-center md:justify-start gap-3 w-full md:w-auto"
+              style={{ marginBottom: "2.5rem" }}
             >
               {chips.map((chip, i) => (
                 <div
