@@ -204,135 +204,164 @@ function PlaceholderImage({ label = "asset חסר" }) {
 
 // ─── MODAL ────────────────────────────────────────────────────────────────────
 function CategoryModal({ category, onClose, onCTA }) {
-  const hasExtra = category.extraImages && category.extraImages.length > 0;
+  const gallery = [category.mainImage, ...(category.extraImages || [])].filter(Boolean);
+  const [activeImage, setActiveImage] = useState(gallery[0] || null);
+  const hasExtra = gallery.length > 1;
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.25 }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4"
+      transition={{ duration: 0.22 }}
+      className="fixed inset-0 z-50 bg-black/45 backdrop-blur-[2px] flex items-center justify-center p-2 sm:p-4"
       onClick={onClose}
-      style={{ backgroundColor: "rgba(0, 0, 0, 0.25)" }}
     >
       <motion.div
-        initial={{ opacity: 0, scale: 0.92 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.92 }}
-        transition={{ type: "tween", duration: 0.3, ease: "easeOut" }}
+        initial={{ opacity: 0, scale: 0.96, y: 12 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.96, y: 12 }}
+        transition={{ duration: 0.28, ease: "easeOut" }}
         onClick={(e) => e.stopPropagation()}
-        className="relative bg-white w-full max-w-[95vw] sm:max-w-[640px] md:max-w-[1040px] rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[95vh] sm:max-h-[93vh]"
+        className="relative w-full max-w-[1180px] max-h-[94vh] overflow-hidden rounded-[28px] bg-white shadow-2xl border border-black/5 flex flex-col"
       >
-        {/* Close button — clean, accessible */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-30 w-10 h-10 rounded-full bg-white/90 backdrop-blur flex items-center justify-center hover:bg-secondary transition-colors shadow-md"
+          className="absolute top-4 right-4 z-30 w-11 h-11 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-secondary transition-colors"
         >
           <X className="w-5 h-5 text-foreground" />
         </button>
 
-        {/* Main image area — hero presentation, no crop */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.35, delay: 0.08, ease: "easeOut" }}
-          className="w-full flex-shrink-0 bg-gradient-to-b from-secondary/10 to-transparent flex items-center justify-center"
-          style={{
-            maxHeight: "clamp(52vh, 65vh, 68vh)",
-            minHeight: "280px",
-            padding: "28px 24px",
-          }}
-        >
-          {category.mainImage ? (
-            <img
-              src={category.mainImage}
-              alt={category.title}
-              className="max-h-full max-w-full w-auto h-auto object-contain"
-              style={{ maxWidth: "100%", maxHeight: "100%" }}
-            />
-          ) : (
-            <div className="flex items-center justify-center text-6xl opacity-30">🖼️</div>
-          )}
-        </motion.div>
-
-        {/* Content wrapper — scrollable */}
-        <div className="flex-1 overflow-y-auto flex flex-col">
-          {/* Header section — title + description */}
-          <div className="px-5 sm:px-7 md:px-9 pt-7 sm:pt-8 md:pt-9 pb-6 flex-shrink-0">
-            <div className="flex items-center gap-2 mb-3">
-              <span className={`${category.tagBg} text-white text-[9px] font-bold px-2.5 py-1 rounded-full`}>
-                {category.tag}
-              </span>
+        <div className="flex-1 overflow-y-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.08fr_0.92fr] min-h-full">
+            {/* צד תמונה */}
+            <div className="bg-[#f7f8fb] p-4 sm:p-6 lg:p-8 flex items-center justify-center border-b lg:border-b-0 lg:border-l border-black/5">
+              <div className="w-full max-w-[860px] rounded-[26px] bg-white border border-black/5 shadow-sm p-3 sm:p-4 lg:p-5">
+                <div
+                  className="w-full flex items-center justify-center rounded-[20px] bg-white overflow-hidden"
+                  style={{
+                    minHeight: "320px",
+                    maxHeight: "min(60vh, 680px)",
+                  }}
+                >
+                  {activeImage ? (
+                    <img
+                      src={activeImage}
+                      alt={category.title}
+                      className="block max-w-full max-h-[58vh] lg:max-h-[62vh] w-auto h-auto object-contain"
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center text-6xl opacity-30">🖼️</div>
+                  )}
+                </div>
+              </div>
             </div>
-            <h3 className="text-2xl sm:text-3xl md:text-4xl font-black leading-tight mb-3">
-              {category.emoji} {category.title}
-            </h3>
-            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-2.5">{category.description}</p>
-            {category.sub && (
-              <p className="text-xs sm:text-sm text-muted-foreground/70 font-medium">{category.sub}</p>
-            )}
-            {category.note && (
-              <div className="mt-3.5 bg-primary/8 border border-primary/20 rounded-2xl px-4 py-2.5 text-xs sm:text-sm text-primary font-medium">
-                💡 {category.note}
-              </div>
-            )}
-          </div>
 
-          {/* Divider */}
-          <div className="h-px bg-border/30 flex-shrink-0"></div>
-
-          {/* Extra images section — clear and prominent */}
-          {hasExtra && (
-            <div className="px-5 sm:px-7 md:px-9 py-8 sm:py-10 flex-1 flex flex-col">
-              <div className="mb-6 sm:mb-7">
-                <p className="text-base sm:text-lg font-bold text-foreground mb-1">עוד דוגמאות מהקטגוריה</p>
-                <p className="text-xs sm:text-sm text-muted-foreground">מהשנה האחרונה</p>
-              </div>
-              <div className="grid gap-4 sm:gap-5 auto-rows-max"
-                style={{
-                  gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
-                }}
-              >
-                {category.extraImages.map((url, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, scale: 0.88 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.12 + i * 0.04, duration: 0.28 }}
-                    className="rounded-2xl overflow-hidden bg-secondary/20 shadow-sm hover:shadow-md transition-shadow cursor-pointer border border-border/20"
-                    style={{ aspectRatio: "4/3" }}
+            {/* צד תוכן */}
+            <div className="p-5 sm:p-7 lg:p-8 flex flex-col">
+              <div className="mb-5 sm:mb-6">
+                <div className="flex items-center gap-2 mb-3">
+                  <span
+                    className={`${category.tagBg} text-white text-[10px] sm:text-xs font-bold px-3 py-1.5 rounded-full`}
                   >
-                    <img src={url} alt="" className="w-full h-full object-cover" />
-                  </motion.div>
-                ))}
+                    {category.tag}
+                  </span>
+                </div>
+
+                <h3 className="text-2xl sm:text-3xl lg:text-[2.15rem] font-black leading-[1.05] mb-3">
+                  {category.emoji} {category.title}
+                </h3>
+
+                <p className="text-sm sm:text-[15px] text-muted-foreground leading-7 mb-2">
+                  {category.description}
+                </p>
+
+                {category.sub && (
+                  <p className="text-xs sm:text-sm text-muted-foreground/80 font-medium">
+                    {category.sub}
+                  </p>
+                )}
+
+                {category.note && (
+                  <div className="mt-4 rounded-2xl border border-primary/15 bg-primary/5 px-4 py-3 text-xs sm:text-sm text-primary font-medium leading-6">
+                    💡 {category.note}
+                  </div>
+                )}
+              </div>
+
+              <div className="h-px bg-black/8 mb-5 sm:mb-6" />
+
+              <div className="mb-4">
+                <h4 className="text-base sm:text-lg font-extrabold text-foreground mb-1">
+                  עוד הטבות בקטגוריה הזו
+                </h4>
+                <p className="text-xs sm:text-sm text-muted-foreground">
+                  לחצו על תמונה כדי לראות אותה בגדול
+                </p>
+              </div>
+
+              {hasExtra ? (
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                  {gallery.map((url, i) => {
+                    const isActive = url === activeImage;
+
+                    return (
+                      <motion.button
+                        key={i}
+                        type="button"
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.06 + i * 0.04, duration: 0.22 }}
+                        onClick={() => setActiveImage(url)}
+                        className={`rounded-2xl border overflow-hidden shadow-sm transition-all ${
+                          isActive
+                            ? "border-primary ring-2 ring-primary/15 bg-primary/5"
+                            : "border-black/5 bg-[#f8f9fc] hover:border-primary/25 hover:shadow-md"
+                        }`}
+                      >
+                        <div
+                          className="w-full flex items-center justify-center p-2 sm:p-3"
+                          style={{ minHeight: "140px", maxHeight: "220px" }}
+                        >
+                          <img
+                            src={url}
+                            alt=""
+                            className="block max-w-full max-h-[160px] w-auto h-auto object-contain"
+                          />
+                        </div>
+                      </motion.button>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="rounded-2xl border border-dashed border-black/10 bg-secondary/20 px-5 py-8 text-center">
+                  <div className="text-4xl opacity-20 mb-2">✨</div>
+                  <p className="text-sm sm:text-base font-semibold text-foreground mb-1">
+                    בקרוב נעלה עוד דוגמאות
+                  </p>
+                  <p className="text-xs sm:text-sm text-muted-foreground">
+                    מהקטגוריה הזו
+                  </p>
+                </div>
+              )}
+
+              <div className="mt-6 sm:mt-7 flex flex-col sm:flex-row gap-3">
+                <button
+                  onClick={onCTA}
+                  className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-4 rounded-2xl transition-all shadow-lg shadow-primary/20 text-sm sm:text-base"
+                >
+                  זה מעניין אותי - בדקו מה מגיע לי
+                </button>
+
+                <button
+                  onClick={onClose}
+                  className="sm:min-w-[120px] px-5 py-4 rounded-2xl border border-black/10 hover:bg-secondary transition-colors font-semibold"
+                >
+                  סגור
+                </button>
               </div>
             </div>
-          )}
-
-          {!hasExtra && (
-            <div className="px-5 sm:px-7 md:px-9 py-16 sm:py-20 flex-1 flex flex-col items-center justify-center text-center">
-              <span className="text-7xl sm:text-8xl opacity-15 mb-4">✨</span>
-              <p className="text-lg sm:text-xl font-semibold text-foreground mb-2">בקרוב נעלה עוד דוגמאות</p>
-              <p className="text-sm text-muted-foreground">מהקטגוריה הזו</p>
-            </div>
-          )}
-        </div>
-
-        {/* CTA Footer — clean spacing */}
-        <div className="px-5 sm:px-7 md:px-9 py-6 sm:py-7 border-t border-border/20 flex-shrink-0 bg-white flex gap-3">
-          <button
-            onClick={onCTA}
-            className="flex-1 bg-primary hover:bg-primary/90 active:bg-primary/95 text-primary-foreground font-bold py-3.5 sm:py-4 rounded-2xl transition-all shadow-lg shadow-primary/20 text-sm sm:text-base"
-          >
-            זה מעניין אותי — בדקו מה מגיע לי
-          </button>
-          <button
-            onClick={onClose}
-            className="px-4 sm:px-5 hover:bg-secondary text-foreground rounded-2xl transition-colors font-semibold"
-          >
-            סגור
-          </button>
+          </div>
         </div>
       </motion.div>
     </motion.div>
