@@ -34,7 +34,7 @@ const TECH_EXTRA = [
 ];
 
 // מתנת חג
-const GIFT_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e18c890ba_-2026-03-22T160649574.png";
+const GIFT_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28d0b6e89_-2026-03-22T163901041.png";
 const GIFT_EXTRA = []; // ⚠️ PLACEHOLDER
 
 // נופש וחופשות
@@ -45,7 +45,7 @@ const VACATION_EXTRA = [
 ];
 
 // תרבות ופנאי
-const CULTURE_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/83dda1775_-2026-03-22T163505767.png";
+const CULTURE_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/872c80a10_image.png";
 const CULTURE_EXTRA = [
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/af45cadc7_3.jpg",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3c918e2dd_-2026-03-22T124329449.png",
@@ -53,7 +53,7 @@ const CULTURE_EXTRA = [
 ];
 
 // אופנה
-const FASHION_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/1c29b0293_-2026-03-22T163623874.png";
+const FASHION_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/83dda1775_-2026-03-22T163505767.png";
 const FASHION_EXTRA = [
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6a4f8399a_90.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/69b6386a9_-2026-03-22T132245384.png",
@@ -61,7 +61,7 @@ const FASHION_EXTRA = [
 ];
 
 // ירידים
-const FAIRS_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/dd39c6d88_-2026-03-22T163248965.png";
+const FAIRS_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/1c29b0293_-2026-03-22T163623874.png";
 const FAIRS_EXTRA = [
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/53f2308b8_-2026-02-18T142941224.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8cd871928_-2026-02-18T142743437.png",
@@ -126,6 +126,7 @@ const categories = [
     mainImage: GIFT_MAIN,
     extraImages: GIFT_EXTRA,
     note: null,
+    imageHasTitle: true,
   },
   {
     id: "vacation",
@@ -139,6 +140,7 @@ const categories = [
     mainImage: VACATION_MAIN,
     extraImages: VACATION_EXTRA,
     note: null,
+    imageHasTitle: true,
   },
   {
     id: "culture",
@@ -152,6 +154,7 @@ const categories = [
     mainImage: CULTURE_MAIN,
     extraImages: CULTURE_EXTRA,
     note: null,
+    imageHasTitle: true,
   },
   {
     id: "fashion",
@@ -165,6 +168,7 @@ const categories = [
     mainImage: FASHION_MAIN,
     extraImages: FASHION_EXTRA,
     note: null,
+    imageHasTitle: true,
   },
   {
     id: "fairs",
@@ -178,6 +182,7 @@ const categories = [
     mainImage: FAIRS_MAIN,
     extraImages: FAIRS_EXTRA,
     note: null,
+    imageHasTitle: true,
   },
 ];
 
