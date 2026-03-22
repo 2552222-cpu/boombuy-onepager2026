@@ -25,37 +25,68 @@ const logos = [
 ];
 
 export default function TrustLogos() {
+  const row1 = logos.slice(0, 10);
+  const row2 = logos.slice(10, 20);
+
   return (
-    <section className="py-12 md:py-16 px-4 bg-white border-t border-b border-border/30">
-      <div className="max-w-7xl mx-auto">
+    <section className="py-14 md:py-20 px-4 bg-white border-t border-b border-border/30">
+      <div className="w-full" style={{ maxWidth: "1540px", margin: "0 auto" }}>
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-10 md:mb-12"
+          className="text-center mb-12 md:mb-14"
         >
-          <p className="text-base md:text-lg font-semibold text-foreground">
+          <p className="text-lg md:text-xl font-semibold text-foreground leading-relaxed">
             עובדים בארגונים מובילים כבר נהנים מזה
           </p>
         </motion.div>
 
+        {/* Desktop: 2 rows, Mobile: grid */}
+        <div className="hidden md:flex flex-col gap-8">
+          {[row1, row2].map((row, rowIdx) => (
+            <motion.div
+              key={rowIdx}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 + rowIdx * 0.08 }}
+              className="flex justify-center items-center gap-10"
+            >
+              {row.map((logo, i) => (
+                <div
+                  key={i}
+                  className="flex items-center justify-center opacity-85 hover:opacity-100 transition-opacity duration-300 flex-shrink-0 w-32"
+                >
+                  <img
+                    src={logo.url}
+                    alt={logo.name}
+                    className="h-14 w-auto object-contain max-w-[165px]"
+                  />
+                </div>
+              ))}
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Mobile: grid 2-3 columns */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.08 }}
-          className="flex flex-wrap justify-center items-center gap-6 md:gap-8 lg:gap-10"
+          className="md:hidden grid grid-cols-2 gap-6"
         >
           {logos.map((logo, i) => (
             <div
               key={i}
-              className="flex items-center justify-center opacity-75 hover:opacity-100 transition-opacity duration-300 flex-shrink-0"
+              className="flex items-center justify-center opacity-85 hover:opacity-100 transition-opacity duration-300"
             >
               <img
                 src={logo.url}
                 alt={logo.name}
-                className="h-12 md:h-14 w-auto object-contain max-w-[140px] md:max-w-[170px] grayscale"
+                className="h-9 w-auto object-contain max-w-[130px]"
               />
             </div>
           ))}
