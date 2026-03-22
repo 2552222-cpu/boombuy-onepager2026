@@ -75,7 +75,7 @@ export default function ProofImage({ imageUrl }) {
           />
         </motion.div>
 
-        <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-20">
+        <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-20 max-w-5xl mx-auto w-full">
 
           {/* Labels — staggered entrance */}
           <motion.div
