@@ -289,43 +289,58 @@ function CategoryModal({ category, onClose, onCTA }) {
                   עוד הטבות בקטגוריה הזו
                 </h4>
                 <p className="text-xs sm:text-sm text-muted-foreground">
-                  לחצו על תמונה כדי לראות אותה בגדול
+                  לחצו על כפתור כדי לראות תמונה אחרת
                 </p>
               </div>
 
               {hasExtra ? (
-                <div className="grid grid-cols-2 gap-3 sm:gap-4">
-                  {gallery.map((url, i) => {
-                    const isActive = url === activeImage;
+                <div className="flex flex-col gap-4">
+                  {/* Slider */}
+                  <div className="relative flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const idx = gallery.indexOf(activeImage);
+                        setActiveImage(gallery[idx === 0 ? gallery.length - 1 : idx - 1]);
+                      }}
+                      className="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-colors"
+                    >
+                      <ChevronLeft className="w-5 h-5 text-primary" />
+                    </button>
 
-                    return (
-                      <motion.button
-                        key={i}
-                        type="button"
-                        initial={{ opacity: 0, y: 8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.06 + i * 0.04, duration: 0.22 }}
-                        onClick={() => setActiveImage(url)}
-                        className={`rounded-3xl border overflow-hidden shadow-sm transition-all ${
-                          isActive
-                            ? "border-primary ring-2 ring-primary/15"
-                            : "border-black/10 hover:border-primary/25 hover:shadow-md"
-                        }`}
-                      >
-                        <div
-                          className="w-full flex items-center justify-center bg-white p-2"
-                          style={{ aspectRatio: "1/1" }}
-                        >
-                          <img
-                            src={url}
-                            alt=""
-                            className="object-contain"
-                            style={{ maxWidth: "100%", maxHeight: "100%" }}
+                    <div className="flex-1 flex items-center justify-center">
+                      <div className="flex gap-2">
+                        {gallery.map((_, i) => (
+                          <button
+                            key={i}
+                            type="button"
+                            onClick={() => setActiveImage(gallery[i])}
+                            className={`w-2 h-2 rounded-full transition-all ${
+                              gallery[i] === activeImage
+                                ? "bg-primary w-6"
+                                : "bg-primary/30 hover:bg-primary/50"
+                            }`}
                           />
-                        </div>
-                      </motion.button>
-                    );
-                  })}
+                        ))}
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const idx = gallery.indexOf(activeImage);
+                        setActiveImage(gallery[idx === gallery.length - 1 ? 0 : idx + 1]);
+                      }}
+                      className="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-colors"
+                    >
+                      <ChevronLeft className="w-5 h-5 text-primary transform rotate-180" />
+                    </button>
+                  </div>
+
+                  {/* Indicators */}
+                  <p className="text-xs text-muted-foreground text-center">
+                    {gallery.indexOf(activeImage) + 1} מתוך {gallery.length}
+                  </p>
                 </div>
               ) : (
                 <div className="rounded-2xl border border-dashed border-black/10 bg-secondary/20 px-5 py-8 text-center">
@@ -371,28 +386,31 @@ function CategoryCard({ cat, index, onClick }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.38, delay: index * 0.05 }}
-      whileHover={{ y: -4, boxShadow: "0 10px 28px rgba(0,0,0,0.10)" }}
+      whileHover={{ y: -4 }}
       onClick={onClick}
-      className={`bg-gradient-to-br ${cat.bg} rounded-2xl text-right overflow-hidden border border-black/5 shadow-sm group flex flex-col`}
-      style={{ willChange: "transform" }}
+      className="rounded-2xl text-right overflow-hidden border border-black/8 shadow-sm group flex flex-col bg-white"
+      style={{ willChange: "transform", boxShadow: "0 2px 12px rgba(0,0,0,0.07)" }}
     >
       <div
         className="relative w-full flex items-center justify-center bg-white p-2 sm:p-3"
         style={{ aspectRatio: "4/3" }}
       >
         {cat.previewImage ? (
-          <img
-            src={cat.previewImage}
-            alt={cat.title}
-            className="object-contain transition-transform duration-500 group-hover:scale-[1.02]"
-            style={{ maxWidth: "100%", maxHeight: "100%" }}
-          />
+          <>
+            <img
+              src={cat.previewImage}
+              alt={cat.title}
+              className="object-contain transition-transform duration-500 group-hover:scale-[1.02]"
+              style={{ maxWidth: "100%", maxHeight: "100%" }}
+            />
+            <div className="absolute inset-0 bg-white/10" />
+          </>
         ) : (
           <div className="flex items-center justify-center text-4xl opacity-30">🖼️</div>
         )}
       </div>
 
-      <div className="px-3.5 pt-2.5 pb-3 flex flex-col gap-1">
+      <div className="px-3.5 pt-2.5 pb-3 flex flex-col gap-1 bg-white">
         <div className="flex items-center gap-2 mb-1">
           <span className={`${cat.tagBg} text-white text-[10px] font-bold px-2 py-1 rounded-full`}>
             {cat.tag}
@@ -407,10 +425,13 @@ function CategoryCard({ cat, index, onClick }) {
           {cat.sub}
         </p>
 
-        <div className="flex items-center justify-between mt-2 pt-2 border-t border-black/5">
-          <span className="text-[11px] font-semibold text-primary/80">לחצו לדוגמאות</span>
-          <ChevronLeft className="w-3.5 h-3.5 text-primary/60" />
-        </div>
+        <button
+          type="button"
+          onClick={onClick}
+          className="w-full mt-2 py-2 rounded-xl bg-primary/10 text-primary text-xs font-bold text-center hover:bg-primary/20 transition-colors"
+        >
+          ראה דוגמאות ←
+        </button>
       </div>
     </motion.button>
   );
