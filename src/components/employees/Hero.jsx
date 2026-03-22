@@ -110,7 +110,7 @@ export default function Hero() {
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="hidden md:flex items-center justify-center relative w-full"
+            className="flex items-center justify-center relative w-full"
           >
             <div className="relative flex items-center justify-center">
               {/* Soft ambient glow — subtle */}
@@ -125,7 +125,7 @@ export default function Hero() {
               />
 
               <div
-                className="relative hidden md:block"
+                className="relative block"
                 style={{ width: "clamp(260px, 28vw, 460px)" }}
               >
                 <img
