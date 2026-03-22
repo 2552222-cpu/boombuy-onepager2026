@@ -222,7 +222,7 @@ function CategoryModal({ category, onClose, onCTA }) {
         exit={{ opacity: 0, scale: 0.92 }}
         transition={{ type: "tween", duration: 0.3, ease: "easeOut" }}
         onClick={(e) => e.stopPropagation()}
-        className="relative bg-white w-full max-w-[95vw] sm:max-w-[540px] md:max-w-[820px] rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[95vh] sm:max-h-[90vh]"
+        className="relative bg-white w-full max-w-[95vw] sm:max-w-[640px] md:max-w-[1040px] rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[95vh] sm:max-h-[93vh]"
       >
         {/* Close button — clean, accessible */}
         <button
@@ -232,43 +232,43 @@ function CategoryModal({ category, onClose, onCTA }) {
           <X className="w-5 h-5 text-foreground" />
         </button>
 
-        {/* Main image — large, full, no crop */}
+        {/* Main image area — hero presentation, no crop */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.35, delay: 0.08, ease: "easeOut" }}
-          className="w-full flex-shrink-0 overflow-hidden bg-white flex items-center justify-center"
+          className="w-full flex-shrink-0 bg-gradient-to-b from-secondary/10 to-transparent flex items-center justify-center"
           style={{
-            maxHeight: "clamp(400px, 75vh, 700px)",
-            minHeight: "300px",
-            padding: "0",
+            maxHeight: "clamp(52vh, 65vh, 68vh)",
+            minHeight: "280px",
+            padding: "28px 24px",
           }}
         >
           {category.mainImage ? (
             <img
               src={category.mainImage}
               alt={category.title}
-              className="w-full h-full object-contain"
-              style={{ maxHeight: "100%", width: "auto" }}
+              className="max-h-full max-w-full w-auto h-auto object-contain"
+              style={{ maxWidth: "100%", maxHeight: "100%" }}
             />
           ) : (
-            <div className="flex items-center justify-center text-5xl opacity-30">🖼️</div>
+            <div className="flex items-center justify-center text-6xl opacity-30">🖼️</div>
           )}
         </motion.div>
 
         {/* Content wrapper — scrollable */}
         <div className="flex-1 overflow-y-auto flex flex-col">
           {/* Header section — title + description */}
-          <div className="px-5 sm:px-7 md:px-9 pt-6 sm:pt-8 pb-5 flex-shrink-0">
+          <div className="px-5 sm:px-7 md:px-9 pt-7 sm:pt-8 md:pt-9 pb-6 flex-shrink-0">
             <div className="flex items-center gap-2 mb-3">
               <span className={`${category.tagBg} text-white text-[9px] font-bold px-2.5 py-1 rounded-full`}>
                 {category.tag}
               </span>
             </div>
-            <h3 className="text-2xl sm:text-3xl md:text-4xl font-black leading-tight mb-3.5">
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-black leading-tight mb-3">
               {category.emoji} {category.title}
             </h3>
-            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-2">{category.description}</p>
+            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-2.5">{category.description}</p>
             {category.sub && (
               <p className="text-xs sm:text-sm text-muted-foreground/70 font-medium">{category.sub}</p>
             )}
@@ -282,21 +282,26 @@ function CategoryModal({ category, onClose, onCTA }) {
           {/* Divider */}
           <div className="h-px bg-border/30 flex-shrink-0"></div>
 
-          {/* Extra images section — prominent */}
+          {/* Extra images section — clear and prominent */}
           {hasExtra && (
-            <div className="px-5 sm:px-7 md:px-9 py-7 sm:py-10 flex-1 flex flex-col">
-              <div className="mb-6 sm:mb-8">
+            <div className="px-5 sm:px-7 md:px-9 py-8 sm:py-10 flex-1 flex flex-col">
+              <div className="mb-6 sm:mb-7">
                 <p className="text-base sm:text-lg font-bold text-foreground mb-1">עוד דוגמאות מהקטגוריה</p>
                 <p className="text-xs sm:text-sm text-muted-foreground">מהשנה האחרונה</p>
               </div>
-              <div className={`grid gap-4 sm:gap-5 flex-1 ${category.extraImages.length > 3 ? "grid-cols-2 md:grid-cols-3" : "grid-cols-2"}`}>
+              <div className="grid gap-4 sm:gap-5 auto-rows-max"
+                style={{
+                  gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
+                }}
+              >
                 {category.extraImages.map((url, i) => (
                   <motion.div
                     key={i}
                     initial={{ opacity: 0, scale: 0.88 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.12 + i * 0.04, duration: 0.28 }}
-                    className="aspect-video sm:aspect-square rounded-2xl overflow-hidden bg-secondary/20 shadow-md hover:shadow-lg hover:scale-[1.04] transition-all cursor-pointer border border-border/20"
+                    className="rounded-2xl overflow-hidden bg-secondary/20 shadow-sm hover:shadow-md transition-shadow cursor-pointer border border-border/20"
+                    style={{ aspectRatio: "4/3" }}
                   >
                     <img src={url} alt="" className="w-full h-full object-cover" />
                   </motion.div>
@@ -306,15 +311,15 @@ function CategoryModal({ category, onClose, onCTA }) {
           )}
 
           {!hasExtra && (
-            <div className="px-5 sm:px-7 md:px-9 py-14 sm:py-18 flex-1 flex flex-col items-center justify-center text-center">
-              <span className="text-6xl sm:text-7xl opacity-20 mb-4">✨</span>
-              <p className="text-lg font-semibold text-foreground mb-2">בקרוב נעלה עוד דוגמאות</p>
+            <div className="px-5 sm:px-7 md:px-9 py-16 sm:py-20 flex-1 flex flex-col items-center justify-center text-center">
+              <span className="text-7xl sm:text-8xl opacity-15 mb-4">✨</span>
+              <p className="text-lg sm:text-xl font-semibold text-foreground mb-2">בקרוב נעלה עוד דוגמאות</p>
               <p className="text-sm text-muted-foreground">מהקטגוריה הזו</p>
             </div>
           )}
         </div>
 
-        {/* CTA Footer */}
+        {/* CTA Footer — clean spacing */}
         <div className="px-5 sm:px-7 md:px-9 py-6 sm:py-7 border-t border-border/20 flex-shrink-0 bg-white flex gap-3">
           <button
             onClick={onCTA}
