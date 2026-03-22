@@ -3,7 +3,6 @@ import Header from "../components/employees/Header";
 import Hero from "../components/employees/Hero";
 import ProofImage from "../components/employees/ProofImage";
 import BenefitsShowcase from "../components/employees/BenefitsShowcase";
-import ValueCards from "../components/employees/ValueCards";
 import TrustLogos from "../components/employees/TrustLogos";
 import DigitalWallet from "../components/employees/DigitalWallet";
 import Testimonials from "../components/employees/Testimonials";
@@ -48,7 +47,6 @@ export default function EmployeesLanding() {
       <Hero />
       <ProofImage imageUrl={PROOF_IMAGE_URL} />
       <BenefitsShowcase />
-      <ValueCards />
       <TrustLogos />
       <DigitalWallet imageUrl={WALLET_IMAGE_URL} />
       <Testimonials />
