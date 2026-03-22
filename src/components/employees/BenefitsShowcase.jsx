@@ -97,6 +97,7 @@ const categories = [
     mainImage: SUPER_MAIN,
     extraImages: SUPER_EXTRA,
     note: null,
+    imageHasTitle: true,
   },
   {
     id: "tech",
@@ -110,6 +111,7 @@ const categories = [
     mainImage: TECH_MAIN,
     extraImages: TECH_EXTRA,
     note: null,
+    imageHasTitle: true,
   },
   {
     id: "gift",
