@@ -20,12 +20,26 @@ export default function EmployeesLanding() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const sign = params.get("sign");
-    const org = params.get("org");
-    const orgName = params.get("orgName") || org || "";
-    if (sign === "1" && org) {
-      setJoinParams({ orgKey: org, orgName: decodeURIComponent(orgName) });
-      setShowJoin(true);
+    const orgKey = params.get("orgKey");
+    
+    if (orgKey) {
+      // Fetch org name from DB
+      const fetchOrgName = async () => {
+        try {
+          const { base44 } = await import("@/api/base44Client");
+          const groups = await base44.entities.GroupRequest.filter({ orgKey });
+          if (groups.length > 0) {
+            setJoinParams({ 
+              orgKey: orgKey, 
+              orgName: groups[0].orgName 
+            });
+            setShowJoin(true);
+          }
+        } catch (err) {
+          console.error("Error fetching org name:", err);
+        }
+      };
+      fetchOrgName();
     }
   }, []);
 
