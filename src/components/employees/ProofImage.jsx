@@ -51,31 +51,31 @@ export default function ProofImage({ imageUrl }) {
           </p>
         </motion.div>
 
-        <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-20">
+        {/* Image — full width on mobile, centered */}
+        <motion.div
+          initial={{ opacity: 0, y: 32 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="flex justify-center items-center w-full relative mb-8 md:mb-0"
+        >
+          <div
+            className="absolute pointer-events-none"
+            style={{
+              inset: "-20px",
+              background: "radial-gradient(ellipse at 50% 55%, rgba(59,130,246,0.08) 0%, transparent 65%)",
+              filter: "blur(24px)",
+            }}
+          />
+          <img
+            src={imageUrl}
+            alt="הטבה אמיתית לעובדים"
+            className="relative drop-shadow-xl"
+            style={{ width: "clamp(200px, 32vw, 340px)" }}
+          />
+        </motion.div>
 
-          {/* Image — centered on mobile */}
-          <motion.div
-            initial={{ opacity: 0, y: 32 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="flex-shrink-0 flex justify-center items-center w-full md:w-auto relative"
-          >
-            <div
-              className="absolute pointer-events-none"
-              style={{
-                inset: "-20px",
-                background: "radial-gradient(ellipse at 50% 55%, rgba(59,130,246,0.08) 0%, transparent 65%)",
-                filter: "blur(24px)",
-              }}
-            />
-            <img
-              src={imageUrl}
-              alt="הטבה אמיתית לעובדים"
-              className="relative drop-shadow-xl mx-auto"
-              style={{ width: "clamp(200px, 32vw, 340px)" }}
-            />
-          </motion.div>
+        <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-20">
 
           {/* Labels — staggered entrance */}
           <motion.div
