@@ -34,7 +34,7 @@ export default function TrustLogos() {
 
   return (
     <section className="py-14 md:py-20 px-4 bg-white border-t border-b border-border/30">
-      <div className="w-full" style={{ maxWidth: "1540px", margin: "0 auto" }}>
+      <div className="w-full">
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -56,20 +56,19 @@ export default function TrustLogos() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1 + rowIdx * 0.08 }}
-              className="flex justify-center items-center"
-              style={{ gap: "32px" }}
+              className="flex justify-between items-center w-full"
+              style={{ padding: "0 40px" }}
             >
               {row.map((logo, i) => (
                 <div
                   key={i}
                   className="flex items-center justify-center opacity-85 hover:opacity-100 transition-opacity duration-300 flex-shrink-0"
-                  style={{ width: "180px", height: "72px" }}
+                  style={{ width: "160px", height: "64px" }}
                 >
                   <img
                     src={logo.url}
                     alt={logo.name}
-                    className="h-auto w-full object-contain"
-                    style={{ maxHeight: "72px", maxWidth: "180px" }}
+                    className="w-full h-full object-contain"
                   />
                 </div>
               ))}
