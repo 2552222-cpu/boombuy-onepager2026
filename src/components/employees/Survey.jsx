@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { base44 } from "@/api/base44Client";
 import ResultScreen from "./ResultScreen";
 import RequestModal from "./RequestModal";
 import ShareScreen from "./ShareScreen";
@@ -40,8 +41,15 @@ export default function Survey() {
   const [showRequestModal, setShowRequestModal] = useState(false);
   const [groupRequest, setGroupRequest] = useState(null);
   const [orgKey, setOrgKey] = useState(null);
+  const [sessionToken, setSessionToken] = useState("");
 
-  const handleSelect = (option) => {
+  // Generate session token on mount
+  useEffect(() => {
+    const token = `survey_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    setSessionToken(token);
+  }, []);
+
+  const handleSelect = async (option) => {
     const newAnswers = [...answers, option.label];
     setAnswers(newAnswers);
 
@@ -49,6 +57,19 @@ export default function Survey() {
       setStep(step + 1);
     } else {
       setLoading(true);
+      
+      // Save survey response to DB
+      try {
+        await base44.entities.SurveyResponse.create({
+          answer1: newAnswers[0],
+          answer2: newAnswers[1],
+          answer3: newAnswers[2],
+          sessionToken: sessionToken,
+        });
+      } catch (err) {
+        console.error("Error saving survey response:", err);
+      }
+
       setTimeout(() => {
         setLoading(false);
         setShowResult(true);
