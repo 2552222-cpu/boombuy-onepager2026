@@ -42,7 +42,7 @@ export default function EmployeesLanding() {
   }
 
   return (
-    <div className="min-h-screen font-heebo" dir="rtl">
+    <div className="min-h-screen font-heebo" dir="rtl" style={{ overflowX: 'hidden', maxWidth: '100vw' }}>
       <Header />
       <Hero />
       <ProofImage imageUrl={PROOF_IMAGE_URL} />
