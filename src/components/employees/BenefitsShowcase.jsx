@@ -341,57 +341,32 @@ function CategoryCard({ cat, index, onClick }) {
       className={`bg-gradient-to-br ${cat.bg} rounded-2xl text-right overflow-hidden border border-black/5 shadow-sm transition-shadow group flex flex-col`}
       style={{ willChange: "transform" }}
     >
-      {/* Visual */}
-      <div
-        className="relative w-full overflow-hidden flex-shrink-0"
-        style={{ aspectRatio: cat.imageHasTitle ? "1/1" : "4/3", background: cat.imageHasTitle ? "#ffffff" : undefined }}
-      >
-        {cat.mainImage ? (
+      {/* Preview Image */}
+      <div className="relative w-full overflow-hidden flex-shrink-0" style={{ aspectRatio: "4/3" }}>
+        {cat.previewImage ? (
           <img
-            src={cat.mainImage}
+            src={cat.previewImage}
             alt={cat.title}
-            className={`w-full h-full transition-transform duration-500 group-hover:scale-[1.02] ${
-              cat.imageHasTitle ? "object-contain p-2" : "object-cover"
-            }`}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
           />
         ) : (
-          <PlaceholderImage label={`asset ראשי — ${cat.title}`} />
-        )}
-        {/* Badge — only for non-imageHasTitle cards */}
-        {!cat.imageHasTitle && (
-          <span className={`absolute top-2.5 right-2.5 ${cat.tagBg} text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow`}>
-            {cat.tag}
-          </span>
+          <PlaceholderImage label={`preview — ${cat.title}`} />
         )}
       </div>
 
-      {/* Text — minimal for imageHasTitle cards */}
-      {cat.imageHasTitle ? (
-        <div className="px-3 py-3 flex-shrink-0 flex flex-col gap-2 border-t border-black/8">
-          <div className="flex items-center gap-1.5">
-            <span className={`${cat.tagBg} text-white text-[8px] font-bold px-2 py-1 rounded-full`}>
-              {cat.tag}
-            </span>
-          </div>
-          <div className="flex items-center justify-between gap-2">
-            <span className="text-[11px] font-semibold text-foreground line-clamp-1">בתוך יש עוד דוגמאות</span>
-            <ChevronLeft className="w-3.5 h-3.5 text-primary/70 flex-shrink-0" />
-          </div>
+      {/* Text */}
+      <div className="px-3.5 pt-2.5 pb-3 flex-shrink-0 flex flex-col gap-0">
+        <p className="font-extrabold text-sm text-foreground leading-snug mb-0.5">
+          {cat.emoji} {cat.title}
+        </p>
+        <p className="text-[11px] text-muted-foreground leading-relaxed line-clamp-1">
+          {cat.sub}
+        </p>
+        <div className="flex items-center justify-between mt-2 pt-2 border-t border-black/5">
+          <span className="text-[11px] font-semibold text-primary/80">לחצו לדוגמאות</span>
+          <ChevronLeft className="w-3.5 h-3.5 text-primary/60" />
         </div>
-      ) : (
-        <div className="px-3.5 pt-2.5 pb-3 flex-shrink-0 flex flex-col gap-0">
-          <p className="font-extrabold text-sm text-foreground leading-snug mb-0.5">
-            {cat.emoji} {cat.title}
-          </p>
-          <p className="text-[11px] text-muted-foreground leading-relaxed line-clamp-1">
-            {cat.sub}
-          </p>
-          <div className="flex items-center justify-between mt-2 pt-2 border-t border-black/5">
-            <span className="text-[11px] font-semibold text-primary/80">לחצו לדוגמאות</span>
-            <ChevronLeft className="w-3.5 h-3.5 text-primary/60" />
-          </div>
-        </div>
-      )}
+      </div>
     </motion.button>
   );
 }
