@@ -17,9 +17,9 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-white to-secondary/30 py-10 md:py-16 px-4">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex flex-col md:flex-row items-center gap-8 md:gap-8">
+    <section className="relative overflow-hidden bg-gradient-to-b from-white to-secondary/30 py-12 md:py-20 px-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row items-center gap-10 md:gap-20">
 
           {/* TEXT SIDE */}
           <motion.div
@@ -27,19 +27,21 @@ export default function Hero() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
             className="flex-1 flex flex-col items-center md:items-start text-center md:text-right"
-            style={{ maxWidth: 620 }}
+            style={{ maxWidth: 680 }}
           >
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               style={{
-                fontSize: "clamp(3rem, 8vw, 6.2rem)",
-                lineHeight: 1.0,
-                letterSpacing: "-0.03em",
+                fontSize: "clamp(2.5rem, 7.5vw, 5.5rem)",
+                lineHeight: 0.98,
+                letterSpacing: "-0.02em",
                 fontWeight: 900,
-                marginBottom: "0.9rem",
+                marginBottom: "1.2rem",
+                maxWidth: "680px",
               }}
+              className="leading-none"
             >
               יש כסף שמחכה לך{" "}
               <span className="text-primary">בעבודה שלך</span>
@@ -50,10 +52,10 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.15 }}
               style={{
-                maxWidth: 380,
-                fontSize: "1.05rem",
-                lineHeight: 1.65,
-                marginBottom: "1.25rem",
+                maxWidth: 540,
+                fontSize: "1.125rem",
+                lineHeight: 1.6,
+                marginBottom: "1.75rem",
               }}
               className="text-muted-foreground"
             >
@@ -65,13 +67,13 @@ export default function Hero() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.28 }}
-              className="flex flex-wrap justify-center md:justify-start gap-2"
-              style={{ marginBottom: "1.25rem" }}
+              className="flex flex-wrap justify-center md:justify-start gap-2.5 w-full md:w-auto"
+              style={{ marginBottom: "2rem" }}
             >
               {chips.map((chip, i) => (
                 <div
                   key={i}
-                  className="flex items-center gap-1.5 bg-white rounded-full px-3 py-1.5 shadow-sm border border-border/60 text-sm font-medium"
+                  className="flex items-center gap-1.5 bg-white rounded-full px-3.5 py-2 shadow-sm border border-border/60 text-sm font-medium"
                 >
                   <span>{chip.emoji}</span>
                   <span>{chip.label}</span>
