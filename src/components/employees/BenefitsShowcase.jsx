@@ -83,6 +83,7 @@ const categories = [
     mainImage: DAILY_MAIN,
     extraImages: DAILY_EXTRA,
     note: "מצאתם מחיר נמוך יותר בישראל? אנחנו מחזירים את ההפרש.",
+    imageHasTitle: true,
   },
   {
     id: "super",
