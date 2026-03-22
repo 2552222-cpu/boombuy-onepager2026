@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ResultScreen from "./ResultScreen";
+import RequestModal from "./RequestModal";
+import ShareScreen from "./ShareScreen";
 
 const questions = [
   {
@@ -34,7 +36,10 @@ export default function Survey() {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [done, setDone] = useState(false);
+  const [showResult, setShowResult] = useState(false);
+  const [showRequestModal, setShowRequestModal] = useState(false);
+  const [groupRequest, setGroupRequest] = useState(null);
+  const [orgKey, setOrgKey] = useState(null);
 
   const handleSelect = (option) => {
     const newAnswers = [...answers, option.label];
@@ -46,15 +51,51 @@ export default function Survey() {
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
-        setDone(true);
+        setShowResult(true);
       }, 1500);
     }
   };
 
-  const progress = ((step + (done ? 1 : 0)) / questions.length) * 100;
+  const handleOpenRequest = async (group, key) => {
+    setGroupRequest(group);
+    setOrgKey(key);
+    setShowRequestModal(false);
+  };
 
-  if (done) {
-    return <ResultScreen answers={answers} />;
+  const progress = ((step + (showResult ? 1 : 0)) / questions.length) * 100;
+
+  if (showResult) {
+    return (
+      <>
+        <ResultScreen
+          surveyResult={answers}
+          onOpenRequest={() => setShowRequestModal(true)}
+        />
+        {showRequestModal && (
+          <RequestModal
+            isOpen={showRequestModal}
+            onClose={() => setShowRequestModal(false)}
+            onSuccess={(group, key) => {
+              handleOpenRequest(group, key);
+              setGroupRequest(group);
+              setOrgKey(key);
+            }}
+          />
+        )}
+        {groupRequest && (
+          <ShareScreen
+            groupRequest={groupRequest}
+            orgKey={orgKey}
+            onContinue={() => {
+              setShowResult(false);
+              setShowRequestModal(false);
+              setGroupRequest(null);
+              setOrgKey(null);
+            }}
+          />
+        )}
+      </>
+    );
   }
 
   return (
