@@ -241,20 +241,21 @@ function CategoryModal({ category, onClose, onCTA }) {
         exit={{ opacity: 0, scale: 0.96, y: 12 }}
         transition={{ duration: 0.28, ease: "easeOut" }}
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-[1180px] max-h-[94vh] overflow-hidden rounded-[28px] bg-white shadow-2xl border border-black/5 flex flex-col"
+        className="relative w-full max-w-[1180px] max-h-[94vh] overflow-hidden rounded-2xl md:rounded-[28px] bg-white shadow-2xl border border-black/5 flex flex-col"
+        style={{ overflowX: 'hidden', maxWidth: '100vw' }}
       >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-30 w-11 h-11 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-secondary transition-colors"
+          className="absolute top-3 md:top-4 right-3 md:right-4 z-30 w-9 md:w-11 h-9 md:h-11 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-secondary transition-colors"
         >
-          <X className="w-5 h-5 text-foreground" />
+          <X className="w-4 md:w-5 h-4 md:h-5 text-foreground" />
         </button>
 
         <div className="flex-1 overflow-y-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-[1.08fr_0.92fr] min-h-full">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.08fr_0.92fr] min-h-full gap-0">
             {/* צד תמונה */}
-            <div className="bg-white p-4 sm:p-6 lg:p-8 flex items-center justify-center border-b lg:border-b-0 lg:border-l border-black/5 flex-col">
-              <div className="w-full flex items-center justify-center flex-1">
+            <div className="bg-white p-2 sm:p-4 lg:p-8 flex items-center justify-center border-b lg:border-b-0 lg:border-l border-black/5 flex-col">
+              <div className="w-full flex items-center justify-center flex-1 min-h-40 md:min-h-96">
                 {activeImage ? (
                   <AnimatePresence mode="wait">
                     <motion.img
@@ -320,8 +321,8 @@ function CategoryModal({ category, onClose, onCTA }) {
             </div>
 
             {/* צד תוכן */}
-            <div className="p-5 sm:p-7 lg:p-8 flex flex-col">
-              <div className="mb-5 sm:mb-6">
+            <div className="p-3 sm:p-5 lg:p-8 flex flex-col overflow-y-auto max-h-[60vh] lg:max-h-full">
+              <div className="mb-3 sm:mb-6">
                 <div className="flex items-center gap-2 mb-3">
                   <span
                     className={`${category.tagBg} text-white text-[10px] sm:text-xs font-bold px-3 py-1.5 rounded-full`}
@@ -330,16 +331,16 @@ function CategoryModal({ category, onClose, onCTA }) {
                   </span>
                 </div>
 
-                <h3 className="text-2xl sm:text-3xl lg:text-[2.15rem] font-black leading-[1.05] mb-3">
+                <h3 className="text-lg sm:text-2xl lg:text-[2.15rem] font-black leading-[1.1] mb-2">
                   {category.emoji} {category.title}
                 </h3>
 
-                <p className="text-sm sm:text-[15px] text-muted-foreground leading-7 mb-2">
+                <p className="text-xs sm:text-[14px] lg:text-[15px] text-muted-foreground leading-6 mb-1.5">
                   {category.description}
                 </p>
 
                 {category.sub && (
-                  <p className="text-xs sm:text-sm text-muted-foreground/80 font-medium">
+                  <p className="text-[10px] sm:text-xs lg:text-sm text-muted-foreground/80 font-medium">
                     {category.sub}
                   </p>
                 )}
@@ -351,13 +352,13 @@ function CategoryModal({ category, onClose, onCTA }) {
                 )}
               </div>
 
-              <div className="h-px bg-black/8 mb-5 sm:mb-6" />
+              <div className="h-px bg-black/8 mb-3 sm:mb-4" />
 
-              <div className="mb-4">
-                <h4 className="text-base sm:text-lg font-extrabold text-foreground mb-1">
+              <div className="mb-2">
+                <h4 className="text-sm sm:text-base lg:text-lg font-extrabold text-foreground mb-0.5">
                   עוד הטבות בקטגוריה הזו
                 </h4>
-                <p className="text-xs sm:text-sm text-muted-foreground">
+                <p className="text-[10px] sm:text-xs text-muted-foreground">
                   לחצו על כפתור כדי לראות תמונה אחרת
                 </p>
               </div>
@@ -417,17 +418,17 @@ function CategoryModal({ category, onClose, onCTA }) {
                 </div>
               )}
 
-              <div className="mt-6 sm:mt-7 flex flex-col sm:flex-row gap-3">
+              <div className="mt-3 sm:mt-5 flex flex-col gap-2">
                 <button
                   onClick={onCTA}
-                  className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-4 rounded-2xl transition-all shadow-lg shadow-primary/20 text-sm sm:text-base"
+                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-3 md:py-4 rounded-lg md:rounded-2xl transition-all shadow-lg shadow-primary/20 text-xs md:text-base"
                 >
                   זה מעניין אותי - בדקו מה מגיע לי
                 </button>
 
                 <button
                   onClick={onClose}
-                  className="sm:min-w-[120px] px-5 py-4 rounded-2xl border border-black/10 hover:bg-secondary transition-colors font-semibold"
+                  className="w-full px-4 md:px-5 py-3 md:py-4 rounded-lg md:rounded-2xl border border-black/10 hover:bg-secondary transition-colors font-semibold text-sm md:text-base"
                 >
                   סגור
                 </button>
@@ -451,12 +452,12 @@ function CategoryCard({ cat, index, onClick }) {
       transition={{ duration: 0.38, delay: index * 0.05 }}
       whileHover={{ y: -4 }}
       onClick={onClick}
-      className="rounded-2xl text-right overflow-hidden border border-black/8 shadow-sm group flex flex-col bg-white"
+      className="rounded-lg md:rounded-2xl text-right overflow-hidden border border-black/8 shadow-sm group flex flex-col bg-white"
       style={{ willChange: "transform", boxShadow: "0 2px 12px rgba(0,0,0,0.07)" }}
     >
       <div
-        className="relative w-full flex items-center justify-center bg-white p-2 sm:p-3"
-        style={{ aspectRatio: "4/3" }}
+        className="relative w-full flex items-center justify-center bg-white p-1 sm:p-3"
+        style={{ aspectRatio: "1/1" }}
       >
         {cat.previewImage ? (
           <>
@@ -473,25 +474,25 @@ function CategoryCard({ cat, index, onClick }) {
         )}
       </div>
 
-      <div className="px-3.5 pt-2.5 pb-3 flex flex-col gap-1 bg-white">
+      <div className="px-2 md:px-3.5 pt-2 md:pt-2.5 pb-2 md:pb-3 flex flex-col gap-1 bg-white">
         <div className="flex items-center gap-2 mb-1">
-          <span className={`${cat.tagBg} text-white text-[10px] font-bold px-2 py-1 rounded-full`}>
+          <span className={`${cat.tagBg} text-white text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 md:py-1 rounded-full`}>
             {cat.tag}
           </span>
         </div>
 
-        <p className="font-extrabold text-sm text-foreground leading-snug">
+        <p className="font-extrabold text-xs md:text-sm text-foreground leading-snug line-clamp-2">
           {cat.emoji} {cat.title}
         </p>
 
-        <p className="text-[11px] text-muted-foreground leading-relaxed line-clamp-2 min-h-[32px]">
+        <p className="text-[9px] md:text-[11px] text-muted-foreground leading-relaxed line-clamp-2 min-h-[20px]">
           {cat.sub}
         </p>
 
         <button
           type="button"
           onClick={onClick}
-          className="w-full mt-2 py-2 rounded-xl bg-primary/10 text-primary text-xs font-bold text-center hover:bg-primary/20 transition-colors"
+          className="w-full mt-1 md:mt-2 py-1.5 md:py-2 rounded-lg md:rounded-xl bg-primary/10 text-primary text-[9px] md:text-xs font-bold text-center hover:bg-primary/20 transition-colors"
         >
           ראה דוגמאות ←
         </button>
@@ -512,8 +513,8 @@ export default function BenefitsShowcase() {
   };
 
   return (
-    <section className="py-16 md:py-24 px-4 bg-white">
-      <div className="max-w-5xl mx-auto">
+    <section className="py-12 md:py-24 bg-white" style={{ overflowX: 'hidden', maxWidth: '100vw' }}>
+      <div className="max-w-5xl mx-auto px-4 md:px-6">
 
         {/* Section Header */}
         <motion.div
@@ -529,8 +530,8 @@ export default function BenefitsShowcase() {
           <p className="text-muted-foreground text-sm">לחצו על קטגוריה לראות דוגמאות מהשנה האחרונה</p>
         </motion.div>
 
-        {/* 4+4 Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+        {/* 2+4 Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
           {categories.map((cat, i) => (
             <CategoryCard
               key={cat.id}
