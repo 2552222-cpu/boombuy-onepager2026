@@ -33,8 +33,8 @@ export default function TrustLogos() {
   const row2 = logos.slice(12, 24);
 
   return (
-    <section className="py-14 md:py-20 px-4 bg-white border-t border-b border-border/30">
-      <div className="w-full">
+    <section className="py-8 md:py-20 bg-white border-t border-b border-border/30" style={{ overflowX: 'hidden', maxWidth: '100vw' }}>
+      <div className="w-full" style={{ maxWidth: '100vw' }}>
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -82,13 +82,14 @@ export default function TrustLogos() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.08 }}
-          className="md:hidden grid grid-cols-3 gap-5"
+          className="md:hidden grid grid-cols-3 gap-4"
+          style={{ padding: "0 16px" }}
         >
           {logos.map((logo, i) => (
             <div
               key={i}
               className="flex items-center justify-center opacity-85 hover:opacity-100 transition-opacity duration-300"
-              style={{ height: "72px" }}
+              style={{ height: "44px" }}
             >
               <img
                 src={logo.url}
