@@ -6,6 +6,7 @@ import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import EmployeesLanding from './pages/EmployeesLanding';
+import AdminDashboard from './pages/AdminDashboard';
 // Add page imports here
 
 const AuthenticatedApp = () => {
@@ -35,6 +36,7 @@ const AuthenticatedApp = () => {
   return (
     <Routes>
       <Route path="/" element={<EmployeesLanding />} />
+      <Route path="/admin/dashboard" element={<AdminDashboard />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
