@@ -18,16 +18,16 @@ export default function Hero() {
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-white to-secondary/30" style={{ minHeight: "100vh", paddingTop: "80px", overflowX: 'hidden', maxWidth: '100vw' }}>
-      <div className="max-w-7xl mx-auto h-full flex items-center px-4 md:px-6">
-        <div className="w-full flex flex-col items-center md:items-start text-center md:text-right">
+      <div className="max-w-7xl mx-auto w-full px-4 md:px-6">
+        <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
 
-          {/* TEXT SIDE — first on mobile */}
-          <div className="w-full order-first">
+          {/* TEXT SIDE */}
+          <div className="w-full md:w-1/2">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.15 }}
-              className="flex flex-col items-center md:items-start text-center md:text-right w-full md:w-auto"
+              className="flex flex-col items-center md:items-start text-center md:text-right w-full"
             >
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
@@ -106,12 +106,12 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          {/* IMAGE — after text on mobile */}
+          {/* IMAGE SIDE */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="w-full flex justify-center relative order-last md:order-last mt-8 md:mt-0"
+            className="w-full md:w-1/2 flex justify-center"
           >
             <div className="relative flex items-center justify-center">
               <div
@@ -132,8 +132,7 @@ export default function Hero() {
               </div>
             </div>
           </motion.div>
-          </div>
-          </div>
+        </div>
           </section>
   );
 }
