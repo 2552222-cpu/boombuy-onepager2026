@@ -99,7 +99,7 @@ export default function Survey() {
   }
 
   return (
-    <section id="survey-section" className="py-16 md:py-20 px-4 bg-secondary/30">
+    <section id="survey-section" className="py-10 md:py-20 bg-secondary/30" style={{ overflowX: 'hidden', maxWidth: '100vw', padding: '20px 16px' }}>
       <div className="max-w-xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -108,16 +108,16 @@ export default function Survey() {
           transition={{ duration: 0.5 }}
         >
           {/* Progress */}
-          <div className="mb-8">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs text-muted-foreground font-medium">
+          <div className="mb-6 md:mb-8">
+            <div className="flex items-center justify-between mb-2 text-xs md:text-sm">
+              <span className="text-muted-foreground font-medium">
                 שאלה {step + 1} מתוך {questions.length}
               </span>
-              <span className="text-xs text-muted-foreground">
+              <span className="text-muted-foreground">
                 {Math.round(progress)}%
               </span>
             </div>
-            <div className="w-full h-2 bg-border rounded-full overflow-hidden">
+            <div className="w-full bg-border rounded-full overflow-hidden" style={{ height: '4px' }}>
               <motion.div
                 className="h-full bg-primary rounded-full"
                 initial={{ width: 0 }}
@@ -141,18 +141,19 @@ export default function Survey() {
                 exit={{ opacity: 0, x: 20 }}
                 transition={{ duration: 0.3 }}
               >
-                <h3 className="text-xl md:text-2xl font-bold mb-6 text-center">
+                <h3 className="text-base md:text-2xl font-bold mb-4 md:mb-6 text-center leading-tight">
                   {questions[step].q}
                 </h3>
-                <div className="space-y-3">
+                <div className="space-y-2 md:space-y-3">
                   {questions[step].options.map((opt, i) => (
                     <button
                       key={i}
                       onClick={() => handleSelect(opt)}
-                      className="w-full bg-white border border-border/60 rounded-xl px-5 py-4 text-right flex items-center gap-3 hover:border-primary/40 hover:bg-accent/30 transition-all duration-200 group"
+                      className="w-full bg-white border border-border/60 rounded-lg md:rounded-xl text-right flex items-center gap-3 hover:border-primary/40 hover:bg-accent/30 transition-all duration-200 group"
+                      style={{ padding: '14px 16px' }}
                     >
-                      <span className="text-xl">{opt.emoji}</span>
-                      <span className="font-medium text-sm md:text-base group-hover:text-primary transition-colors">
+                      <span className="text-lg md:text-xl flex-shrink-0">{opt.emoji}</span>
+                      <span className="font-medium text-sm md:text-base group-hover:text-primary transition-colors text-right">
                         {opt.label}
                       </span>
                     </button>
