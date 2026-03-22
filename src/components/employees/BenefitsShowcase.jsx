@@ -21,6 +21,7 @@ const SUPER_EXTRA = [
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6e4f9f168_-2026-03-22T130017988.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6b98c8aed_72.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ea0c9f5da_-2026-02-18T145540109.png",
+  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/1472081da_-2026-03-22T141445050.png",
 ];
 
 // חשמל ואלקטרוניקה
