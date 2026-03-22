@@ -106,6 +106,7 @@ export default function ProofImage({ imageUrl }) {
             })}
           </motion.div>
         </div>
+        </div>
       </div>
     </section>
   );
