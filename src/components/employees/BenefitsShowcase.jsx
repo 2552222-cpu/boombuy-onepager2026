@@ -441,24 +441,7 @@ export default function BenefitsShowcase() {
           </p>
         </motion.div>
 
-        {/* CTA Block */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.35 }}
-          className="mt-8 text-center bg-secondary/50 rounded-2xl px-6 py-8 border border-border/30"
-        >
-          <p className="text-base md:text-lg font-bold mb-1">בדקו אם גם אצלכם אפשר לקבל את זה</p>
-          <p className="text-sm text-muted-foreground mb-5">3 שאלות קצרות — ותדעו מה מגיע לכם דרך הארגון</p>
-          <button
-            onClick={scrollToSurvey}
-            className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-base px-8 py-3.5 rounded-xl shadow-md shadow-primary/20 transition-all hover:-translate-y-0.5"
-          >
-            בדקו מה מגיע לי ←
-          </button>
-          <p className="text-xs text-muted-foreground mt-3">15 שניות · בלי הרשמה · בחינם לחלוטין</p>
-        </motion.div>
+
       </div>
 
       {/* Modal */}
