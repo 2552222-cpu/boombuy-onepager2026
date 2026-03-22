@@ -26,35 +26,37 @@ const logos = [
 
 export default function TrustLogos() {
   return (
-    <section className="py-10 md:py-14 px-4 bg-white border-t border-b border-border/30">
-      <div className="max-w-5xl mx-auto">
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+    <section className="py-12 md:py-16 px-4 bg-white border-t border-b border-border/30">
+      <div className="max-w-7xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-sm text-muted-foreground mb-8 font-medium text-center"
+          className="text-center mb-10 md:mb-12"
         >
-          עובדים בארגונים מובילים כבר נהנים מזה
-        </motion.p>
+          <p className="text-base md:text-lg font-semibold text-foreground">
+            עובדים בארגונים מובילים כבר נהנים מזה
+          </p>
+        </motion.div>
+
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="flex flex-col gap-6"
+          transition={{ duration: 0.6, delay: 0.08 }}
+          className="flex flex-wrap justify-center items-center gap-6 md:gap-8 lg:gap-10"
         >
-          {[logos.slice(0, 10), logos.slice(10)].map((row, rowIdx) => (
-            <div key={rowIdx} className="flex justify-center items-center gap-8">
-              {row.map((logo, i) => (
-                <div key={i} className="flex items-center justify-center opacity-60 hover:opacity-90 transition-opacity flex-shrink-0">
-                  <img
-                    src={logo.url}
-                    alt={logo.name}
-                    className="h-10 w-auto object-contain max-w-[110px] grayscale"
-                  />
-                </div>
-              ))}
+          {logos.map((logo, i) => (
+            <div
+              key={i}
+              className="flex items-center justify-center opacity-75 hover:opacity-100 transition-opacity duration-300 flex-shrink-0"
+            >
+              <img
+                src={logo.url}
+                alt={logo.name}
+                className="h-12 md:h-14 w-auto object-contain max-w-[140px] md:max-w-[170px] grayscale"
+              />
             </div>
           ))}
         </motion.div>
