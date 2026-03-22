@@ -105,6 +105,15 @@ const categories = [
 ];
 
 function CategoryModal({ category, onClose }) {
+  const scrollToSurvey = () => {
+    onClose();
+    setTimeout(() => {
+      document.getElementById("survey-section")?.scrollIntoView({ behavior: "smooth" });
+    }, 200);
+  };
+
+  const hasItems = category.moreItems && category.moreItems.length > 0;
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -138,7 +147,7 @@ function CategoryModal({ category, onClose }) {
 
         {/* Items */}
         <div className="p-5 flex flex-col gap-3">
-          {category.moreItems.map((item, i) => (
+          {hasItems ? category.moreItems.map((item, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 12 }}
@@ -163,11 +172,21 @@ function CategoryModal({ category, onClose }) {
                 </span>
               </div>
             </motion.div>
-          ))}
+          )) : (
+            <div className="text-center py-8 text-muted-foreground text-sm">
+              פריטים לקטגוריה זו יתווספו בקרוב
+            </div>
+          )}
         </div>
 
-        <div className="px-5 pb-6">
-          <p className="text-center text-xs text-muted-foreground">זו רק דוגמה — יש עוד הרבה הטבות נוספות בכל קטגוריה</p>
+        {/* Modal CTA */}
+        <div className="sticky bottom-0 bg-white border-t border-border/30 px-5 py-4">
+          <button
+            onClick={scrollToSurvey}
+            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-3.5 rounded-xl transition-all shadow-md shadow-primary/20"
+          >
+            זה מעניין אותי — בדקו מה מגיע לי
+          </button>
         </div>
       </motion.div>
     </motion.div>
