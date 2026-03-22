@@ -319,7 +319,7 @@ function CategoryCard({ cat, index, onClick }) {
       {/* Visual */}
       <div
         className="relative w-full overflow-hidden flex-shrink-0"
-        style={{ aspectRatio: cat.imageHasTitle ? "1/1" : "4/3", background: cat.imageHasTitle ? "#f5f0ea" : undefined }}
+        style={{ aspectRatio: cat.imageHasTitle ? "1/1" : "4/3", background: cat.imageHasTitle ? "#ffffff" : undefined }}
       >
         {cat.mainImage ? (
           <img
