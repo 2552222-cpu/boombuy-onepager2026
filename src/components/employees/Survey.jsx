@@ -66,22 +66,20 @@ export default function Survey() {
 
   if (showResult) {
     return (
-      <>
+      <div style={{ overflowX: 'hidden', maxWidth: '100vw' }}>
         <ResultScreen
           surveyResult={answers}
           onOpenRequest={() => setShowRequestModal(true)}
         />
-        {showRequestModal && (
-          <RequestModal
-            isOpen={showRequestModal}
-            onClose={() => setShowRequestModal(false)}
-            onSuccess={(group, key) => {
-              handleOpenRequest(group, key);
-              setGroupRequest(group);
-              setOrgKey(key);
-            }}
-          />
-        )}
+        <RequestModal
+          isOpen={showRequestModal}
+          onClose={() => setShowRequestModal(false)}
+          onSuccess={(group, key) => {
+            handleOpenRequest(group, key);
+            setGroupRequest(group);
+            setOrgKey(key);
+          }}
+        />
         {groupRequest && (
           <ShareScreen
             groupRequest={groupRequest}
@@ -94,7 +92,7 @@ export default function Survey() {
             }}
           />
         )}
-      </>
+      </div>
     );
   }
 
