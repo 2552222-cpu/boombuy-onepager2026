@@ -444,15 +444,17 @@ function CategoryModal({ category, onClose, onCTA }) {
 // ─── CATEGORY CARD ────────────────────────────────────────────────────────────
 function CategoryCard({ cat, index, onClick }) {
   return (
-    <motion.button
-      type="button"
+    <motion.div
       initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.38, delay: index * 0.05 }}
       whileHover={{ y: -4 }}
       onClick={onClick}
-      className="rounded-lg md:rounded-2xl text-right overflow-hidden border border-black/8 shadow-sm group flex flex-col bg-white"
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => e.key === 'Enter' && onClick()}
+      className="rounded-lg md:rounded-2xl text-right overflow-hidden border border-black/8 shadow-sm group flex flex-col bg-white cursor-pointer hover:shadow-md transition-shadow"
       style={{ willChange: "transform", boxShadow: "0 2px 12px rgba(0,0,0,0.07)" }}
     >
       <div
