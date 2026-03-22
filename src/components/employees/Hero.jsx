@@ -19,7 +19,7 @@ export default function Hero() {
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-white to-secondary/30" style={{ minHeight: "100vh", paddingTop: "80px", overflowX: 'hidden', maxWidth: '100vw' }}>
       <div className="max-w-7xl mx-auto h-full flex items-center px-4 md:px-6">
-        <div className="w-full grid grid-cols-1 md:grid-cols-[1.05fr_0.95fr] items-center gap-8 md:gap-20">
+        <div className="w-full flex flex-col items-center md:items-start text-center md:text-right">
 
           {/* TEXT SIDE */}
           <motion.div
