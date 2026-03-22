@@ -49,6 +49,7 @@ const CULTURE_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80b
 const CULTURE_EXTRA = [
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/af45cadc7_3.jpg",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3c918e2dd_-2026-03-22T124329449.png",
+  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/bb4b910ed_-2026-03-22T140039783.png",
 ];
 
 // אופנה
