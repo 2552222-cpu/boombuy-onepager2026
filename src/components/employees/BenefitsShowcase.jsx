@@ -2,117 +2,161 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft } from "lucide-react";
 
-const KAZABLAN_IMG = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/c23a343b2_-2026-02-18T150703392.png";
+// ─── ASSETS ──────────────────────────────────────────────────────────────────
+// כל בוקר הטבה חדשה
+const DAILY_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/2ed7a77a8_79.png";
+// ⚠️ PLACEHOLDERS — יש להחליף ב-URLs אמיתיים לאחר העלאה
+const DAILY_EXTRA = []; // [url1, url2, ...]
 
+// פארם, סופר
+const SUPER_MAIN = null; // ⚠️ PLACEHOLDER
+const SUPER_EXTRA = []; // ⚠️ PLACEHOLDER
+
+// חשמל ואלקטרוניקה
+const TECH_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a5f930278_-2026-01-21T190449103.png";
+const TECH_EXTRA = []; // ⚠️ PLACEHOLDER
+
+// מתנת חג
+const GIFT_MAIN = "https://media.base44.com/images/public/user_6873bc3c3e8d221ea3308e3a/5cd836c23_-2026-03-15T125003543.png";
+const GIFT_EXTRA = []; // ⚠️ PLACEHOLDER
+
+// נופש וחופשות
+const VACATION_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/9fb38078a_-2026-02-18T145419883.png";
+const VACATION_EXTRA = []; // ⚠️ PLACEHOLDER
+
+// תרבות ופנאי
+const CULTURE_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/c23a343b2_-2026-02-18T150703392.png";
+const CULTURE_EXTRA = []; // ⚠️ PLACEHOLDER
+
+// אופנה
+const FASHION_MAIN = null; // ⚠️ PLACEHOLDER
+const FASHION_EXTRA = []; // ⚠️ PLACEHOLDER
+
+// ירידים
+const FAIRS_MAIN = null; // ⚠️ PLACEHOLDER
+const FAIRS_EXTRA = []; // ⚠️ PLACEHOLDER
+
+// ─── CATEGORIES DATA ─────────────────────────────────────────────────────────
 const categories = [
+  {
+    id: "daily",
+    emoji: "⚡",
+    title: "כל בוקר הטבה חדשה",
+    description: "כל יום מתחיל בהטבה חדשה שנשלחת לעובד בוואטסאפ — תמיד במחיר הנמוך ביותר בישראל.",
+    sub: "260 הטבות חדשות בשנה · בשם הארגון",
+    tag: "מחיר הנמוך בישראל",
+    tagBg: "bg-amber-500",
+    bg: "from-amber-50 to-orange-100",
+    mainImage: DAILY_MAIN,
+    extraImages: DAILY_EXTRA,
+    note: "מצאתם מחיר נמוך יותר בישראל? אנחנו מחזירים את ההפרש.",
+  },
   {
     id: "super",
     emoji: "🛒",
-    title: "סופר ופארם",
-    example: "8% הנחה קבועה בשופרסל, רמי לוי וויקטורי",
+    title: "פארם, סופר ויוקר המחיה",
+    description: "שוברי קניות לסופרמרקט והנחות קבועות על מוצרי יומיום — ערך מוחשי שמרגישים שוב ושוב בסל הקניות.",
+    sub: "שופרסל, רמי לוי, ויקטורי ועוד",
     tag: "8% תמיד",
-    bg: "from-emerald-50 to-green-100",
     tagBg: "bg-emerald-600",
-    image: null,
-    description: "הנחה קבועה על כל קנייה שבועית — בלי קופונים",
-    moreItems: [
-      { title: "שופרסל", detail: "8% הנחה קבועה על כל קנייה", tag: "8% הנחה" },
-      { title: "רמי לוי", detail: "8% הנחה קבועה על כל קנייה", tag: "8% הנחה" },
-      { title: "ויקטורי", detail: "8% הנחה קבועה על כל קנייה", tag: "8% הנחה" },
-      { title: "Super-Pharm", detail: "הנחה קבועה על טיפוח ותרופות", tag: "הנחת עובד" },
-      { title: "יש פארם", detail: "הנחה קבועה על טיפוח ובריאות", tag: "הנחת עובד" },
-    ],
+    bg: "from-emerald-50 to-green-100",
+    mainImage: SUPER_MAIN,
+    extraImages: SUPER_EXTRA,
+    note: null,
   },
   {
     id: "tech",
     emoji: "📱",
     title: "חשמל ואלקטרוניקה",
-    example: "אייפון 16 פרו — מחיר יבואן",
+    description: "חנות קבועה של מוצרי חשמל, אלקטרוניקה, מחשבים וסלולר במחירי יבואן — מהמותגים שאנשים באמת רוצים.",
+    sub: "Apple, Samsung, Dyson, Ninja ועוד",
     tag: "מחיר יבואן",
-    bg: "from-slate-50 to-slate-100",
     tagBg: "bg-slate-700",
-    image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a5f930278_-2026-01-21T190449103.png",
-    description: "מחירי יבואן רשמיים על Apple ועוד מותגים מובילים",
-    moreItems: [
-      { title: "iPhone 16 Pro 256GB", detail: "3,890 ₪ | מחיר שוק 4,590 ₪", tag: "חיסכון 700 ₪" },
-      { title: "MacBook Air M3", detail: "מחיר יבואן רשמי", tag: "מחיר יבואן" },
-      { title: "AirPods Pro 2", detail: "מחיר יבואן רשמי", tag: "מחיר יבואן" },
-      // ⚠️ PLACEHOLDER – יש להוסיף כאן פריטים אמיתיים נוספים שאושרו
-    ],
+    bg: "from-slate-50 to-slate-100",
+    mainImage: TECH_MAIN,
+    extraImages: TECH_EXTRA,
+    note: null,
   },
   {
-    id: "fragrance",
-    emoji: "🌸",
-    title: "בישום ויוקרה",
-    example: "Dior, Calvin Klein, Chanel — מחיר יבואן",
-    tag: "מחיר יבואן",
-    bg: "from-pink-50 to-rose-100",
-    tagBg: "bg-rose-500",
-    image: null,
-    description: "בשמים ממותגים מובילים במחיר יבואן ישיר",
-    moreItems: [
-      { title: "Calvin Klein Eternity", detail: "מחיר יבואן רשמי", tag: "מחיר יבואן" },
-      { title: "Dior Sauvage", detail: "מחיר יבואן רשמי", tag: "מחיר יבואן" },
-      { title: "Chanel No. 5", detail: "מחיר יבואן רשמי", tag: "מחיר יבואן" },
-      { title: "Giorgio Armani Acqua di Giò", detail: "מחיר יבואן רשמי", tag: "מחיר יבואן" },
-      { title: "Hugo Boss Bottled", detail: "מחיר יבואן רשמי", tag: "מחיר יבואן" },
-    ],
+    id: "gift",
+    emoji: "🎁",
+    title: "מתנת חג — עם בחירה",
+    description: "המתנה נשארת — אבל עכשיו העובד בוחר מה הוא באמת רוצה. ארנק דיגיטלי גמיש עם מגוון רחב של אפשרויות.",
+    sub: "ארנק ממותג · בחירה חופשית · ניהול מרכזי",
+    tag: "בחירה חופשית",
+    tagBg: "bg-violet-600",
+    bg: "from-violet-50 to-purple-100",
+    mainImage: GIFT_MAIN,
+    extraImages: GIFT_EXTRA,
+    note: null,
+  },
+  {
+    id: "vacation",
+    emoji: "✈️",
+    title: "נופש וחופשות",
+    description: "חבילות טיסה, מלון, הופעות ומשחקי ספורט בארץ ובחו\"ל — במחירים שסגורים רק לעובדי הארגון.",
+    sub: "בארץ ובחו\"ל · מחירים בלעדיים",
+    tag: "מחירים בלעדיים",
+    tagBg: "bg-sky-600",
+    bg: "from-sky-50 to-blue-100",
+    mainImage: VACATION_MAIN,
+    extraImages: VACATION_EXTRA,
+    note: null,
   },
   {
     id: "culture",
     emoji: "🎭",
     title: "תרבות ופנאי",
-    example: "קזבלן – הבימה | ביציע 67 ₪",
-    tag: "67 ₪ ביציע",
-    bg: "from-violet-50 to-purple-100",
-    tagBg: "bg-violet-600",
-    image: KAZABLAN_IMG,
-    description: "הצגות ואירועי תרבות במחיר עובדים",
-    moreItems: [
-      { title: "קזבלן – הבימה", detail: "ביציע 67 ₪ | באולם 77 ₪ | מחיר רגיל 150–350 ₪", tag: "עד 78% הנחה", image: KAZABLAN_IMG },
-      // ⚠️ PLACEHOLDER – יש להוסיף כאן הצגות / אירועי תרבות נוספים שאושרו
-    ],
-  },
-  {
-    id: "vacation",
-    emoji: "✈️",
-    title: "חופשות",
-    example: "Brown Lighthouse אילת — מ-899 ₪ ללילה",
-    tag: "מ-899 ₪ ללילה",
-    bg: "from-sky-50 to-blue-100",
-    tagBg: "bg-sky-600",
-    image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/9fb38078a_-2026-02-18T145419883.png",
-    description: "חופשות בארץ ובחו\"ל במחיר עובדים",
-    moreItems: [
-      { title: "Brown Lighthouse אילת", detail: "מ-899 ₪ ללילה | כולל ארוחת בוקר", tag: "מחיר עובד" },
-      // ⚠️ PLACEHOLDER – יש להוסיף כאן חופשות נוספות שאושרו (מלון / יעד / מחיר)
-    ],
+    description: "הופעות, הצגות, פארקי שעשועים ואטרקציות — כי חוויית עובד טובה לא נגמרת בסוף יום העבודה.",
+    sub: "כרטיסים, הנחות כניסה, אירועים",
+    tag: "הנחת עובד",
+    tagBg: "bg-rose-500",
+    bg: "from-pink-50 to-rose-100",
+    mainImage: CULTURE_MAIN,
+    extraImages: CULTURE_EXTRA,
+    note: null,
   },
   {
     id: "fashion",
     emoji: "👟",
-    title: "ביגוד ואופנה",
-    example: "Nike, Adidas, Lululemon — מחיר יבואן",
-    tag: "מחיר יבואן",
-    bg: "from-amber-50 to-orange-100",
+    title: "אופנה, מותגים ולייף סטייל",
+    description: "ביגוד, הנעלה, אקססוריז ומותגים מובילים — במחירים מיוחדים לעובדי הארגון, על דברים שאנשים באמת קונים.",
+    sub: "מותגי פרימיום · מחירים בלעדיים · קנייה חכמה",
+    tag: "מחירים בלעדיים",
     tagBg: "bg-orange-500",
-    image: null,
-    description: "מותגי ספורט ואופנה מובילים במחיר יבואן",
-    moreItems: [
-      // ⚠️ PLACEHOLDER – יש להוסיף כאן פריטים אמיתיים שאושרו (מותג / פריט / מחיר)
-    ],
+    bg: "from-orange-50 to-amber-100",
+    mainImage: FASHION_MAIN,
+    extraImages: FASHION_EXTRA,
+    note: null,
+  },
+  {
+    id: "fairs",
+    emoji: "🏪",
+    title: "ירידים ואירועי פופ-אפ",
+    description: "ירידי צרכנות, רכב, דירות, חזרה לבית הספר ואירועי מכירה מיוחדים — חוויות קנייה מרוכזות עם ערך אמיתי.",
+    sub: "אירועים תקופתיים · מחירים מיוחדים · חוויית קנייה",
+    tag: "אירועים מיוחדים",
+    tagBg: "bg-teal-600",
+    bg: "from-teal-50 to-cyan-100",
+    mainImage: FAIRS_MAIN,
+    extraImages: FAIRS_EXTRA,
+    note: null,
   },
 ];
 
-function CategoryModal({ category, onClose }) {
-  const scrollToSurvey = () => {
-    onClose();
-    setTimeout(() => {
-      document.getElementById("survey-section")?.scrollIntoView({ behavior: "smooth" });
-    }, 200);
-  };
+// ─── PLACEHOLDER CARD ─────────────────────────────────────────────────────────
+function PlaceholderImage({ label = "asset חסר" }) {
+  return (
+    <div className="w-full h-full bg-border/30 flex flex-col items-center justify-center gap-1 text-muted-foreground">
+      <span className="text-2xl">🖼️</span>
+      <span className="text-[10px] font-medium">⚠️ {label}</span>
+    </div>
+  );
+}
 
-  const hasItems = category.moreItems && category.moreItems.length > 0;
+// ─── MODAL ────────────────────────────────────────────────────────────────────
+function CategoryModal({ category, onClose, onCTA }) {
+  const hasExtra = category.extraImages && category.extraImages.length > 0;
 
   return (
     <motion.div
@@ -122,68 +166,68 @@ function CategoryModal({ category, onClose }) {
       className="fixed inset-0 z-50 flex items-end md:items-center justify-center p-0 md:p-4"
       onClick={onClose}
     >
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+      <div className="absolute inset-0 bg-black/55 backdrop-blur-sm" />
       <motion.div
         initial={{ opacity: 0, y: 60 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 60 }}
         transition={{ type: "spring", damping: 28, stiffness: 300 }}
         onClick={(e) => e.stopPropagation()}
-        className="relative bg-white w-full md:max-w-lg rounded-t-3xl md:rounded-3xl shadow-2xl max-h-[85vh] overflow-y-auto"
+        className="relative bg-white w-full md:max-w-lg rounded-t-3xl md:rounded-3xl shadow-2xl max-h-[88vh] flex flex-col"
       >
         {/* Header */}
-        <div className="sticky top-0 bg-white border-b border-border/40 px-5 py-4 flex items-center justify-between rounded-t-3xl z-10">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-border/40 flex-shrink-0">
           <div>
             <p className="text-xs text-muted-foreground font-medium">{category.emoji} {category.title}</p>
-            <h3 className="text-lg font-black">{category.description}</h3>
+            <h3 className="text-base font-black leading-snug">{category.description}</h3>
+            {category.sub && (
+              <p className="text-xs text-muted-foreground mt-0.5">{category.sub}</p>
+            )}
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center hover:bg-border transition-colors flex-shrink-0"
+            className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center hover:bg-border transition-colors flex-shrink-0 mr-3"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Items */}
-        <div className="p-5 flex flex-col gap-3">
-          {hasItems ? category.moreItems.map((item, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.06 }}
-              className="flex items-start gap-3 bg-secondary/50 rounded-xl overflow-hidden"
-            >
-              {item.image && (
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="w-24 h-24 object-cover flex-shrink-0"
-                />
-              )}
-              <div className={`flex items-center justify-between flex-1 ${item.image ? "py-3 pl-3" : "px-4 py-3.5"}`}>
-                <div>
-                  <p className="font-bold text-sm">{item.title}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">{item.detail}</p>
-                </div>
-                <span className={`${category.tagBg} text-white text-xs font-bold px-2.5 py-1 rounded-full whitespace-nowrap mr-3 flex-shrink-0`}>
-                  {item.tag}
-                </span>
-              </div>
-            </motion.div>
-          )) : (
-            <div className="text-center py-8 text-muted-foreground text-sm">
-              פריטים לקטגוריה זו יתווספו בקרוב
+        {/* Images */}
+        <div className="overflow-y-auto flex-1 p-5">
+          {category.note && (
+            <div className="mb-4 bg-primary/8 border border-primary/20 rounded-xl px-4 py-2.5 text-xs text-primary font-medium">
+              💡 {category.note}
+            </div>
+          )}
+
+          {hasExtra ? (
+            <div className="grid grid-cols-2 gap-3">
+              {category.extraImages.map((url, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: i * 0.06 }}
+                  className="aspect-square rounded-2xl overflow-hidden bg-secondary/40"
+                >
+                  <img src={url} alt="" className="w-full h-full object-cover" />
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center gap-3 py-6 text-center text-muted-foreground">
+              <span className="text-3xl">🖼️</span>
+              <p className="text-sm font-medium">⚠️ assets נוספים לקטגוריה זו יתווספו בקרוב</p>
+              <p className="text-xs">יש להעלות {category.id === "daily" ? "5–6" : "3–4"} assets ולעדכן את המערכת</p>
             </div>
           )}
         </div>
 
-        {/* Modal CTA */}
-        <div className="sticky bottom-0 bg-white border-t border-border/30 px-5 py-4">
+        {/* CTA */}
+        <div className="px-5 pb-6 pt-3 border-t border-border/30 flex-shrink-0">
           <button
-            onClick={scrollToSurvey}
-            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-3.5 rounded-xl transition-all shadow-md shadow-primary/20"
+            onClick={onCTA}
+            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-4 rounded-2xl transition-all shadow-lg shadow-primary/20 text-base"
           >
             זה מעניין אותי — בדקו מה מגיע לי
           </button>
@@ -193,17 +237,69 @@ function CategoryModal({ category, onClose }) {
   );
 }
 
+// ─── CATEGORY CARD ────────────────────────────────────────────────────────────
+function CategoryCard({ cat, index, onClick }) {
+  return (
+    <motion.button
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.4, delay: index * 0.06 }}
+      onClick={onClick}
+      className={`bg-gradient-to-br ${cat.bg} rounded-2xl text-right overflow-hidden border border-black/5 shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5 group flex flex-col`}
+    >
+      {/* Visual */}
+      <div className="relative w-full aspect-[4/3] overflow-hidden flex-shrink-0">
+        {cat.mainImage ? (
+          <img
+            src={cat.mainImage}
+            alt={cat.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+        ) : (
+          <PlaceholderImage label={`asset ראשי — ${cat.title}`} />
+        )}
+        {/* Tag overlay */}
+        <span className={`absolute top-2 right-2 ${cat.tagBg} text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow-sm`}>
+          {cat.tag}
+        </span>
+      </div>
+
+      {/* Text */}
+      <div className="p-3.5 flex-1 flex flex-col justify-between">
+        <div>
+          <p className="font-extrabold text-sm text-foreground leading-snug">
+            {cat.emoji} {cat.title}
+          </p>
+          <p className="text-[11px] text-muted-foreground mt-1 leading-snug line-clamp-2">
+            {cat.sub}
+          </p>
+        </div>
+        <div className="flex items-center justify-between mt-2.5 pt-2 border-t border-black/5">
+          <span className="text-[11px] font-semibold text-muted-foreground">לחצו לדוגמאות</span>
+          <ChevronLeft className="w-3.5 h-3.5 text-muted-foreground" />
+        </div>
+      </div>
+    </motion.button>
+  );
+}
+
+// ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
 export default function BenefitsShowcase() {
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   const scrollToSurvey = () => {
-    document.getElementById("survey-section")?.scrollIntoView({ behavior: "smooth" });
+    setSelectedCategory(null);
+    setTimeout(() => {
+      document.getElementById("survey-section")?.scrollIntoView({ behavior: "smooth" });
+    }, 200);
   };
 
   return (
-    <section className="py-16 md:py-20 px-4 bg-white">
+    <section className="py-16 md:py-24 px-4 bg-white">
       <div className="max-w-5xl mx-auto">
-        {/* Header */}
+
+        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -214,64 +310,39 @@ export default function BenefitsShowcase() {
           <h2 className="text-2xl md:text-3xl font-extrabold mb-2">
             מה בדיוק מחכה לך?
           </h2>
-          <p className="text-muted-foreground text-sm">לחצו על קטגוריה לראות דוגמאות אמיתיות</p>
+          <p className="text-muted-foreground text-sm">לחצו על קטגוריה לראות דוגמאות מהשנה האחרונה</p>
         </motion.div>
 
-        {/* 6-category grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        {/* 4+4 Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
           {categories.map((cat, i) => (
-            <motion.button
+            <CategoryCard
               key={cat.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.07 }}
+              cat={cat}
+              index={i}
               onClick={() => setSelectedCategory(cat)}
-              className={`bg-gradient-to-br ${cat.bg} rounded-2xl p-0 text-right overflow-hidden border border-border/20 shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5 group`}
-            >
-              {cat.image ? (
-                <div className="relative h-32 md:h-40 overflow-hidden">
-                  <img
-                    src={cat.image}
-                    alt={cat.title}
-                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-                  <div className="absolute bottom-0 right-0 left-0 p-3">
-                    <p className="text-[10px] font-semibold text-white/70 uppercase tracking-wider">{cat.emoji} {cat.title}</p>
-                    <p className="text-sm font-bold text-white leading-snug">{cat.example}</p>
-                  </div>
-                  <span className={`absolute top-2 left-2 ${cat.tagBg} text-white text-[10px] font-bold px-2 py-0.5 rounded-full`}>
-                    {cat.tag}
-                  </span>
-                </div>
-              ) : (
-                <div className="p-4">
-                  <div className="flex items-start justify-between mb-3">
-                    <span className={`${cat.tagBg} text-white text-[10px] font-bold px-2 py-0.5 rounded-full`}>
-                      {cat.tag}
-                    </span>
-                    <span className="text-2xl">{cat.emoji}</span>
-                  </div>
-                  <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-1">{cat.title}</p>
-                  <p className="text-sm font-bold text-foreground leading-snug">{cat.example}</p>
-                </div>
-              )}
-              <div className="px-3 py-2 flex items-center justify-between border-t border-black/5">
-                <span className="text-[11px] font-semibold text-muted-foreground">לחצו לעוד הטבות</span>
-                <ChevronLeft className="w-3.5 h-3.5 text-muted-foreground" />
-              </div>
-            </motion.button>
+            />
           ))}
         </div>
 
-        {/* CTA */}
+        {/* Bottom framing line */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="text-center text-xs text-muted-foreground mt-8 font-medium"
+        >
+          כל ההטבות ממומנות על ידי המערכת — לא על ידי המעסיק.
+        </motion.p>
+
+        {/* CTA Block */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-10 text-center bg-secondary/50 rounded-2xl px-6 py-8 border border-border/30"
+          transition={{ duration: 0.5, delay: 0.35 }}
+          className="mt-8 text-center bg-secondary/50 rounded-2xl px-6 py-8 border border-border/30"
         >
           <p className="text-base md:text-lg font-bold mb-1">בדקו אם גם אצלכם אפשר לקבל את זה</p>
           <p className="text-sm text-muted-foreground mb-5">3 שאלות קצרות — ותדעו מה מגיע לכם דרך הארגון</p>
@@ -285,12 +356,13 @@ export default function BenefitsShowcase() {
         </motion.div>
       </div>
 
-      {/* Category Modal */}
+      {/* Modal */}
       <AnimatePresence>
         {selectedCategory && (
           <CategoryModal
             category={selectedCategory}
             onClose={() => setSelectedCategory(null)}
+            onCTA={scrollToSurvey}
           />
         )}
       </AnimatePresence>
