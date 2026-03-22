@@ -15,10 +15,10 @@ const DAILY_EXTRA = [
 ];
 
 // פארם, סופר
-const SUPER_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/52e06185a_-2026-03-22T115442800.png";
+const SUPER_MAIN = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/0bf56386b_-2026-03-22T130058307.png";
 const SUPER_EXTRA = [
-  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/2ed7a77a8_79.png",
-  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/bb8747b01_73.png",
+  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/52e06185a_-2026-03-22T115442800.png",
+  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6e4f9f168_-2026-03-22T130017988.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6b98c8aed_72.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ea0c9f5da_-2026-02-18T145540109.png",
 ];
