@@ -538,17 +538,17 @@ export default function BenefitsShowcase() {
         </div>
 
         {/* Framing band — prominent */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.25 }}
-          className="mt-14 mb-12 px-6 md:px-8 py-5 md:py-6 bg-primary/5 border border-primary/25 rounded-2xl"
-        >
-          <p className="text-center text-sm md:text-base font-semibold text-foreground leading-relaxed">
-            💡 כל ההטבות ממומנות על ידי המערכת — לא על ידי המעסיק.
-          </p>
-        </motion.div>
+         <motion.div
+           initial={{ opacity: 0, y: 12 }}
+           whileInView={{ opacity: 1, y: 0 }}
+           viewport={{ once: true }}
+           transition={{ duration: 0.5, delay: 0.25 }}
+           className="mt-10 md:mt-14 mb-8 md:mb-12 px-4 md:px-8 py-4 md:py-6 bg-primary/5 border border-primary/25 rounded-xl md:rounded-2xl"
+         >
+           <p className="text-center text-xs md:text-base font-semibold text-foreground leading-relaxed whitespace-normal">
+             💡 כל ההטבות ממומנות על&nbsp;ידי המערכת — לא על&nbsp;ידי המעסיק.
+           </p>
+         </motion.div>
 
 
       </div>
