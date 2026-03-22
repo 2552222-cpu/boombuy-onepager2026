@@ -250,7 +250,7 @@ function CategoryModal({ category, onClose, onCTA }) {
             <img
               src={category.mainImage}
               alt={category.title}
-              className={`w-full h-full ${category.imageHasTitle ? "object-contain p-4 md:p-6" : "object-cover"}`}
+              className={`w-full h-full ${category.imageHasTitle ? "object-contain" : "object-cover"}`}
             />
           ) : (
             <div className="w-full h-full bg-secondary/40 flex items-center justify-center text-3xl">🖼️</div>
@@ -289,14 +289,14 @@ function CategoryModal({ category, onClose, onCTA }) {
               <div className={`grid gap-5 ${category.extraImages.length > 3 ? "grid-cols-2 md:grid-cols-3" : "grid-cols-2"}`}>
                 {category.extraImages.map((url, i) => (
                   <motion.div
-                    key={i}
-                    initial={{ opacity: 0, scale: 0.90 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.05 + i * 0.05, duration: 0.3 }}
-                    className="aspect-square rounded-2xl overflow-hidden bg-secondary/40 shadow-md hover:shadow-lg hover:scale-[1.02] transition-all cursor-pointer"
-                  >
-                    <img src={url} alt="" className="w-full h-full object-cover" />
-                  </motion.div>
+                            key={i}
+                            initial={{ opacity: 0, scale: 0.90 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.05 + i * 0.05, duration: 0.3 }}
+                            className="aspect-video rounded-2xl overflow-hidden bg-secondary/40 shadow-md hover:shadow-lg hover:scale-[1.02] transition-all cursor-pointer"
+                          >
+                            <img src={url} alt="" className="w-full h-full object-cover" />
+                          </motion.div>
                 ))}
               </div>
             </>
