@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { base44 } from "@/api/base44Client";
 import ResultScreen from "./ResultScreen";
-import RequestModal from "./RequestModal";
-import ShareScreen from "./ShareScreen";
 
 const questions = [
   {
@@ -38,9 +36,6 @@ export default function Survey() {
   const [answers, setAnswers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showResult, setShowResult] = useState(false);
-  const [showRequestModal, setShowRequestModal] = useState(false);
-  const [groupRequest, setGroupRequest] = useState(null);
-  const [orgKey, setOrgKey] = useState(null);
   const [sessionToken, setSessionToken] = useState("");
 
   // Generate session token on mount
@@ -77,45 +72,14 @@ export default function Survey() {
     }
   };
 
-  const handleOpenRequest = async (group, key) => {
-    setGroupRequest(group);
-    setOrgKey(key);
-    setShowRequestModal(false);
-  };
-
   const progress = ((step + (showResult ? 1 : 0)) / questions.length) * 100;
 
   if (showResult) {
     return (
-      <div style={{ overflowX: 'hidden', maxWidth: '100vw' }}>
-        <ResultScreen
-          surveyResult={answers}
-          sessionToken={sessionToken}
-          onOpenRequest={() => setShowRequestModal(true)}
-        />
-        <RequestModal
-          isOpen={showRequestModal}
-          sessionToken={sessionToken}
-          onClose={() => setShowRequestModal(false)}
-          onSuccess={(group, key) => {
-            handleOpenRequest(group, key);
-            setGroupRequest(group);
-            setOrgKey(key);
-          }}
-        />
-        {groupRequest && (
-          <ShareScreen
-            groupRequest={groupRequest}
-            orgKey={orgKey}
-            onContinue={() => {
-              setShowResult(false);
-              setShowRequestModal(false);
-              setGroupRequest(null);
-              setOrgKey(null);
-            }}
-          />
-        )}
-      </div>
+      <ResultScreen
+        surveyResult={answers}
+        sessionToken={sessionToken}
+      />
     );
   }
 
