@@ -104,47 +104,7 @@ export default function Hero() {
             </motion.div>
           </motion.div>
 
-          {/* VISUAL SIDE */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="flex items-center justify-center relative w-full"
-          >
-            <div className="relative flex items-center justify-center">
-              {/* Soft ambient glow — subtle */}
-              <div
-                className="absolute rounded-full pointer-events-none"
-                style={{
-                  width: 420,
-                  height: 420,
-                  background: "radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 70%)",
-                  filter: "blur(40px)",
-                }}
-              />
 
-              <div
-                className="relative block"
-                style={{ width: "clamp(260px, 28vw, 460px)" }}
-              >
-                <img
-                  src={HERO_IMAGE}
-                  alt="הטבה יומית אמיתית"
-                  className="w-full h-auto block drop-shadow-2xl"
-                />
-              </div>
-
-              {/* Single micro label */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.85 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4, delay: 0.75 }}
-                className="absolute -top-3 -right-2 md:-right-5 bg-white border border-border shadow-md rounded-xl px-3 py-1.5 text-xs font-bold text-foreground whitespace-nowrap"
-              >
-                💰 הטבה יומית אמיתית
-              </motion.div>
-            </div>
-          </motion.div>
 
         </div>
       </div>
