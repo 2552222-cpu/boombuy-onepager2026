@@ -26,22 +26,21 @@ export default function Hero() {
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
-            className="flex-1 flex flex-col items-center md:items-start text-center md:text-right"
-            style={{ maxWidth: 680 }}
+            className="flex flex-col items-center md:items-start text-center md:text-right"
           >
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               style={{
-                fontSize: "clamp(2.5rem, 7.5vw, 5.5rem)",
-                lineHeight: 0.98,
-                letterSpacing: "-0.02em",
+                fontSize: "clamp(48px, 6vw, 96px)",
+                lineHeight: 0.95,
+                letterSpacing: "-0.025em",
                 fontWeight: 900,
-                marginBottom: "1.2rem",
-                maxWidth: "680px",
+                marginBottom: "1.5rem",
+                maxWidth: "710px",
+                textWrap: "balance",
               }}
-              className="leading-none"
             >
               יש כסף שמחכה לך{" "}
               <span className="text-primary">בעבודה שלך</span>
