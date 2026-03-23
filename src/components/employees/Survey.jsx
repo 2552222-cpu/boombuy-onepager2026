@@ -71,11 +71,7 @@ export default function Survey() {
         group = await base44.entities.GroupRequest.create({
           orgName: orgName.trim(),
           orgKey,
-          orgSize,
-          holidayBudget,
-          activities: finalActivities,
-          currentCount: 1,
-          status: "new_lead",
+          orgNameNormalized: orgKey,
           source: "employees",
           lastJoinedAt: new Date().toISOString(),
         });
