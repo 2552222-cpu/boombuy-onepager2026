@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { base44 } from "@/api/base44Client";
-import ResultScreen from "./ResultScreen";
+import { useNavigate } from "react-router-dom";
 
 const ORG_SIZE_OPTIONS = [
   { label: "עד 50 עובדים" },
@@ -27,7 +27,7 @@ export default function Survey() {
   const [holidayBudget, setHolidayBudget] = useState("");
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState(null);
+  const navigate = useNavigate();
 
   const handleOrgNameNext = () => {
     if (!orgName.trim()) return;
@@ -77,17 +77,13 @@ export default function Survey() {
         });
       }
 
-      setResult({ group, orgName: orgName.trim(), orgKey, orgSize, holidayBudget, activities: finalActivities });
+      navigate('/join/' + orgKey);
     } catch (err) {
       console.error(err);
     } finally {
       setLoading(false);
     }
   };
-
-  if (result) {
-    return <ResultScreen {...result} />;
-  }
 
   return (
     <section
