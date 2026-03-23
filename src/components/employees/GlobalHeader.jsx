@@ -19,23 +19,24 @@ export default function GlobalHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-border/50" style={{ overflowX: 'hidden', maxWidth: '100vw' }}>
-      <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
+    <header className="sticky top-0 z-50 bg-white border-b border-border/40" style={{ overflowX: 'hidden', maxWidth: '100vw' }}>
+      <div className="max-w-7xl mx-auto px-5 md:px-10 py-3 md:py-3.5 flex items-center justify-between">
         
         {/* Logo - Right Side */}
         <div className="flex items-center">
           <img
             src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/09a5f43d9_500400.png"
             alt="BoomBuy"
-            className="h-12 md:h-16 w-auto object-contain"
+            className="h-10 md:h-12 w-auto object-contain"
           />
         </div>
 
         {/* Links - Left Side */}
-        <nav className="flex items-center gap-4 md:gap-8">
+        <nav className="flex items-center gap-5 md:gap-8">
           <button
             onClick={() => scrollToSection("benefits-showcase")}
-            className="text-xs md:text-sm font-medium text-foreground hover:text-primary transition-colors"
+            style={{ fontSize: "14px", fontWeight: 500, color: "#1D1D1F" }}
+            className="hover:text-primary transition-colors"
           >
             הטבות לדוגמא
           </button>
@@ -44,7 +45,8 @@ export default function GlobalHeader() {
             href="https://www.boombuyonepage.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs md:text-sm font-medium text-foreground hover:text-primary transition-colors"
+            style={{ fontSize: "14px", fontWeight: 500, color: "#1D1D1F" }}
+            className="hover:text-primary transition-colors"
           >
             לארגונים
           </a>
