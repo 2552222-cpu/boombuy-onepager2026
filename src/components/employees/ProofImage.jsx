@@ -10,11 +10,6 @@ const PROOF_CARDS = [
 export default function ProofImage({ imageUrl }) {
   const cards = PROOF_CARDS;
 
-    { label: "מחיר לעובדים", value: formatPrice(workerPrice), highlight: false },
-    { label: "מחיר נמוך בזאפ", value: formatPrice(zapPrice), highlight: false },
-    { label: "החיסכון שלך", value: formatPrice(savings), highlight: true },
-  ];
-
   const scrollToBenefits = () => {
     document.getElementById("benefits-showcase")?.scrollIntoView({ behavior: "smooth" });
   };
