@@ -508,7 +508,7 @@ export default function BenefitsShowcase() {
   };
 
   return (
-    <section className="py-12 md:py-24 bg-white" style={{ overflowX: 'hidden', maxWidth: '100vw' }}>
+    <section className="py-12 md:py-24 bg-white" style={{ overflowX: 'hidden', maxWidth: '100vw', borderTop: '1px solid rgba(0,0,0,0.06)' }}>
       <div className="max-w-5xl mx-auto px-4 md:px-6">
 
         {/* Section Header */}

@@ -12,6 +12,9 @@ import FinalBand from "../components/employees/FinalBand";
 import JoinScreen from "../components/employees/JoinScreen";
 
 const PROOF_IMAGE_URL = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e5b27b9ef_-2026-03-16T131338488.png";
+// מחירים אמיתיים של ההטבה המוצגת — עדכן לפי הצורך
+const PROOF_WORKER_PRICE = 3299;
+const PROOF_ZAP_PRICE = 5299;
 const WALLET_IMAGE_URL = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/259ae51a5_-2026-03-22T181118586.png";
 
 export default function EmployeesLanding() {
@@ -62,7 +65,7 @@ export default function EmployeesLanding() {
       <GlobalHeader />
       <div className="flex-1">
         <Hero />
-        <ProofImage imageUrl={PROOF_IMAGE_URL} />
+        <ProofImage imageUrl={PROOF_IMAGE_URL} workerPrice={PROOF_WORKER_PRICE} zapPrice={PROOF_ZAP_PRICE} />
         <div id="benefits-showcase">
           <BenefitsShowcase />
         </div>

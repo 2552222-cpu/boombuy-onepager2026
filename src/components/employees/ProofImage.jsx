@@ -1,13 +1,19 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-const proofCards = [
-  { label: "מחיר לעובדים", value: "3,299 ₪" },
-  { label: "מחיר נמוך בזאפ", value: "5,299 ₪" },
-  { label: "החיסכון שלך", value: "2,000 ₪", highlight: true },
-];
+function formatPrice(n) {
+  return n.toLocaleString("he-IL") + " ₪";
+}
 
-export default function ProofImage({ imageUrl }) {
+export default function ProofImage({ imageUrl, workerPrice, zapPrice }) {
+  const savings = zapPrice - workerPrice;
+
+  const cards = [
+    { label: "מחיר לעובדים", value: formatPrice(workerPrice), highlight: false },
+    { label: "מחיר נמוך בזאפ", value: formatPrice(zapPrice), highlight: false },
+    { label: "החיסכון שלך", value: formatPrice(savings), highlight: true },
+  ];
+
   const scrollToBenefits = () => {
     document.getElementById("benefits-showcase")?.scrollIntoView({ behavior: "smooth" });
   };
@@ -19,11 +25,12 @@ export default function ProofImage({ imageUrl }) {
         overflowX: "hidden",
         maxWidth: "100vw",
         borderTop: "1px solid rgba(0,0,0,0.06)",
+        borderBottom: "1px solid rgba(0,0,0,0.06)",
       }}
     >
       <div
         className="max-w-screen-xl mx-auto px-5 md:px-10"
-        style={{ paddingTop: "96px", paddingBottom: "108px" }}
+        style={{ paddingTop: "96px", paddingBottom: "112px" }}
       >
 
         {/* ── DESKTOP ── */}
@@ -87,7 +94,7 @@ export default function ProofImage({ imageUrl }) {
                 fontFamily: "var(--font-heebo)",
               }}
             >
-              דוגמאות חריגות לחיסכון מהשנה האחרונה.
+              דוגמאות חריגות לחיסכון מהשנה האחרונה.{" "}
               הנה הוכחה שהנטו שלך שווה הרבה יותר.
             </p>
 
@@ -101,21 +108,24 @@ export default function ProofImage({ imageUrl }) {
                 width: "100%",
               }}
             >
-              {proofCards.map((card, i) => (
+              {cards.map((card, i) => (
                 <div
                   key={i}
                   style={{
                     background: card.highlight ? "rgba(0,102,204,0.05)" : "#F7F7F8",
                     border: card.highlight
-                      ? "1px solid rgba(0,102,204,0.18)"
+                      ? "1px solid rgba(0,102,204,0.2)"
                       : "1px solid rgba(0,0,0,0.07)",
                     borderRadius: "18px",
-                    padding: "16px 14px",
+                    padding: "14px 12px 12px",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "flex-end",
                     textAlign: "right",
-                    gap: "4px",
+                    gap: "5px",
+                    boxShadow: card.highlight
+                      ? "0 2px 12px rgba(0,102,204,0.08)"
+                      : "0 1px 6px rgba(0,0,0,0.04)",
                   }}
                 >
                   <span
@@ -124,6 +134,7 @@ export default function ProofImage({ imageUrl }) {
                       fontWeight: 500,
                       color: "#86868B",
                       fontFamily: "var(--font-heebo)",
+                      lineHeight: 1.3,
                     }}
                   >
                     {card.label}
@@ -134,7 +145,7 @@ export default function ProofImage({ imageUrl }) {
                       fontWeight: 900,
                       color: card.highlight ? "#0066CC" : "#1D1D1F",
                       fontFamily: "var(--font-heebo)",
-                      letterSpacing: "-0.02em",
+                      letterSpacing: "-0.025em",
                       lineHeight: 1.1,
                     }}
                   >
@@ -209,65 +220,73 @@ export default function ProofImage({ imageUrl }) {
               fontFamily: "var(--font-heebo)",
             }}
           >
-            דוגמאות חריגות לחיסכון מהשנה האחרונה.
+            דוגמאות חריגות לחיסכון מהשנה האחרונה.{" "}
             הנה הוכחה שהנטו שלך שווה הרבה יותר.
           </motion.p>
 
-          {/* Proof Cards mobile */}
+          {/* Proof Cards mobile — 2+1 layout */}
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.45, delay: 0.1 }}
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)",
-              gap: "8px",
-              marginBottom: "20px",
-              width: "100%",
-            }}
+            style={{ width: "100%", marginBottom: "20px" }}
           >
-            {proofCards.map((card, i) => (
-              <div
-                key={i}
-                style={{
-                  background: card.highlight ? "rgba(0,102,204,0.05)" : "#F7F7F8",
-                  border: card.highlight
-                    ? "1px solid rgba(0,102,204,0.18)"
-                    : "1px solid rgba(0,0,0,0.07)",
-                  borderRadius: "16px",
-                  padding: "12px 10px",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  textAlign: "center",
-                  gap: "3px",
-                }}
-              >
-                <span
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "8px",
+                marginBottom: "8px",
+              }}
+            >
+              {cards.slice(0, 2).map((card, i) => (
+                <div
+                  key={i}
                   style={{
-                    fontSize: "11px",
-                    fontWeight: 500,
-                    color: "#86868B",
-                    fontFamily: "var(--font-heebo)",
+                    background: "#F7F7F8",
+                    border: "1px solid rgba(0,0,0,0.07)",
+                    borderRadius: "16px",
+                    padding: "12px 10px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    textAlign: "center",
+                    gap: "4px",
+                    boxShadow: "0 1px 6px rgba(0,0,0,0.04)",
                   }}
                 >
-                  {card.label}
-                </span>
-                <span
-                  style={{
-                    fontSize: "18px",
-                    fontWeight: 900,
-                    color: card.highlight ? "#0066CC" : "#1D1D1F",
-                    fontFamily: "var(--font-heebo)",
-                    letterSpacing: "-0.02em",
-                    lineHeight: 1.1,
-                  }}
-                >
-                  {card.value}
-                </span>
-              </div>
-            ))}
+                  <span style={{ fontSize: "11px", fontWeight: 500, color: "#86868B", fontFamily: "var(--font-heebo)" }}>
+                    {card.label}
+                  </span>
+                  <span style={{ fontSize: "19px", fontWeight: 900, color: "#1D1D1F", fontFamily: "var(--font-heebo)", letterSpacing: "-0.02em", lineHeight: 1.1 }}>
+                    {card.value}
+                  </span>
+                </div>
+              ))}
+            </div>
+            {/* Card 3 — full width, highlighted */}
+            <div
+              style={{
+                background: "rgba(0,102,204,0.05)",
+                border: "1px solid rgba(0,102,204,0.2)",
+                borderRadius: "16px",
+                padding: "12px 10px",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                textAlign: "center",
+                gap: "4px",
+                boxShadow: "0 2px 12px rgba(0,102,204,0.08)",
+              }}
+            >
+              <span style={{ fontSize: "11px", fontWeight: 500, color: "#86868B", fontFamily: "var(--font-heebo)" }}>
+                {cards[2].label}
+              </span>
+              <span style={{ fontSize: "22px", fontWeight: 900, color: "#0066CC", fontFamily: "var(--font-heebo)", letterSpacing: "-0.02em", lineHeight: 1.1 }}>
+                {cards[2].value}
+              </span>
+            </div>
           </motion.div>
 
           {/* CTA */}
