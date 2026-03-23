@@ -8,13 +8,17 @@ const WA_MSG = () =>
   `חבר׳ה, מצאתי דרך לקבל מחירי יבואן על Apple, הנחות קבועות בסופר והטבות נוספות - בלי שהארגון יוסיף תקציב. אם נהיה לפחות 5 עובדים שמעוניינים, אפשר להוציא את זה לדרך. מי איתי? https://boom-perk-flow.base44.app`;
 
 const LETTER_MSG = (orgName) =>
-  `שלום,
+  `שלום [שם],
 
 קבוצת עובדים מתוך ${orgName || "[שם הארגון]"} ביקשה לבחון את ההצטרפות למועדון BoomBuy.
 
 המהלך מאפשר לעובדים לקבל מחירי סיטונאות על מוצרי פרימיום, הנחות קבועות בסופר ובפארם, ומתנות חג גמישות - והכול ב-0 ש"ח תוספת תקציב לארגון.
 
-נשמח שתבחנו תיאום פגישת דמו קצרה מול צוות בום-ביי.`;
+נשמח שתבחנו תיאום פגישת דמו קצרה מול צוות בום-ביי:
+https://www.boombuyonepage.com
+
+אפשר גם לפנות אלינו ישירות כאן:
+https://wa.me/972542552222`;
 
 export default function ResultScreen({ group, orgName, orgKey, orgSize, holidayBudget, activities }) {
   const topRef = useRef(null);
@@ -342,7 +346,7 @@ export default function ResultScreen({ group, orgName, orgKey, orgSize, holidayB
                 whiteSpace: "pre-line",
               }}
             >
-              {WA_MSG(orgName)}
+              {WA_MSG()}
             </div>
             <button
               onClick={handleWACopy}
