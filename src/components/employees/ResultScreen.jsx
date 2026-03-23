@@ -109,7 +109,7 @@ export default function ResultScreen({ group, orgName, orgKey, orgSize, holidayB
             onMouseEnter={(e) => (e.currentTarget.style.background = "#0055AA")}
             onMouseLeave={(e) => (e.currentTarget.style.background = "#0066CC")}
           >
-            התייעצו עם ארי בוואטסאפ
+            התייעצו איתנו בוואטסאפ
           </a>
 
           {/* SECONDARY CTA */}
