@@ -25,7 +25,7 @@ export default function GlobalHeader() {
         {/* Logo - Right Side */}
         <div className="flex items-center">
           <img
-            src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/c510868a9_image.png"
+            src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/09a5f43d9_500400.png"
             alt="BoomBuy"
             className="h-10 md:h-12 w-auto object-contain"
           />
