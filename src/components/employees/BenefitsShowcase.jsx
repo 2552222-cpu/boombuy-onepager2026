@@ -84,8 +84,8 @@ const categories = [
     title: "כל בוקר הטבה חדשה",
     description: "כל יום מתחיל בהטבה חדשה שנשלחת לעובד בוואטסאפ — על מוצרי צריכה, מותגי פרימיום, חוויות ואטרקציות — תמיד במחיר הנמוך ביותר בישראל.",
     sub: "260 הטבות בשנה - ישירות לווטס שלך",
-    tag: "המחיר הנמוך בישראל",
-    tagBg: "bg-amber-500",
+    tag: "המחיר הנמוך בישראל. תמיד.",
+    tagBg: "bg-slate-700",
     bg: "from-amber-50 to-orange-100",
     previewImage: DAILY_PREVIEW,
     mainImage: DAILY_EXTRA[0],
@@ -99,7 +99,7 @@ const categories = [
     description: "חנות קבועה של מוצרי חשמל, אלקטרוניקה, מחשבים וסלולר במחירי יבואן — מהמותגים שאנשים באמת רוצים.",
     sub: "Apple, Samsung, Dyson, Ninja ועוד",
     tag: "מחיר יבואן",
-    tagBg: "bg-slate-700",
+    tagBg: "bg-slate-600",
     bg: "from-slate-50 to-slate-100",
     previewImage: TECH_PREVIEW,
     mainImage: TECH_EXTRA[0],
@@ -113,7 +113,7 @@ const categories = [
     description: "שוברי קניות לסופרמרקט והנחות קבועות על מוצרי יומיום — ערך מוחשי שמרגישים שוב ושוב בסל הקניות.",
     sub: "הנחה קבועה של עד 8% ברשתות הסופרים המוזלים",
     tag: "עד 8% תמיד",
-    tagBg: "bg-emerald-600",
+    tagBg: "bg-emerald-700",
     bg: "from-emerald-50 to-green-100",
     previewImage: SUPER_PREVIEW,
     mainImage: SUPER_EXTRA[0],
@@ -127,7 +127,7 @@ const categories = [
     description: "המתנה נשארת — אבל עכשיו העובד בוחר מה הוא באמת רוצה. ארנק דיגיטלי גמיש עם מגוון רחב של אפשרויות.",
     sub: "ארנק ממותג · בחירה חופשית · ניהול מרכזי",
     tag: "בחירה חופשית",
-    tagBg: "bg-violet-600",
+    tagBg: "bg-violet-700",
     bg: "from-violet-50 to-purple-100",
     previewImage: GIFT_PREVIEW,
     mainImage: GIFT_PREVIEW,
@@ -141,7 +141,7 @@ const categories = [
     description: "חבילות טיסה, מלון, הופעות ומשחקי ספורט בארץ ובחו\"ל — במחירים שסגורים רק לעובדי הארגון.",
     sub: "בארץ ובחו\"ל · מחירים בלעדיים",
     tag: "מחירים בלעדיים",
-    tagBg: "bg-sky-600",
+    tagBg: "bg-sky-700",
     bg: "from-sky-50 to-blue-100",
     previewImage: VACATION_PREVIEW,
     mainImage: VACATION_EXTRA[0],
@@ -155,7 +155,7 @@ const categories = [
     description: "הופעות, הצגות, פארקי שעשועים ואטרקציות — כי חוויית עובד טובה לא נגמרת בסוף יום העבודה.",
     sub: "כרטיסים · הנחות כניסה · אירועים",
     tag: "הנחת עובד",
-    tagBg: "bg-rose-500",
+    tagBg: "bg-rose-700",
     bg: "from-pink-50 to-rose-100",
     previewImage: CULTURE_PREVIEW,
     mainImage: CULTURE_EXTRA[0],
@@ -169,7 +169,7 @@ const categories = [
     description: "ביגוד, הנעלה, אקססוריז ומותגים מובילים — במחירים מיוחדים לעובדי הארגון, על דברים שאנשים באמת קונים.",
     sub: "מותגי פרימיום · מחירים בלעדיים · קנייה חכמה",
     tag: "מחירים בלעדיים",
-    tagBg: "bg-orange-500",
+    tagBg: "bg-stone-600",
     bg: "from-orange-50 to-amber-100",
     previewImage: FASHION_PREVIEW,
     mainImage: FASHION_EXTRA[0],
@@ -183,7 +183,7 @@ const categories = [
     description: "ירידי צרכנות, רכב, דירות, חזרה לבית הספר ואירועי מכירה מיוחדים — חוויות קנייה מרוכזות עם ערך אמיתי.",
     sub: "אירועים תקופתיים · מחירים מיוחדים · חוויית קנייה",
     tag: "אירועים מיוחדים",
-    tagBg: "bg-teal-600",
+    tagBg: "bg-teal-700",
     bg: "from-teal-50 to-cyan-100",
     previewImage: FAIRS_PREVIEW,
     mainImage: FAIRS_EXTRA[0],
@@ -331,7 +331,7 @@ function CategoryModal({ category, onClose, onCTA }) {
                 </div>
 
                 <h3 className="text-lg sm:text-2xl lg:text-[2.15rem] font-black leading-[1.1] mb-2">
-                  {category.emoji} {category.title}
+                  {category.title}
                 </h3>
 
                 <p className="text-xs sm:text-[14px] lg:text-[15px] text-muted-foreground leading-6 mb-1.5">
@@ -345,8 +345,8 @@ function CategoryModal({ category, onClose, onCTA }) {
                 )}
 
                 {category.note && (
-                  <div className="mt-4 rounded-2xl border border-primary/15 bg-primary/5 px-4 py-3 text-xs sm:text-sm text-primary font-medium leading-6">
-                    💡 {category.note}
+                  <div className="mt-4 rounded-2xl border border-black/8 bg-secondary/40 px-4 py-3 text-xs sm:text-sm text-muted-foreground font-medium leading-6">
+                    {category.note}
                   </div>
                 )}
               </div>
@@ -358,7 +358,7 @@ function CategoryModal({ category, onClose, onCTA }) {
                   עוד הטבות בקטגוריה הזו
                 </h4>
                 <p className="text-[10px] sm:text-xs text-muted-foreground">
-                  לחצו על כפתור כדי לראות תמונה אחרת
+                  גללו כאן כדי לגלות עוד הטבות בלעדיות לעובדים
                 </p>
               </div>
 
@@ -437,7 +437,7 @@ function CategoryModal({ category, onClose, onCTA }) {
                   onMouseEnter={e => e.currentTarget.style.background = "#0055AA"}
                   onMouseLeave={e => e.currentTarget.style.background = "#0066CC"}
                 >
-                  זה מעניין אותי - בדקו מה מגיע לי
+                  אני רוצה שהארגון שלי יצטרף
                 </button>
 
                 <button
