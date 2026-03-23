@@ -18,7 +18,13 @@ const HOLIDAY_BUDGET_OPTIONS = [
 const ACTIVITIES_OPTIONS = ["ימי גיבוש", "מתנות חג", "ימי הולדת", "יום המשפחה"];
 
 const normalizeOrgKey = (name) =>
-  name.toLowerCase().trim().replace(/\s+/g, "_").replace(/[^\w_]/g, "");
+  name
+    .trim()
+    .replace(/\s+/g, " ")
+    .toLowerCase()
+    .replace(/[^\u0590-\u05FF\u200F\u200Ea-z0-9 ]/g, "")
+    .trim()
+    .replace(/\s+/g, "_");
 
 export default function Survey() {
   const [step, setStep] = useState(0);
