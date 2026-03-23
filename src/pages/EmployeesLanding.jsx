@@ -76,6 +76,36 @@ export default function EmployeesLanding() {
         <FinalBand />
       </div>
       <GlobalFooter />
+
+      {/* Floating CTA */}
+      <a
+        href={`https://wa.me/972542552222?text=${encodeURIComponent("היי, ראינו את עמוד העובדים של BoomBuy ואנחנו רוצים להבין איך לצרף את הארגון שלנו.")}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{
+          position: "fixed",
+          bottom: "24px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          background: "#0066CC",
+          color: "#fff",
+          fontWeight: 700,
+          fontSize: "14px",
+          padding: "13px 24px",
+          borderRadius: "999px",
+          boxShadow: "0 8px 28px rgba(0,102,204,0.32)",
+          whiteSpace: "nowrap",
+          textDecoration: "none",
+          zIndex: 40,
+          fontFamily: "var(--font-heebo)",
+          letterSpacing: "-0.01em",
+          transition: "background 0.15s ease",
+        }}
+        onMouseEnter={e => e.currentTarget.style.background = "#0055AA"}
+        onMouseLeave={e => e.currentTarget.style.background = "#0066CC"}
+      >
+        השתכנעתם? רוצים לצרף את הארגון ל-BoomBuy? התייעצו איתנו
+      </a>
     </div>
   );
 }

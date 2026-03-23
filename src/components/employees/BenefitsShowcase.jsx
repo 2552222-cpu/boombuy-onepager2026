@@ -246,16 +246,26 @@ function CategoryModal({ category, onClose, onCTA }) {
       >
         <button
           onClick={onClose}
-          className="absolute top-3 md:top-4 right-3 md:right-4 z-30 w-9 md:w-11 h-9 md:h-11 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-secondary transition-colors"
+          className="absolute top-5 md:top-6 right-4 md:right-5 z-30 w-10 md:w-12 h-10 md:h-12 rounded-full bg-white shadow-md flex items-center justify-center hover:bg-secondary transition-colors"
         >
-          <X className="w-4 md:w-5 h-4 md:h-5 text-foreground" />
+          <X className="w-5 md:w-5 h-5 md:h-5 text-foreground" />
         </button>
 
         <div className="flex-1 overflow-y-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-[1.08fr_0.92fr] min-h-full gap-0">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.25fr_0.75fr] min-h-full gap-0">
             {/* צד תמונה */}
             <div className="bg-white p-2 sm:p-4 lg:p-8 flex items-center justify-center border-b lg:border-b-0 lg:border-l border-black/5 flex-col">
-              <div className="w-full flex items-center justify-center flex-1 min-h-40 md:min-h-96">
+              <div className="w-full flex items-center justify-center flex-1 min-h-40 md:min-h-96 relative">
+                {hasExtra && (
+                  <button
+                    type="button"
+                    onClick={goToNext}
+                    className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-white shadow-md border border-black/8 flex items-center justify-center hover:bg-secondary transition-colors"
+                    style={{ transform: 'translateY(-50%)' }}
+                  >
+                    <ChevronLeft className="w-5 h-5 text-foreground" />
+                  </button>
+                )}
                 {activeImage ? (
                   <AnimatePresence mode="wait">
                     <motion.img
@@ -266,11 +276,21 @@ function CategoryModal({ category, onClose, onCTA }) {
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: direction > 0 ? -30 : direction < 0 ? 30 : 0 }}
                       transition={{ duration: 0.25, ease: "easeInOut" }}
-                      style={{ maxWidth: "100%", maxHeight: "60vh", objectFit: "contain" }}
+                      style={{ maxWidth: "82%", maxHeight: "66vh", objectFit: "contain" }}
                     />
                   </AnimatePresence>
                 ) : (
                   <div className="flex items-center justify-center text-6xl opacity-30">🖼️</div>
+                )}
+                {hasExtra && (
+                  <button
+                    type="button"
+                    onClick={goToPrevious}
+                    className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-white shadow-md border border-black/8 flex items-center justify-center hover:bg-secondary transition-colors"
+                    style={{ transform: 'translateY(-50%)' }}
+                  >
+                    <ChevronLeft className="w-5 h-5 text-foreground transform rotate-180" />
+                  </button>
                 )}
               </div>
 
@@ -290,36 +310,28 @@ function CategoryModal({ category, onClose, onCTA }) {
                       onClick={() => selectThumbnail(url)}
                       style={{
                         flexShrink: 0,
-                        width: 80,
-                        height: 80,
-                        borderRadius: 16,
+                        width: 72,
+                        height: 72,
+                        borderRadius: 14,
                         overflow: "hidden",
-                        border: activeImage === url
-                          ? "2px solid #0066CC"
-                          : "1.5px solid rgba(0,0,0,0.1)",
+                        border: activeImage === url ? "2px solid #0066CC" : "1.5px solid rgba(0,0,0,0.1)",
                         opacity: activeImage === url ? 1 : 0.5,
                         transition: "all 0.2s ease",
                         background: activeImage === url ? "#EBF3FF" : "#F7F7F8",
-                        padding: 6,
+                        padding: 5,
                         cursor: "pointer",
                         transform: activeImage === url ? "scale(1.08)" : "scale(1)",
-                        boxShadow: activeImage === url
-                          ? "0 0 0 3px rgba(0,102,204,0.15), 0 3px 12px rgba(0,102,204,0.12)"
-                          : "0 1px 4px rgba(0,0,0,0.06)",
+                        boxShadow: activeImage === url ? "0 0 0 3px rgba(0,102,204,0.15)" : "0 1px 4px rgba(0,0,0,0.06)",
                       }}
                     >
-                      <img
-                        src={url}
-                        alt=""
-                        style={{ width: "100%", height: "100%", objectFit: "contain" }}
-                      />
+                      <img src={url} alt="" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
                     </button>
                   ))}
                 </div>
               )}
             </div>
 
-            {/* צד תוכן */}
+            {/* צד תוכן */
             <div className="p-3 sm:p-5 lg:p-8 flex flex-col overflow-y-auto max-h-[60vh] lg:max-h-full">
               <div className="mb-3 sm:mb-6">
                 <div className="flex items-center gap-2 mb-3">
@@ -363,44 +375,20 @@ function CategoryModal({ category, onClose, onCTA }) {
               </div>
 
               {hasExtra ? (
-                <div className="flex flex-col gap-4">
-                  {/* Slider */}
-                  <div className="relative flex items-center gap-3">
-                    <button
-                      type="button"
-                      onClick={goToPrevious}
-                      className="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-colors"
-                    >
-                      <ChevronLeft className="w-5 h-5 text-primary" />
-                    </button>
-
-                    <div className="flex-1 flex items-center justify-center">
-                      <div className="flex gap-2">
-                        {gallery.map((_, i) => (
-                          <button
-                            key={i}
-                            type="button"
-                            onClick={() => selectThumbnail(gallery[i])}
-                            className={`w-2 h-2 rounded-full transition-all ${
-                              gallery[i] === activeImage
-                                ? "bg-primary w-6"
-                                : "bg-primary/30 hover:bg-primary/50"
-                            }`}
-                          />
-                        ))}
-                      </div>
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={goToNext}
-                      className="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-colors"
-                    >
-                      <ChevronLeft className="w-5 h-5 text-primary transform rotate-180" />
-                    </button>
+                <div className="flex flex-col gap-2">
+                  {/* Dot indicators only */}
+                  <div className="flex items-center justify-center gap-1.5 py-1">
+                    {gallery.map((_, i) => (
+                      <button
+                        key={i}
+                        type="button"
+                        onClick={() => selectThumbnail(gallery[i])}
+                        className={`rounded-full transition-all ${
+                          gallery[i] === activeImage ? "bg-primary w-5 h-1.5" : "bg-primary/25 w-1.5 h-1.5 hover:bg-primary/50"
+                        }`}
+                      />
+                    ))}
                   </div>
-
-                  {/* Indicators */}
                   <p className="text-xs text-muted-foreground text-center">
                     {gallery.indexOf(activeImage) + 1} מתוך {gallery.length}
                   </p>

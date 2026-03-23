@@ -137,17 +137,22 @@ export default function ProofImage({ imageUrl }) {
                   </span>
                   <span
                     style={{
-                      fontSize: "24px",
+                      fontSize: "28px",
                       fontWeight: 900,
                       color: card.highlight ? "#0066CC" : "#1D1D1F",
                       fontFamily: "var(--font-heebo)",
                       letterSpacing: "-0.025em",
                       lineHeight: 1.1,
-                      fontSize: "28px",
-                      }}
-                      >
-                      {card.value}
-                      </span>
+                      display: "flex",
+                      alignItems: "baseline",
+                      justifyContent: "center",
+                      gap: "2px",
+                      width: "100%",
+                      textAlign: "center",
+                    }}
+                  >
+                    {card.value}
+                  </span>
                 </div>
               ))}
             </div>
