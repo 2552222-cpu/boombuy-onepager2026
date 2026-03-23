@@ -277,9 +277,9 @@ function CategoryModal({ category, onClose, onCTA }) {
               {hasExtra && (
                 <div style={{
                   display: "flex",
-                  gap: "10px",
+                  gap: "8px",
                   overflowX: "auto",
-                  padding: "16px 0 4px",
+                  padding: "14px 0 2px",
                   scrollbarWidth: "none",
                   width: "100%"
                 }}>
@@ -290,20 +290,22 @@ function CategoryModal({ category, onClose, onCTA }) {
                       onClick={() => selectThumbnail(url)}
                       style={{
                         flexShrink: 0,
-                        width: 72,
-                        height: 72,
-                        borderRadius: 14,
+                        width: 80,
+                        height: 80,
+                        borderRadius: 16,
                         overflow: "hidden",
                         border: activeImage === url
-                          ? "2.5px solid #0066CC"
-                          : "1.5px solid #E5E7EB",
-                        opacity: activeImage === url ? 1 : 0.55,
-                        transition: "all 0.18s ease",
-                        background: "white",
-                        padding: 5,
+                          ? "2px solid #0066CC"
+                          : "1.5px solid rgba(0,0,0,0.1)",
+                        opacity: activeImage === url ? 1 : 0.5,
+                        transition: "all 0.2s ease",
+                        background: activeImage === url ? "#EBF3FF" : "#F7F7F8",
+                        padding: 6,
                         cursor: "pointer",
-                        transform: activeImage === url ? "scale(1.07)" : "scale(1)",
-                        boxShadow: activeImage === url ? "0 2px 10px rgba(0,102,204,0.15)" : "none",
+                        transform: activeImage === url ? "scale(1.08)" : "scale(1)",
+                        boxShadow: activeImage === url
+                          ? "0 0 0 3px rgba(0,102,204,0.15), 0 3px 12px rgba(0,102,204,0.12)"
+                          : "0 1px 4px rgba(0,0,0,0.06)",
                       }}
                     >
                       <img
@@ -415,17 +417,46 @@ function CategoryModal({ category, onClose, onCTA }) {
                 </div>
               )}
 
-              <div className="mt-3 sm:mt-5 flex flex-col gap-2">
+              <div style={{ marginTop: "20px", display: "flex", flexDirection: "column", gap: "10px" }}>
                 <button
                   onClick={onCTA}
-                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-3 md:py-4 rounded-lg md:rounded-2xl transition-all shadow-lg shadow-primary/20 text-xs md:text-base"
+                  style={{
+                    width: "100%",
+                    background: "#0066CC",
+                    color: "#fff",
+                    fontWeight: 800,
+                    fontSize: "15px",
+                    padding: "14px 20px",
+                    borderRadius: "14px",
+                    border: "none",
+                    cursor: "pointer",
+                    boxShadow: "0 6px 20px rgba(0,102,204,0.28)",
+                    fontFamily: "var(--font-heebo)",
+                    transition: "background 0.16s ease",
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.background = "#0055AA"}
+                  onMouseLeave={e => e.currentTarget.style.background = "#0066CC"}
                 >
                   זה מעניין אותי - בדקו מה מגיע לי
                 </button>
 
                 <button
                   onClick={onClose}
-                  className="w-full px-4 md:px-5 py-3 md:py-4 rounded-lg md:rounded-2xl border border-black/10 hover:bg-secondary transition-colors font-semibold text-sm md:text-base"
+                  style={{
+                    width: "100%",
+                    background: "transparent",
+                    color: "#1D1D1F",
+                    fontWeight: 600,
+                    fontSize: "14px",
+                    padding: "12px 20px",
+                    borderRadius: "14px",
+                    border: "1px solid rgba(0,0,0,0.1)",
+                    cursor: "pointer",
+                    fontFamily: "var(--font-heebo)",
+                    transition: "background 0.16s ease",
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.background = "#F5F5F7"}
+                  onMouseLeave={e => e.currentTarget.style.background = "transparent"}
                 >
                   סגור
                 </button>
@@ -446,54 +477,53 @@ function CategoryCard({ cat, index, onClick, isActive }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.38, delay: index * 0.05 }}
-      whileHover={{ y: -3, boxShadow: "0 8px 28px rgba(0,0,0,0.11)" }}
+      whileHover={{ y: -4 }}
       onClick={onClick}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => e.key === 'Enter' && onClick()}
-      className="rounded-lg md:rounded-2xl text-right overflow-hidden group flex flex-col bg-white cursor-pointer transition-all duration-200"
+      className="rounded-xl md:rounded-2xl text-right overflow-hidden group flex flex-col cursor-pointer"
       style={{
         willChange: "transform",
+        background: isActive ? "#F0F6FF" : "#FFFFFF",
         boxShadow: isActive
-          ? "0 0 0 2.5px #0066CC, 0 6px 24px rgba(0,102,204,0.13)"
-          : "0 2px 12px rgba(0,0,0,0.07)",
+          ? "0 0 0 2px #0066CC, 0 8px 28px rgba(0,102,204,0.14)"
+          : "0 2px 12px rgba(0,0,0,0.07), 0 1px 3px rgba(0,0,0,0.05)",
         border: isActive ? "1.5px solid #0066CC" : "1px solid rgba(0,0,0,0.08)",
+        transition: "box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease",
       }}
     >
       <div
-        className="relative w-full flex items-center justify-center bg-white p-1 sm:p-3"
-        style={{ aspectRatio: "1/1" }}
+        className="relative w-full flex items-center justify-center p-2 sm:p-3"
+        style={{ aspectRatio: "1/1", background: isActive ? "#EBF3FF" : "#FAFAFA" }}
       >
         {cat.previewImage ? (
-          <>
-            <img
-              src={cat.previewImage}
-              alt={cat.title}
-              className="object-contain transition-transform duration-500 group-hover:scale-[1.02]"
-              style={{ maxWidth: "100%", maxHeight: "100%" }}
-            />
-            <div className="absolute inset-0 bg-white/10" />
-          </>
+          <img
+            src={cat.previewImage}
+            alt={cat.title}
+            className="object-contain transition-transform duration-500 group-hover:scale-[1.03]"
+            style={{ maxWidth: "92%", maxHeight: "92%" }}
+          />
         ) : (
           <div className="flex items-center justify-center text-4xl opacity-30">🖼️</div>
         )}
       </div>
 
-      <div className="px-2 md:px-3.5 pt-2 md:pt-2.5 pb-2 md:pb-3 flex flex-col gap-1 bg-white">
-        <div className="flex items-center gap-2 mb-0.5">
-          <span className={`${cat.tagBg} text-white text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 md:py-1 rounded-full`}>
-            {cat.tag}
-          </span>
-        </div>
+      <div style={{ padding: "10px 12px 12px", display: "flex", flexDirection: "column", gap: "5px", background: isActive ? "#F0F6FF" : "#fff" }}>
+        <span
+          className={`${cat.tagBg} text-white font-bold rounded-full`}
+          style={{ fontSize: "9px", padding: "3px 8px", display: "inline-block", alignSelf: "flex-start" }}
+        >
+          {cat.tag}
+        </span>
 
-        <p className="font-extrabold text-xs md:text-sm text-foreground leading-snug line-clamp-2">
+        <p style={{ fontWeight: 800, fontSize: "12px", color: isActive ? "#0066CC" : "#1D1D1F", lineHeight: 1.35, margin: 0 }} className="line-clamp-2">
           {cat.emoji} {cat.title}
         </p>
 
-        <p className="text-[9px] md:text-[11px] text-muted-foreground leading-relaxed line-clamp-2 min-h-[20px]">
+        <p style={{ fontSize: "10px", color: "#86868B", lineHeight: 1.5, margin: 0 }} className="line-clamp-2">
           {cat.sub}
         </p>
-
       </div>
     </motion.div>
   );
@@ -554,16 +584,21 @@ export default function BenefitsShowcase() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-10 md:mt-14"
           style={{
-            background: "#F5F5F7",
-            border: "1px solid rgba(0,0,0,0.08)",
-            borderRadius: "16px",
-            padding: "18px 24px",
+            marginTop: "40px",
+            background: "#F7F7F8",
+            border: "1px solid rgba(0,0,0,0.07)",
+            borderRadius: "14px",
+            padding: "15px 22px",
             textAlign: "center",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "8px",
           }}
         >
-          <p style={{ fontSize: "13px", fontWeight: 500, color: "#86868B", lineHeight: 1.6, fontFamily: "var(--font-heebo)" }}>
+          <span style={{ fontSize: "13px", color: "#AAAAAA" }}>ℹ️</span>
+          <p style={{ fontSize: "12.5px", fontWeight: 500, color: "#8E8E93", lineHeight: 1.6, fontFamily: "var(--font-heebo)", margin: 0 }}>
             ההטבה זמינה לעובדים המחוברים לפלטפורמה ומותנית בהצטרפות הארגון.
           </p>
         </motion.div>
