@@ -277,9 +277,9 @@ function CategoryModal({ category, onClose, onCTA }) {
               {hasExtra && (
                 <div style={{
                   display: "flex",
-                  gap: "8px",
+                  gap: "10px",
                   overflowX: "auto",
-                  padding: "12px 0",
+                  padding: "16px 0 4px",
                   scrollbarWidth: "none",
                   width: "100%"
                 }}>
@@ -290,29 +290,26 @@ function CategoryModal({ category, onClose, onCTA }) {
                       onClick={() => selectThumbnail(url)}
                       style={{
                         flexShrink: 0,
-                        width: 64,
-                        height: 64,
-                        borderRadius: 12,
+                        width: 72,
+                        height: 72,
+                        borderRadius: 14,
                         overflow: "hidden",
-                        border: activeImage === url 
-                          ? "2.5px solid #1B4FD8" 
-                          : "2px solid #E5E7EB",
-                        opacity: activeImage === url ? 1 : 0.6,
-                        transition: "all 0.2s ease",
+                        border: activeImage === url
+                          ? "2.5px solid #0066CC"
+                          : "1.5px solid #E5E7EB",
+                        opacity: activeImage === url ? 1 : 0.55,
+                        transition: "all 0.18s ease",
                         background: "white",
-                        padding: 4,
+                        padding: 5,
                         cursor: "pointer",
-                        transform: activeImage === url ? "scale(1.05)" : "scale(1)"
+                        transform: activeImage === url ? "scale(1.07)" : "scale(1)",
+                        boxShadow: activeImage === url ? "0 2px 10px rgba(0,102,204,0.15)" : "none",
                       }}
                     >
-                      <img 
-                        src={url} 
-                        alt="" 
-                        style={{
-                          width: "100%", 
-                          height: "100%", 
-                          objectFit: "contain"
-                        }} 
+                      <img
+                        src={url}
+                        alt=""
+                        style={{ width: "100%", height: "100%", objectFit: "contain" }}
                       />
                     </button>
                   ))}
@@ -442,20 +439,26 @@ function CategoryModal({ category, onClose, onCTA }) {
 }
 
 // ─── CATEGORY CARD ────────────────────────────────────────────────────────────
-function CategoryCard({ cat, index, onClick }) {
+function CategoryCard({ cat, index, onClick, isActive }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.38, delay: index * 0.05 }}
-      whileHover={{ y: -4 }}
+      whileHover={{ y: -3, boxShadow: "0 8px 28px rgba(0,0,0,0.11)" }}
       onClick={onClick}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => e.key === 'Enter' && onClick()}
-      className="rounded-lg md:rounded-2xl text-right overflow-hidden border border-black/8 shadow-sm group flex flex-col bg-white cursor-pointer hover:shadow-md transition-shadow"
-      style={{ willChange: "transform", boxShadow: "0 2px 12px rgba(0,0,0,0.07)" }}
+      className="rounded-lg md:rounded-2xl text-right overflow-hidden group flex flex-col bg-white cursor-pointer transition-all duration-200"
+      style={{
+        willChange: "transform",
+        boxShadow: isActive
+          ? "0 0 0 2.5px #0066CC, 0 6px 24px rgba(0,102,204,0.13)"
+          : "0 2px 12px rgba(0,0,0,0.07)",
+        border: isActive ? "1.5px solid #0066CC" : "1px solid rgba(0,0,0,0.08)",
+      }}
     >
       <div
         className="relative w-full flex items-center justify-center bg-white p-1 sm:p-3"
@@ -477,7 +480,7 @@ function CategoryCard({ cat, index, onClick }) {
       </div>
 
       <div className="px-2 md:px-3.5 pt-2 md:pt-2.5 pb-2 md:pb-3 flex flex-col gap-1 bg-white">
-        <div className="flex items-center gap-2 mb-1">
+        <div className="flex items-center gap-2 mb-0.5">
           <span className={`${cat.tagBg} text-white text-[8px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 md:py-1 rounded-full`}>
             {cat.tag}
           </span>
@@ -499,12 +502,11 @@ function CategoryCard({ cat, index, onClick }) {
 // ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
 export default function BenefitsShowcase() {
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [activeCategory, setActiveCategory] = useState(null);
 
-  const scrollToSurvey = () => {
-    setSelectedCategory(null);
-    setTimeout(() => {
-      document.getElementById("survey-section")?.scrollIntoView({ behavior: "smooth" });
-    }, 200);
+  const handleCardClick = (cat) => {
+    setActiveCategory(cat.id);
+    setSelectedCategory(cat);
   };
 
   return (
@@ -532,23 +534,30 @@ export default function BenefitsShowcase() {
               key={cat.id}
               cat={cat}
               index={i}
-              onClick={() => setSelectedCategory(cat)}
+              isActive={activeCategory === cat.id}
+              onClick={() => handleCardClick(cat)}
             />
-          ))}
         </div>
 
-        {/* Framing band — prominent */}
-         <motion.div
-           initial={{ opacity: 0, y: 12 }}
-           whileInView={{ opacity: 1, y: 0 }}
-           viewport={{ once: true }}
-           transition={{ duration: 0.5, delay: 0.25 }}
-           className="mt-10 md:mt-14 mb-8 md:mb-12 px-4 md:px-8 py-4 md:py-6 bg-primary/5 border border-primary/25 rounded-xl md:rounded-2xl"
-         >
-           <p className="text-center text-xs md:text-base font-semibold text-foreground leading-relaxed whitespace-normal">
-             💡 כל ההטבות ממומנות ע"י המערכת – לא המעסיק.
-           </p>
-         </motion.div>
+        {/* Note */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="mt-10 md:mt-14"
+          style={{
+            background: "#F5F5F7",
+            border: "1px solid rgba(0,0,0,0.08)",
+            borderRadius: "16px",
+            padding: "18px 24px",
+            textAlign: "center",
+          }}
+        >
+          <p style={{ fontSize: "13px", fontWeight: 500, color: "#86868B", lineHeight: 1.6, fontFamily: "var(--font-heebo)" }}>
+            ההטבה זמינה לעובדים המחוברים לפלטפורמה ומותנית בהצטרפות הארגון.
+          </p>
+        </motion.div>
 
 
       </div>
@@ -558,7 +567,7 @@ export default function BenefitsShowcase() {
         {selectedCategory && (
           <CategoryModal
             category={selectedCategory}
-            onClose={() => setSelectedCategory(null)}
+            onClose={() => { setSelectedCategory(null); setActiveCategory(null); }}
             onCTA={scrollToSurvey}
           />
         )}
