@@ -20,7 +20,7 @@ export default function GlobalHeader() {
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-border/40" style={{ overflowX: 'hidden', maxWidth: '100vw' }}>
-      <div className="max-w-7xl mx-auto px-5 md:px-10 py-3 md:py-3.5 flex items-center justify-between">
+      <div className="max-w-screen-xl mx-auto px-5 md:px-10 flex items-center justify-between" style={{ paddingTop: "14px", paddingBottom: "14px" }}>
         
         {/* Logo - Right Side */}
         <div className="flex items-center">
