@@ -1,14 +1,15 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-function formatPrice(n) {
-  return n.toLocaleString("he-IL") + " ₪";
-}
+const PROOF_CARDS = [
+  { label: "מחיר לעובדים", value: "249 ₪", highlight: false },
+  { label: "מחיר נמוך בזאפ", value: "1,999 ₪", highlight: false },
+  { label: "החיסכון שלך", value: "1,750 ₪", highlight: true },
+];
 
-export default function ProofImage({ imageUrl, workerPrice, zapPrice }) {
-  const savings = zapPrice - workerPrice;
+export default function ProofImage({ imageUrl }) {
+  const cards = PROOF_CARDS;
 
-  const cards = [
     { label: "מחיר לעובדים", value: formatPrice(workerPrice), highlight: false },
     { label: "מחיר נמוך בזאפ", value: formatPrice(zapPrice), highlight: false },
     { label: "החיסכון שלך", value: formatPrice(savings), highlight: true },
