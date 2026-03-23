@@ -537,6 +537,7 @@ export default function BenefitsShowcase() {
               isActive={activeCategory === cat.id}
               onClick={() => handleCardClick(cat)}
             />
+          ))}
         </div>
 
         {/* Note */}
