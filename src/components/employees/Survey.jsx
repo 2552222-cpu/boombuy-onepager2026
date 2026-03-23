@@ -3,151 +3,447 @@ import { motion, AnimatePresence } from "framer-motion";
 import { base44 } from "@/api/base44Client";
 import ResultScreen from "./ResultScreen";
 
-const questions = [
-  {
-    q: "מה ההוצאה שהכי כואבת לך כרגע?",
-    options: [
-      { emoji: "🛒", label: "קניות בסופר ובפארם" },
-      { emoji: "📱", label: "חשמל וגאדג'טים" },
-      { emoji: "✈️", label: "חופשות ובילויים" },
-      { emoji: "👗", label: "בגדים ומותגים" },
-    ],
-  },
-  {
-    q: "אם באותו תקציב היית מקבל גם מתנות לחג וגם הטבות ביומיום - כמה זה היה משנה לך?",
-    options: [
-      { emoji: "💚", label: "זה היה משנה לי את החודש" },
-      { emoji: "🙏", label: "הייתי מרגיש שבאמת דואגים לי" },
-      { emoji: "🎯", label: "זה בדיוק מה שחסר פה" },
-    ],
-  },
-  {
-    q: "כמה עובדים יש בארגון שלך?",
-    options: [
-      { emoji: "👤", label: "עד 50 עובדים" },
-      { emoji: "👥", label: "50-250 עובדים" },
-      { emoji: "🏢", label: "מעל 250 עובדים" },
-    ],
-  },
+const ORG_SIZE_OPTIONS = [
+  { label: "עד 50 עובדים" },
+  { label: "50–250 עובדים" },
+  { label: "מעל 250 עובדים" },
 ];
+
+const HOLIDAY_BUDGET_OPTIONS = [
+  { label: "עד 200 ₪ לעובד" },
+  { label: "200–500 ₪ לעובד" },
+  { label: "מעל 500 ₪ לעובד" },
+];
+
+const ACTIVITIES_OPTIONS = ["ימי גיבוש", "מתנות חג", "ימי הולדת", "יום המשפחה"];
+
+const normalizeOrgKey = (name) =>
+  name.toLowerCase().trim().replace(/\s+/g, "_").replace(/[^\w_]/g, "");
 
 export default function Survey() {
   const [step, setStep] = useState(0);
-  const [answers, setAnswers] = useState([]);
+  const [orgName, setOrgName] = useState("");
+  const [orgSize, setOrgSize] = useState("");
+  const [holidayBudget, setHolidayBudget] = useState("");
+  const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [showResult, setShowResult] = useState(false);
-  const [sessionToken, setSessionToken] = useState("");
+  const [result, setResult] = useState(null);
 
-  // Generate session token on mount
-  useEffect(() => {
-    const token = `survey_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    setSessionToken(token);
-  }, []);
+  const handleOrgNameNext = () => {
+    if (!orgName.trim()) return;
+    setStep(1);
+  };
 
-  const handleSelect = async (option) => {
-    const newAnswers = [...answers, option.label];
-    setAnswers(newAnswers);
+  const handleOrgSize = (label) => {
+    setOrgSize(label);
+    setStep(2);
+  };
 
-    if (step < questions.length - 1) {
-      setStep(step + 1);
-    } else {
-      setLoading(true);
-      
-      // Save survey response to DB
-      try {
-        await base44.entities.SurveyResponse.create({
-          answer1: newAnswers[0],
-          answer2: newAnswers[1],
-          answer3: newAnswers[2],
-          sessionToken: sessionToken,
+  const handleBudget = (label) => {
+    setHolidayBudget(label);
+    setStep(3);
+  };
+
+  const toggleActivity = (a) => {
+    setActivities((prev) =>
+      prev.includes(a) ? prev.filter((x) => x !== a) : [...prev, a]
+    );
+  };
+
+  const handleFinish = async (skipActivities = false) => {
+    setLoading(true);
+    const finalActivities = skipActivities ? [] : activities;
+    const orgKey = normalizeOrgKey(orgName);
+
+    try {
+      const existing = await base44.entities.GroupRequest.filter({ orgKey });
+      let group;
+      if (existing.length > 0) {
+        group = existing[0];
+        await base44.entities.GroupRequest.update(group.id, {
+          orgSize,
+          holidayBudget,
+          activities: finalActivities,
+          lastJoinedAt: new Date().toISOString(),
         });
-      } catch (err) {
-        console.error("Error saving survey response:", err);
+        group = { ...group, orgSize, holidayBudget, activities: finalActivities };
+      } else {
+        group = await base44.entities.GroupRequest.create({
+          orgName: orgName.trim(),
+          orgKey,
+          orgSize,
+          holidayBudget,
+          activities: finalActivities,
+          currentCount: 1,
+          status: "new_lead",
+          source: "employees",
+          lastJoinedAt: new Date().toISOString(),
+        });
       }
 
-      setTimeout(() => {
-        setLoading(false);
-        setShowResult(true);
-      }, 1500);
+      setResult({ group, orgName: orgName.trim(), orgKey, orgSize, holidayBudget, activities: finalActivities });
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const progress = ((step + (showResult ? 1 : 0)) / questions.length) * 100;
-
-  if (showResult) {
-    return (
-      <ResultScreen
-        surveyResult={answers}
-        sessionToken={sessionToken}
-      />
-    );
+  if (result) {
+    return <ResultScreen {...result} />;
   }
 
   return (
-    <section id="survey-section" className="py-10 md:py-20 bg-secondary/30" style={{ overflowX: 'hidden', maxWidth: '100vw', padding: '20px 16px' }}>
+    <section
+      id="survey-section"
+      style={{
+        background: "#F5F5F7",
+        overflowX: "hidden",
+        maxWidth: "100vw",
+        padding: "60px 16px",
+      }}
+    >
       <div className="max-w-xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          {/* Progress */}
-          <div className="mb-6 md:mb-8">
-            <div className="flex items-center justify-between mb-2 text-xs md:text-sm">
-              <span className="text-muted-foreground font-medium">
-                שאלה {step + 1} מתוך {questions.length}
-              </span>
-              <span className="text-muted-foreground">
-                {Math.round(progress)}%
-              </span>
-            </div>
-            <div className="w-full bg-border rounded-full overflow-hidden" style={{ height: '4px' }}>
-              <motion.div
-                className="h-full bg-primary rounded-full"
-                initial={{ width: 0 }}
-                animate={{ width: `${progress}%` }}
-                transition={{ duration: 0.4 }}
-              />
-            </div>
-          </div>
+        {/* Header */}
+        <div className="text-center mb-10">
+          <h2
+            style={{
+              fontSize: "clamp(28px, 5vw, 36px)",
+              fontWeight: 900,
+              letterSpacing: "-0.025em",
+              lineHeight: 1.1,
+              marginBottom: "10px",
+              fontFamily: "var(--font-heebo)",
+            }}
+          >
+            אני רוצה שהארגון שלי יצטרף
+          </h2>
+          <p style={{ fontSize: "15px", color: "#86868B", fontFamily: "var(--font-heebo)" }}>
+            בואו נגדיל לכם את הנטו ב-15 שניות.
+          </p>
+        </div>
 
+        {/* Progress */}
+        <div style={{ marginBottom: "28px" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              fontSize: "12px",
+              color: "#86868B",
+              marginBottom: "6px",
+              fontFamily: "var(--font-heebo)",
+            }}
+          >
+            <span>שלב {Math.min(step + 1, 3)} מתוך 3</span>
+            {step === 3 && <span style={{ color: "#0066CC" }}>אופציונלי</span>}
+          </div>
+          <div
+            style={{
+              height: "3px",
+              background: "rgba(0,0,0,0.1)",
+              borderRadius: "9999px",
+              overflow: "hidden",
+            }}
+          >
+            <motion.div
+              style={{
+                height: "100%",
+                background: "#0066CC",
+                borderRadius: "9999px",
+              }}
+              initial={{ width: 0 }}
+              animate={{ width: `${((Math.min(step, 2) + 1) / 3) * 100}%` }}
+              transition={{ duration: 0.4 }}
+            />
+          </div>
+        </div>
+
+        <AnimatePresence mode="wait">
           {loading ? (
-            <div className="flex flex-col items-center py-20 gap-4">
-              <div className="w-10 h-10 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
-              <p className="text-muted-foreground text-sm">מכין את התוצאה שלך...</p>
-            </div>
-          ) : (
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={step}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                transition={{ duration: 0.3 }}
+            <motion.div
+              key="loading"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="flex flex-col items-center py-16 gap-4"
+            >
+              <div
+                style={{
+                  width: 36,
+                  height: 36,
+                  border: "3px solid rgba(0,102,204,0.15)",
+                  borderTopColor: "#0066CC",
+                  borderRadius: "50%",
+                  animation: "spin 0.8s linear infinite",
+                }}
+              />
+              <p style={{ color: "#86868B", fontSize: "14px", fontFamily: "var(--font-heebo)" }}>
+                מכין את התוצאה שלך...
+              </p>
+            </motion.div>
+          ) : step === 0 ? (
+            <motion.div
+              key="step0"
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -14 }}
+              transition={{ duration: 0.28 }}
+            >
+              <h3
+                style={{
+                  fontSize: "20px",
+                  fontWeight: 700,
+                  marginBottom: "16px",
+                  textAlign: "center",
+                  fontFamily: "var(--font-heebo)",
+                }}
               >
-                <h3 className="text-base md:text-2xl font-bold mb-4 md:mb-6 text-center leading-tight">
-                  {questions[step].q}
-                </h3>
-                <div className="space-y-2 md:space-y-3">
-                  {questions[step].options.map((opt, i) => (
-                    <button
-                      key={i}
-                      onClick={() => handleSelect(opt)}
-                      className="w-full bg-white border border-border/60 rounded-lg md:rounded-xl text-right flex items-center gap-3 hover:border-primary/40 hover:bg-accent/30 transition-all duration-200 group"
-                      style={{ padding: '14px 16px' }}
-                    >
-                      <span className="text-lg md:text-xl flex-shrink-0">{opt.emoji}</span>
-                      <span className="font-medium text-sm md:text-base group-hover:text-primary transition-colors text-right">
-                        {opt.label}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              </motion.div>
-            </AnimatePresence>
+                מה שם הארגון שלך?
+              </h3>
+              <input
+                type="text"
+                value={orgName}
+                onChange={(e) => setOrgName(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleOrgNameNext()}
+                placeholder="לדוגמה: לאומי, טבע, מכבי..."
+                style={{
+                  width: "100%",
+                  padding: "14px 16px",
+                  fontSize: "16px",
+                  borderRadius: "12px",
+                  border: "1px solid rgba(0,0,0,0.12)",
+                  background: "#fff",
+                  fontFamily: "var(--font-heebo)",
+                  outline: "none",
+                  marginBottom: "12px",
+                  textAlign: "right",
+                  boxSizing: "border-box",
+                }}
+                autoFocus
+              />
+              <button
+                onClick={handleOrgNameNext}
+                disabled={!orgName.trim()}
+                style={{
+                  width: "100%",
+                  background: orgName.trim() ? "#0066CC" : "#C7C7CC",
+                  color: "#fff",
+                  fontWeight: 700,
+                  fontSize: "15px",
+                  padding: "14px",
+                  borderRadius: "12px",
+                  border: "none",
+                  cursor: orgName.trim() ? "pointer" : "default",
+                  fontFamily: "var(--font-heebo)",
+                  transition: "background 0.16s",
+                }}
+              >
+                המשך
+              </button>
+            </motion.div>
+          ) : step === 1 ? (
+            <motion.div
+              key="step1"
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -14 }}
+              transition={{ duration: 0.28 }}
+            >
+              <h3
+                style={{
+                  fontSize: "20px",
+                  fontWeight: 700,
+                  marginBottom: "16px",
+                  textAlign: "center",
+                  fontFamily: "var(--font-heebo)",
+                }}
+              >
+                כמה עובדים יש ב{orgName}?
+              </h3>
+              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                {ORG_SIZE_OPTIONS.map((opt) => (
+                  <button
+                    key={opt.label}
+                    onClick={() => handleOrgSize(opt.label)}
+                    style={{
+                      background: "#fff",
+                      border: "1px solid rgba(0,0,0,0.1)",
+                      borderRadius: "12px",
+                      padding: "14px 18px",
+                      fontSize: "15px",
+                      fontWeight: 500,
+                      fontFamily: "var(--font-heebo)",
+                      textAlign: "right",
+                      cursor: "pointer",
+                      transition: "border-color 0.15s, background 0.15s",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = "#0066CC";
+                      e.currentTarget.style.background = "#F0F6FF";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = "rgba(0,0,0,0.1)";
+                      e.currentTarget.style.background = "#fff";
+                    }}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          ) : step === 2 ? (
+            <motion.div
+              key="step2"
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -14 }}
+              transition={{ duration: 0.28 }}
+            >
+              <h3
+                style={{
+                  fontSize: "20px",
+                  fontWeight: 700,
+                  marginBottom: "16px",
+                  textAlign: "center",
+                  fontFamily: "var(--font-heebo)",
+                }}
+              >
+                מה התקציב המשוער למתנת חג לעובד?
+              </h3>
+              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                {HOLIDAY_BUDGET_OPTIONS.map((opt) => (
+                  <button
+                    key={opt.label}
+                    onClick={() => handleBudget(opt.label)}
+                    style={{
+                      background: "#fff",
+                      border: "1px solid rgba(0,0,0,0.1)",
+                      borderRadius: "12px",
+                      padding: "14px 18px",
+                      fontSize: "15px",
+                      fontWeight: 500,
+                      fontFamily: "var(--font-heebo)",
+                      textAlign: "right",
+                      cursor: "pointer",
+                      transition: "border-color 0.15s, background 0.15s",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = "#0066CC";
+                      e.currentTarget.style.background = "#F0F6FF";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = "rgba(0,0,0,0.1)";
+                      e.currentTarget.style.background = "#fff";
+                    }}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="step3"
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -14 }}
+              transition={{ duration: 0.28 }}
+            >
+              <h3
+                style={{
+                  fontSize: "20px",
+                  fontWeight: 700,
+                  marginBottom: "6px",
+                  textAlign: "center",
+                  fontFamily: "var(--font-heebo)",
+                }}
+              >
+                פעילויות רווחה קיימות
+              </h3>
+              <p
+                style={{
+                  fontSize: "13px",
+                  color: "#86868B",
+                  textAlign: "center",
+                  marginBottom: "16px",
+                  fontFamily: "var(--font-heebo)",
+                }}
+              >
+                בחרו הכל שרלוונטי (אופציונלי)
+              </p>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "10px",
+                  marginBottom: "16px",
+                }}
+              >
+                {ACTIVITIES_OPTIONS.map((a) => (
+                  <button
+                    key={a}
+                    onClick={() => toggleActivity(a)}
+                    style={{
+                      background: activities.includes(a) ? "#EBF3FF" : "#fff",
+                      border: activities.includes(a)
+                        ? "1.5px solid #0066CC"
+                        : "1px solid rgba(0,0,0,0.1)",
+                      borderRadius: "12px",
+                      padding: "12px 14px",
+                      fontSize: "14px",
+                      fontWeight: activities.includes(a) ? 700 : 500,
+                      fontFamily: "var(--font-heebo)",
+                      color: activities.includes(a) ? "#0066CC" : "#1D1D1F",
+                      cursor: "pointer",
+                      transition: "all 0.15s",
+                    }}
+                  >
+                    {a}
+                  </button>
+                ))}
+              </div>
+              <button
+                onClick={() => handleFinish(false)}
+                style={{
+                  width: "100%",
+                  background: "#0066CC",
+                  color: "#fff",
+                  fontWeight: 700,
+                  fontSize: "15px",
+                  padding: "14px",
+                  borderRadius: "12px",
+                  border: "none",
+                  cursor: "pointer",
+                  fontFamily: "var(--font-heebo)",
+                  marginBottom: "10px",
+                  transition: "background 0.15s",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "#0055AA")}
+                onMouseLeave={(e) => (e.currentTarget.style.background = "#0066CC")}
+              >
+                המשך
+              </button>
+              <button
+                onClick={() => handleFinish(true)}
+                style={{
+                  width: "100%",
+                  background: "transparent",
+                  color: "#86868B",
+                  fontWeight: 500,
+                  fontSize: "14px",
+                  padding: "12px",
+                  borderRadius: "12px",
+                  border: "1px solid rgba(0,0,0,0.08)",
+                  cursor: "pointer",
+                  fontFamily: "var(--font-heebo)",
+                  transition: "background 0.15s",
+                }}
+              >
+                דלג
+              </button>
+            </motion.div>
           )}
-        </motion.div>
+        </AnimatePresence>
       </div>
     </section>
   );

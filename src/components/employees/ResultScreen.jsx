@@ -1,417 +1,411 @@
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle } from "lucide-react";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
 import { base44 } from "@/api/base44Client";
-import { useToast } from "@/components/ui/use-toast";
 
-const TARGET_COUNT = 10;
+const TARGET = 5;
 
-const getInsights = (answer1) => {
-  if (answer1.includes("קניות")) {
-    return "עובד ממוצע עם הוצאות סופר יכול לחסוך ₪280-420 בחודש מהתקציב שהחברה כבר נותנת.";
-  } else if (answer1.includes("חשמל")) {
-    return "עובד שרוצה אלקטרוניקה יכול לחסוך ₪150-300 בפריט עם מחיר יבואן.";
-  } else if (answer1.includes("חופשות")) {
-    return "משפחה שרוצה לנוסע יכולה לחסוך עד ₪2,000 בטיול עם מחירים בלעדיים.";
-  } else if (answer1.includes("בגדים")) {
-    return "עובד שאוהב אופנה יכול לחסוך עד 25% על כל רכישה מהתקציב המוקדש.";
-  }
-  return "לפי התשובות שלך, אתה יכול להפיק יותר מהתקציב שהחברה כבר נותנת.";
-};
+const WA_MSG = (orgName) =>
+  `חבר׳ה, מצאתי דרך לקבל מחירי יבואן על Apple, הנחות קבועות בסופר והטבות נוספות - בלי שהארגון יוסיף תקציב. אם נהיה לפחות 5 עובדים שמעוניינים, אפשר להוציא את זה לדרך. מי איתי? https://boombuyonepage.com`;
 
-export default function ResultScreen({ surveyResult, sessionToken }) {
-  const { toast } = useToast();
-  const [currentCount, setCurrentCount] = useState(0);
-  const [formData, setFormData] = useState({
-    memberName: "",
-    memberPhone: "",
-    orgName: "",
-  });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [joinedData, setJoinedData] = useState(null);
-  const [hitMilestone, setHitMilestone] = useState(false);
+const LETTER_MSG = (orgName) =>
+  `שלום,
 
-  const insight = getInsights(surveyResult[0] || "");
+קבוצת עובדים מתוך ${orgName || "[שם הארגון]"} ביקשה לבחון את ההצטרפות למועדון BoomBuy.
 
-  // Check if already joined from this browser
-  useEffect(() => {
-    const checkAlreadyJoined = async () => {
-      try {
-        const allGroups = await base44.entities.GroupRequest.list();
-        for (const group of allGroups) {
-          const browserToken = localStorage.getItem(`groupmember_${group.orgKey}`);
-          if (browserToken) {
-            // Already joined with this org on this browser
-            setJoinedData({
-              orgKey: group.orgKey,
-              orgName: group.orgName,
-              count: group.currentCount || 1,
-              memberId: browserToken,
-            });
-            setCurrentCount(group.currentCount || 1);
-            break;
-          }
-        }
-      } catch (err) {
-        console.error("Error checking joined status:", err);
-      }
-    };
-    checkAlreadyJoined();
-  }, []);
+המהלך מאפשר לעובדים לקבל מחירי סיטונאות על מוצרי פרימיום, הנחות קבועות בסופר ובפארם, ומתנות חג גמישות - והכול ב-0 ש"ח תוספת תקציב לארגון.
 
-  const normalizeOrgKey = (name) => {
-    return name
-      .toLowerCase()
-      .trim()
-      .replace(/\s+/g, "_")
-      .replace(/[^\w_]/g, "");
-  };
+נשמח שתבחנו תיאום פגישת דמו קצרה מול צוות בום-ביי.`;
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
+export default function ResultScreen({ group, orgName, orgKey, orgSize, holidayBudget, activities }) {
+  const currentCount = group?.currentCount || 1;
+  const remaining = Math.max(0, TARGET - currentCount);
+  const [waCopied, setWaCopied] = useState(false);
+  const [letterCopied, setLetterCopied] = useState(false);
 
-    if (!formData.memberName || !formData.memberPhone || !formData.orgName) {
-      setError("שדות חובה חסרים");
-      return;
-    }
-
-    const orgKey = normalizeOrgKey(formData.orgName);
-
-    // Check if already joined with this org on this browser
-    const browserToken = localStorage.getItem(`groupmember_${orgKey}`);
-    if (browserToken) {
-      setError("כבר הצטרפת לארגון זה. אפשר לשתף עם חברים.");
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      // Get or create GroupRequest
-      const existing = await base44.entities.GroupRequest.filter({ orgKey });
-      let groupRequest;
-
-      if (existing.length > 0) {
-        groupRequest = existing[0];
-      } else {
-        // Create new GroupRequest
-        groupRequest = await base44.entities.GroupRequest.create({
-          orgName: formData.orgName,
-          orgKey: orgKey,
-          initiatorName: formData.memberName,
-          initiatorPhone: formData.memberPhone,
-          initiatorEmail: "",
-          currentCount: 1,
-          status: "new_lead",
-          source: "employees",
-          lastJoinedAt: new Date().toISOString(),
-        });
-      }
-
-      // Create GroupMember
-      const newBrowserToken = `browser_${Date.now()}_${Math.random()}`;
-      await base44.entities.GroupMember.create({
-        groupRequestId: groupRequest.id,
-        orgKey: orgKey,
-        orgName: formData.orgName,
-        memberName: formData.memberName,
-        memberPhone: formData.memberPhone,
-        memberEmail: "",
-        browserToken: newBrowserToken,
-        source: "employees",
-      });
-
-      // Update count
-      const newCount = (groupRequest.currentCount || 1) + 1;
-      const updatedGroup = await base44.entities.GroupRequest.update(groupRequest.id, {
-        currentCount: newCount,
-        lastJoinedAt: new Date().toISOString(),
-      });
-
-      // Update survey response
-      try {
-        const responses = await base44.entities.SurveyResponse.filter({ sessionToken });
-        if (responses.length > 0) {
-          for (const resp of responses) {
-            await base44.entities.SurveyResponse.update(resp.id, {
-              orgKey,
-              orgName: formData.orgName,
-            });
-          }
-        }
-      } catch (err) {
-        console.error("Error updating survey:", err);
-      }
-
-      // Save browser token
-      localStorage.setItem(`groupmember_${orgKey}`, newBrowserToken);
-
-      // Set joined state
-      setJoinedData({
-        orgKey,
-        orgName: formData.orgName,
-        count: newCount,
-        memberId: newBrowserToken,
-      });
-      setCurrentCount(newCount);
-
-      // Check if hit milestone
-      if (newCount === TARGET_COUNT) {
-        setHitMilestone(true);
-      }
-    } catch (err) {
-      setError("שגיאה בהצטרפות. אנא נסו שוב.");
-      console.error(err);
-    } finally {
-      setLoading(false);
+  const handleWACopy = async () => {
+    await navigator.clipboard.writeText(WA_MSG(orgName));
+    setWaCopied(true);
+    setTimeout(() => setWaCopied(false), 2000);
+    if (group?.id) {
+      base44.entities.GroupRequest.update(group.id, { whatsappCopied: true }).catch(() => {});
     }
   };
 
-  const progressPercent = (currentCount / TARGET_COUNT) * 100;
-
-  const handleShareWhatsApp = () => {
-    const msg = `חבר'ה 👋
-
-ענינו על סקר של BoomBuy —
-מתברר שאפשר לקבל יותר מהתקציב
-שהחברה כבר נותנת לנו.
-
-אנחנו אוספים 10 עובדים כדי
-להעביר בקשה ל-HR ביחד —
-ביחד זה הרבה יותר חזק.
-
-30 שניות — ממש שווה:
-https://www.boombuyonepage.com?orgKey=${joinedData?.orgKey}`;
-
-    const encoded = encodeURIComponent(msg);
-    window.open(`https://wa.me/?text=${encoded}`, "_blank");
+  const handleLetterCopy = async () => {
+    await navigator.clipboard.writeText(LETTER_MSG(orgName));
+    setLetterCopied(true);
+    setTimeout(() => setLetterCopied(false), 2000);
+    if (group?.id) {
+      base44.entities.GroupRequest.update(group.id, { letterCopied: true }).catch(() => {});
+    }
   };
 
-  const handleShareHR = () => {
-    const msg = `היי,
-
-${currentCount} עובדים אצלנו ביקשו שאעביר את זה אליך.
-
-BoomBuy מאפשרים לנו לקבל יותר מהתקציב שכבר קיים — הטבות יומיומיות, מחירי יבואן, מתנות חג גמישות — בלי שקל נוסף מהחברה.
-
-שווה 15 דקות?
-https://www.boombuyonepage.com
-
-לקביעת שיחה: 054-255-2222 (ארי)`;
-
-    const encoded = encodeURIComponent(msg);
-    window.open(`https://wa.me/?text=${encoded}`, "_blank");
-  };
-
-  // If hit milestone, show milestone banner
-  if (hitMilestone && joinedData) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-white to-secondary/20 flex items-center justify-center" style={{ overflowX: 'hidden', maxWidth: '100vw', padding: '24px 16px' }}>
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className="max-w-2xl mx-auto space-y-6"
-        >
-          {/* Milestone Banner */}
-          <motion.div
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            className="bg-gradient-to-r from-emerald-500 to-green-600 rounded-2xl md:rounded-3xl shadow-xl overflow-hidden"
-          >
-            <div className="p-8 md:p-10 text-white text-center">
-              <p className="text-4xl md:text-5xl mb-3">🎉</p>
-              <h2 className="text-2xl md:text-3xl font-black mb-2">
-                הגעתם ל-10 עובדים!
-              </h2>
-              <p className="text-sm md:text-base opacity-95 mb-6">
-                עכשיו זה הזמן לשלוח ל-HR ביחד
-              </p>
-
-              <button
-                onClick={handleShareHR}
-                className="w-full bg-white text-emerald-600 font-bold py-4 rounded-xl hover:bg-gray-50 transition-all text-base md:text-lg flex items-center justify-center gap-2 mb-3"
-              >
-                <MessageCircle className="w-5 h-5" />
-                שלחו ל-HR עכשיו — 10 עובדים מחכים
-              </button>
-
-              <button
-                onClick={() => setHitMilestone(false)}
-                className="w-full bg-white/20 text-white font-bold py-3 rounded-xl hover:bg-white/30 transition-all text-sm md:text-base"
-              >
-                חזור לשיתוף עם חברים
-              </button>
-            </div>
-          </motion.div>
-        </motion.div>
-      </div>
-    );
-  }
-
-  // If joined, show success with share buttons
-  if (joinedData) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-white to-secondary/20" style={{ overflowX: 'hidden', maxWidth: '100vw', padding: '24px 16px' }}>
-        <div className="max-w-2xl mx-auto space-y-6">
-          {/* Success Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="bg-emerald-50 border border-emerald-200 rounded-2xl md:rounded-3xl overflow-hidden"
-          >
-            <div className="p-6 md:p-8">
-              <h2 className="text-2xl md:text-3xl font-black text-emerald-700 mb-1">
-                ✓ הצטרפת!
-              </h2>
-              <p className="text-sm md:text-base text-emerald-600 mb-6">
-                אתה עובד מספר {currentCount} מ-{joinedData.orgName}
-              </p>
-
-              {/* Progress Bar */}
-              <div className="mb-4">
-                <div className="flex justify-between items-center text-xs md:text-sm text-foreground mb-2 font-medium">
-                  <span>{currentCount} מתוך {TARGET_COUNT} עובדים</span>
-                  <span>{Math.round(progressPercent)}%</span>
-                </div>
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: `${progressPercent}%` }}
-                  transition={{ duration: 0.6, ease: "easeOut" }}
-                  className="h-3 bg-emerald-500 rounded-full"
-                />
-              </div>
-
-              <p className="text-xs md:text-sm text-muted-foreground mb-6">
-                ככל שנהיה יותר — קשה יותר להתעלם מזה
-              </p>
-
-              <div className="space-y-2">
-                <button
-                  onClick={handleShareWhatsApp}
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 md:py-4 rounded-lg md:rounded-xl transition-all flex items-center justify-center gap-2 text-sm md:text-base"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  שתף עם חברים בוואטסאפ
-                </button>
-
-                <button
-                  onClick={handleShareHR}
-                  className="w-full bg-gray-200 hover:bg-gray-300 text-foreground font-bold py-2.5 md:py-3 rounded-lg md:rounded-xl transition-all text-sm md:text-base"
-                >
-                  שלח ל-HR ישירות
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    );
-  }
-
-  // Main form view
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-secondary/20" style={{ overflowX: 'hidden', maxWidth: '100vw', padding: '24px 16px' }}>
-      <div className="max-w-2xl mx-auto space-y-6">
-        {/* Personal Insight Card */}
+    <section
+      style={{
+        background: "#F5F5F7",
+        overflowX: "hidden",
+        maxWidth: "100vw",
+        padding: "60px 16px",
+      }}
+    >
+      <div className="max-w-xl mx-auto" style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+
+        {/* ── RESULT HEADER ── */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="bg-gray-100 rounded-2xl md:rounded-3xl border border-gray-200 overflow-hidden"
+          transition={{ duration: 0.45 }}
+          style={{
+            background: "#fff",
+            borderRadius: "20px",
+            border: "1px solid rgba(0,0,0,0.07)",
+            padding: "28px 24px",
+            textAlign: "center",
+          }}
         >
-          <div className="p-5 md:p-6">
-            <p className="text-sm md:text-base text-foreground leading-relaxed">
-              <span className="font-bold">לפי התשובות שלך:</span> {insight}
-            </p>
+          <h2
+            style={{
+              fontSize: "clamp(22px, 5vw, 28px)",
+              fontWeight: 900,
+              letterSpacing: "-0.025em",
+              marginBottom: "10px",
+              fontFamily: "var(--font-heebo)",
+            }}
+          >
+            מעולה. זה נראה רלוונטי לארגון שלכם.
+          </h2>
+          <p
+            style={{
+              fontSize: "15px",
+              color: "#86868B",
+              lineHeight: 1.6,
+              fontFamily: "var(--font-heebo)",
+              maxWidth: "440px",
+              margin: "0 auto 24px",
+            }}
+          >
+            עכשיו בואו נעשה את זה פשוט. אנחנו נעזור לכם להבין למי נכון לפנות, איך לאסוף עוד עובדים, ואיך לשלוח פנייה מסודרת.
+          </p>
+
+          {/* PRIMARY CTA */}
+          <a
+            href="https://wa.me/972542552222"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "block",
+              background: "#0066CC",
+              color: "#fff",
+              fontWeight: 800,
+              fontSize: "16px",
+              padding: "15px 20px",
+              borderRadius: "13px",
+              textDecoration: "none",
+              fontFamily: "var(--font-heebo)",
+              marginBottom: "10px",
+              transition: "background 0.15s",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = "#0055AA")}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "#0066CC")}
+          >
+            התייעצו עם ארי בוואטסאפ
+          </a>
+
+          {/* SECONDARY CTA */}
+          <button
+            onClick={handleWACopy}
+            style={{
+              width: "100%",
+              background: "transparent",
+              color: "#1D1D1F",
+              fontWeight: 600,
+              fontSize: "14px",
+              padding: "13px 20px",
+              borderRadius: "13px",
+              border: "1px solid rgba(0,0,0,0.1)",
+              cursor: "pointer",
+              fontFamily: "var(--font-heebo)",
+              transition: "background 0.15s",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = "#F5F5F7")}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+          >
+            {waCopied ? "הועתק!" : "העתק הודעה לקבוצת העובדים"}
+          </button>
+        </motion.div>
+
+        {/* ── PROGRESS BLOCK ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, delay: 0.08 }}
+          style={{
+            background: "#fff",
+            borderRadius: "16px",
+            border: "1px solid rgba(0,0,0,0.07)",
+            padding: "18px 20px",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "8px",
+            }}
+          >
+            <span
+              style={{
+                fontSize: "13px",
+                fontWeight: 700,
+                color: "#1D1D1F",
+                fontFamily: "var(--font-heebo)",
+              }}
+            >
+              {currentCount}/{TARGET} עובדים הצטרפו
+            </span>
+            {remaining > 0 && (
+              <span
+                style={{
+                  fontSize: "12px",
+                  color: "#86868B",
+                  fontFamily: "var(--font-heebo)",
+                }}
+              >
+                חסרים עוד {remaining} לפני פנייה מסודרת
+              </span>
+            )}
+          </div>
+          <div
+            style={{
+              height: "6px",
+              background: "rgba(0,0,0,0.07)",
+              borderRadius: "9999px",
+              overflow: "hidden",
+            }}
+          >
+            <motion.div
+              style={{ height: "100%", background: "#0066CC", borderRadius: "9999px" }}
+              initial={{ width: 0 }}
+              animate={{ width: `${Math.min((currentCount / TARGET) * 100, 100)}%` }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            />
           </div>
         </motion.div>
 
-        {/* Main CTA Card - Dark Blue */}
-         <motion.div
-           initial={{ opacity: 0, y: 20 }}
-           animate={{ opacity: 1, y: 0 }}
-           transition={{ duration: 0.5, delay: 0.1 }}
-           className="bg-gradient-to-b from-blue-900 to-blue-950 rounded-2xl md:rounded-3xl shadow-xl overflow-hidden"
-         >
-           <div className="p-5 md:p-10 text-white">
-             <h2 className="text-xl md:text-3xl font-black mb-6 leading-tight">
-               עזור לנו להגיע ל-10 עובדים כדי שנוכל להעביר את זה ל-HR
-             </h2>
+        {/* ── 3 ACTIONS ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, delay: 0.14 }}
+          style={{
+            background: "#fff",
+            borderRadius: "20px",
+            border: "1px solid rgba(0,0,0,0.07)",
+            padding: "24px",
+          }}
+        >
+          <h3
+            style={{
+              fontSize: "18px",
+              fontWeight: 900,
+              lineHeight: 1.3,
+              marginBottom: "20px",
+              fontFamily: "var(--font-heebo)",
+              letterSpacing: "-0.015em",
+            }}
+          >
+            בואו נכניס את בום-ביי לארגון שלכם<br />
+            ב-3 פעולות פשוטות
+          </h3>
 
-            {/* Progress Bar */}
-            <div className="mb-6">
-              <div className="flex justify-between items-center text-xs md:text-sm mb-2 opacity-90">
-                <span>עובדים שנרשמו</span>
-                <span>{currentCount} מתוך {TARGET_COUNT}</span>
+          {[
+            {
+              num: "1",
+              title: "פונים נכון",
+              text: "נבין יחד מי הגורם הנכון בארגון - ועד העובדים, מנהלת הרווחה או גורם תקציבי.",
+            },
+            {
+              num: "2",
+              title: "אוספים עוד 4",
+              text: "שולחים הודעה מוכנה בקבוצת העובדים. ברגע שיש לפחות 5 שמעוניינים - הפנייה כבר נשמעת אחרת.",
+            },
+            {
+              num: "3",
+              title: "שולחים פנייה מסודרת",
+              text: "משתמשים במכתב המוכן להנהלה או לוועד. משם אנחנו כבר עוזרים לכם לסגור את כל השאר.",
+            },
+          ].map((action, i) => (
+            <div
+              key={i}
+              style={{
+                display: "flex",
+                gap: "14px",
+                alignItems: "flex-start",
+                marginBottom: i < 2 ? "18px" : 0,
+              }}
+            >
+              <div
+                style={{
+                  flexShrink: 0,
+                  width: 32,
+                  height: 32,
+                  background: "#EBF3FF",
+                  borderRadius: "50%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontWeight: 800,
+                  fontSize: "13px",
+                  color: "#0066CC",
+                  fontFamily: "var(--font-heebo)",
+                }}
+              >
+                {action.num}
               </div>
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${progressPercent}%` }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                className="h-3 bg-white/40 rounded-full overflow-hidden"
-              >
-                <motion.div
-                  animate={{ opacity: [1, 0.7, 1] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                  className="h-full bg-white"
-                />
-              </motion.div>
+              <div>
+                <p
+                  style={{
+                    fontWeight: 700,
+                    fontSize: "14px",
+                    color: "#1D1D1F",
+                    marginBottom: "3px",
+                    fontFamily: "var(--font-heebo)",
+                  }}
+                >
+                  {action.title}
+                </p>
+                <p
+                  style={{
+                    fontSize: "13px",
+                    color: "#86868B",
+                    lineHeight: 1.6,
+                    fontFamily: "var(--font-heebo)",
+                  }}
+                >
+                  {action.text}
+                </p>
+              </div>
             </div>
+          ))}
+        </motion.div>
 
-            <p className="text-sm md:text-base opacity-90 mb-8">
-              ככל שנהיה יותר — קשה יותר להתעלם מזה
+        {/* ── TOOLBOX ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, delay: 0.2 }}
+          style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+        >
+          {/* WhatsApp message */}
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: "16px",
+              border: "1px solid rgba(0,0,0,0.07)",
+              padding: "20px 20px 16px",
+            }}
+          >
+            <p
+              style={{
+                fontWeight: 700,
+                fontSize: "14px",
+                marginBottom: "10px",
+                fontFamily: "var(--font-heebo)",
+              }}
+            >
+              הודעה מוכנה לקבוצת העובדים
             </p>
+            <div
+              style={{
+                background: "#F5F5F7",
+                borderRadius: "10px",
+                padding: "12px 14px",
+                fontSize: "13px",
+                color: "#444",
+                lineHeight: 1.65,
+                fontFamily: "var(--font-heebo)",
+                marginBottom: "10px",
+                whiteSpace: "pre-line",
+              }}
+            >
+              {WA_MSG(orgName)}
+            </div>
+            <button
+              onClick={handleWACopy}
+              style={{
+                background: waCopied ? "#34C759" : "#0066CC",
+                color: "#fff",
+                fontWeight: 700,
+                fontSize: "13px",
+                padding: "10px 18px",
+                borderRadius: "10px",
+                border: "none",
+                cursor: "pointer",
+                fontFamily: "var(--font-heebo)",
+                transition: "background 0.15s",
+              }}
+            >
+              {waCopied ? "הועתק!" : "העתק הודעה"}
+            </button>
+          </div>
 
-            {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
-              <input
-                type="text"
-                placeholder="שם פרטי *"
-                value={formData.memberName}
-                onChange={(e) => setFormData({ ...formData, memberName: e.target.value })}
-                className="w-full px-4 md:px-5 py-3 md:py-3.5 rounded-lg bg-white/95 text-foreground placeholder-gray-500 text-sm md:text-base"
-              />
-
-              <input
-                type="tel"
-                placeholder="טלפון *"
-                value={formData.memberPhone}
-                onChange={(e) => setFormData({ ...formData, memberPhone: e.target.value })}
-                className="w-full px-4 md:px-5 py-3 md:py-3.5 rounded-lg bg-white/95 text-foreground placeholder-gray-500 text-sm md:text-base"
-              />
-
-              <input
-                type="text"
-                placeholder="שם הארגון *"
-                value={formData.orgName}
-                onChange={(e) => setFormData({ ...formData, orgName: e.target.value })}
-                className="w-full px-4 md:px-5 py-3 md:py-3.5 rounded-lg bg-white/95 text-foreground placeholder-gray-500 text-sm md:text-base"
-              />
-
-              {error && (
-                <p className="text-red-200 text-xs md:text-sm font-medium">{error}</p>
-              )}
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-white text-blue-900 font-bold py-3.5 md:py-4 rounded-lg md:rounded-xl hover:bg-gray-100 transition-all disabled:opacity-50 text-base md:text-lg mt-6"
-              >
-                {loading ? "הצטרפות..." : "הצטרף לבקשה + שתף עם חברים"}
-              </button>
-
-              <p className="text-xs md:text-sm text-white/70 text-center">
-                אנונימי לחלוטין · לא מוכרים את הפרטים שלך
-              </p>
-            </form>
+          {/* Letter */}
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: "16px",
+              border: "1px solid rgba(0,0,0,0.07)",
+              padding: "20px 20px 16px",
+            }}
+          >
+            <p
+              style={{
+                fontWeight: 700,
+                fontSize: "14px",
+                marginBottom: "10px",
+                fontFamily: "var(--font-heebo)",
+              }}
+            >
+              המכתב המוכן להנהלה
+            </p>
+            <div
+              style={{
+                background: "#F5F5F7",
+                borderRadius: "10px",
+                padding: "12px 14px",
+                fontSize: "13px",
+                color: "#444",
+                lineHeight: 1.65,
+                fontFamily: "var(--font-heebo)",
+                marginBottom: "10px",
+                whiteSpace: "pre-line",
+              }}
+            >
+              {LETTER_MSG(orgName)}
+            </div>
+            <button
+              onClick={handleLetterCopy}
+              style={{
+                background: letterCopied ? "#34C759" : "#0066CC",
+                color: "#fff",
+                fontWeight: 700,
+                fontSize: "13px",
+                padding: "10px 18px",
+                borderRadius: "10px",
+                border: "none",
+                cursor: "pointer",
+                fontFamily: "var(--font-heebo)",
+                transition: "background 0.15s",
+              }}
+            >
+              {letterCopied ? "הועתק!" : "העתק מכתב"}
+            </button>
           </div>
         </motion.div>
+
       </div>
-    </div>
+    </section>
   );
 }
