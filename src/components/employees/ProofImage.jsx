@@ -143,10 +143,11 @@ export default function ProofImage({ imageUrl }) {
                       fontFamily: "var(--font-heebo)",
                       letterSpacing: "-0.025em",
                       lineHeight: 1.1,
-                    }}
-                  >
-                    {card.value}
-                  </span>
+                      fontSize: "28px",
+                      }}
+                      >
+                      {card.value}
+                      </span>
                 </div>
               ))}
             </div>
