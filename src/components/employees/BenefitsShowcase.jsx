@@ -331,7 +331,7 @@ function CategoryModal({ category, onClose, onCTA }) {
               )}
             </div>
 
-            {/* צד תוכן */
+            {/* צד תוכן */}
             <div className="p-3 sm:p-5 lg:p-8 flex flex-col overflow-y-auto max-h-[60vh] lg:max-h-full">
               <div className="mb-3 sm:mb-6">
                 <div className="flex items-center gap-2 mb-3">
