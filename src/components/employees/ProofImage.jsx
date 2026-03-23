@@ -1,6 +1,12 @@
 import React from "react";
 import { motion } from "framer-motion";
 
+const proofCards = [
+  { label: "מחיר לעובדים", value: "3,299 ₪" },
+  { label: "מחיר נמוך בזאפ", value: "5,299 ₪" },
+  { label: "החיסכון שלך", value: "2,000 ₪", highlight: true },
+];
+
 export default function ProofImage({ imageUrl }) {
   const scrollToBenefits = () => {
     document.getElementById("benefits-showcase")?.scrollIntoView({ behavior: "smooth" });
@@ -8,8 +14,8 @@ export default function ProofImage({ imageUrl }) {
 
   return (
     <section
-      className="bg-white"
       style={{
+        background: "#fff",
         overflowX: "hidden",
         maxWidth: "100vw",
         borderTop: "1px solid rgba(0,0,0,0.06)",
@@ -20,30 +26,28 @@ export default function ProofImage({ imageUrl }) {
         style={{ paddingTop: "96px", paddingBottom: "108px" }}
       >
 
-        {/* ── DESKTOP: image left, text right ── */}
+        {/* ── DESKTOP ── */}
         <div
           className="hidden md:grid items-center"
-          style={{ gridTemplateColumns: "1fr 0.8fr", gap: "68px" }}
+          style={{ gridTemplateColumns: "0.95fr 0.82fr", gap: "56px" }}
         >
           {/* IMAGE — LEFT */}
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.65, ease: "easeOut" }}
             className="flex justify-center items-center"
           >
-            <motion.img
+            <img
               src={imageUrl}
               alt="הטבה אמיתית לעובדים"
-              whileHover={{ y: -4 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
               style={{
-                width: "clamp(480px, 50vw, 700px)",
+                width: "clamp(360px, 40vw, 560px)",
                 height: "auto",
                 objectFit: "contain",
                 display: "block",
-                filter: "drop-shadow(0 24px 56px rgba(0,0,0,0.13))",
+                filter: "drop-shadow(0 20px 48px rgba(0,0,0,0.13))",
               }}
             />
           </motion.div>
@@ -59,22 +63,22 @@ export default function ProofImage({ imageUrl }) {
             {/* H2 */}
             <h2
               style={{
-                fontSize: "clamp(58px, 4.8vw, 68px)",
-                lineHeight: 1.04,
+                fontSize: "clamp(56px, 4.6vw, 66px)",
+                lineHeight: 1.05,
                 letterSpacing: "-0.03em",
                 fontWeight: 900,
-                marginBottom: "22px",
+                marginBottom: "20px",
                 fontFamily: "var(--font-heebo)",
               }}
             >
-              <span style={{ display: "block" }}>הנה ההוכחה איך</span>
-              <span style={{ display: "block", color: "#0066CC" }}>הנטו שלך יגדל</span>
+              <span style={{ display: "block" }}>ככה נראית</span>
+              <span style={{ display: "block", color: "#0066CC" }}>הטבה אמיתית</span>
             </h2>
 
             {/* Subtitle */}
             <p
               style={{
-                fontSize: "clamp(19px, 1.6vw, 23px)",
+                fontSize: "clamp(19px, 1.5vw, 23px)",
                 lineHeight: 1.6,
                 color: "#86868B",
                 fontWeight: 400,
@@ -83,52 +87,60 @@ export default function ProofImage({ imageUrl }) {
                 fontFamily: "var(--font-heebo)",
               }}
             >
-              כאן רואים בפועל איך תקציב העובדים נותן יותר.
-              מחיר לעובדים, מחיר נמוך בזאפ, והחיסכון שנשאר אצלך.
+              דוגמאות חריגות לחיסכון מהשנה האחרונה.
+              הנה הוכחה שהנטו שלך שווה הרבה יותר.
             </p>
 
-            {/* Proof strip */}
+            {/* Proof Cards */}
             <div
               style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0",
-                background: "rgba(0,102,204,0.05)",
-                border: "1px solid rgba(0,102,204,0.12)",
-                borderRadius: "12px",
-                padding: "12px 18px",
-                marginBottom: "22px",
-                backdropFilter: "blur(8px)",
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 1fr)",
+                gap: "10px",
+                marginBottom: "24px",
+                width: "100%",
               }}
             >
-              {[
-                "מחיר לעובדים",
-                "מחיר נמוך בזאפ",
-                "החיסכון שלך",
-              ].map((item, i) => (
-                <React.Fragment key={i}>
+              {proofCards.map((card, i) => (
+                <div
+                  key={i}
+                  style={{
+                    background: card.highlight ? "rgba(0,102,204,0.05)" : "#F7F7F8",
+                    border: card.highlight
+                      ? "1px solid rgba(0,102,204,0.18)"
+                      : "1px solid rgba(0,0,0,0.07)",
+                    borderRadius: "18px",
+                    padding: "16px 14px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-end",
+                    textAlign: "right",
+                    gap: "4px",
+                  }}
+                >
                   <span
                     style={{
                       fontSize: "13px",
-                      fontWeight: 700,
-                      color: i === 2 ? "#0066CC" : "#1D1D1F",
-                      whiteSpace: "nowrap",
+                      fontWeight: 500,
+                      color: "#86868B",
+                      fontFamily: "var(--font-heebo)",
                     }}
                   >
-                    {item}
+                    {card.label}
                   </span>
-                  {i < 2 && (
-                    <span
-                      style={{
-                        margin: "0 10px",
-                        color: "rgba(0,0,0,0.18)",
-                        fontSize: "13px",
-                      }}
-                    >
-                      |
-                    </span>
-                  )}
-                </React.Fragment>
+                  <span
+                    style={{
+                      fontSize: "24px",
+                      fontWeight: 900,
+                      color: card.highlight ? "#0066CC" : "#1D1D1F",
+                      fontFamily: "var(--font-heebo)",
+                      letterSpacing: "-0.02em",
+                      lineHeight: 1.1,
+                    }}
+                  >
+                    {card.value}
+                  </span>
+                </div>
               ))}
             </div>
 
@@ -157,34 +169,36 @@ export default function ProofImage({ imageUrl }) {
           </motion.div>
         </div>
 
-        {/* ── MOBILE: text first, then image ── */}
-        <div className="flex md:hidden flex-col items-center text-center" style={{ gap: "0" }}>
-
+        {/* ── MOBILE ── */}
+        <div
+          className="flex md:hidden flex-col items-center text-center"
+          style={{ gap: "0" }}
+        >
           {/* H2 */}
           <motion.h2
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.55 }}
+            transition={{ duration: 0.5 }}
             style={{
               fontSize: "clamp(40px, 9vw, 46px)",
               lineHeight: 1.05,
               letterSpacing: "-0.028em",
               fontWeight: 900,
-              marginBottom: "18px",
+              marginBottom: "16px",
               fontFamily: "var(--font-heebo)",
             }}
           >
-            <span style={{ display: "block" }}>הנה ההוכחה איך</span>
-            <span style={{ display: "block", color: "#0066CC" }}>הנטו שלך יגדל</span>
+            <span style={{ display: "block" }}>ככה נראית</span>
+            <span style={{ display: "block", color: "#0066CC" }}>הטבה אמיתית</span>
           </motion.h2>
 
           {/* Subtitle */}
           <motion.p
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.08 }}
+            transition={{ duration: 0.5, delay: 0.07 }}
             style={{
               fontSize: "clamp(17px, 4vw, 20px)",
               lineHeight: 1.6,
@@ -195,59 +209,73 @@ export default function ProofImage({ imageUrl }) {
               fontFamily: "var(--font-heebo)",
             }}
           >
-            כאן רואים בפועל איך תקציב העובדים נותן יותר.
-            מחיר לעובדים, מחיר נמוך בזאפ, והחיסכון שנשאר אצלך.
+            דוגמאות חריגות לחיסכון מהשנה האחרונה.
+            הנה הוכחה שהנטו שלך שווה הרבה יותר.
           </motion.p>
 
-          {/* Proof strip mobile */}
+          {/* Proof Cards mobile */}
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.45, delay: 0.12 }}
+            transition={{ duration: 0.45, delay: 0.1 }}
             style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexWrap: "wrap",
-              gap: "6px 10px",
-              background: "rgba(0,102,204,0.05)",
-              border: "1px solid rgba(0,102,204,0.12)",
-              borderRadius: "12px",
-              padding: "11px 16px",
+              display: "grid",
+              gridTemplateColumns: "repeat(3, 1fr)",
+              gap: "8px",
               marginBottom: "20px",
               width: "100%",
             }}
           >
-            {[
-              "מחיר לעובדים",
-              "מחיר נמוך בזאפ",
-              "החיסכון שלך",
-            ].map((item, i) => (
-              <React.Fragment key={i}>
+            {proofCards.map((card, i) => (
+              <div
+                key={i}
+                style={{
+                  background: card.highlight ? "rgba(0,102,204,0.05)" : "#F7F7F8",
+                  border: card.highlight
+                    ? "1px solid rgba(0,102,204,0.18)"
+                    : "1px solid rgba(0,0,0,0.07)",
+                  borderRadius: "16px",
+                  padding: "12px 10px",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  textAlign: "center",
+                  gap: "3px",
+                }}
+              >
                 <span
                   style={{
-                    fontSize: "12px",
-                    fontWeight: 700,
-                    color: i === 2 ? "#0066CC" : "#1D1D1F",
-                    whiteSpace: "nowrap",
+                    fontSize: "11px",
+                    fontWeight: 500,
+                    color: "#86868B",
+                    fontFamily: "var(--font-heebo)",
                   }}
                 >
-                  {item}
+                  {card.label}
                 </span>
-                {i < 2 && (
-                  <span style={{ color: "rgba(0,0,0,0.18)", fontSize: "12px" }}>|</span>
-                )}
-              </React.Fragment>
+                <span
+                  style={{
+                    fontSize: "18px",
+                    fontWeight: 900,
+                    color: card.highlight ? "#0066CC" : "#1D1D1F",
+                    fontFamily: "var(--font-heebo)",
+                    letterSpacing: "-0.02em",
+                    lineHeight: 1.1,
+                  }}
+                >
+                  {card.value}
+                </span>
+              </div>
             ))}
           </motion.div>
 
-          {/* CTA mobile */}
+          {/* CTA */}
           <motion.button
             initial={{ opacity: 0, scale: 0.97 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.15 }}
+            transition={{ duration: 0.4, delay: 0.12 }}
             onClick={scrollToBenefits}
             style={{
               background: "#F5F5F7",
@@ -266,21 +294,21 @@ export default function ProofImage({ imageUrl }) {
             גלה את כל ההטבות
           </motion.button>
 
-          {/* Image mobile */}
+          {/* Image */}
           <motion.img
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            transition={{ duration: 0.6, delay: 0.08 }}
             src={imageUrl}
             alt="הטבה אמיתית לעובדים"
             style={{
-              width: "clamp(260px, 86vw, 400px)",
+              width: "clamp(240px, 82vw, 380px)",
               height: "auto",
               objectFit: "contain",
               display: "block",
               marginInline: "auto",
-              filter: "drop-shadow(0 14px 36px rgba(0,0,0,0.12))",
+              filter: "drop-shadow(0 12px 32px rgba(0,0,0,0.11))",
             }}
           />
         </div>
