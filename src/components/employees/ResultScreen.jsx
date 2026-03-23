@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { base44 } from "@/api/base44Client";
 
 const TARGET = 5;
 
-const WA_MSG = (orgName) =>
-  `חבר׳ה, מצאתי דרך לקבל מחירי יבואן על Apple, הנחות קבועות בסופר והטבות נוספות - בלי שהארגון יוסיף תקציב. אם נהיה לפחות 5 עובדים שמעוניינים, אפשר להוציא את זה לדרך. מי איתי? https://boombuyonepage.com`;
+const WA_MSG = () =>
+  `חבר׳ה, מצאתי דרך לקבל מחירי יבואן על Apple, הנחות קבועות בסופר והטבות נוספות - בלי שהארגון יוסיף תקציב. אם נהיה לפחות 5 עובדים שמעוניינים, אפשר להוציא את זה לדרך. מי איתי? https://boom-perk-flow.base44.app`;
 
 const LETTER_MSG = (orgName) =>
   `שלום,
@@ -17,13 +17,24 @@ const LETTER_MSG = (orgName) =>
 נשמח שתבחנו תיאום פגישת דמו קצרה מול צוות בום-ביי.`;
 
 export default function ResultScreen({ group, orgName, orgKey, orgSize, holidayBudget, activities }) {
+  const topRef = useRef(null);
   const currentCount = group?.currentCount || 1;
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (topRef.current) {
+        topRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }, 50);
+  }, []);
   const remaining = Math.max(0, TARGET - currentCount);
   const [waCopied, setWaCopied] = useState(false);
   const [letterCopied, setLetterCopied] = useState(false);
 
   const handleWACopy = async () => {
-    await navigator.clipboard.writeText(WA_MSG(orgName));
+    await navigator.clipboard.writeText(WA_MSG());
     setWaCopied(true);
     setTimeout(() => setWaCopied(false), 2000);
     if (group?.id) {
@@ -42,6 +53,7 @@ export default function ResultScreen({ group, orgName, orgKey, orgSize, holidayB
 
   return (
     <section
+      ref={topRef}
       style={{
         background: "#F5F5F7",
         overflowX: "hidden",
