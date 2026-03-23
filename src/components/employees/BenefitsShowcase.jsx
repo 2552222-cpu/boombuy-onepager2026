@@ -504,6 +504,14 @@ export default function BenefitsShowcase() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [activeCategory, setActiveCategory] = useState(null);
 
+  const scrollToSurvey = () => {
+    setSelectedCategory(null);
+    setActiveCategory(null);
+    setTimeout(() => {
+      document.getElementById("survey-section")?.scrollIntoView({ behavior: "smooth" });
+    }, 200);
+  };
+
   const handleCardClick = (cat) => {
     setActiveCategory(cat.id);
     setSelectedCategory(cat);
