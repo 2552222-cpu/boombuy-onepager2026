@@ -60,7 +60,7 @@ export default function EmployeesLanding() {
   }
 
   return (
-    <div className="min-h-screen font-heebo flex flex-col" dir="rtl" style={{ overflowX: 'hidden', maxWidth: '100vw' }}>
+    <div className="min-h-screen font-heebo flex flex-col" dir="rtl" style={{ overflowX: 'hidden', maxWidth: '100vw', paddingBottom: '72px' }}>
       <GlobalHeader />
       <div className="flex-1">
         <Hero />

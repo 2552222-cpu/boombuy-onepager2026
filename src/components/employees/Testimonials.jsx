@@ -60,7 +60,7 @@ export default function Testimonials() {
               className="bg-secondary/40 rounded-lg md:rounded-2xl p-4 md:p-6 border border-border/30"
             >
               <Stars />
-              <p className="text-xs md:text-sm leading-relaxed mb-3 md:mb-4 text-foreground/90">
+              <p className="text-sm md:text-[15px] leading-relaxed mb-3 md:mb-4 text-foreground/90">
                 "{t.text}"
               </p>
               <div className="flex items-center gap-2">
@@ -68,8 +68,8 @@ export default function Testimonials() {
                   {t.name[0]}
                 </div>
                 <div className="min-w-0">
-                  <p className="text-xs md:text-sm font-semibold truncate">{t.name}</p>
-                  <p className="text-[10px] md:text-xs text-muted-foreground truncate">{t.org}</p>
+                  <p className="text-sm md:text-[15px] font-semibold truncate">{t.name}</p>
+                  <p className="text-xs md:text-sm text-muted-foreground truncate">{t.org}</p>
                 </div>
               </div>
             </motion.div>

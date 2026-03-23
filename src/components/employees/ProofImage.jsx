@@ -116,9 +116,8 @@ export default function ProofImage({ imageUrl }) {
                     padding: "14px 12px 12px",
                     display: "flex",
                     flexDirection: "column",
-                    alignItems: "flex-end",
-                    textAlign: "right",
-                    gap: "5px",
+                    alignItems: "center",
+                    textAlign: "center",
                     boxShadow: card.highlight
                       ? "0 2px 12px rgba(0,102,204,0.08)"
                       : "0 1px 6px rgba(0,0,0,0.04)",

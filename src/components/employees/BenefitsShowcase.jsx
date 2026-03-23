@@ -260,8 +260,8 @@ function CategoryModal({ category, onClose, onCTA }) {
                   <button
                     type="button"
                     onClick={goToNext}
-                    className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-white shadow-md border border-black/8 flex items-center justify-center hover:bg-secondary transition-colors"
-                    style={{ transform: 'translateY(-50%)' }}
+                    className="absolute z-10 w-12 h-12 rounded-full bg-white/95 shadow-lg border border-black/10 flex items-center justify-center hover:bg-secondary transition-colors"
+                    style={{ right: '8px', top: '50%', transform: 'translateY(-50%)' }}
                   >
                     <ChevronLeft className="w-5 h-5 text-foreground" />
                   </button>
@@ -286,8 +286,8 @@ function CategoryModal({ category, onClose, onCTA }) {
                   <button
                     type="button"
                     onClick={goToPrevious}
-                    className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-white shadow-md border border-black/8 flex items-center justify-center hover:bg-secondary transition-colors"
-                    style={{ transform: 'translateY(-50%)' }}
+                    className="absolute z-10 w-12 h-12 rounded-full bg-white/95 shadow-lg border border-black/10 flex items-center justify-center hover:bg-secondary transition-colors"
+                    style={{ left: '8px', top: '50%', transform: 'translateY(-50%)' }}
                   >
                     <ChevronLeft className="w-5 h-5 text-foreground transform rotate-180" />
                   </button>
