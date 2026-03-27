@@ -296,6 +296,27 @@ export default function Hero() {
             משלם. פשוט מקבלים יותר.
           </motion.p>
 
+          {/* Visual mobile */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.18 }}
+            className="flex justify-center"
+            style={{ marginTop: "0", marginBottom: "24px" }}
+          >
+            <img
+              src={HERO_IMAGE}
+              alt="הטבות לעובדים"
+              style={{
+                width: "clamp(220px, 78vw, 340px)",
+                height: "auto",
+                display: "block",
+                filter: "drop-shadow(0 12px 32px rgba(0,0,0,0.11))",
+                marginInline: "auto",
+              }}
+            />
+          </motion.div>
+
           {/* CTA mobile */}
           <motion.div
             initial={{ opacity: 0, scale: 0.97 }}
@@ -342,27 +363,6 @@ export default function Hero() {
             <span style={{ fontSize: "13px", color: "#86868B" }}>
               3 שאלות · 15 שניות · בלי הרשמה
             </span>
-          </motion.div>
-
-          {/* Visual mobile */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.22 }}
-            className="flex justify-center"
-            style={{ marginTop: "8px" }}
-          >
-            <img
-              src={HERO_IMAGE}
-              alt="הטבות לעובדים"
-              style={{
-                width: "clamp(220px, 78vw, 340px)",
-                height: "auto",
-                display: "block",
-                filter: "drop-shadow(0 12px 32px rgba(0,0,0,0.11))",
-                marginInline: "auto",
-              }}
-            />
           </motion.div>
         </div>
 

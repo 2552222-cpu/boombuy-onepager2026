@@ -90,7 +90,7 @@ const categories = [
     previewImage: DAILY_PREVIEW,
     mainImage: DAILY_EXTRA[0],
     extraImages: DAILY_EXTRA.slice(1),
-    note: "מצאתם מחיר נמוך יותר בישראל? אנחנו מחזירים את ההפרש.",
+    note: null,
   },
   {
     id: "tech",
@@ -550,7 +550,7 @@ export default function BenefitsShowcase() {
           <h2 className="text-2xl md:text-3xl font-extrabold mb-2">
             מה בדיוק מחכה לך?
           </h2>
-          <p className="text-muted-foreground text-sm">לחצו על קטגוריה לראות דוגמאות מהשנה האחרונה</p>
+          <p className="text-muted-foreground text-sm">פתחו כל קטגוריה כדי לראות עוד דוגמאות אמיתיות מהשנה האחרונה</p>
         </motion.div>
 
         {/* 2+4 Grid */}

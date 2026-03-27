@@ -119,6 +119,9 @@ export default function Survey() {
           <p style={{ fontSize: "15px", color: "#86868B", fontFamily: "var(--font-heebo)" }}>
             בואו נגדיל לכם את הנטו ב-15 שניות.
           </p>
+          <div style={{ display: "inline-block", background: "rgba(0,102,204,0.08)", border: "1px solid rgba(0,102,204,0.15)", borderRadius: "999px", padding: "5px 16px", marginTop: "10px" }}>
+            <span style={{ fontSize: "12.5px", fontWeight: 600, color: "#0066CC", fontFamily: "var(--font-heebo)" }}>מתאים בעיקר לארגונים עם 100 עובדים ומעלה</span>
+          </div>
         </div>
 
         {/* Progress */}

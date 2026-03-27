@@ -3,7 +3,8 @@ import { useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { base44 } from "@/api/base44Client";
 
-const TARGET = 5;
+const TARGET_1 = 10;
+const TARGET_2 = 20;
 
 const BASE_URL = "https://boom-perk-flow.base44.app";
 
@@ -28,11 +29,15 @@ function markJoined(orgKey) {
 
 function waMsg(orgName, count) {
   const link = `${BASE_URL}/join/${encodeURIComponent(orgName?.toLowerCase().replace(/\s+/g, "_") || "")}`;
-  const remaining = Math.max(0, TARGET - count);
-  if (count >= TARGET) {
-    return `חבר׳ה, פתחנו בקשה לצרף את ${orgName} ל-BoomBuy. זה יכול לתת לנו מחירי יבואן על Apple, הנחות קבועות בסופר והטבות נוספות - בלי תוספת תקציב לארגון. כבר עברנו את ה-5, וכל הצטרפות נוספת מחזקת את הפנייה. הצטרפו כאן: ${link}`;
+  if (count >= TARGET_2) {
+    return `חבר׳ה, פתחנו בקשה לצרף את ${orgName} ל-BoomBuy. זה יכול לתת לנו מחירי יבואן על Apple, הנחות קבועות בסופר, אופנה, חופשות והטבות נוספות - בלי תוספת תקציב לארגון. כבר עברנו את ה-20, וכל הצטרפות נוספת מחזקת עוד יותר את הפנייה. הצטרפו כאן: ${link}`;
   }
-  return `חבר׳ה, פתחנו בקשה לצרף את ${orgName} ל-BoomBuy. זה יכול לתת לנו מחירי יבואן על Apple, הנחות קבועות בסופר והטבות נוספות - בלי תוספת תקציב לארגון. כבר ${count} עובדים הצטרפו. חסרים לנו עוד ${remaining} כדי להגיע ל-5. הצטרפו כאן: ${link}`;
+  if (count >= TARGET_1) {
+    const remaining = TARGET_2 - count;
+    return `חבר׳ה, פתחנו בקשה לצרף את ${orgName} ל-BoomBuy. זה יכול לתת לנו מחירי יבואן על Apple, הנחות קבועות בסופר, אופנה, חופשות והטבות נוספות - בלי תוספת תקציב לארגון. כבר ${count} עובדים הצטרפו. חסרים לנו עוד ${remaining} כדי להגיע ל-20. הצטרפו כאן: ${link}`;
+  }
+  const remaining = TARGET_1 - count;
+  return `חבר׳ה, פתחנו בקשה לצרף את ${orgName} ל-BoomBuy. זה יכול לתת לנו מחירי יבואן על Apple, הנחות קבועות בסופר, אופנה, חופשות והטבות נוספות - בלי תוספת תקציב לארגון. כבר ${count} עובדים הצטרפו. חסרים לנו עוד ${remaining} כדי להגיע ל-10. הצטרפו כאן: ${link}`;
 }
 
 function letterMsg(orgName, count) {
@@ -156,7 +161,8 @@ export default function OrgPage() {
   }
 
   const count = group.currentCount || 1;
-  const progress = Math.min((count / TARGET) * 100, 100);
+  const currentTarget = count < TARGET_1 ? TARGET_1 : count < TARGET_2 ? TARGET_2 : TARGET_2;
+  const progress = Math.min((count / currentTarget) * 100, 100);
 
   return (
     <div dir="rtl" style={{ minHeight: "100vh", background: "#F5F5F7", fontFamily: "var(--font-heebo)", padding: "0 0 60px" }}>
@@ -177,7 +183,7 @@ export default function OrgPage() {
           </h1>
           <p style={{ fontSize: "15px", color: "#86868B", lineHeight: 1.6 }}>
             כבר <strong style={{ color: "#0066CC" }}>{count}</strong> עובדים הצטרפו.{" "}
-            {count < TARGET ? `ברגע שנגיע ל-${TARGET}, הפנייה כבר נשמעת אחרת.` : `עברנו את היעד! כל הצטרפות מחזקת את הפנייה.`}
+            {count < TARGET_1 ? `ב-10 כבר מרגישים מסה ראשונית.` : count < TARGET_2 ? `ב-20 זה כבר כוח שאי אפשר להתעלם ממנו.` : `כל הצטרפות נוספת מחזקת את הפנייה.`}
           </p>
         </motion.div>
 
@@ -185,12 +191,12 @@ export default function OrgPage() {
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.07 }}
           style={{ background: "#fff", borderRadius: "16px", border: "1px solid rgba(0,0,0,0.07)", padding: "20px 22px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
-            <span style={{ fontWeight: 700, fontSize: "15px", color: "#1D1D1F" }}>{count} / {TARGET} עובדים</span>
-            {count < TARGET && (
-              <span style={{ fontSize: "12px", color: "#86868B" }}>עוד {TARGET - count} להשלמת היעד</span>
+            <span style={{ fontWeight: 700, fontSize: "15px", color: "#1D1D1F" }}>{count} / {currentTarget} עובדים</span>
+            {count < currentTarget && (
+              <span style={{ fontSize: "12px", color: "#86868B" }}>עוד {currentTarget - count} להשלמת היעד</span>
             )}
-            {count >= TARGET && (
-              <span style={{ fontSize: "12px", color: "#34C759", fontWeight: 700 }}>✓ היעד הושג!</span>
+            {count >= TARGET_2 && (
+              <span style={{ fontSize: "12px", color: "#34C759", fontWeight: 700 }}>✓ עברתם 20!</span>
             )}
           </div>
           <div style={{ height: "8px", background: "rgba(0,0,0,0.07)", borderRadius: "9999px", overflow: "hidden" }}>
