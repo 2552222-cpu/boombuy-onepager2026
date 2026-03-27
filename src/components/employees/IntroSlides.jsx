@@ -14,6 +14,11 @@ const SLIDES = [
     headline: "Apple, סופר, אופנה, חופשות",
     sub: "הטבות אמיתיות שמגדילות את הנטו.",
   },
+  {
+    headline: "הכל כבר כלול בתקציב שהארגון ממילא משלם.",
+    sub: "פשוט מקבלים יותר.",
+    isFinal: true,
+  },
 ];
 
 export default function IntroSlides() {

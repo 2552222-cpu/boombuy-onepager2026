@@ -44,10 +44,11 @@ export default function DigitalWallet({ imageUrl }) {
               <br />
               רק שעכשיו <span className="text-primary">אתה בוחר.</span>
             </h2>
-
-            <p className="text-sm md:text-lg text-muted-foreground mb-6 md:mb-10 leading-relaxed">
-              במקום מארז קבוע - ארנק דיגיטלי עם מגוון אפשרויות
+            <p className="text-sm md:text-lg text-muted-foreground mb-6 md:mb-8 leading-relaxed">
+              במקום מארז קבוע — ארנק דיגיטלי עם מאות אפשרויות.
             </p>
+
+
 
             <div className="bg-white rounded-2xl md:rounded-3xl border border-border/40 p-4 md:p-8 shadow-md space-y-3 md:space-y-5">
               {points.map((point, i) => (
