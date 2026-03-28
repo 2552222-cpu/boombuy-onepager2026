@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import GlobalHeader from "../components/employees/GlobalHeader";
 import GlobalFooter from "../components/employees/GlobalFooter";
+import IntroSlides from "../components/employees/IntroSlides";
 import Hero from "../components/employees/Hero";
 import ProofImage from "../components/employees/ProofImage";
+import FeaturedOffersSlider from "../components/employees/FeaturedOffersSlider";
 import BenefitsShowcase from "../components/employees/BenefitsShowcase";
 import TrustLogos from "../components/employees/TrustLogos";
 import DigitalWallet from "../components/employees/DigitalWallet";
@@ -63,8 +65,10 @@ export default function EmployeesLanding() {
     <div className="min-h-screen font-heebo flex flex-col" dir="rtl" style={{ overflowX: 'hidden', maxWidth: '100vw', paddingBottom: '72px' }}>
       <GlobalHeader />
       <div className="flex-1">
+        <IntroSlides />
         <Hero />
         <ProofImage imageUrl={PROOF_IMAGE_URL} />
+        <FeaturedOffersSlider />
         <div id="benefits-showcase">
           <BenefitsShowcase />
         </div>
