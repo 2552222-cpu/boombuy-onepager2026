@@ -38,7 +38,14 @@ export default function IntroSlides() {
   };
 
   useEffect(() => {
-    const t = setTimeout(advance, 4000);
+    const t = setTimeout(() => {
+      if (current < SLIDES.length - 1) {
+        setCurrent((c) => c + 1);
+      } else {
+        const el = document.getElementById("proof-section");
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 4000);
     return () => clearTimeout(t);
   }, [current]);
 
