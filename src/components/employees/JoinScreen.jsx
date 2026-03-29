@@ -3,7 +3,8 @@ import { motion } from "framer-motion";
 import { MessageCircle } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 
-const TARGET_COUNT = 10;
+const TARGET_1 = 10;
+const TARGET_2 = 20;
 
 export default function JoinScreen({ orgKey, orgName, onContinue }) {
   const [formData, setFormData] = useState({
@@ -88,8 +89,11 @@ export default function JoinScreen({ orgKey, orgName, onContinue }) {
     }
   };
 
-  const remainingToTarget = Math.max(0, TARGET_COUNT - (groupData?.currentCount || 1));
-  const progressPercent = ((groupData?.currentCount || 1) / TARGET_COUNT) * 100;
+  const count = groupData?.currentCount || 1;
+  const currentTarget = count < TARGET_1 ? TARGET_1 : count < TARGET_2 ? TARGET_2 : TARGET_2;
+  const remainingToTarget = Math.max(0, currentTarget - count);
+  const progressPercent = Math.min((count / currentTarget) * 100, 100);
+  const milestoneLabel = count >= TARGET_2 ? 'זה כבר כוח שאי אפשר להתעלם ממנו' : 'יש כאן מסה ראשונית';
 
   const handleShareWhatsApp = () => {
     const msg = `חבר'ה 👋
@@ -98,7 +102,7 @@ export default function JoinScreen({ orgKey, orgName, onContinue }) {
 מתברר שאפשר לקבל יותר מהתקציב
 שהחברה כבר נותנת לנו.
 
-אנחנו אוספים 10 עובדים כדי
+אנחנו אוספים עובדים כדי
 להעביר בקשה ל-HR ביחד —
 ביחד זה הרבה יותר חזק.
 
@@ -181,25 +185,28 @@ https://boom-perk-flow.base44.app/join/${orgKey}`;
           <div className="bg-white rounded-2xl md:rounded-3xl border border-border shadow-sm text-center overflow-hidden">
             <div className="p-6 md:p-8">
               <h2 className="text-2xl md:text-3xl font-black mb-3 md:mb-4 text-foreground">
-                כבר {groupData?.currentCount || 1} עובדים מ-{orgName} הצטרפו
+                כבר {count} עובדים מ-{orgName} הצטרפו
               </h2>
 
               {/* Progress */}
               <div className="mb-5">
                 <div className="flex justify-between items-center text-xs md:text-sm text-muted-foreground mb-2 font-medium">
-                  <span>{groupData?.currentCount || 1} מתוך {TARGET_COUNT}</span>
+                  <span>{count} מתוך {currentTarget} — {milestoneLabel}</span>
                   <span>{Math.round(progressPercent)}%</span>
                 </div>
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${progressPercent}%` }}
                   transition={{ duration: 0.7, ease: "easeOut" }}
-                  className="h-2.5 bg-primary rounded-full"
+                  className="h-2.5 rounded-full"
+                  style={{ background: count >= TARGET_2 ? '#34C759' : '#0066CC' }}
                 />
               </div>
 
               <p className="text-sm md:text-base text-muted-foreground">
-                נשארים עוד {remainingToTarget} עובדים — רוצה להצטרף ולעזור לחזק את הבקשה?
+                {count >= TARGET_2
+                  ? 'כל הצטרפות נוספת מחזקת את הפנייה לוועד / הנהלה.'
+                  : `נשארים עוד ${remainingToTarget} עובדים כדי להגיע ל-${currentTarget} — רוצה לעזור לחזק את הבקשה?`}
               </p>
             </div>
           </div>

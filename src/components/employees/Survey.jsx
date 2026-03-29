@@ -33,6 +33,7 @@ export default function Survey() {
   const [holidayBudget, setHolidayBudget] = useState("");
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [resultText, setResultText] = useState("");
   const navigate = useNavigate();
 
   const handleOrgNameNext = () => {
@@ -56,25 +57,37 @@ export default function Survey() {
     );
   };
 
+  const getResultFraming = (budget, acts) => {
+    if (acts.includes("מתנות חג")) {
+      return "נראה שמתנת חג גמישה עם בחירה חופשית תהיה ההטבה המשמעותית ביותר בארגון שלכם.";
+    }
+    if (budget === "עד 200 ₪ לעובד") {
+      return "נראה שהטבות יוקר המחיה — הנחות בסופר, פארם ומוצרי יומיום — יהיו המשמעותיות ביותר עבור העובדים בארגון שלכם.";
+    }
+    if (budget === "מעל 500 ₪ לעובד") {
+      return "נראה שהטבות על מוצרי פרימיום וחשמל יהיו מנוע העניין המרכזי בארגון שלכם.";
+    }
+    if (acts.includes("ימי גיבוש")) {
+      return "נראה שהטבות נופש, תרבות ופנאי יהיו הכי חזקות אצלכם.";
+    }
+    return "נראה שהטבות יוקר המחיה — הנחות בסופר, פארם ומוצרי יומיום — יהיו המשמעותיות ביותר עבור העובדים בארגון שלכם.";
+  };
+
   const handleFinish = async (skipActivities = false) => {
     setLoading(true);
     const finalActivities = skipActivities ? [] : activities;
     const orgKey = normalizeOrgKey(orgName);
-
     try {
       const existing = await base44.entities.GroupRequest.filter({ orgKey });
-      let group;
       if (existing.length > 0) {
-        group = existing[0];
-        await base44.entities.GroupRequest.update(group.id, {
+        await base44.entities.GroupRequest.update(existing[0].id, {
           orgSize,
           holidayBudget,
           activities: finalActivities,
           lastJoinedAt: new Date().toISOString(),
         });
-        group = { ...group, orgSize, holidayBudget, activities: finalActivities };
       } else {
-        group = await base44.entities.GroupRequest.create({
+        await base44.entities.GroupRequest.create({
           orgName: orgName.trim(),
           orgKey,
           orgNameNormalized: orgKey,
@@ -82,8 +95,9 @@ export default function Survey() {
           lastJoinedAt: new Date().toISOString(),
         });
       }
-
-      navigate('/join/' + orgKey);
+      const framing = getResultFraming(holidayBudget, finalActivities);
+      setResultText(framing);
+      setStep(4);
     } catch (err) {
       console.error(err);
     } finally {
@@ -342,7 +356,7 @@ export default function Survey() {
                 ))}
               </div>
             </motion.div>
-          ) : (
+          ) : step === 3 ? (
             <motion.div
               key="step3"
               initial={{ opacity: 0, y: 14 }}
@@ -441,6 +455,56 @@ export default function Survey() {
                 }}
               >
                 דלג
+              </button>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="step4"
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -14 }}
+              transition={{ duration: 0.28 }}
+            >
+              <div style={{ textAlign: "center", marginBottom: "24px" }}>
+                <div style={{ fontSize: "40px", marginBottom: "12px" }}>✅</div>
+                <h3 style={{ fontSize: "22px", fontWeight: 900, marginBottom: "14px", fontFamily: "var(--font-heebo)", letterSpacing: "-0.02em" }}>
+                  תוצאה מותאמת לארגון שלכם
+                </h3>
+                <div
+                  style={{
+                    background: "rgba(0,102,204,0.06)",
+                    border: "1px solid rgba(0,102,204,0.18)",
+                    borderRadius: "14px",
+                    padding: "18px 20px",
+                    marginBottom: "20px",
+                  }}
+                >
+                  <p style={{ fontSize: "16px", fontWeight: 600, color: "#0066CC", lineHeight: 1.55, fontFamily: "var(--font-heebo)", margin: 0 }}>
+                    {resultText}
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => navigate("/join/" + normalizeOrgKey(orgName))}
+                style={{
+                  width: "100%",
+                  background: "#0066CC",
+                  color: "#fff",
+                  fontWeight: 700,
+                  fontSize: "15px",
+                  padding: "14px",
+                  borderRadius: "12px",
+                  border: "none",
+                  cursor: "pointer",
+                  fontFamily: "var(--font-heebo)",
+                  marginBottom: "10px",
+                  transition: "background 0.15s",
+                  boxShadow: "0 6px 20px rgba(0,102,204,0.24)",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "#0055AA")}
+                onMouseLeave={(e) => (e.currentTarget.style.background = "#0066CC")}
+              >
+                המשך לפתוח בקשה לארגון
               </button>
             </motion.div>
           )}

@@ -1,191 +1,120 @@
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React from "react";
+import { motion } from "framer-motion";
 
-const SLIDES = [
-  {
-    headline: "מה אם העבודה שלך הייתה נותנת לך יותר?",
-    sub: "לא רק מתנה בחג. משהו שמרגישים ביומיום.",
-  },
-  {
-    headline: "לא עוד תו חד-פעמי",
-    sub: "מחירי עובדים על דברים שאתם באמת קונים.",
-  },
-  {
-    headline: "Apple, סופר, אופנה, חופשות",
-    sub: "הטבות אמיתיות שמגדילות את הנטו.",
-  },
-  {
-    headline: "הכל כבר כלול בתקציב שהארגון ממילא משלם.",
-    sub: "פשוט מקבלים יותר.",
-    isFinal: true,
-  },
+const MESSAGES = [
+  "מה אם העבודה שלך הייתה נותנת לך יותר?",
+  "לא רק מתנה בחג. משהו שמרגישים ביומיום.",
+  "מחירי עובדים על דברים שאתם באמת קונים.",
+  "Apple, סופר, אופנה, חופשות — הטבות אמיתיות שמגדילות את הנטו.",
 ];
 
 export default function IntroSlides() {
-  const [current, setCurrent] = useState(0);
-
-  const scrollToProof = () => {
-    const el = document.getElementById("proof-section");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+  const scrollDown = () => {
+    document.getElementById("main-hero")?.scrollIntoView({ behavior: "smooth" });
   };
-
-  const advance = () => {
-    if (current < SLIDES.length - 1) {
-      setCurrent((c) => c + 1);
-    } else {
-      scrollToProof();
-    }
-  };
-
-  useEffect(() => {
-    const t = setTimeout(() => {
-      if (current < SLIDES.length - 1) {
-        setCurrent((c) => c + 1);
-      } else {
-        const el = document.getElementById("proof-section");
-        if (el) el.scrollIntoView({ behavior: "smooth" });
-      }
-    }, 4000);
-    return () => clearTimeout(t);
-  }, [current]);
 
   return (
     <section
-      onClick={advance}
       style={{
-        minHeight: "100svh",
         background: "#fff",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        cursor: "pointer",
-        userSelect: "none",
-        position: "relative",
-        overflow: "hidden",
         borderBottom: "1px solid rgba(0,0,0,0.06)",
+        padding: "80px 20px 72px",
+        overflowX: "hidden",
+        maxWidth: "100vw",
       }}
     >
-      {/* Slide content */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={current}
-          initial={{ opacity: 0, y: 32 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -24 }}
-          transition={{ duration: 0.58, ease: "easeInOut" }}
-          style={{
-            textAlign: "center",
-            padding: "0 28px",
-            maxWidth: "740px",
-            width: "100%",
-          }}
-        >
-          <p
-            style={{
-              fontSize: "clamp(13px, 1.2vw, 15px)",
-              fontWeight: 600,
-              color: "#0066CC",
-              letterSpacing: "0.08em",
-              textTransform: "uppercase",
-              marginBottom: "20px",
-              fontFamily: "var(--font-heebo)",
-            }}
-          >
-            BoomBuy
-          </p>
-          <h2
-            style={{
-              fontSize: "clamp(34px, 5.5vw, 68px)",
-              fontWeight: 900,
-              letterSpacing: "-0.03em",
-              lineHeight: 1.08,
-              color: "#1D1D1F",
-              marginBottom: "22px",
-              fontFamily: "var(--font-heebo)",
-            }}
-          >
-            {SLIDES[current].headline}
-          </h2>
-          <p
-            style={{
-              fontSize: "clamp(18px, 2vw, 26px)",
-              color: "#86868B",
-              fontWeight: 400,
-              lineHeight: 1.55,
-              fontFamily: "var(--font-heebo)",
-            }}
-          >
-            {SLIDES[current].sub}
-          </p>
-        </motion.div>
-      </AnimatePresence>
-
-      {/* Progress bar */}
       <div
         style={{
-          position: "absolute",
-          bottom: "52px",
+          maxWidth: 680,
+          margin: "0 auto",
           display: "flex",
-          gap: "8px",
+          flexDirection: "column",
           alignItems: "center",
+          textAlign: "center",
+          gap: "0",
         }}
       >
-        {SLIDES.map((_, i) => (
-          <div
-            key={i}
-            onClick={(e) => {
-              e.stopPropagation();
-              setCurrent(i);
-            }}
+        {/* BoomBuy label */}
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          style={{
+            fontSize: "13px",
+            fontWeight: 700,
+            color: "#0066CC",
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+            marginBottom: "36px",
+            fontFamily: "var(--font-heebo)",
+          }}
+        >
+          BoomBuy
+        </motion.p>
+
+        {/* Messages */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "28px", marginBottom: "48px" }}>
+          {MESSAGES.map((msg, i) => (
+            <motion.p
+              key={i}
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: i * 0.12 }}
+              style={{
+                fontSize: i === 0
+                  ? "clamp(28px, 4.5vw, 52px)"
+                  : i === MESSAGES.length - 1
+                  ? "clamp(22px, 3.2vw, 38px)"
+                  : "clamp(20px, 2.8vw, 32px)",
+                fontWeight: i === 0 ? 900 : i === MESSAGES.length - 1 ? 800 : 600,
+                lineHeight: 1.2,
+                letterSpacing: "-0.025em",
+                color: i === MESSAGES.length - 1 ? "#0066CC" : i === 0 ? "#1D1D1F" : "#444",
+                fontFamily: "var(--font-heebo)",
+                margin: 0,
+              }}
+            >
+              {msg}
+            </motion.p>
+          ))}
+        </div>
+
+        {/* CTA */}
+        <motion.button
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.55 }}
+          onClick={scrollDown}
+          style={{
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "8px",
+            padding: "0",
+          }}
+        >
+          <span
             style={{
-              width: i === current ? "28px" : "8px",
-              height: "8px",
-              borderRadius: "999px",
-              background: i === current ? "#1D1D1F" : "rgba(0,0,0,0.15)",
-              transition: "all 0.35s ease",
-              cursor: "pointer",
+              fontSize: "14px",
+              fontWeight: 600,
+              color: "#86868B",
+              fontFamily: "var(--font-heebo)",
             }}
-          />
-        ))}
+          >
+            גללו ותראו איך זה נראה בפועל
+          </span>
+          <motion.span
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
+            style={{ fontSize: "20px", lineHeight: 1 }}
+          >
+            ↓
+          </motion.span>
+        </motion.button>
       </div>
-
-      {/* Skip */}
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          scrollToProof();
-        }}
-        style={{
-          position: "absolute",
-          bottom: "48px",
-          left: "28px",
-          background: "none",
-          border: "none",
-          fontSize: "14px",
-          color: "#AEAEB2",
-          cursor: "pointer",
-          fontFamily: "var(--font-heebo)",
-          fontWeight: 500,
-        }}
-      >
-        דלג
-      </button>
-
-      {/* Slide counter */}
-      <p
-        style={{
-          position: "absolute",
-          bottom: "54px",
-          right: "28px",
-          fontSize: "13px",
-          color: "#AEAEB2",
-          fontFamily: "var(--font-heebo)",
-          fontWeight: 500,
-        }}
-      >
-        {current + 1} / {SLIDES.length}
-      </p>
     </section>
   );
 }

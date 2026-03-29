@@ -66,9 +66,9 @@ export default function EmployeesLanding() {
       <GlobalHeader />
       <div className="flex-1">
         <IntroSlides />
+        <Hero />
         <ProofImage imageUrl={PROOF_IMAGE_URL} />
         <FeaturedOffersSlider />
-        <Hero />
         <div id="benefits-showcase">
           <BenefitsShowcase />
         </div>
