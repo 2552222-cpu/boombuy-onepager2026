@@ -3,7 +3,7 @@ import GlobalHeader from "../components/employees/GlobalHeader";
 import GlobalFooter from "../components/employees/GlobalFooter";
 import IntroSlides from "../components/employees/IntroSlides";
 import Hero from "../components/employees/Hero";
-import ProofImage from "../components/employees/ProofImage";
+import ProofImage from "../components/employees/ProofImage.jsx";
 import FeaturedOffersSlider from "../components/employees/FeaturedOffersSlider";
 import BenefitsShowcase from "../components/employees/BenefitsShowcase";
 import TrustLogos from "../components/employees/TrustLogos";
@@ -49,7 +49,7 @@ export default function EmployeesLanding() {
 
   if (showJoin) {
     return (
-      <div className="font-heebo" dir="rtl" className="flex flex-col min-h-screen">
+      <div className="font-heebo flex flex-col min-h-screen" dir="rtl">
         <GlobalHeader />
         <JoinScreen
           orgKey={joinParams.orgKey}
@@ -66,9 +66,9 @@ export default function EmployeesLanding() {
       <GlobalHeader />
       <div className="flex-1">
         <IntroSlides />
-        <Hero />
         <ProofImage imageUrl={PROOF_IMAGE_URL} />
         <FeaturedOffersSlider />
+        <Hero />
         <div id="benefits-showcase">
           <BenefitsShowcase />
         </div>

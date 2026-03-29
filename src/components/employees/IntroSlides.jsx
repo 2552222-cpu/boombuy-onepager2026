@@ -24,8 +24,8 @@ const SLIDES = [
 export default function IntroSlides() {
   const [current, setCurrent] = useState(0);
 
-  const scrollToHero = () => {
-    const el = document.getElementById("main-hero");
+  const scrollToProof = () => {
+    const el = document.getElementById("proof-section");
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -33,7 +33,7 @@ export default function IntroSlides() {
     if (current < SLIDES.length - 1) {
       setCurrent((c) => c + 1);
     } else {
-      scrollToHero();
+      scrollToProof();
     }
   };
 
@@ -147,7 +147,7 @@ export default function IntroSlides() {
       <button
         onClick={(e) => {
           e.stopPropagation();
-          scrollToHero();
+          scrollToProof();
         }}
         style={{
           position: "absolute",

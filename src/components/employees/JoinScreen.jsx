@@ -103,7 +103,7 @@ export default function JoinScreen({ orgKey, orgName, onContinue }) {
 ביחד זה הרבה יותר חזק.
 
 30 שניות — ממש שווה:
-https://www.boombuyonepage.com?orgKey=${orgKey}`;
+https://boom-perk-flow.base44.app/join/${orgKey}`;
 
     const encoded = encodeURIComponent(msg);
     window.open(`https://wa.me/?text=${encoded}`, "_blank");

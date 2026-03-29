@@ -40,7 +40,8 @@ function waMsg(orgName, count) {
   return `חבר׳ה, פתחנו בקשה לצרף את ${orgName} ל-BoomBuy. זה יכול לתת לנו מחירי יבואן על Apple, הנחות קבועות בסופר, אופנה, חופשות והטבות נוספות - בלי תוספת תקציב לארגון. כבר ${count} עובדים הצטרפו. חסרים לנו עוד ${remaining} כדי להגיע ל-10. הצטרפו כאן: ${link}`;
 }
 
-function letterMsg(orgName, count) {
+function letterMsg(orgName, count, orgKey) {
+  const orgLink = orgKey ? `${BASE_URL}/join/${orgKey}` : BASE_URL;
   return `שלום [שם],
 
 קבוצת עובדים מתוך ${orgName} ביקשה לבחון את ההצטרפות למועדון BoomBuy.
@@ -50,7 +51,7 @@ function letterMsg(orgName, count) {
 המהלך מאפשר לעובדים לקבל מחירי סיטונאות על מוצרי פרימיום, הנחות קבועות בסופר ובפארם, ומתנות חג גמישות - והכול ב-0 ש"ח תוספת תקציב לארגון.
 
 נשמח שתבחנו תיאום פגישת דמו קצרה מול צוות בום-ביי:
-https://boom-perk-flow.base44.app
+${orgLink}
 
 אפשר גם לפנות אלינו ישירות כאן:
 https://wa.me/972542552222`;
@@ -128,14 +129,14 @@ export default function OrgPage() {
   };
 
   const handleWACopy = async () => {
-    await navigator.clipboard.writeText(waMsg(group.orgName, group.currentCount || 1));
+    await navigator.clipboard.writeText(waMsg(group.orgName, group.currentCount || 1, orgSlug));
     setWaCopied(true);
     setTimeout(() => setWaCopied(false), 2500);
     base44.entities.GroupRequest.update(group.id, { whatsappCopied: true }).catch(() => {});
   };
 
   const handleLetterCopy = async () => {
-    await navigator.clipboard.writeText(letterMsg(group.orgName, group.currentCount || 1));
+    await navigator.clipboard.writeText(letterMsg(group.orgName, group.currentCount || 1, orgSlug));
     setLetterCopied(true);
     setTimeout(() => setLetterCopied(false), 2500);
     base44.entities.GroupRequest.update(group.id, { letterCopied: true }).catch(() => {});
@@ -201,7 +202,7 @@ export default function OrgPage() {
           </div>
           <div style={{ height: "8px", background: "rgba(0,0,0,0.07)", borderRadius: "9999px", overflow: "hidden" }}>
             <motion.div
-              style={{ height: "100%", background: count >= TARGET ? "#34C759" : "#0066CC", borderRadius: "9999px" }}
+              style={{ height: "100%", background: count >= TARGET_2 ? "#34C759" : "#0066CC", borderRadius: "9999px" }}
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
               transition={{ duration: 0.7, ease: "easeOut" }}
@@ -282,7 +283,7 @@ export default function OrgPage() {
           <div style={{ background: "#fff", borderRadius: "16px", border: "1px solid rgba(0,0,0,0.07)", padding: "18px 20px" }}>
             <p style={{ fontWeight: 700, fontSize: "14px", marginBottom: "8px" }}>הודעה מוכנה לקבוצת העובדים</p>
             <div style={{ background: "#F5F5F7", borderRadius: "10px", padding: "11px 13px", fontSize: "12.5px", color: "#444", lineHeight: 1.65, marginBottom: "10px", whiteSpace: "pre-line" }}>
-              {waMsg(group.orgName, count)}
+              {waMsg(group.orgName, count, orgSlug)}
             </div>
             <button
               onClick={handleWACopy}
@@ -296,7 +297,7 @@ export default function OrgPage() {
           <div style={{ background: "#fff", borderRadius: "16px", border: "1px solid rgba(0,0,0,0.07)", padding: "18px 20px" }}>
             <p style={{ fontWeight: 700, fontSize: "14px", marginBottom: "8px" }}>מכתב מוכן להנהלה / ועד / רווחה</p>
             <div style={{ background: "#F5F5F7", borderRadius: "10px", padding: "11px 13px", fontSize: "12.5px", color: "#444", lineHeight: 1.65, marginBottom: "10px", whiteSpace: "pre-line" }}>
-              {letterMsg(group.orgName, count)}
+              {letterMsg(group.orgName, count, orgSlug)}
             </div>
             <button
               onClick={handleLetterCopy}

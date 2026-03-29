@@ -16,6 +16,7 @@ export default function ProofImage({ imageUrl }) {
 
   return (
     <section
+      id="proof-section"
       style={{
         background: "#fff",
         overflowX: "hidden",
@@ -28,13 +29,11 @@ export default function ProofImage({ imageUrl }) {
         className="max-w-screen-xl mx-auto px-5 md:px-10"
         style={{ paddingTop: "96px", paddingBottom: "112px" }}
       >
-
-        {/* ── DESKTOP ── */}
+        {/* DESKTOP */}
         <div
           className="hidden md:grid items-center"
           style={{ gridTemplateColumns: "0.95fr 0.82fr", gap: "56px" }}
         >
-          {/* IMAGE — LEFT */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -55,7 +54,6 @@ export default function ProofImage({ imageUrl }) {
             />
           </motion.div>
 
-          {/* TEXT — RIGHT */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -63,7 +61,6 @@ export default function ProofImage({ imageUrl }) {
             transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
             className="flex flex-col items-start text-right"
           >
-            {/* H2 */}
             <h2
               style={{
                 fontSize: "clamp(56px, 4.6vw, 66px)",
@@ -78,7 +75,6 @@ export default function ProofImage({ imageUrl }) {
               <span style={{ display: "block", color: "#0066CC" }}>הטבה אמיתית</span>
             </h2>
 
-            {/* Subtitle */}
             <p
               style={{
                 fontSize: "clamp(19px, 1.5vw, 23px)",
@@ -90,11 +86,9 @@ export default function ProofImage({ imageUrl }) {
                 fontFamily: "var(--font-heebo)",
               }}
             >
-              דוגמאות חריגות לחיסכון מהשנה האחרונה.{" "}
-              הנה הוכחה שהנטו שלך שווה הרבה יותר.
+              דוגמאות חריגות לחיסכון מהשנה האחרונה. הנה הוכחה שהנטו שלך שווה הרבה יותר.
             </p>
 
-            {/* Proof Cards */}
             <div
               style={{
                 display: "grid",
@@ -109,54 +103,26 @@ export default function ProofImage({ imageUrl }) {
                   key={i}
                   style={{
                     background: card.highlight ? "rgba(0,102,204,0.05)" : "#F7F7F8",
-                    border: card.highlight
-                      ? "1px solid rgba(0,102,204,0.2)"
-                      : "1px solid rgba(0,0,0,0.07)",
+                    border: card.highlight ? "1px solid rgba(0,102,204,0.2)" : "1px solid rgba(0,0,0,0.07)",
                     borderRadius: "18px",
                     padding: "14px 12px 12px",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
                     textAlign: "center",
-                    boxShadow: card.highlight
-                      ? "0 2px 12px rgba(0,102,204,0.08)"
-                      : "0 1px 6px rgba(0,0,0,0.04)",
+                    boxShadow: card.highlight ? "0 2px 12px rgba(0,102,204,0.08)" : "0 1px 6px rgba(0,0,0,0.04)",
                   }}
                 >
-                  <span
-                    style={{
-                      fontSize: "13px",
-                      fontWeight: 500,
-                      color: "#86868B",
-                      fontFamily: "var(--font-heebo)",
-                      lineHeight: 1.3,
-                    }}
-                  >
+                  <span style={{ fontSize: "13px", fontWeight: 500, color: "#86868B", fontFamily: "var(--font-heebo)", lineHeight: 1.3 }}>
                     {card.label}
                   </span>
-                  <span
-                    style={{
-                      fontSize: "28px",
-                      fontWeight: 900,
-                      color: card.highlight ? "#0066CC" : "#1D1D1F",
-                      fontFamily: "var(--font-heebo)",
-                      letterSpacing: "-0.025em",
-                      lineHeight: 1.1,
-                      display: "flex",
-                      alignItems: "baseline",
-                      justifyContent: "center",
-                      gap: "2px",
-                      width: "100%",
-                      textAlign: "center",
-                    }}
-                  >
+                  <span style={{ fontSize: "28px", fontWeight: 900, color: card.highlight ? "#0066CC" : "#1D1D1F", fontFamily: "var(--font-heebo)", letterSpacing: "-0.025em", lineHeight: 1.1 }}>
                     {card.value}
                   </span>
                 </div>
               ))}
             </div>
 
-            {/* CTA */}
             <button
               onClick={scrollToBenefits}
               style={{
@@ -169,24 +135,17 @@ export default function ProofImage({ imageUrl }) {
                 borderRadius: "12px",
                 border: "1px solid rgba(29,29,31,0.1)",
                 cursor: "pointer",
-                transition: "background 0.16s ease",
                 fontFamily: "var(--font-heebo)",
                 whiteSpace: "nowrap",
               }}
-              onMouseEnter={e => e.currentTarget.style.background = "#EAEAEC"}
-              onMouseLeave={e => e.currentTarget.style.background = "#F5F5F7"}
             >
               גלה את כל ההטבות
             </button>
           </motion.div>
         </div>
 
-        {/* ── MOBILE ── */}
-        <div
-          className="flex md:hidden flex-col items-center text-center"
-          style={{ gap: "0" }}
-        >
-          {/* H2 */}
+        {/* MOBILE */}
+        <div className="flex md:hidden flex-col items-center text-center">
           <motion.h2
             initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -197,7 +156,7 @@ export default function ProofImage({ imageUrl }) {
               lineHeight: 1.05,
               letterSpacing: "-0.028em",
               fontWeight: 900,
-              marginBottom: "16px",
+              marginBottom: "24px",
               fontFamily: "var(--font-heebo)",
             }}
           >
@@ -205,27 +164,25 @@ export default function ProofImage({ imageUrl }) {
             <span style={{ display: "block", color: "#0066CC" }}>הטבה אמיתית</span>
           </motion.h2>
 
-          {/* Subtitle */}
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
+          {/* IMAGE FIRST on mobile = WOW moment */}
+          <motion.img
+            initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.07 }}
+            transition={{ duration: 0.6, delay: 0.05 }}
+            src={imageUrl}
+            alt="הטבה אמיתית לעובדים"
             style={{
-              fontSize: "clamp(17px, 4vw, 20px)",
-              lineHeight: 1.6,
-              color: "#86868B",
-              fontWeight: 400,
-              marginBottom: "20px",
-              maxWidth: "95%",
-              fontFamily: "var(--font-heebo)",
+              width: "clamp(260px, 88vw, 400px)",
+              height: "auto",
+              objectFit: "contain",
+              display: "block",
+              marginInline: "auto",
+              marginBottom: "28px",
+              filter: "drop-shadow(0 12px 32px rgba(0,0,0,0.11))",
             }}
-          >
-            דוגמאות חריגות לחיסכון מהשנה האחרונה.{" "}
-            הנה הוכחה שהנטו שלך שווה הרבה יותר.
-          </motion.p>
+          />
 
-          {/* Proof Cards mobile — 2+1 layout */}
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -233,14 +190,7 @@ export default function ProofImage({ imageUrl }) {
             transition={{ duration: 0.45, delay: 0.1 }}
             style={{ width: "100%", marginBottom: "20px" }}
           >
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "8px",
-                marginBottom: "8px",
-              }}
-            >
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", marginBottom: "8px" }}>
               {cards.slice(0, 2).map((card, i) => (
                 <div
                   key={i}
@@ -254,19 +204,13 @@ export default function ProofImage({ imageUrl }) {
                     alignItems: "center",
                     textAlign: "center",
                     gap: "4px",
-                    boxShadow: "0 1px 6px rgba(0,0,0,0.04)",
                   }}
                 >
-                  <span style={{ fontSize: "11px", fontWeight: 500, color: "#86868B", fontFamily: "var(--font-heebo)" }}>
-                    {card.label}
-                  </span>
-                  <span style={{ fontSize: "19px", fontWeight: 900, color: "#1D1D1F", fontFamily: "var(--font-heebo)", letterSpacing: "-0.02em", lineHeight: 1.1 }}>
-                    {card.value}
-                  </span>
+                  <span style={{ fontSize: "11px", fontWeight: 500, color: "#86868B", fontFamily: "var(--font-heebo)" }}>{card.label}</span>
+                  <span style={{ fontSize: "19px", fontWeight: 900, color: "#1D1D1F", fontFamily: "var(--font-heebo)", letterSpacing: "-0.02em", lineHeight: 1.1 }}>{card.value}</span>
                 </div>
               ))}
             </div>
-            {/* Card 3 — full width, highlighted */}
             <div
               style={{
                 background: "rgba(0,102,204,0.05)",
@@ -278,61 +222,34 @@ export default function ProofImage({ imageUrl }) {
                 alignItems: "center",
                 textAlign: "center",
                 gap: "4px",
-                boxShadow: "0 2px 12px rgba(0,102,204,0.08)",
               }}
             >
-              <span style={{ fontSize: "11px", fontWeight: 500, color: "#86868B", fontFamily: "var(--font-heebo)" }}>
-                {cards[2].label}
-              </span>
-              <span style={{ fontSize: "22px", fontWeight: 900, color: "#0066CC", fontFamily: "var(--font-heebo)", letterSpacing: "-0.02em", lineHeight: 1.1 }}>
-                {cards[2].value}
-              </span>
+              <span style={{ fontSize: "11px", fontWeight: 500, color: "#86868B", fontFamily: "var(--font-heebo)" }}>{cards[2].label}</span>
+              <span style={{ fontSize: "22px", fontWeight: 900, color: "#0066CC", fontFamily: "var(--font-heebo)", letterSpacing: "-0.02em", lineHeight: 1.1 }}>{cards[2].value}</span>
             </div>
           </motion.div>
 
-          {/* CTA */}
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.12 }}
+            style={{ fontSize: "clamp(17px, 4vw, 20px)", lineHeight: 1.6, color: "#86868B", fontWeight: 400, marginBottom: "20px", maxWidth: "95%", fontFamily: "var(--font-heebo)" }}
+          >
+            הנה הוכחה שהנטו שלך שווה הרבה יותר.
+          </motion.p>
+
           <motion.button
             initial={{ opacity: 0, scale: 0.97 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.12 }}
+            transition={{ duration: 0.4, delay: 0.15 }}
             onClick={scrollToBenefits}
-            style={{
-              background: "#F5F5F7",
-              color: "#1D1D1F",
-              fontWeight: 700,
-              fontSize: "15px",
-              height: "50px",
-              borderRadius: "12px",
-              border: "1px solid rgba(29,29,31,0.1)",
-              cursor: "pointer",
-              width: "100%",
-              fontFamily: "var(--font-heebo)",
-              marginBottom: "32px",
-            }}
+            style={{ background: "#F5F5F7", color: "#1D1D1F", fontWeight: 700, fontSize: "15px", height: "50px", borderRadius: "12px", border: "1px solid rgba(29,29,31,0.1)", cursor: "pointer", width: "100%", fontFamily: "var(--font-heebo)" }}
           >
             גלה את כל ההטבות
           </motion.button>
-
-          {/* Image */}
-          <motion.img
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.08 }}
-            src={imageUrl}
-            alt="הטבה אמיתית לעובדים"
-            style={{
-              width: "clamp(240px, 82vw, 380px)",
-              height: "auto",
-              objectFit: "contain",
-              display: "block",
-              marginInline: "auto",
-              filter: "drop-shadow(0 12px 32px rgba(0,0,0,0.11))",
-            }}
-          />
         </div>
-
       </div>
     </section>
   );

@@ -15,6 +15,7 @@ export default function Hero() {
 
   return (
     <section
+      id="main-hero"
       className="relative bg-white"
       style={{
         minHeight: "calc(100svh - 52px)",

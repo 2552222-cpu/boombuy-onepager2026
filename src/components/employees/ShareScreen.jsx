@@ -4,8 +4,8 @@ import { Copy, MessageCircle } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
 const getShareMessage = (orgKey) => {
-  const resultsLink = orgKey ? `https://www.boombuyonepage.com/results?orgKey=${orgKey}` : "https://www.boombuyonepage.com";
-  
+  const resultsLink = orgKey ? `https://boom-perk-flow.base44.app/join/${orgKey}` : "https://boom-perk-flow.base44.app";
+
   return `חבר'ה, ענו על 3 שאלות — אנחנו בונים ביחד מה לומר ל-HR.
 30 שניות, אנונימי לחלוטין:
 ${resultsLink}`;
