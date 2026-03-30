@@ -78,6 +78,13 @@ export default function JoinScreen({ orgKey, orgName, onContinue }) {
         lastJoinedAt: new Date().toISOString(),
       });
 
+      base44.functions.invoke("notifyGroupMilestones", {
+        event: "member_joined",
+        orgKey,
+        prevCount: group.currentCount || 1,
+        newCount: updatedCount,
+      }).catch(() => {});
+
       localStorage.setItem(`groupmember_${orgKey}`, newBrowserToken);
       setNewCount(updatedCount);
       setSubmitted(true);
@@ -114,6 +121,8 @@ https://boom-perk-flow.base44.app/join/${orgKey}`;
   };
 
   if (submitted) {
+    const successTarget = newCount < TARGET_1 ? TARGET_1 : TARGET_2;
+    const successPct = Math.min((newCount / successTarget) * 100, 100);
     return (
       <div className="min-h-screen bg-gradient-to-b from-white to-secondary/20 flex items-center justify-center" style={{ overflowX: 'hidden', maxWidth: '100vw', padding: '24px 16px' }}>
         <motion.div
@@ -122,13 +131,7 @@ https://boom-perk-flow.base44.app/join/${orgKey}`;
           transition={{ duration: 0.5 }}
           className="max-w-2xl mx-auto space-y-6 w-full"
         >
-          {/* Success Card */}
-          <motion.div
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="bg-emerald-50 border border-emerald-200 rounded-2xl md:rounded-3xl overflow-hidden"
-          >
+          <div className="bg-emerald-50 border border-emerald-200 rounded-2xl md:rounded-3xl overflow-hidden">
             <div className="p-6 md:p-8 text-center">
               <h2 className="text-3xl md:text-4xl font-black text-emerald-700 mb-2">
                 ✓ הצטרפת!
@@ -137,15 +140,14 @@ https://boom-perk-flow.base44.app/join/${orgKey}`;
                 אתה עובד מספר {newCount} מ-{orgName}
               </p>
 
-              {/* Progress Bar */}
               <div className="mb-6">
                 <div className="flex justify-between items-center text-xs md:text-sm text-foreground mb-2 font-medium">
-                  <span>{newCount} מתוך {TARGET_COUNT}</span>
-                  <span>{Math.round((newCount / TARGET_COUNT) * 100)}%</span>
+                  <span>{newCount} מתוך {successTarget}</span>
+                  <span>{Math.round(successPct)}%</span>
                 </div>
                 <motion.div
                   initial={{ width: 0 }}
-                  animate={{ width: `${(newCount / TARGET_COUNT) * 100}%` }}
+                  animate={{ width: `${successPct}%` }}
                   transition={{ duration: 0.6, ease: "easeOut" }}
                   className="h-3 bg-emerald-500 rounded-full"
                 />
@@ -166,7 +168,7 @@ https://boom-perk-flow.base44.app/join/${orgKey}`;
                 חזור לדף ראשי
               </button>
             </div>
-          </motion.div>
+          </div>
         </motion.div>
       </div>
     );

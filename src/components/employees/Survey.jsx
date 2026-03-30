@@ -87,13 +87,26 @@ export default function Survey() {
           lastJoinedAt: new Date().toISOString(),
         });
       } else {
-        await base44.entities.GroupRequest.create({
+        const newGroup = await base44.entities.GroupRequest.create({
           orgName: orgName.trim(),
           orgKey,
           orgNameNormalized: orgKey,
           source: "employees",
+          currentCount: 1,
           lastJoinedAt: new Date().toISOString(),
         });
+        const browserToken = `browser_${Date.now()}_${Math.random()}`;
+        await base44.entities.GroupMember.create({
+          groupRequestId: newGroup.id,
+          orgKey,
+          orgName: orgName.trim(),
+          memberName: "פותח הבקשה",
+          memberPhone: "",
+          browserToken,
+          source: "employees",
+        });
+        localStorage.setItem(`groupmember_${orgKey}`, browserToken);
+        base44.functions.invoke("notifyGroupMilestones", { event: "org_created", orgKey, prevCount: 0, newCount: 1 }).catch(() => {});
       }
       const framing = getResultFraming(holidayBudget, finalActivities);
       setResultText(framing);

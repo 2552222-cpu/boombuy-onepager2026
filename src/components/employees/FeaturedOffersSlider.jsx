@@ -11,6 +11,9 @@ const OFFERS = [
     sub: "אייפון, AirPods ומוצרי פרימיום במחירי עובדים",
     image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/db8e935e8_-2026-03-22T162955489.png",
     footerNote: "ללא סבסוד מעסיק",
+    regularPrice: null,
+    employeePrice: null,
+    savings: null,
   },
   {
     id: "super",
@@ -20,6 +23,9 @@ const OFFERS = [
     sub: "הנחה קבועה ברשתות מובילות, בלי סבסוד מעסיק",
     image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/d53a51271_-2026-03-22T163009970.png",
     footerNote: "ללא סבסוד מעסיק",
+    regularPrice: null,
+    employeePrice: null,
+    savings: null,
   },
   {
     id: "fashion",
@@ -29,6 +35,9 @@ const OFFERS = [
     sub: "מותגים שאנשים באמת קונים, במחירי עובדים",
     image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/9349388b9_-2026-03-22T163505767.png",
     footerNote: null,
+    regularPrice: null,
+    employeePrice: null,
+    savings: null,
   },
   {
     id: "tech",
@@ -38,6 +47,9 @@ const OFFERS = [
     sub: "Dyson, Samsung, LG ועוד, במחירים שמרגישים",
     image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/477510a11_-2026-02-18T150203869.png",
     footerNote: null,
+    regularPrice: null,
+    employeePrice: null,
+    savings: null,
   },
   {
     id: "vacation",
@@ -47,6 +59,9 @@ const OFFERS = [
     sub: "חופשות, מלונות וחוויות במחירים שמרגישים אחרת",
     image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/1b29c5bb8_-2026-03-22T162942110.png",
     footerNote: null,
+    regularPrice: null,
+    employeePrice: null,
+    savings: null,
   },
   {
     id: "culture",
@@ -56,6 +71,9 @@ const OFFERS = [
     sub: "הופעות, הצגות, אטרקציות ואירועים",
     image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3d11c2184_-2026-03-22T165538542.png",
     footerNote: null,
+    regularPrice: null,
+    employeePrice: null,
+    savings: null,
   },
   {
     id: "gift",
@@ -65,6 +83,9 @@ const OFFERS = [
     sub: "ארנק דיגיטלי גמיש במקום מתנה אחת קבועה",
     image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28d0b6e89_-2026-03-22T163901041.png",
     footerNote: "המערכת מסבסדת בעצמה את המוצרים",
+    regularPrice: null,
+    employeePrice: null,
+    savings: null,
   },
 ];
 
@@ -278,6 +299,39 @@ export default function FeaturedOffersSlider() {
                 >
                   {offer.sub}
                 </p>
+                {(offer.regularPrice || offer.employeePrice) && (
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "8px",
+                      marginTop: "10px",
+                      marginBottom: offer.footerNote ? "8px" : "0",
+                      padding: "10px",
+                      background: "#F5F5F7",
+                      borderRadius: "10px",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    {offer.regularPrice && (
+                      <div style={{ textAlign: "center" }}>
+                        <p style={{ fontSize: "9px", color: "#86868B", fontFamily: "var(--font-heebo)" }}>מחיר רגיל</p>
+                        <p style={{ fontSize: "12px", fontWeight: 600, color: "#86868B", textDecoration: "line-through", fontFamily: "var(--font-heebo)" }}>₪{offer.regularPrice.toLocaleString()}</p>
+                      </div>
+                    )}
+                    {offer.employeePrice && (
+                      <div style={{ textAlign: "center" }}>
+                        <p style={{ fontSize: "9px", color: "#0066CC", fontFamily: "var(--font-heebo)" }}>מחיר עובדים</p>
+                        <p style={{ fontSize: "13px", fontWeight: 800, color: "#0066CC", fontFamily: "var(--font-heebo)" }}>₪{offer.employeePrice.toLocaleString()}</p>
+                      </div>
+                    )}
+                    {offer.savings && (
+                      <div style={{ textAlign: "center" }}>
+                        <p style={{ fontSize: "9px", color: "#34C759", fontFamily: "var(--font-heebo)" }}>חיסכון</p>
+                        <p style={{ fontSize: "13px", fontWeight: 800, color: "#34C759", fontFamily: "var(--font-heebo)" }}>₪{offer.savings.toLocaleString()}</p>
+                      </div>
+                    )}
+                  </div>
+                )}
                 {offer.footerNote && (
                   <p
                     style={{
