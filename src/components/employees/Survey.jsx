@@ -96,7 +96,7 @@ export default function Survey() {
           lastJoinedAt: new Date().toISOString(),
         });
         const browserToken = `browser_${Date.now()}_${Math.random()}`;
-        await base44.entities.GroupMember.create({
+        const firstMember = await base44.entities.GroupMember.create({
           groupRequestId: newGroup.id,
           orgKey,
           orgName: orgName.trim(),
@@ -104,6 +104,9 @@ export default function Survey() {
           memberPhone: "",
           browserToken,
           source: "employees",
+        });
+        await base44.entities.GroupRequest.update(newGroup.id, {
+          initiatorMemberId: firstMember.id,
         });
         localStorage.setItem(`groupmember_${orgKey}`, browserToken);
         base44.functions.invoke("notifyGroupMilestones", { event: "org_created", orgKey, prevCount: 0, newCount: 1 }).catch(() => {});

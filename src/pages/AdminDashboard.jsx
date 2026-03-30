@@ -86,6 +86,9 @@ function MembersDrawer({ req, onClose }) {
             ["עובדים", req.currentCount || 1],
             ["WA הועתק", req.whatsappCopied ? "✓ כן" : "לא"],
             ["מכתב הועתק", req.letterCopied ? "✓ כן" : "לא"],
+            ["התראה 10", req.notified10 ? "✅ נשלחה" : "—"],
+            ["התראה 20", req.notified20 ? "✅ נשלחה" : "—"],
+            ["התראה 50", req.notified50 ? "✅ נשלחה" : "—"],
           ].map(([label, val]) => (
             <div key={label} style={{ background: "#F5F5F7", borderRadius: "10px", padding: "10px 12px" }}>
               <p style={{ fontSize: "10px", color: "#86868B", marginBottom: "2px" }}>{label}</p>
