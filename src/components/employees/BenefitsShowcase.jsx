@@ -547,10 +547,11 @@ export default function BenefitsShowcase() {
           transition={{ duration: 0.5 }}
           className="text-center mb-10"
         >
+          <p style={{ fontSize: "12px", fontWeight: 700, color: "#0066CC", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: "8px", fontFamily: "var(--font-heebo)" }}>לחצו כאן כדי לגלות עוד הטבות</p>
           <h2 className="text-2xl md:text-3xl font-extrabold mb-2">
-            מה בדיוק מחכה לך?
+            מה עוד מחכה לך בפנים?
           </h2>
-          <p className="text-muted-foreground text-sm">פתחו כל קטגוריה כדי לראות עוד דוגמאות אמיתיות מהשנה האחרונה</p>
+          <p className="text-muted-foreground text-sm">כאן כבר נכנסים לעומק. כל קטגוריה נפתחת ומציגה עוד דוגמאות אמיתיות.</p>
         </motion.div>
 
         {/* 2+4 Grid */}

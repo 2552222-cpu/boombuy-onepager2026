@@ -3,7 +3,6 @@ import GlobalHeader from "../components/employees/GlobalHeader";
 import GlobalFooter from "../components/employees/GlobalFooter";
 import IntroSlides from "../components/employees/IntroSlides";
 import Hero from "../components/employees/Hero";
-import ProofImage from "../components/employees/ProofImage.jsx";
 import FeaturedOffersSlider from "../components/employees/FeaturedOffersSlider";
 import BenefitsShowcase from "../components/employees/BenefitsShowcase";
 import TrustLogos from "../components/employees/TrustLogos";
@@ -66,9 +65,10 @@ export default function EmployeesLanding() {
       <GlobalHeader />
       <div className="flex-1">
         <IntroSlides />
+        <div id="offers-slider">
+          <FeaturedOffersSlider />
+        </div>
         <Hero />
-        <ProofImage imageUrl={PROOF_IMAGE_URL} />
-        <FeaturedOffersSlider />
         <div id="benefits-showcase">
           <BenefitsShowcase />
         </div>
@@ -108,7 +108,7 @@ export default function EmployeesLanding() {
         onMouseEnter={e => e.currentTarget.style.background = "#0055AA"}
         onMouseLeave={e => e.currentTarget.style.background = "#0066CC"}
       >
-        השתכנעתם? רוצים לצרף את הארגון ל-BoomBuy? התייעצו איתנו
+        רוצים לצרף את הארגון ל-BoomBuy? תנו לנו לכוון אתכם
       </a>
     </div>
   );

@@ -1,88 +1,92 @@
-import React, { useRef, useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const OFFERS = [
   {
     id: "apple",
-    badge: "מחירי יבואן",
+    badge: "הטבה אמיתית לדוגמה | חשמל, אלקטרוניקה ומובייל",
     badgeBg: "#1D1D1F",
     title: "Apple במחיר עובדים",
-    sub: "אייפון, AirPods ומוצרי פרימיום במחירי עובדים",
+    text: "אייפון, AirPods ומוצרי פרימיום במחירים שמרגישים אחרת.",
     image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/db8e935e8_-2026-03-22T162955489.png",
-    footerNote: "ללא סבסוד מעסיק",
+    regularPrice: null,
+    employeePrice: null,
+    savings: null,
+  },
+  {
+    id: "alo",
+    badge: "הטבה אמיתית לדוגמה | אופנה",
+    badgeBg: "#3a3a3a",
+    title: "Alo Yoga במחיר עובדים",
+    text: "מותג פרימיום שאנשים באמת רוצים לקנות, במחיר עובדים.",
+    image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/82cf01fcc_87.png",
+    regularPrice: null,
+    employeePrice: null,
+    savings: null,
+  },
+  {
+    id: "adidas",
+    badge: "הטבה אמיתית לדוגמה | אופנה וספורט",
+    badgeBg: "#2c2c2c",
+    title: "Adidas / Nike לעובדים",
+    text: "גם מוצרי ספורט והנעלה הופכים להיות חלק מהנטו.",
+    image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/9349388b9_-2026-03-22T163505767.png",
     regularPrice: null,
     employeePrice: null,
     savings: null,
   },
   {
     id: "super",
-    badge: "עד 8% תמיד",
+    badge: "הטבה אמיתית לדוגמה | יוקר המחיה",
     badgeBg: "#1a7a4a",
     title: "סופר ופארם בהנחה קבועה",
-    sub: "הנחה קבועה ברשתות מובילות, בלי סבסוד מעסיק",
+    text: "כאן העובד מבין שזה לא מבצע חד-פעמי, אלא משהו שחוזר כל שבוע.",
     image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/d53a51271_-2026-03-22T163009970.png",
-    footerNote: "ללא סבסוד מעסיק",
-    regularPrice: null,
-    employeePrice: null,
-    savings: null,
-  },
-  {
-    id: "fashion",
-    badge: "מחירים בלעדיים",
-    badgeBg: "#3a3a3a",
-    title: "Alo Yoga, Adidas, Nike",
-    sub: "מותגים שאנשים באמת קונים, במחירי עובדים",
-    image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/9349388b9_-2026-03-22T163505767.png",
-    footerNote: null,
-    regularPrice: null,
-    employeePrice: null,
-    savings: null,
-  },
-  {
-    id: "tech",
-    badge: "מחיר יבואן",
-    badgeBg: "#2c2c2c",
-    title: "חשמל ואלקטרוניקה",
-    sub: "Dyson, Samsung, LG ועוד, במחירים שמרגישים",
-    image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/477510a11_-2026-02-18T150203869.png",
-    footerNote: null,
     regularPrice: null,
     employeePrice: null,
     savings: null,
   },
   {
     id: "vacation",
-    badge: "מחירים בלעדיים",
+    badge: "הטבה אמיתית לדוגמה | נופש וחופשות",
     badgeBg: "#0055a0",
-    title: "נופש וחופשות",
-    sub: "חופשות, מלונות וחוויות במחירים שמרגישים אחרת",
+    title: "חופשה במחיר עובדים",
+    text: "חופשות, מלונות וחוויות במחירים שמרגישים אחרת.",
     image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/1b29c5bb8_-2026-03-22T162942110.png",
-    footerNote: null,
+    regularPrice: null,
+    employeePrice: null,
+    savings: null,
+  },
+  {
+    id: "luggage",
+    badge: "הטבה אמיתית לדוגמה | נסיעות וטרוול",
+    badgeBg: "#444",
+    title: "מזוודה במחיר עובדים",
+    text: "דוגמה חריגה לחיסכון מהשנה האחרונה. הוכחה שהנטו שלך שווה הרבה יותר.",
+    image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e5b27b9ef_-2026-03-16T131338488.png",
     regularPrice: null,
     employeePrice: null,
     savings: null,
   },
   {
     id: "culture",
-    badge: "הנחת עובד",
+    badge: "הטבה אמיתית לדוגמה | תרבות ופנאי",
     badgeBg: "#7a1020",
-    title: "תרבות ופנאי",
-    sub: "הופעות, הצגות, אטרקציות ואירועים",
+    title: "קזבלן והופעות במחיר עובדים",
+    text: "גם עולם התרבות והבילוי חייב להרגיש חלק מהנטו.",
     image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3d11c2184_-2026-03-22T165538542.png",
-    footerNote: null,
     regularPrice: null,
     employeePrice: null,
     savings: null,
   },
   {
     id: "gift",
-    badge: "בחירה חופשית",
+    badge: "הטבה אמיתית לדוגמה | מתנת חג",
     badgeBg: "#5a0099",
     title: "מתנת חג עם בחירה",
-    sub: "ארנק דיגיטלי גמיש במקום מתנה אחת קבועה",
+    text: "במקום מתנה אחת קבועה, ארנק דיגיטלי עם בחירה אמיתית.",
     image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28d0b6e89_-2026-03-22T163901041.png",
-    footerNote: "המערכת מסבסדת בעצמה את המוצרים",
     regularPrice: null,
     employeePrice: null,
     savings: null,
@@ -90,298 +94,299 @@ const OFFERS = [
 ];
 
 export default function FeaturedOffersSlider() {
-  const sliderRef = useRef(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [current, setCurrent] = useState(0);
+  const [direction, setDirection] = useState(0);
 
   const scrollToSurvey = () => {
     document.getElementById("survey-section")?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const checkScroll = () => {
-    const el = sliderRef.current;
-    if (!el) return;
-    setCanScrollLeft(el.scrollLeft < -10 || el.scrollLeft > 10);
-    setCanScrollRight(Math.abs(el.scrollLeft) + el.clientWidth < el.scrollWidth - 10);
+  const go = (dir) => {
+    setDirection(dir);
+    setCurrent((prev) => (prev + dir + OFFERS.length) % OFFERS.length);
   };
 
-  useEffect(() => {
-    const el = sliderRef.current;
-    if (!el) return;
-    el.addEventListener("scroll", checkScroll);
-    checkScroll();
-    return () => el.removeEventListener("scroll", checkScroll);
-  }, []);
-
-  const scroll = (dir) => {
-    const el = sliderRef.current;
-    if (!el) return;
-    el.scrollBy({ left: dir * -300, behavior: "smooth" });
-  };
+  const offer = OFFERS[current];
+  const hasPrices = offer.regularPrice && offer.employeePrice;
 
   return (
     <section
       style={{
         background: "#F5F5F7",
-        padding: "64px 0 72px",
-        overflow: "hidden",
         borderTop: "1px solid rgba(0,0,0,0.06)",
+        padding: "64px 16px 72px",
+        overflowX: "hidden",
+        maxWidth: "100vw",
       }}
     >
       {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        style={{ textAlign: "center", marginBottom: "36px", padding: "0 20px" }}
-      >
+      <div style={{ textAlign: "center", marginBottom: "40px" }}>
         <h2
           style={{
-            fontSize: "clamp(26px, 3.5vw, 36px)",
+            fontSize: "clamp(26px, 3.5vw, 38px)",
             fontWeight: 900,
-            letterSpacing: "-0.025em",
+            letterSpacing: "-0.028em",
             lineHeight: 1.1,
             color: "#1D1D1F",
             marginBottom: "10px",
             fontFamily: "var(--font-heebo)",
           }}
         >
-          הטבות אמיתיות מהשנה האחרונה
+          ככה נראית הטבה אמיתית
         </h2>
-        <p style={{ fontSize: "15px", color: "#86868B", fontFamily: "var(--font-heebo)" }}>
-          לחצו על הטבה כדי לגלות עוד
-        </p>
-      </motion.div>
-
-      {/* Slider wrapper */}
-      <div style={{ position: "relative" }}>
-        {/* Nav buttons */}
-        {canScrollRight && (
-          <button
-            onClick={() => scroll(1)}
-            style={{
-              position: "absolute",
-              right: "16px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              zIndex: 10,
-              width: 44,
-              height: 44,
-              borderRadius: "50%",
-              background: "#fff",
-              border: "1px solid rgba(0,0,0,0.1)",
-              boxShadow: "0 2px 12px rgba(0,0,0,0.1)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-            }}
-          >
-            <ChevronRight className="w-5 h-5 text-foreground" />
-          </button>
-        )}
-        {canScrollLeft && (
-          <button
-            onClick={() => scroll(-1)}
-            style={{
-              position: "absolute",
-              left: "16px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              zIndex: 10,
-              width: 44,
-              height: 44,
-              borderRadius: "50%",
-              background: "#fff",
-              border: "1px solid rgba(0,0,0,0.1)",
-              boxShadow: "0 2px 12px rgba(0,0,0,0.1)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-            }}
-          >
-            <ChevronLeft className="w-5 h-5 text-foreground" />
-          </button>
-        )}
-
-        {/* Scrollable row */}
-        <div
-          ref={sliderRef}
+        <p
           style={{
-            display: "flex",
-            gap: "16px",
-            overflowX: "auto",
-            padding: "8px 28px 16px",
-            scrollbarWidth: "none",
-            WebkitOverflowScrolling: "touch",
-            flexDirection: "row-reverse",
+            fontSize: "15px",
+            color: "#86868B",
+            fontFamily: "var(--font-heebo)",
+            maxWidth: "520px",
+            margin: "0 auto",
+            lineHeight: 1.6,
           }}
         >
-          {OFFERS.map((offer, i) => (
-            <motion.div
-              key={offer.id}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.04 }}
-              onClick={scrollToSurvey}
-              style={{
-                flexShrink: 0,
-                width: "clamp(240px, 28vw, 290px)",
-                background: "#fff",
-                borderRadius: "20px",
-                border: "1px solid rgba(0,0,0,0.08)",
-                boxShadow: "0 2px 14px rgba(0,0,0,0.07)",
-                overflow: "hidden",
-                cursor: "pointer",
-                transition: "transform 0.2s ease, box-shadow 0.2s ease",
-              }}
-              whileHover={{ y: -4, boxShadow: "0 8px 28px rgba(0,0,0,0.12)" }}
-            >
-              {/* Image */}
-              <div
-                style={{
-                  background: "#FAFAFA",
-                  aspectRatio: "1/1",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  padding: "16px",
-                  borderBottom: "1px solid rgba(0,0,0,0.06)",
-                }}
-              >
-                <img
-                  src={offer.image}
-                  alt={offer.title}
-                  style={{ maxWidth: "88%", maxHeight: "88%", objectFit: "contain" }}
-                />
-              </div>
-
-              {/* Content */}
-              <div style={{ padding: "14px 16px 16px" }}>
-                <span
-                  style={{
-                    display: "inline-block",
-                    background: offer.badgeBg,
-                    color: "#fff",
-                    fontSize: "10px",
-                    fontWeight: 700,
-                    padding: "3px 10px",
-                    borderRadius: "999px",
-                    marginBottom: "8px",
-                    fontFamily: "var(--font-heebo)",
-                  }}
-                >
-                  {offer.badge}
-                </span>
-                <h3
-                  style={{
-                    fontSize: "15px",
-                    fontWeight: 800,
-                    color: "#1D1D1F",
-                    lineHeight: 1.3,
-                    marginBottom: "5px",
-                    fontFamily: "var(--font-heebo)",
-                  }}
-                >
-                  {offer.title}
-                </h3>
-                <p
-                  style={{
-                    fontSize: "13px",
-                    color: "#86868B",
-                    lineHeight: 1.5,
-                    fontFamily: "var(--font-heebo)",
-                    marginBottom: offer.footerNote ? "10px" : "0",
-                  }}
-                >
-                  {offer.sub}
-                </p>
-                {(offer.regularPrice || offer.employeePrice) && (
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: "8px",
-                      marginTop: "10px",
-                      marginBottom: offer.footerNote ? "8px" : "0",
-                      padding: "10px",
-                      background: "#F5F5F7",
-                      borderRadius: "10px",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    {offer.regularPrice && (
-                      <div style={{ textAlign: "center" }}>
-                        <p style={{ fontSize: "9px", color: "#86868B", fontFamily: "var(--font-heebo)" }}>מחיר רגיל</p>
-                        <p style={{ fontSize: "12px", fontWeight: 600, color: "#86868B", textDecoration: "line-through", fontFamily: "var(--font-heebo)" }}>₪{offer.regularPrice.toLocaleString()}</p>
-                      </div>
-                    )}
-                    {offer.employeePrice && (
-                      <div style={{ textAlign: "center" }}>
-                        <p style={{ fontSize: "9px", color: "#0066CC", fontFamily: "var(--font-heebo)" }}>מחיר עובדים</p>
-                        <p style={{ fontSize: "13px", fontWeight: 800, color: "#0066CC", fontFamily: "var(--font-heebo)" }}>₪{offer.employeePrice.toLocaleString()}</p>
-                      </div>
-                    )}
-                    {offer.savings && (
-                      <div style={{ textAlign: "center" }}>
-                        <p style={{ fontSize: "9px", color: "#34C759", fontFamily: "var(--font-heebo)" }}>חיסכון</p>
-                        <p style={{ fontSize: "13px", fontWeight: 800, color: "#34C759", fontFamily: "var(--font-heebo)" }}>₪{offer.savings.toLocaleString()}</p>
-                      </div>
-                    )}
-                  </div>
-                )}
-                {offer.footerNote && (
-                  <p
-                    style={{
-                      fontSize: "11px",
-                      color: "#AEAEB2",
-                      fontWeight: 500,
-                      fontFamily: "var(--font-heebo)",
-                      borderTop: "1px solid rgba(0,0,0,0.06)",
-                      paddingTop: "8px",
-                      marginTop: "2px",
-                    }}
-                  >
-                    {offer.footerNote}
-                  </p>
-                )}
-              </div>
-            </motion.div>
-          ))}
-        </div>
+          דוגמאות חריגות לחיסכון מהשנה האחרונה. הוכחה שהנטו שלך שווה הרבה יותר.
+        </p>
       </div>
 
-      {/* CTA */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.4, delay: 0.2 }}
-        style={{ textAlign: "center", marginTop: "32px", padding: "0 20px" }}
-      >
-        <button
-          onClick={scrollToSurvey}
+      {/* Slide */}
+      <div style={{ maxWidth: "860px", margin: "0 auto" }}>
+        <div
           style={{
-            background: "#0066CC",
-            color: "#fff",
-            fontWeight: 800,
-            fontSize: "15px",
-            padding: "13px 32px",
-            borderRadius: "12px",
-            border: "none",
-            cursor: "pointer",
-            boxShadow: "0 6px 20px rgba(0,102,204,0.24)",
-            fontFamily: "var(--font-heebo)",
-            transition: "background 0.16s ease",
+            background: "#fff",
+            borderRadius: "24px",
+            border: "1px solid rgba(0,0,0,0.07)",
+            boxShadow: "0 4px 32px rgba(0,0,0,0.08)",
+            overflow: "hidden",
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = "#0055AA")}
-          onMouseLeave={(e) => (e.currentTarget.style.background = "#0066CC")}
         >
-          אני רוצה שהארגון שלי יצטרף
-        </button>
-      </motion.div>
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div
+              key={offer.id}
+              custom={direction}
+              initial={{ opacity: 0, x: direction > 0 ? -60 : direction < 0 ? 60 : 0 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: direction > 0 ? 60 : -60 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+            >
+              {/* Desktop: side by side, Mobile: stacked */}
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  minHeight: "420px",
+                }}
+                className="flex-col md:grid"
+              >
+                {/* Image */}
+                <div
+                  style={{
+                    background: "#FAFAFA",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: "40px 32px",
+                    borderLeft: "1px solid rgba(0,0,0,0.06)",
+                    minHeight: "280px",
+                  }}
+                >
+                  <img
+                    src={offer.image}
+                    alt={offer.title}
+                    style={{
+                      maxWidth: "100%",
+                      maxHeight: "320px",
+                      objectFit: "contain",
+                      filter: "drop-shadow(0 8px 24px rgba(0,0,0,0.1))",
+                    }}
+                  />
+                </div>
+
+                {/* Content */}
+                <div
+                  style={{
+                    padding: "40px 36px",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    gap: "16px",
+                  }}
+                >
+                  <span
+                    style={{
+                      display: "inline-block",
+                      background: offer.badgeBg,
+                      color: "#fff",
+                      fontSize: "11px",
+                      fontWeight: 700,
+                      padding: "5px 14px",
+                      borderRadius: "999px",
+                      fontFamily: "var(--font-heebo)",
+                      alignSelf: "flex-start",
+                    }}
+                  >
+                    {offer.badge}
+                  </span>
+
+                  <h3
+                    style={{
+                      fontSize: "clamp(24px, 3vw, 34px)",
+                      fontWeight: 900,
+                      letterSpacing: "-0.025em",
+                      lineHeight: 1.15,
+                      color: "#1D1D1F",
+                      fontFamily: "var(--font-heebo)",
+                      margin: 0,
+                    }}
+                  >
+                    {offer.title}
+                  </h3>
+
+                  <p
+                    style={{
+                      fontSize: "16px",
+                      color: "#86868B",
+                      lineHeight: 1.6,
+                      fontFamily: "var(--font-heebo)",
+                      margin: 0,
+                    }}
+                  >
+                    {offer.text}
+                  </p>
+
+                  {/* Price cards — only if real data */}
+                  {hasPrices && (
+                    <div style={{ display: "flex", gap: "10px", marginTop: "8px" }}>
+                      {[
+                        { label: "מחיר רגיל", value: `₪${offer.regularPrice.toLocaleString()}`, color: "#86868B", strike: true },
+                        { label: "מחיר לעובדים", value: `₪${offer.employeePrice.toLocaleString()}`, color: "#0066CC", strike: false },
+                        { label: "החיסכון שלך", value: `₪${offer.savings.toLocaleString()}`, color: "#34C759", strike: false },
+                      ].map((card) => (
+                        <div
+                          key={card.label}
+                          style={{
+                            flex: 1,
+                            background: "rgba(0,0,0,0.03)",
+                            backdropFilter: "blur(8px)",
+                            border: "1px solid rgba(0,0,0,0.07)",
+                            borderRadius: "12px",
+                            padding: "10px 12px",
+                            textAlign: "center",
+                          }}
+                        >
+                          <p style={{ fontSize: "9px", color: "#86868B", marginBottom: "4px", fontFamily: "var(--font-heebo)" }}>{card.label}</p>
+                          <p
+                            style={{
+                              fontSize: "14px",
+                              fontWeight: 800,
+                              color: card.color,
+                              textDecoration: card.strike ? "line-through" : "none",
+                              fontFamily: "var(--font-heebo)",
+                            }}
+                          >
+                            {card.value}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Navigation bar */}
+          <div
+            style={{
+              borderTop: "1px solid rgba(0,0,0,0.06)",
+              padding: "16px 24px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              background: "#FAFAFA",
+            }}
+          >
+            <button
+              onClick={() => go(-1)}
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: "50%",
+                background: "#fff",
+                border: "1px solid rgba(0,0,0,0.1)",
+                boxShadow: "0 1px 6px rgba(0,0,0,0.07)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+              }}
+            >
+              <ChevronLeft className="w-4 h-4 text-foreground" />
+            </button>
+
+            {/* Dots */}
+            <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+              {OFFERS.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => { setDirection(i > current ? 1 : -1); setCurrent(i); }}
+                  style={{
+                    width: i === current ? 20 : 6,
+                    height: 6,
+                    borderRadius: "999px",
+                    background: i === current ? "#0066CC" : "rgba(0,0,0,0.15)",
+                    border: "none",
+                    cursor: "pointer",
+                    transition: "all 0.2s ease",
+                    padding: 0,
+                  }}
+                />
+              ))}
+            </div>
+
+            <button
+              onClick={() => go(1)}
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: "50%",
+                background: "#fff",
+                border: "1px solid rgba(0,0,0,0.1)",
+                boxShadow: "0 1px 6px rgba(0,0,0,0.07)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+              }}
+            >
+              <ChevronRight className="w-4 h-4 text-foreground" />
+            </button>
+          </div>
+        </div>
+
+        {/* CTA */}
+        <div style={{ textAlign: "center", marginTop: "28px" }}>
+          <button
+            onClick={scrollToSurvey}
+            style={{
+              background: "#0066CC",
+              color: "#fff",
+              fontWeight: 800,
+              fontSize: "15px",
+              padding: "13px 32px",
+              borderRadius: "12px",
+              border: "none",
+              cursor: "pointer",
+              boxShadow: "0 6px 20px rgba(0,102,204,0.24)",
+              fontFamily: "var(--font-heebo)",
+              transition: "background 0.16s ease",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = "#0055AA")}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "#0066CC")}
+          >
+            אני רוצה שהארגון שלי יצטרף
+          </button>
+        </div>
+      </div>
     </section>
   );
 }
