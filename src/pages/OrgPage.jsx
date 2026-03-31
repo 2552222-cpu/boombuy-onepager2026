@@ -27,8 +27,8 @@ function markJoined(orgKey) {
   localStorage.setItem("boomBuyJoinedOrgs", JSON.stringify(orgs));
 }
 
-function waMsg(orgName, count) {
-  const link = `${BASE_URL}/join/${encodeURIComponent(orgName?.toLowerCase().replace(/\s+/g, "_") || "")}`;
+function waMsg(orgName, count, orgSlug) {
+  const link = `${BASE_URL}/join/${orgSlug}`;
   if (count >= TARGET_2) {
     return `חבר׳ה, פתחנו בקשה לצרף את ${orgName} ל-BoomBuy. זה יכול לתת לנו מחירי יבואן על Apple, הנחות קבועות בסופר, אופנה, חופשות והטבות נוספות - בלי תוספת תקציב לארגון. כבר עברנו את ה-20, וכל הצטרפות נוספת מחזקת עוד יותר את הפנייה. הצטרפו כאן: ${link}`;
   }
@@ -42,18 +42,20 @@ function waMsg(orgName, count) {
 
 function letterMsg(orgName, count, orgKey) {
   const orgLink = orgKey ? `${BASE_URL}/join/${orgKey}` : BASE_URL;
-  return `שלום [שם],
+  return `שלום,
 
 קבוצת עובדים מתוך ${orgName} ביקשה לבחון את ההצטרפות למועדון BoomBuy.
 
 עד כה הצטרפו לבקשה ${count} עובדים מתוך הארגון.
 
-המהלך מאפשר לעובדים לקבל מחירי סיטונאות על מוצרי פרימיום, הנחות קבועות בסופר ובפארם, ומתנות חג גמישות - והכול ב-0 ש"ח תוספת תקציב לארגון.
+המהלך מאפשר לעובדים לקבל מחירי סיטונאות על מוצרי פרימיום, הנחות קבועות בסופר ובפארם, מתנות חג גמישות והטבות נוספות - והכול ב-0 ש"ח תוספת תקציב לארגון.
 
-נשמח שתבחנו תיאום פגישת דמו קצרה מול צוות בום-ביי:
+נשמח אם תבדקו תיאום פגישת דמו קצרה מול צוות BoomBuy.
+
+קישור לעמוד הבקשה:
 ${orgLink}
 
-אפשר גם לפנות אלינו ישירות כאן:
+יצירת קשר ישיר:
 https://wa.me/972542552222`;
 }
 

@@ -125,7 +125,7 @@ export default function IntroSlides() {
           </button>
 
           <button
-            onClick={scrollToSurvey}
+            onClick={scrollToSlider}
             style={{
               background: "transparent",
               color: "#86868B",
