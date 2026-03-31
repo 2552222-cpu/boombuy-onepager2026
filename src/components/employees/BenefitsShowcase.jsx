@@ -13,6 +13,7 @@ const DAILY_EXTRA = [
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3211ae300_100.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a4b03713f_-2026-03-22T142532392.png",
   "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/096d0c835_70.png",
+  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e5b27b9ef_-2026-03-16T131338488.png",
 ];
 
 // פארם, סופר
