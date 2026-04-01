@@ -1,275 +1,441 @@
-import React, { useState, useRef } from "react";
-import { ChevronRight, ChevronLeft, X } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
+import React, { useState, useRef, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { X, ChevronRight, ChevronLeft } from "lucide-react";
 
 const OFFERS = [
   {
-    id: "apple",
-    badge: "חשמל, אלקטרוניקה ומובייל",
-    title: "Apple במחיר עובדים",
-    text: "אייפון, AirPods ומוצרי פרימיום במחירים שמרגישים אחרת.",
-    image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/db8e935e8_-2026-03-22T162955489.png",
-    accent: "#0071e3",
+    id: "alo-yoga",
+    category: "אופנה",
+    title: "Alo Yoga",
+    desc: "טייץ אלו יוגה נשים ועוד אלפי מוצרים בהטבה של 55% הנחה! יבואן רשמי.",
+    priceOld: "₪499",
+    priceNew: "₪224",
+    accent: "#8B6B3D",
+    image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8ccf1ae84_87.png",
   },
   {
-    id: "alo",
-    badge: "אופנה",
-    title: "Alo Yoga במחיר עובדים",
-    text: "מותג פרימיום שאנשים באמת רוצים לקנות, במחיר עובדים.",
-    image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6a4f8399a_90.png",
-    accent: "#6c63ff",
-  },
-  {
-    id: "adidas",
-    badge: "אופנה וספורט",
-    title: "Adidas / Nike לעובדים",
-    text: "גם מוצרי ספורט והנעלה הופכים להיות חלק מהנטו.",
-    image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/82cf01fcc_87.png",
-    accent: "#222",
-  },
-  {
-    id: "super",
-    badge: "יוקר המחיה",
-    title: "סופר ופארם בהנחה קבועה",
-    text: "כאן העובד מבין שזה לא מבצע חד-פעמי, אלא משהו שחוזר כל שבוע.",
-    image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/d53a51271_-2026-03-22T163009970.png",
-    accent: "#1a7a4a",
+    id: "apple-samsung",
+    category: "אלקטרוניקה ומובייל",
+    title: "Apple iPhone 16 Pro",
+    desc: "אייפון 16 פרו 256GB, אחריות רשמית DCS. מחיר שחוסך אלפי שקלים.",
+    priceOld: "₪4,590",
+    priceNew: "₪3,890",
+    accent: "#555555",
+    image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/67dbe888a_92.png",
   },
   {
     id: "vacation",
-    badge: "נופש וחופשות",
-    title: "חופשה במחיר עובדים",
-    text: "חופשות, מלונות וחוויות במחירים שמרגישים אחרת.",
-    image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/1b29c5bb8_-2026-03-22T162942110.png",
-    accent: "#0055a0",
+    category: "נופש וחופשות",
+    title: "Brown Hotels",
+    desc: "לילה מפנק בBoBo תל אביב כולל לינה, עיסוי זוגי ואוחרת בוקר זוגית ב-899 ש' לזוג.",
+    priceOld: "₪1,790",
+    priceNew: "₪899",
+    accent: "#FF9500",
+    image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28596a618_-2026-03-22T133529822.png",
   },
   {
-    id: "luggage",
-    badge: "נסיעות וטרוול",
-    title: "מזוודה במחיר עובדים",
-    text: "סט 3 מזוודות Kate Hill יבואן רשמי. מחיר ירידה חריג מ-1,999 ל-249 ש״ח.",
-    image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/b4837c4f0_-2026-03-15T180501791.png",
-    accent: "#444",
-    regularPrice: 1999, employeePrice: 249, savings: 1750,
+    id: "kate-hill",
+    category: "נסיעות",
+    title: "Kate Hill — סט מזוודות",
+    desc: "סט 3 מזוודות קשיחות, יבואן רשמי. הדיל הכי חזק של השנה — מוגבל במלאי.",
+    priceOld: "₪1,999",
+    priceNew: "₪249",
+    accent: "#F5C518",
+    image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28598db7e_-2026-03-15T180501791.png",
+  },
+  {
+    id: "living-cost",
+    category: "יוקר המחיה",
+    title: "TNX — מארז ניקיון",
+    desc: "מארז מיני הכל כלול מבית ליאור קוקה. משלוח חינם.",
+    priceOld: "₪350",
+    priceNew: "₪149",
+    accent: "#34C759",
+    image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e8b8ed0b8_-2026-02-18T145540109.png",
   },
   {
     id: "culture",
-    badge: "תרבות ופנאי",
-    title: "קזבלן והופעות במחיר עובדים",
-    text: "גם עולם התרבות והבילוי חייב להרגיש חלק מהנטו.",
-    image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3d11c2184_-2026-03-22T165538542.png",
-    accent: "#7a1020",
+    category: "תרבות",
+    title: "מחזמר קזבלן",
+    desc: "קזבלן בהבימה — מחיר לעובדים 77 ש' בלבד. כל הקודם קונה.",
+    priceOld: "₪350",
+    priceNew: "₪77",
+    accent: "#AF52DE",
+    image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/5bc85c1ec_-2026-03-22T140039783.png",
   },
   {
-    id: "daily",
-    badge: "כל בוקר הטבה חדשה",
-    title: "כל בוקר הטבה חדשה",
-    text: "260 הטבות בשנה — ישירות לוואטסאפ שלך. תמיד במחיר הנמוך ביותר בישראל.",
-    image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7e52326a0_-2026-03-22T160414836.png",
-    accent: "#0066CC",
+    id: "appliances",
+    category: "מוצרי חשמל",
+    title: "Nespresso Inissia",
+    desc: "מכונת קפה Inissia + מקציף + 60 קפסולות + משלוח. אחריות יבואן רשמי.",
+    priceOld: "₪833",
+    priceNew: "₪589",
+    accent: "#5856D6",
+    image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7e803d677_-2026-02-18T150849922.png",
+  },
+  {
+    id: "daily-benefit",
+    category: "אופנה וספורט",
+    title: "Adidas Samba OG",
+    desc: "נעלי סמבה אדידס, יבואן רשמי, במגוון צבעים לגברים ונשים. משלוח חינם.",
+    priceOld: "₪499",
+    priceNew: "₪299",
+    accent: "#FF2D55",
+    image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8d94e0c71_-2026-02-18T150744909.png",
+  },
+  {
+    id: "fragrance",
+    category: "בישום",
+    title: "Christian Dior Sauvage",
+    desc: "סאוואז' 100 מ\"ל. מחיר k.s.p: 546 ₪, מחיר cosmetic club: 600 ₪. אצלנו: 430 ₪ כולל משלוח.",
+    priceOld: "₪600",
+    priceNew: "₪430",
+    accent: "#1C1C1E",
+    image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/823674aab_-2026-02-18T150114784.png",
   },
 ];
 
-function OfferCard({ offer, onCTA }) {
+// Kate Hill is index 3 — default center
+const DEFAULT_INDEX = 3;
+
+function OfferModal({ offer, onClose, onCTA }) {
+  const savings = offer.priceOld && offer.priceNew
+    ? parseInt(offer.priceOld.replace(/[^\d]/g, "")) - parseInt(offer.priceNew.replace(/[^\d]/g, ""))
+    : null;
+
   return (
-    <div style={{
-      flexShrink: 0,
-      width: "clamp(240px, 70vw, 300px)",
-      borderRadius: "20px",
-      overflow: "hidden",
-      background: "#fff",
-      boxShadow: "0 4px 20px rgba(0,0,0,0.09)",
-      border: "1px solid rgba(0,0,0,0.07)",
-      display: "flex",
-      flexDirection: "column",
-    }}>
-      {/* תמונה */}
-      <div style={{
-        background: "#FAFAFA",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "28px 24px",
-        height: "200px",
-        borderBottom: "1px solid rgba(0,0,0,0.05)",
-      }}>
-        <img
-          src={offer.image}
-          alt={offer.title}
-          style={{ maxWidth: "100%", maxHeight: "150px", objectFit: "contain", filter: "drop-shadow(0 6px 16px rgba(0,0,0,0.12))" }}
-        />
-      </div>
-
-      {/* תוכן */}
-      <div style={{ padding: "18px 18px 20px", display: "flex", flexDirection: "column", gap: "8px", flex: 1 }}>
-        <span style={{
-          display: "inline-block",
-          background: offer.accent,
-          color: "#fff",
-          fontSize: "10px", fontWeight: 700,
-          padding: "3px 10px", borderRadius: 999,
-          alignSelf: "flex-start",
-          fontFamily: "var(--font-heebo)",
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
+      style={{
+        position: "fixed", inset: 0, zIndex: 100,
+        background: "rgba(0,0,0,0.55)", backdropFilter: "blur(12px)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        padding: "16px",
+      }}
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.88, y: 24 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.88, y: 24 }}
+        transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }}
+        onClick={e => e.stopPropagation()}
+        style={{
+          background: "#fff",
+          borderRadius: "28px",
+          maxWidth: "400px",
+          width: "100%",
+          overflow: "hidden",
+          boxShadow: `0 32px 80px rgba(0,0,0,0.28), 0 0 0 1px rgba(255,255,255,0.08)`,
+          direction: "rtl",
+        }}
+      >
+        {/* Image area */}
+        <div style={{
+          background: `linear-gradient(135deg, ${offer.accent}15, ${offer.accent}08)`,
+          padding: "32px 32px 24px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          position: "relative",
+          minHeight: "240px",
         }}>
-          {offer.badge}
-        </span>
-
-        <h3 style={{
-          fontSize: "16px", fontWeight: 900, color: "#1D1D1F",
-          letterSpacing: "-0.02em", lineHeight: 1.25, margin: 0,
-          fontFamily: "var(--font-heebo)",
-        }}>
-          {offer.title}
-        </h3>
-
-        <p style={{ fontSize: "13px", color: "#555", lineHeight: 1.5, margin: 0, fontFamily: "var(--font-heebo)" }}>
-          {offer.text}
-        </p>
-
-        {offer.regularPrice && (
-          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginTop: "4px" }}>
-            {[
-              { label: "מחיר רגיל", value: `₪${offer.regularPrice.toLocaleString()}`, color: "#86868B", strike: true },
-              { label: "מחיר עובדים", value: `₪${offer.employeePrice.toLocaleString()}`, color: "#34C759", strike: false },
-              { label: "חיסכון", value: `₪${offer.savings.toLocaleString()}`, color: "#0066CC", strike: false },
-            ].map((c) => (
-              <div key={c.label} style={{
-                background: "rgba(0,0,0,0.04)", border: "1px solid rgba(0,0,0,0.07)",
-                borderRadius: "10px", padding: "6px 10px", textAlign: "center",
-              }}>
-                <p style={{ fontSize: "9px", color: "#86868B", margin: "0 0 2px", fontFamily: "var(--font-heebo)" }}>{c.label}</p>
-                <p style={{ fontSize: "13px", fontWeight: 800, color: c.color, textDecoration: c.strike ? "line-through" : "none", margin: 0, fontFamily: "var(--font-heebo)" }}>{c.value}</p>
-              </div>
-            ))}
-          </div>
-        )}
-
-        <button
-          onClick={onCTA}
-          style={{
-            marginTop: "auto",
-            paddingTop: "12px",
-            background: "#0066CC", color: "#fff",
-            fontWeight: 700, fontSize: "13px",
-            padding: "11px 18px", borderRadius: "10px",
-            border: "none", cursor: "pointer",
+          <button onClick={onClose} style={{
+            position: "absolute", top: 14, left: 14,
+            width: 32, height: 32, borderRadius: "50%",
+            background: "rgba(0,0,0,0.08)", border: "none", cursor: "pointer",
+            display: "flex", alignItems: "center", justifyContent: "center",
+          }}>
+            <X size={16} color="#1D1D1F" />
+          </button>
+          <span style={{
+            position: "absolute", top: 14, right: 14,
+            background: offer.accent, color: "#fff",
+            fontSize: "10px", fontWeight: 700,
+            padding: "3px 10px", borderRadius: 999,
             fontFamily: "var(--font-heebo)",
-          }}
-        >
-          אני רוצה שהארגון שלי יצטרף
-        </button>
-      </div>
-    </div>
+          }}>
+            {offer.category}
+          </span>
+          <img
+            src={offer.image}
+            alt={offer.title}
+            style={{ maxWidth: "200px", maxHeight: "200px", objectFit: "contain", filter: "drop-shadow(0 8px 24px rgba(0,0,0,0.15))" }}
+          />
+        </div>
+
+        {/* Content */}
+        <div style={{ padding: "20px 24px 24px" }}>
+          <h3 style={{ fontSize: "22px", fontWeight: 900, color: "#1D1D1F", margin: "0 0 8px", fontFamily: "var(--font-heebo)", letterSpacing: "-0.02em" }}>
+            {offer.title}
+          </h3>
+          <p style={{ fontSize: "14px", color: "#6E6E73", lineHeight: 1.55, margin: "0 0 20px", fontFamily: "var(--font-heebo)" }}>
+            {offer.desc}
+          </p>
+
+          {/* Price chips — glassmorphism */}
+          <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+            <div style={{
+              flex: 1, padding: "12px", borderRadius: "16px", textAlign: "center",
+              background: "rgba(200,200,200,0.15)",
+              backdropFilter: "blur(15px)",
+              border: "1px solid rgba(255,255,255,0.5)",
+            }}>
+              <p style={{ fontSize: "10px", color: "#86868B", margin: "0 0 2px", fontFamily: "var(--font-heebo)" }}>מחיר רגיל</p>
+              <p style={{ fontSize: "16px", fontWeight: 800, color: "#86868B", textDecoration: "line-through", margin: 0, fontFamily: "var(--font-heebo)" }}>{offer.priceOld}</p>
+            </div>
+            <div style={{
+              flex: 1, padding: "12px", borderRadius: "16px", textAlign: "center",
+              background: `linear-gradient(135deg, ${offer.accent}22, ${offer.accent}10)`,
+              backdropFilter: "blur(15px)",
+              border: `1px solid ${offer.accent}44`,
+            }}>
+              <p style={{ fontSize: "10px", color: offer.accent, margin: "0 0 2px", fontWeight: 700, fontFamily: "var(--font-heebo)" }}>מחיר עובדים</p>
+              <p style={{ fontSize: "20px", fontWeight: 900, color: offer.accent, margin: 0, fontFamily: "var(--font-heebo)" }}>{offer.priceNew}</p>
+            </div>
+            {savings > 0 && (
+              <div style={{
+                flex: 1, padding: "12px", borderRadius: "16px", textAlign: "center",
+                background: "rgba(52,199,89,0.12)",
+                backdropFilter: "blur(15px)",
+                border: "1px solid rgba(52,199,89,0.3)",
+              }}>
+                <p style={{ fontSize: "10px", color: "#34C759", margin: "0 0 2px", fontWeight: 700, fontFamily: "var(--font-heebo)" }}>חיסכון</p>
+                <p style={{ fontSize: "16px", fontWeight: 900, color: "#34C759", margin: 0, fontFamily: "var(--font-heebo)" }}>₪{savings.toLocaleString()}</p>
+              </div>
+            )}
+          </div>
+
+          <button
+            onClick={() => onCTA(offer.id)}
+            style={{
+              width: "100%",
+              background: offer.accent === "#1C1C1E" ? "#1D1D1F" : offer.accent,
+              color: "#fff",
+              fontWeight: 800, fontSize: "15px",
+              padding: "14px", borderRadius: "14px",
+              border: "none", cursor: "pointer",
+              fontFamily: "var(--font-heebo)",
+              boxShadow: `0 8px 24px ${offer.accent}44`,
+            }}
+          >
+            אני רוצה את זה ←
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>
   );
 }
 
 export default function FeaturedOffersSlider() {
-  const [active, setActive] = useState(0);
-  const trackRef = useRef(null);
+  const [active, setActive] = useState(DEFAULT_INDEX);
+  const [modal, setModal] = useState(null);
+  const touchStartX = useRef(null);
 
-  const scrollToSurvey = () => {
-    setTimeout(() => document.getElementById("survey-section")?.scrollIntoView({ behavior: "smooth" }), 150);
-  };
+  const scrollToSurvey = useCallback((offerId) => {
+    setModal(null);
+    setTimeout(() => document.getElementById("survey-section")?.scrollIntoView({ behavior: "smooth" }), 200);
+  }, []);
 
   const go = (dir) => {
-    const next = Math.min(Math.max(active + dir, 0), OFFERS.length - 1);
-    setActive(next);
-    if (trackRef.current) {
-      const cardWidth = trackRef.current.children[0]?.offsetWidth + 16 || 316;
-      trackRef.current.scrollTo({ left: next * cardWidth, behavior: "smooth" });
-    }
+    setActive(prev => Math.min(Math.max(prev + dir, 0), OFFERS.length - 1));
   };
 
+  const handleTouchStart = (e) => { touchStartX.current = e.touches[0].clientX; };
+  const handleTouchEnd = (e) => {
+    if (touchStartX.current === null) return;
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) go(diff > 0 ? 1 : -1);
+    touchStartX.current = null;
+  };
+
+  const activeOffer = OFFERS[active];
+
   return (
-    <section style={{
-      background: "#F5F5F7",
-      padding: "64px 0 72px",
-      overflowX: "hidden",
-      maxWidth: "100vw",
-      borderTop: "1px solid rgba(0,0,0,0.06)",
-      direction: "rtl",
-    }}>
+    <section
+      style={{
+        background: "#F5F5F7",
+        padding: "64px 0 72px",
+        overflowX: "hidden",
+        borderTop: "1px solid rgba(0,0,0,0.06)",
+        direction: "rtl",
+      }}
+    >
       {/* Header */}
-      <div style={{
-        maxWidth: 1300, margin: "0 auto",
-        padding: "0 20px 32px",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "flex-end",
-        gap: "1rem", flexWrap: "wrap",
-      }}>
-        <div>
-          <h2 style={{
-            fontSize: "clamp(24px, 3.5vw, 36px)",
-            fontWeight: 900, color: "#1D1D1F",
-            letterSpacing: "-0.025em", lineHeight: 1.15,
-            marginBottom: 8,
-            fontFamily: "var(--font-heebo)",
-          }}>
-            ככה נראית הטבה אמיתית
-          </h2>
-          <p style={{ fontSize: 15, color: "#86868B", fontFamily: "var(--font-heebo)", lineHeight: 1.6 }}>
-            דוגמאות חריגות לחיסכון מהשנה האחרונה.
-          </p>
-        </div>
-        <div style={{ display: "flex", gap: "0.5rem" }}>
-          <button onClick={() => go(-1)} disabled={active === 0} style={{
-            width: 40, height: 40, borderRadius: "50%", border: "1px solid rgba(0,0,0,0.1)",
-            background: "#fff", color: "#1D1D1F", display: "flex", alignItems: "center",
-            justifyContent: "center", cursor: active === 0 ? "default" : "pointer",
-            opacity: active === 0 ? 0.3 : 1, transition: "0.2s",
-            boxShadow: "0 1px 6px rgba(0,0,0,0.07)",
-          }}>
-            <ChevronRight size={18} />
-          </button>
-          <button onClick={() => go(1)} disabled={active === OFFERS.length - 1} style={{
-            width: 40, height: 40, borderRadius: "50%", border: "1px solid rgba(0,0,0,0.1)",
-            background: "#fff", color: "#1D1D1F", display: "flex", alignItems: "center",
-            justifyContent: "center", cursor: active === OFFERS.length - 1 ? "default" : "pointer",
-            opacity: active === OFFERS.length - 1 ? 0.3 : 1, transition: "0.2s",
-            boxShadow: "0 1px 6px rgba(0,0,0,0.07)",
-          }}>
-            <ChevronLeft size={18} />
-          </button>
-        </div>
+      <div style={{ textAlign: "center", marginBottom: "36px", padding: "0 20px" }}>
+        <h2 style={{
+          fontSize: "clamp(24px, 4vw, 36px)",
+          fontWeight: 900, color: "#1D1D1F",
+          letterSpacing: "-0.025em",
+          marginBottom: 8,
+          fontFamily: "var(--font-heebo)",
+        }}>
+          ככה נראית הטבה אמיתית
+        </h2>
+        <p style={{ fontSize: 15, color: "#86868B", fontFamily: "var(--font-heebo)" }}>
+          דוגמאות חריגות לחיסכון מהשנה האחרונה.
+        </p>
       </div>
 
-      {/* Cards track */}
+      {/* 3D Carousel */}
       <div
-        ref={trackRef}
-        style={{
-          display: "flex",
-          gap: "16px",
-          overflowX: "auto",
-          paddingInline: "20px",
-          paddingBottom: "20px",
-          scrollbarWidth: "none",
-          msOverflowStyle: "none",
-          WebkitOverflowScrolling: "touch",
-        }}
+        style={{ position: "relative", height: "320px", overflow: "hidden" }}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
       >
-        {OFFERS.map((o) => (
-          <OfferCard key={o.id} offer={o} onCTA={scrollToSurvey} />
-        ))}
+        {/* Glow behind active card */}
+        <motion.div
+          key={`glow-${active}`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          style={{
+            position: "absolute",
+            left: "50%", top: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 300, height: 300,
+            borderRadius: "50%",
+            background: activeOffer.accent,
+            filter: "blur(80px)",
+            opacity: 0.12,
+            pointerEvents: "none",
+            zIndex: 0,
+          }}
+        />
+
+        {/* Cards */}
+        <div style={{ position: "relative", width: "100%", height: "100%", perspective: "1200px" }}>
+          {OFFERS.map((offer, i) => {
+            const offset = i - active;
+            const absOffset = Math.abs(offset);
+            if (absOffset > 2) return null;
+
+            const translateX = offset * 220;
+            const translateZ = absOffset === 0 ? 0 : -120 - absOffset * 40;
+            const rotateY = offset * -18;
+            const scale = absOffset === 0 ? 1 : 0.82 - absOffset * 0.06;
+            const opacity = absOffset === 0 ? 1 : 0.6 - absOffset * 0.1;
+            const zIndex = 10 - absOffset;
+            const isActive = absOffset === 0;
+
+            return (
+              <motion.div
+                key={offer.id}
+                onClick={() => isActive ? setModal(offer) : setActive(i)}
+                animate={{
+                  x: `calc(-50% + ${translateX}px)`,
+                  z: translateZ,
+                  rotateY,
+                  scale,
+                  opacity,
+                }}
+                transition={{ duration: 0.45, ease: [0.23, 1, 0.32, 1] }}
+                style={{
+                  position: "absolute",
+                  left: "50%",
+                  top: "50%",
+                  translateY: "-50%",
+                  width: 220,
+                  borderRadius: 20,
+                  overflow: "hidden",
+                  cursor: "pointer",
+                  zIndex,
+                  background: "#fff",
+                  boxShadow: isActive
+                    ? `0 20px 60px rgba(0,0,0,0.18), 0 0 0 1px rgba(255,255,255,0.8), 0 0 40px ${offer.accent}30`
+                    : "0 8px 24px rgba(0,0,0,0.1)",
+                  userSelect: "none",
+                }}
+              >
+                {/* Image */}
+                <div style={{
+                  height: 180,
+                  background: `linear-gradient(135deg, ${offer.accent}18, ${offer.accent}06)`,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  padding: "16px",
+                }}>
+                  <img
+                    src={offer.image}
+                    alt={offer.title}
+                    style={{ maxWidth: "90%", maxHeight: "150px", objectFit: "contain", filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.12))" }}
+                    draggable={false}
+                  />
+                </div>
+
+                {/* Info */}
+                <div style={{ padding: "12px 14px 14px" }}>
+                  <span style={{
+                    fontSize: "9px", fontWeight: 700,
+                    color: offer.accent,
+                    background: `${offer.accent}18`,
+                    padding: "2px 8px", borderRadius: 999,
+                    fontFamily: "var(--font-heebo)",
+                  }}>
+                    {offer.category}
+                  </span>
+                  <p style={{ fontSize: "13px", fontWeight: 800, color: "#1D1D1F", margin: "6px 0 4px", fontFamily: "var(--font-heebo)", lineHeight: 1.2 }}>
+                    {offer.title}
+                  </p>
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                    <span style={{ fontSize: "16px", fontWeight: 900, color: offer.accent, fontFamily: "var(--font-heebo)" }}>{offer.priceNew}</span>
+                    <span style={{ fontSize: "11px", color: "#86868B", textDecoration: "line-through", fontFamily: "var(--font-heebo)" }}>{offer.priceOld}</span>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
 
-      {/* Dots */}
-      <div style={{ display: "flex", gap: "0.5rem", justifyContent: "center", paddingTop: "20px", paddingBottom: "28px" }}>
-        {OFFERS.map((_, i) => (
-          <button key={i} onClick={() => { setActive(i); if (trackRef.current) { const cardWidth = trackRef.current.children[0]?.offsetWidth + 16 || 316; trackRef.current.scrollTo({ left: i * cardWidth, behavior: "smooth" }); } }} style={{
-            width: i === active ? 20 : 8, height: 8,
-            borderRadius: 999,
-            background: i === active ? "#0066CC" : "rgba(0,0,0,0.15)",
-            border: "none", cursor: "pointer",
-            transition: "all 0.3s ease", padding: 0,
-          }} />
-        ))}
+      {/* Navigation arrows */}
+      <div style={{ display: "flex", justifyContent: "center", gap: "12px", marginTop: "20px" }}>
+        <button onClick={() => go(-1)} disabled={active === 0} style={{
+          width: 40, height: 40, borderRadius: "50%",
+          border: "1px solid rgba(0,0,0,0.1)",
+          background: "#fff", cursor: active === 0 ? "default" : "pointer",
+          opacity: active === 0 ? 0.3 : 1,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+        }}>
+          <ChevronRight size={18} />
+        </button>
+
+        {/* Dots */}
+        <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+          {OFFERS.map((_, i) => (
+            <button key={i} onClick={() => setActive(i)} style={{
+              width: i === active ? 20 : 7, height: 7,
+              borderRadius: 999,
+              background: i === active ? activeOffer.accent : "rgba(0,0,0,0.15)",
+              border: "none", cursor: "pointer",
+              transition: "all 0.3s ease", padding: 0,
+            }} />
+          ))}
+        </div>
+
+        <button onClick={() => go(1)} disabled={active === OFFERS.length - 1} style={{
+          width: 40, height: 40, borderRadius: "50%",
+          border: "1px solid rgba(0,0,0,0.1)",
+          background: "#fff", cursor: active === OFFERS.length - 1 ? "default" : "pointer",
+          opacity: active === OFFERS.length - 1 ? 0.3 : 1,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+        }}>
+          <ChevronLeft size={18} />
+        </button>
       </div>
+
+      {/* Tap hint */}
+      <p style={{ textAlign: "center", fontSize: "12px", color: "#AAAAAA", marginTop: "10px", fontFamily: "var(--font-heebo)" }}>
+        לחצו על הכרטיס המרכזי לפרטים
+      </p>
 
       {/* CTA */}
-      <div style={{ textAlign: "center" }}>
+      <div style={{ textAlign: "center", marginTop: "24px" }}>
         <button
-          onClick={scrollToSurvey}
+          onClick={() => scrollToSurvey()}
           style={{
             background: "#0066CC", color: "#fff",
             fontWeight: 800, fontSize: 15,
@@ -282,6 +448,17 @@ export default function FeaturedOffersSlider() {
           אני רוצה שהארגון שלי יצטרף
         </button>
       </div>
+
+      {/* Modal */}
+      <AnimatePresence>
+        {modal && (
+          <OfferModal
+            offer={modal}
+            onClose={() => setModal(null)}
+            onCTA={scrollToSurvey}
+          />
+        )}
+      </AnimatePresence>
     </section>
   );
 }
