@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const MESSAGES = [
-  { text: "מה אם העבודה שלך\nהייתה נותנת לך יותר", weight: 900, size: "clamp(32px, 5.5vw, 60px)", color: "#1D1D1F" },
-  { text: "לא רק מתנה בחג\nמשהו שמרגישים ביומיום", weight: 700, size: "clamp(22px, 3.4vw, 38px)", color: "#3a3a3c" },
-  { text: "מחירי יבואן על דברים\nשאתם באמת קונים", weight: 400, size: "clamp(18px, 2.6vw, 28px)", color: "#6e6e73" },
-  { text: "עכשיו תראו איך זה נראה", weight: 700, size: "clamp(20px, 3vw, 32px)", color: "#0066CC" },
+  { text: "מה אם העבודה שלך\nהייתה נותנת לך יותר?", highlight: "יותר", weight: 900, size: "clamp(32px, 5.5vw, 60px)", color: "#1D1D1F" },
+  { text: "לא רק מתנה בחג\nמשהו שמרגישים ביומיום", highlight: "ביומיום", weight: 700, size: "clamp(22px, 3.4vw, 38px)", color: "#3a3a3c" },
+  { text: "8% הנחה קבועה בסופר\nומחירי יבואן על מוצרים\nשאתם בכל מקרה צורכים", highlight: "הנחה קבועה", weight: 400, size: "clamp(18px, 2.6vw, 28px)", color: "#6e6e73" },
+  { text: "עכשיו תראו איך זה נראה", highlight: "תראו", weight: 700, size: "clamp(20px, 3vw, 32px)", color: "#0066CC" },
 ];
 
 export default function IntroSlides() {
@@ -87,7 +87,16 @@ export default function IntroSlides() {
                     textShadow: "0 10px 30px rgba(0,0,0,0.04)",
                   }}
                 >
-                  {msg.text}
+                  {msg.highlight
+                    ? msg.text.split(msg.highlight).map((part, j, arr) => (
+                        <React.Fragment key={j}>
+                          {part}
+                          {j < arr.length - 1 && (
+                            <span style={{ color: msg.color === "#1D1D1F" ? "#0066CC" : msg.color === "#0066CC" ? "#0066CC" : "#0066CC", fontWeight: Math.max(msg.weight, 800) }}>{msg.highlight}</span>
+                          )}
+                        </React.Fragment>
+                      ))
+                    : msg.text}
                 </motion.p>
               )}
             </AnimatePresence>
