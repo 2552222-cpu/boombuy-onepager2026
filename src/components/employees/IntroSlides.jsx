@@ -87,17 +87,17 @@ export default function IntroSlides({ onDone }) {
         <div style={{
           display: "inline-flex",
           alignItems: "center",
-          gap: "8px",
+          gap: "6px",
           background: "rgba(240,245,255,0.85)",
           border: "1px solid rgba(0,102,204,0.18)",
           borderRadius: "999px",
-          padding: "8px 20px",
+          padding: "5px 14px",
           backdropFilter: "blur(8px)",
           WebkitBackdropFilter: "blur(8px)",
           boxShadow: "0 2px 12px rgba(0,102,204,0.08)",
         }}>
-          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#34C759", flexShrink: 0 }} />
-          <span style={{ fontSize: "14px", fontWeight: 600, color: "#1D3A6B", fontFamily: "var(--font-heebo)", whiteSpace: "nowrap" }}>
+          <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#34C759", flexShrink: 0 }} />
+          <span style={{ fontSize: "12px", fontWeight: 600, color: "#1D3A6B", fontFamily: "var(--font-heebo)", whiteSpace: "nowrap" }}>
             250,000+ עובדים כבר נהנים מנטו גבוה יותר
           </span>
         </div>
@@ -134,9 +134,9 @@ export default function IntroSlides({ onDone }) {
             width: "100%",
             background: isLast ? "#007AFF" : "#1D1D1F",
             color: "#fff",
-            padding: "12px 24px",
+            padding: "9px 20px",
             borderRadius: "980px",
-            fontSize: "15px",
+            fontSize: "13px",
             fontWeight: 600,
             border: "none",
             cursor: "pointer",
