@@ -23,6 +23,11 @@ export default function EmployeesLanding() {
   const [introDone, setIntroDone] = useState(false);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+    if (history.scrollRestoration) history.scrollRestoration = "manual";
+  }, []);
+
+  useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const orgKey = params.get("orgKey");
     
