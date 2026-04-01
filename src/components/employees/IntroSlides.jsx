@@ -72,9 +72,9 @@ export default function IntroSlides() {
             <AnimatePresence key={i}>
               {revealed > i && (
                 <motion.p
-                  initial={{ opacity: 0, y: 18 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.45 }}
+                  initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
+                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  transition={{ type: "spring", stiffness: 100, damping: 20, delay: i * 0.15 }}
                   style={{
                     fontSize: i === 0
                       ? "clamp(28px, 4.5vw, 52px)"
@@ -87,6 +87,7 @@ export default function IntroSlides() {
                     color: i === MESSAGES.length - 1 ? "#0066CC" : i === 0 ? "#1D1D1F" : "#444",
                     fontFamily: "var(--font-heebo)",
                     margin: 0,
+                    textShadow: "0 10px 30px rgba(0,0,0,0.05)",
                   }}
                 >
                   {msg}
