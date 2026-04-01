@@ -1,157 +1,155 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const MESSAGES = [
-  { text: "מה אם העבודה שלך\nהייתה נותנת לך יותר?", highlight: "יותר", weight: 900, size: "clamp(32px, 5.5vw, 60px)", color: "#1D1D1F" },
-  { text: "לא רק מתנה בחג\nמשהו שמרגישים ביומיום", highlight: "ביומיום", weight: 700, size: "clamp(22px, 3.4vw, 38px)", color: "#3a3a3c" },
-  { text: "8% הנחה קבועה בסופר\nומחירי יבואן על מוצרים\nשאתם בכל מקרה צורכים", highlight: "הנחה קבועה", weight: 400, size: "clamp(18px, 2.6vw, 28px)", color: "#6e6e73" },
-  { text: "עכשיו תראו איך זה נראה", highlight: "תראו", weight: 700, size: "clamp(20px, 3vw, 32px)", color: "#0066CC" },
+const SLIDES = [
+  { 
+    text: "מה אם העבודה שלך\nהייתה נותנת לך יותר?", 
+    size: "clamp(30px, 8vw, 52px)", 
+    weight: 900 
+  },
+  { 
+    text: "לא רק מתנה בחג\nמשהו שמרגישים ביומיום", 
+    size: "clamp(26px, 7vw, 42px)", 
+    weight: 700 
+  },
+  { 
+    text: "8% הנחה קבועה בסופר\nומחירי יבואן על מוצרים\nשאתם בכל מקרה צורכים", 
+    size: "clamp(22px, 6vw, 36px)", 
+    weight: 800 
+  },
+  { 
+    text: "עכשיו תראו איך זה נראה", 
+    size: "clamp(28px, 7vw, 44px)", 
+    weight: 900,
+    color: "#0066CC" 
+  },
 ];
 
-export default function IntroSlides() {
-  const [revealed, setRevealed] = useState(1);
+export default function IntroSlides({ onComplete }) {
+  const [index, setIndex] = useState(0);
+  const isLast = index === SLIDES.length - 1;
 
-  const scrollToSlider = () => {
-    document.getElementById("offers-slider")?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const scrollToSurvey = () => {
-    document.getElementById("survey-section")?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const handleNext = () => {
-    if (revealed < MESSAGES.length) {
-      setRevealed((r) => r + 1);
+  const handleNext = (e) => {
+    if (e) e.stopPropagation();
+    if (!isLast) {
+      setIndex((prev) => prev + 1);
     } else {
-      scrollToSlider();
+      document.getElementById("offers-slider")?.scrollIntoView({ behavior: "smooth" });
     }
   };
 
+  const skipToOffers = (e) => {
+    e.stopPropagation();
+    document.getElementById("offers-slider")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
-    <section
+    <section 
+      onClick={handleNext}
       style={{
+        height: "100dvh",
+        width: "100%",
         background: "#fff",
-        borderBottom: "1px solid rgba(0,0,0,0.06)",
-        padding: "80px 20px 72px",
-        overflowX: "hidden",
-        maxWidth: "100vw",
+        position: "relative",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        textAlign: "center",
+        overflow: "hidden",
+        cursor: "pointer",
+        padding: "0 20px"
       }}
     >
-      <div
-        style={{
-          maxWidth: 680,
-          margin: "0 auto",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          textAlign: "center",
-          gap: "0",
-        }}
-      >
-        {/* BoomBuy label */}
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
+      {/* לוגו עליון */}
+      <div style={{ position: "absolute", top: "50px", fontWeight: 900, color: "#0066CC", letterSpacing: "2px", fontSize: "16px" }}>
+        BOOMBUY
+      </div>
+
+      {/* אינדיקטור התקדמות */}
+      <div style={{ position: "absolute", top: "90px", display: "flex", gap: "6px", width: "90%", maxWidth: "400px" }}>
+        {SLIDES.map((_, i) => (
+          <div 
+            key={i} 
+            style={{ 
+              height: "3px", 
+              flex: 1, 
+              background: i <= index ? "#0066CC" : "rgba(0,0,0,0.1)",
+              borderRadius: "10px",
+              transition: "background 0.3s ease"
+            }} 
+          />
+        ))}
+      </div>
+
+      {/* טקסט מרכזי */}
+      <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", width: "100%" }}>
+        <AnimatePresence mode="wait">
+          <motion.h1
+            key={index}
+            initial={{ opacity: 0, scale: 0.9, y: 30, filter: "blur(15px)" }}
+            animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
+            exit={{ opacity: 0, scale: 1.1, y: -30, filter: "blur(10px)" }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              fontSize: SLIDES[index].size,
+              fontWeight: SLIDES[index].weight,
+              color: SLIDES[index].color || "#1D1D1F",
+              lineHeight: 1.1,
+              margin: 0,
+              whiteSpace: "pre-line",
+              fontFamily: "var(--font-heebo)",
+              pointerEvents: "none"
+            }}
+          >
+            {SLIDES[index].text}
+          </motion.h1>
+        </AnimatePresence>
+      </div>
+
+      {/* פקדים תחתונים */}
+      <div style={{ width: "100%", maxWidth: "340px", paddingBottom: "140px", display: "flex", flexDirection: "column", gap: "16px" }}>
+        <motion.button
+          whileTap={{ scale: 0.96 }}
+          onClick={handleNext}
           style={{
-            fontSize: "13px",
+            width: "100%",
+            background: isLast ? "#0066CC" : "#1D1D1F",
+            color: "#fff",
+            padding: "18px",
+            borderRadius: "16px",
+            fontSize: "18px",
             fontWeight: 700,
-            color: "#0066CC",
-            letterSpacing: "0.1em",
-            textTransform: "uppercase",
-            marginBottom: "40px",
+            border: "none",
+            cursor: "pointer",
             fontFamily: "var(--font-heebo)",
+            boxShadow: "0 10px 30px rgba(0,0,0,0.15)"
           }}
         >
-          BoomBuy
-        </motion.p>
+          {isLast ? "ראו איך זה נראה ←" : "המשך"}
+        </motion.button>
 
-        {/* Messages */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "32px", marginBottom: "52px", width: "100%" }}>
-          {MESSAGES.map((msg, i) => (
-            <AnimatePresence key={i}>
-              {revealed > i && (
-                <motion.p
-                  initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  transition={{ type: "spring", stiffness: 100, damping: 20, delay: i * 0.15 }}
-                  style={{
-                    fontSize: msg.size,
-                    fontWeight: msg.weight,
-                    lineHeight: 1.18,
-                    letterSpacing: "-0.025em",
-                    color: msg.color,
-                    fontFamily: "var(--font-heebo)",
-                    margin: 0,
-                    whiteSpace: "pre-line",
-                    textShadow: "0 10px 30px rgba(0,0,0,0.04)",
-                  }}
-                >
-                  {msg.highlight
-                    ? msg.text.split(msg.highlight).map((part, j, arr) => (
-                        <React.Fragment key={j}>
-                          {part}
-                          {j < arr.length - 1 && (
-                            <span style={{ color: msg.color === "#1D1D1F" ? "#0066CC" : msg.color === "#0066CC" ? "#0066CC" : "#0066CC", fontWeight: Math.max(msg.weight, 800) }}>{msg.highlight}</span>
-                          )}
-                        </React.Fragment>
-                      ))
-                    : msg.text}
-                </motion.p>
-              )}
-            </AnimatePresence>
-          ))}
-        </div>
-
-        {/* Buttons */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3, delay: 0.2 }}
-          style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}
-        >
-          <button
-            onClick={handleNext}
-            style={{
-              background: "#0066CC",
-              color: "#fff",
-              fontWeight: 800,
-              fontSize: "15px",
-              padding: "13px 36px",
-              borderRadius: "12px",
-              border: "none",
-              cursor: "pointer",
-              fontFamily: "var(--font-heebo)",
-              boxShadow: "0 6px 20px rgba(0,102,204,0.22)",
-              transition: "background 0.15s",
-            }}
-            onMouseEnter={e => e.currentTarget.style.background = "#0055AA"}
-            onMouseLeave={e => e.currentTarget.style.background = "#0066CC"}
-          >
-            {revealed < MESSAGES.length ? "המשך" : "ראו איך זה נראה"}
-          </button>
-
-          <button
-            onClick={scrollToSlider}
-            style={{
-              background: "transparent",
-              color: "#86868B",
-              fontWeight: 500,
-              fontSize: "13px",
-              padding: "8px 20px",
-              borderRadius: "10px",
-              border: "1px solid rgba(0,0,0,0.08)",
-              cursor: "pointer",
-              fontFamily: "var(--font-heebo)",
-              transition: "background 0.15s",
-            }}
+        {!isLast && (
+          <button 
+            onClick={skipToOffers}
+            style={{ background: "none", border: "none", color: "#86868B", fontSize: "15px", fontWeight: 500, cursor: "pointer", fontFamily: "var(--font-heebo)" }}
           >
             דלג ישר להטבות
           </button>
-          <p style={{ fontSize: "12px", color: "#AAAAAA", fontFamily: "var(--font-heebo)", marginTop: 8 }}>
-            250,000+ עובדים כבר נהנים מנטו גבוה יותר
-          </p>
-        </motion.div>
+        )}
+      </div>
+
+      {/* בר תחתון */}
+      <div 
+        onClick={(e) => { e.stopPropagation(); document.getElementById("survey-section")?.scrollIntoView({ behavior: "smooth" }); }}
+        style={{
+          position: "absolute", bottom: "30px", width: "90%", maxWidth: "400px",
+          background: "#0066CC", color: "#fff", padding: "16px",
+          borderRadius: "14px", textAlign: "center", fontWeight: 700,
+          fontFamily: "var(--font-heebo)", cursor: "pointer", zIndex: 50
+        }}
+      >
+        רוצים לצרף את הארגון? תנו לנו לכוון אתכם
       </div>
     </section>
   );
