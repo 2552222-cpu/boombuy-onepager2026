@@ -82,7 +82,26 @@ export default function IntroSlides({ onDone }) {
       </div>
 
       {/* תוכן מרכזי */}
-      <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", width: "100%", padding: "0 30px" }}>
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", padding: "0 30px", gap: "28px" }}>
+        {/* כרטיסיית זכוכית */}
+        <div style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "8px",
+          background: "rgba(240,245,255,0.85)",
+          border: "1px solid rgba(0,102,204,0.18)",
+          borderRadius: "999px",
+          padding: "8px 20px",
+          backdropFilter: "blur(8px)",
+          WebkitBackdropFilter: "blur(8px)",
+          boxShadow: "0 2px 12px rgba(0,102,204,0.08)",
+        }}>
+          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#34C759", flexShrink: 0 }} />
+          <span style={{ fontSize: "14px", fontWeight: 600, color: "#1D3A6B", fontFamily: "var(--font-heebo)", whiteSpace: "nowrap" }}>
+            250,000+ עובדים כבר נהנים מנטו גבוה יותר
+          </span>
+        </div>
+
         <AnimatePresence mode="wait">
           <motion.h1
             key={index}
