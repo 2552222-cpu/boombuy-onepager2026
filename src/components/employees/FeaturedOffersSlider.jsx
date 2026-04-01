@@ -74,7 +74,7 @@ export default function FeaturedOffersSlider() {
         {/* Indicators */}
         <div style={{ display: "flex", justifyContent: "center", gap: "6px", marginTop: "40px" }}>
           {OFFERS.map((_, i) => (
-            <div key={i} style={{ width: i === index ? 32 : 8, height: 4, background: i === index ? "#0066CC" : "#E5E5E7", borderRadius: 10, transition: "0.3s" }} />
+            <button key={i} onClick={() => setIndex(i)} style={{ width: i === index ? 32 : 8, height: 4, background: i === index ? "#0066CC" : "#E5E5E7", borderRadius: 10, transition: "0.3s", border: "none", cursor: "pointer", padding: 0 }} />
           ))}
         </div>
       </div>
