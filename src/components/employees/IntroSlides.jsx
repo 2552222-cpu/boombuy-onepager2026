@@ -25,22 +25,27 @@ const SLIDES = [
   },
 ];
 
-export default function IntroSlides() {
+export default function IntroSlides({ onDone }) {
   const [index, setIndex] = useState(0);
   const isLast = index === SLIDES.length - 1;
+
+  const finishIntro = () => {
+    if (onDone) onDone();
+    document.getElementById("offers-slider")?.scrollIntoView({ behavior: "smooth" });
+  };
 
   const handleNext = (e) => {
     if (e) e.stopPropagation();
     if (!isLast) {
       setIndex((prev) => prev + 1);
     } else {
-      document.getElementById("offers-slider")?.scrollIntoView({ behavior: "smooth" });
+      finishIntro();
     }
   };
 
   const skipToOffers = (e) => {
     e.stopPropagation();
-    document.getElementById("offers-slider")?.scrollIntoView({ behavior: "smooth" });
+    finishIntro();
   };
 
   return (
@@ -102,7 +107,7 @@ export default function IntroSlides() {
       </div>
 
       {/* פקדים תחתונים */}
-      <div style={{ width: "100%", maxWidth: "320px", paddingBottom: "120px", display: "flex", flexDirection: "column", gap: "12px", zIndex: 10 }}>
+      <div style={{ width: "100%", maxWidth: "260px", paddingBottom: "110px", display: "flex", flexDirection: "column", gap: "10px", zIndex: 10 }}>
         <motion.button
           whileTap={{ scale: 0.97 }}
           onClick={handleNext}
@@ -110,9 +115,9 @@ export default function IntroSlides() {
             width: "100%",
             background: isLast ? "#007AFF" : "#1D1D1F",
             color: "#fff",
-            padding: "16px",
-            borderRadius: "14px",
-            fontSize: "17px",
+            padding: "12px 24px",
+            borderRadius: "980px",
+            fontSize: "15px",
             fontWeight: 600,
             border: "none",
             cursor: "pointer",
@@ -125,7 +130,7 @@ export default function IntroSlides() {
         {!isLast && (
           <button 
             onClick={skipToOffers}
-            style={{ background: "none", border: "none", color: "#86868B", fontSize: "14px", fontWeight: 500, cursor: "pointer", fontFamily: "var(--font-heebo)" }}
+            style={{ background: "none", border: "none", color: "#86868B", fontSize: "13px", fontWeight: 500, cursor: "pointer", fontFamily: "var(--font-heebo)" }}
           >
             דלג ישר להטבות
           </button>

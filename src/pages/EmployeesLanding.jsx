@@ -20,6 +20,7 @@ const WALLET_IMAGE_URL = "https://media.base44.com/images/public/69bc4105141d932
 export default function EmployeesLanding() {
   const [showJoin, setShowJoin] = useState(false);
   const [joinParams, setJoinParams] = useState({ orgKey: "", orgName: "" });
+  const [introDone, setIntroDone] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -64,7 +65,7 @@ export default function EmployeesLanding() {
     <div className="min-h-screen font-heebo flex flex-col" dir="rtl" style={{ overflowX: 'hidden', maxWidth: '100vw', paddingBottom: '72px' }}>
       <GlobalHeader />
       <div className="flex-1">
-        <IntroSlides />
+        <IntroSlides onDone={() => setIntroDone(true)} />
         <div id="offers-slider">
           <FeaturedOffersSlider />
         </div>
@@ -81,7 +82,8 @@ export default function EmployeesLanding() {
       </div>
       <GlobalFooter />
 
-      {/* Floating CTA */}
+      {/* Floating CTA - only after intro */}
+      {introDone && (
       <a
         href={`https://wa.me/972542552222?text=${encodeURIComponent("היי, ראינו את עמוד העובדים של BoomBuy ואנחנו רוצים להבין איך לצרף את הארגון שלנו.")}`}
         target="_blank"
@@ -110,6 +112,7 @@ export default function EmployeesLanding() {
       >
         רוצים לצרף את הארגון ל-BoomBuy? תנו לנו לכוון אתכם
       </a>
+      )}
     </div>
   );
 }
