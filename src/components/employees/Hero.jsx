@@ -368,6 +368,25 @@ export default function Hero() {
         </div>
 
       </div>
+
+      {/* בר תחתון צף */}
+      <div
+        onClick={scrollToSurvey}
+        style={{
+          position: "absolute", bottom: "24px",
+          left: "50%", transform: "translateX(-50%)",
+          width: "88%", maxWidth: "400px",
+          background: "#007AFF", color: "#fff",
+          padding: "15px", borderRadius: "14px",
+          textAlign: "center", fontWeight: 700,
+          fontSize: "15px", cursor: "pointer",
+          boxShadow: "0 8px 24px rgba(0,122,255,0.2)",
+          fontFamily: "var(--font-heebo)",
+          zIndex: 50,
+        }}
+      >
+        רוצים לצרף את הארגון? בואו נתחיל
+      </div>
     </section>
   );
 }

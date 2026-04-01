@@ -59,13 +59,6 @@ export default function IntroSlides() {
         fontFamily: "var(--font-heebo)",
       }}
     >
-      {/* לוגו */}
-      <div style={{ position: "absolute", top: "45px", zIndex: 20 }}>
-        <span style={{ fontWeight: 900, color: "#1D1D1F", fontSize: "18px", letterSpacing: "-0.5px" }}>
-          boom<span style={{ color: "#007AFF" }}>buy</span>
-        </span>
-      </div>
-
       {/* אינדיקטורים */}
       <div style={{ 
         position: "absolute", top: "25px", display: "flex", gap: "4px", 
@@ -139,19 +132,6 @@ export default function IntroSlides() {
         )}
       </div>
 
-      {/* בר תחתון */}
-      <div 
-        onClick={(e) => { e.stopPropagation(); document.getElementById("survey-section")?.scrollIntoView({ behavior: "smooth" }); }}
-        style={{
-          position: "absolute", bottom: "30px", width: "88%", maxWidth: "380px",
-          background: "#007AFF", color: "#fff", padding: "14px",
-          borderRadius: "14px", textAlign: "center", fontWeight: 700, fontSize: "15px",
-          boxShadow: "0 8px 20px rgba(0,122,255,0.15)", cursor: "pointer", zIndex: 50,
-          fontFamily: "var(--font-heebo)",
-        }}
-      >
-        רוצים לצרף את הארגון? בואו נתחיל
-      </div>
     </section>
   );
 }
