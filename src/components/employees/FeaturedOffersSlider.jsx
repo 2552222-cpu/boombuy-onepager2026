@@ -3,20 +3,20 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronRight, ChevronLeft } from "lucide-react";
 
 const OFFERS = [
+  { id: "apple", cat: "אלקטרוניקה", title: "Apple iPhone 16 Pro", priceOld: "₪4,590", priceNew: "₪3,890", accent: "#A0A0A0", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/f7db7cb4b_-2026-02-18T150849922.png" },
   { id: "alo", cat: "אופנה", title: "Alo Yoga & Adidas", priceOld: "₪499", priceNew: "₪224", accent: "#C8A96E", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8ccf1ae84_87.png" },
-  { id: "apple", cat: "אלקטרוניקה", title: "Apple iPhone 16 Pro", priceOld: "₪4,590", priceNew: "₪3,890", accent: "#A0A0A0", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/67dbe888a_92.png" },
-  { id: "vacation", cat: "חופשות", title: "מלונות פתאל ובראון", priceOld: "₪1,790", priceNew: "₪899", accent: "#FF9500", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/1b29c5bb8_-2026-03-22T162942110.png" },
+  { id: "vacation", cat: "חופשות", title: "מלון Brown BoBo תל אביב", priceOld: "₪1,790", priceNew: "₪899", accent: "#FF9500", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/2c9f901f1_-2026-03-22T133529822.png" },
   { id: "luggage", cat: "נסיעות", title: "Kate Hill - סט מזוודות", priceOld: "₪1,999", priceNew: "₪249", accent: "#F5C518", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28598db7e_-2026-03-15T180501791.png" },
   { id: "cleaning", cat: "יוקר המחיה", title: "מארז TNX + 8% בסופר", priceOld: "₪350", priceNew: "₪149", accent: "#34C759", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e8b8ed0b8_-2026-02-18T145540109.png" },
-  { id: "culture", cat: "תרבות", title: "קזבלן - הצגת השנה", priceOld: "₪350", priceNew: "₪77", accent: "#AF52DE", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3d11c2184_-2026-03-22T165538542.png" },
-  { id: "nespresso", cat: "חשמל", title: "Nespresso Inissia", priceOld: "₪833", priceNew: "₪589", accent: "#5856D6", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/db8e935e8_-2026-03-22T162955489.png" },
-  { id: "daily", cat: "כל בוקר", title: "260 הטבות בשנה", priceOld: "₪499", priceNew: "₪299", accent: "#FF2D55", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/82cf01fcc_87.png" },
+  { id: "culture", cat: "תרבות", title: "קזבלן - הצגת השנה", priceOld: "₪350", priceNew: "₪77", accent: "#AF52DE", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/444a89b69_-2026-03-22T140039783.png" },
+  { id: "nespresso", cat: "חשמל", title: "Nespresso Inissia", priceOld: "₪833", priceNew: "₪589", accent: "#5856D6", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/909033315_-2026-02-18T150129609.png" },
+  { id: "daily", cat: "כל בוקר", title: "נעלי Adidas Samba", priceOld: "₪499", priceNew: "₪299", accent: "#FF2D55", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7a5527555_-2026-02-18T150744909.png" },
   { id: "dior", cat: "בישום", title: "Christian Dior - Sauvage", priceOld: "₪600", priceNew: "₪430", accent: "#1D1D1F", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/823674aab_-2026-02-18T150114784.png" }
 ];
 
 export default function FeaturedOffersSlider() {
   const [selectedId, setSelectedId] = useState(null);
-  const [index, setIndex] = useState(3);
+  const [index, setIndex] = useState(0);
   const touchStart = useRef(0);
 
   const go = (dir) => setIndex((p) => (p + dir + OFFERS.length) % OFFERS.length);
