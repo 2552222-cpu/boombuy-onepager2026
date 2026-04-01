@@ -75,6 +75,24 @@ const OFFERS = [
     accent: "#0066CC",
     regularPrice: null, employeePrice: null, savings: null,
   },
+  {
+    id: "retro-shirt",
+    badge: "אופנה וספורט",
+    title: "חולצת אוהד רטרו - יונייטד",
+    text: "איכות פרימיום, בד נושם. הקלאסיקה שחסרה לך בארון.",
+    image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/82cf01fcc_87.png",
+    accent: "#c0392b",
+    regularPrice: 299, employeePrice: 189, savings: 110,
+  },
+  {
+    id: "espresso",
+    badge: "מוצרי בית",
+    title: "מכונת EspressoGo",
+    text: "הקפה שלך, בכל מקום. קומפקטית, חזקה ומעוצבת.",
+    image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/477510a11_-2026-02-18T150203869.png",
+    accent: "#6f4e37",
+    regularPrice: 450, employeePrice: 320, savings: 130,
+  },
 ];
 
 function OfferModal({ offer, onClose, onCTA }) {
@@ -286,13 +304,14 @@ export default function FeaturedOffersSlider() {
       </div>
 
       {/* Cards */}
-      <div style={{ maxWidth: 1300, margin: "0 auto", padding: "0 20px", overflowX: "auto", scrollbarWidth: "none" }}>
+      <div style={{ maxWidth: 1300, margin: "0 auto", padding: "0 20px", overflowX: "auto", scrollbarWidth: "none", WebkitOverflowScrolling: "touch" }}>
         <div style={{
           display: "flex",
           gap: "1rem",
           alignItems: "flex-start",
-          justifyContent: "center",
+          justifyContent: "flex-start",
           paddingBottom: 40,
+          minWidth: "max-content",
         }}>
           {OFFERS.map((o, i) => {
             const isActive = i === active;
@@ -304,12 +323,12 @@ export default function FeaturedOffersSlider() {
                 style={{
                   position: "relative",
                   flexShrink: 0,
-                  flexBasis: isActive ? "clamp(260px, 28vw, 440px)" : "5rem",
+                  width: isActive ? "clamp(260px, 28vw, 380px)" : "80px",
                   height: "26rem",
                   borderRadius: "1rem",
                   overflow: "hidden",
                   cursor: "pointer",
-                  transition: "flex-basis 0.55s cubic-bezier(0.25,0.46,0.45,0.94), transform 0.55s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.3s",
+                  transition: "width 0.55s cubic-bezier(0.25,0.46,0.45,0.94), transform 0.55s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.3s",
                   transform: isActive ? "translateY(-6px)" : "none",
                   boxShadow: isActive
                     ? "0 18px 55px rgba(0,0,0,0.18)"
@@ -368,7 +387,7 @@ export default function FeaturedOffersSlider() {
                   <h3 style={{
                     color: "#fff",
                     fontWeight: 800,
-                    fontSize: isActive ? "clamp(16px, 2vw, 22px)" : "0.82rem",
+                    fontSize: isActive ? "clamp(16px, 2vw, 22px)" : "0.75rem",
                     lineHeight: 1.2,
                     fontFamily: "var(--font-heebo)",
                     margin: 0,
