@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const MESSAGES = [
-  "מה אם העבודה שלך הייתה נותנת לך יותר?",
-  "לא רק מתנה בחג. משהו שמרגישים ביומיום.",
-  "מחירי עובדים על דברים שאתם באמת קונים.",
-  "עכשיו תראו איך זה נראה בפועל.",
+  { text: "מה אם העבודה שלך\nהייתה נותנת לך יותר", weight: 900, size: "clamp(32px, 5.5vw, 60px)", color: "#1D1D1F" },
+  { text: "לא רק מתנה בחג\nמשהו שמרגישים ביומיום", weight: 700, size: "clamp(22px, 3.4vw, 38px)", color: "#3a3a3c" },
+  { text: "מחירי יבואן על דברים\nשאתם באמת קונים", weight: 400, size: "clamp(18px, 2.6vw, 28px)", color: "#6e6e73" },
+  { text: "עכשיו תראו איך זה נראה", weight: 700, size: "clamp(20px, 3vw, 32px)", color: "#0066CC" },
 ];
 
 export default function IntroSlides() {
@@ -67,7 +67,7 @@ export default function IntroSlides() {
         </motion.p>
 
         {/* Messages */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "28px", marginBottom: "48px", width: "100%" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "32px", marginBottom: "52px", width: "100%" }}>
           {MESSAGES.map((msg, i) => (
             <AnimatePresence key={i}>
               {revealed > i && (
@@ -76,21 +76,18 @@ export default function IntroSlides() {
                   animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                   transition={{ type: "spring", stiffness: 100, damping: 20, delay: i * 0.15 }}
                   style={{
-                    fontSize: i === 0
-                      ? "clamp(28px, 4.5vw, 52px)"
-                      : i === MESSAGES.length - 1
-                      ? "clamp(22px, 3.2vw, 38px)"
-                      : "clamp(20px, 2.8vw, 32px)",
-                    fontWeight: i === 0 ? 900 : i === MESSAGES.length - 1 ? 800 : 600,
-                    lineHeight: 1.2,
+                    fontSize: msg.size,
+                    fontWeight: msg.weight,
+                    lineHeight: 1.18,
                     letterSpacing: "-0.025em",
-                    color: i === MESSAGES.length - 1 ? "#0066CC" : i === 0 ? "#1D1D1F" : "#444",
+                    color: msg.color,
                     fontFamily: "var(--font-heebo)",
                     margin: 0,
-                    textShadow: "0 10px 30px rgba(0,0,0,0.05)",
+                    whiteSpace: "pre-line",
+                    textShadow: "0 10px 30px rgba(0,0,0,0.04)",
                   }}
                 >
-                  {msg}
+                  {msg.text}
                 </motion.p>
               )}
             </AnimatePresence>
@@ -142,6 +139,9 @@ export default function IntroSlides() {
           >
             דלג ישר להטבות
           </button>
+          <p style={{ fontSize: "12px", color: "#AAAAAA", fontFamily: "var(--font-heebo)", marginTop: 8 }}>
+            250,000+ עובדים כבר נהנים מנטו גבוה יותר
+          </p>
         </motion.div>
       </div>
     </section>
