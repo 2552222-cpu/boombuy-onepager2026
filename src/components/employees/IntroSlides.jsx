@@ -107,7 +107,7 @@ export default function IntroSlides({ onDone }) {
       </div>
 
       {/* פקדים תחתונים */}
-      <div style={{ width: "100%", maxWidth: "260px", paddingBottom: "110px", display: "flex", flexDirection: "column", gap: "10px", zIndex: 10 }}>
+      <div style={{ width: "100%", maxWidth: "260px", paddingBottom: "110px", display: "flex", flexDirection: "column", gap: "10px", zIndex: 10, alignItems: "center" }}>
         <motion.button
           whileTap={{ scale: 0.97 }}
           onClick={handleNext}
