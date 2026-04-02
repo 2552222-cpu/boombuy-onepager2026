@@ -4,15 +4,15 @@ import { X, ChevronRight, ChevronLeft } from "lucide-react";
 
 // 9 הטבות מדויקות
 const OFFERS = [
-  { id: "daily",     cat: "הטבה יומית",    title: "Adidas Samba — הנעל של השנה",      priceOld: "₪499",   priceNew: "₪224",   accent: "#C8A96E", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8ccf1ae84_87.png" },
-  { id: "apple",    cat: "מובייל",        title: "Apple iPhone 16 Pro",              priceOld: "₪4,590", priceNew: "₪3,890", accent: "#A0A0A0", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/67dbe888a_92.png" },
-  { id: "vacation", cat: "חופשות",        title: "מלונות בראון ונופש יוקרה",          priceOld: "₪1,790", priceNew: "₪899",   accent: "#FF9500", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/1b29c5bb8_-2026-03-22T162942110.png" },
-  { id: "luggage",  cat: "נסיעות",        title: "Kate Hill — סט מזוודות",           priceOld: "₪1,999", priceNew: "₪249",   accent: "#F5C518", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28598db7e_-2026-03-15T180501791.png" },
-  { id: "super",    cat: "יוקר המחיה",   title: "סופר ובית (TNX)",                  priceOld: "₪350",   priceNew: "₪149",   accent: "#34C759", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e8b8ed0b8_-2026-02-18T145540109.png" },
-  { id: "culture",  cat: "תרבות",        title: "קזבלן — הצגת השנה",               priceOld: "₪350",   priceNew: "₪77",    accent: "#AF52DE", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3d11c2184_-2026-03-22T165538542.png" },
-  { id: "nespresso",cat: "חשמל",         title: "Nespresso Inissia",               priceOld: "₪833",   priceNew: "₪589",   accent: "#5856D6", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/db8e935e8_-2026-03-22T162955489.png" },
-  { id: "morning",  cat: "כל בוקר",      title: "260 הטבות בשנה",                  priceOld: "₪499",   priceNew: "₪299",   accent: "#FF2D55", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/82cf01fcc_87.png" },
-  { id: "dior",     cat: "בישום",        title: "Christian Dior — Sauvage",        priceOld: "₪600",   priceNew: "₪430",   accent: "#1D1D1F", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/823674aab_-2026-02-18T150114784.png" }
+  { id: "daily",     cat: "הטבה יומית",  title: "Adidas Samba",           priceOld: "₪499",   priceNew: "₪299",   accent: "#C8A96E", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/39d140209_-2026-02-18T150744909.png" },
+  { id: "apple",    cat: "מובייל",      title: "Apple iPhone 16 Pro",    priceOld: "₪4,590", priceNew: "₪3,890", accent: "#A0A0A0", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/67dbe888a_92.png" },
+  { id: "vacation", cat: "חופשות",      title: "מלונות בראון ונופש יוקרה",  priceOld: "₪1,790", priceNew: "₪899",   accent: "#FF9500", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7cc501b0f_-2026-03-22T133529822.png" },
+  { id: "luggage",  cat: "נסיעות",      title: "Kate Hill - סט מזוודות",    priceOld: "₪1,999", priceNew: "₪249",   accent: "#F5C518", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28598db7e_-2026-03-15T180501791.png" },
+  { id: "super",    cat: "יוקר המחיה", title: "סופר ובית (TNX)",         priceOld: "₪350",   priceNew: "₪149",   accent: "#34C759", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e8b8ed0b8_-2026-02-18T145540109.png" },
+  { id: "culture",  cat: "תרבות",      title: "קזבלן - הצגת השנה",      priceOld: "₪350",   priceNew: "₪77",    accent: "#AF52DE", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3c42d518b_-2026-03-22T140039783.png" },
+  { id: "nespresso",cat: "חשמל",       title: "Nespresso Inissia",       priceOld: "₪833",   priceNew: "₪589",   accent: "#5856D6", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/db8e935e8_-2026-03-22T162955489.png" },
+  { id: "morning",  cat: "כל בוקר",    title: "260 הטבות בשנה",           priceOld: "₪499",   priceNew: "₪299",   accent: "#FF2D55", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/82cf01fcc_87.png" },
+  { id: "dior",     cat: "בישום",      title: "Christian Dior Sauvage", priceOld: "₪600",   priceNew: "₪430",   accent: "#1D1D1F", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/823674aab_-2026-02-18T150114784.png" }
 ];
 
 export default function FeaturedOffersSlider() {
