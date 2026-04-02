@@ -81,7 +81,7 @@ const OFFERS = [
     priceOld: "₪499", priceNew: "₪299",
     accent: "#A0A0A0",
     desc: "חוויות ומוצרי צריכה פרימיום שאתם צורכים בכל מקרה.",
-    img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7e52326a0_-2026-03-22T160414836.png"
+    img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/b7485969d_-2026-02-18T150744909.png"
   },
   {
     id: "dior",
