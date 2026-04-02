@@ -96,8 +96,13 @@ export default function FeaturedOffersSlider() {
 
   return (
     <section style={{ background: "#FFFFFF", padding: "72px 0 80px", direction: "rtl", overflow: "hidden" }}>
+      <style>{`
+        @keyframes glowPulse {
+          0%, 100% { box-shadow: 0 0 0 2px var(--glow-color, #A0A0A055), 0 0 28px 6px var(--glow-color, #A0A0A033), 0 32px 80px rgba(0,0,0,0.14); }
+          50% { box-shadow: 0 0 0 3px var(--glow-color, #A0A0A088), 0 0 48px 14px var(--glow-color, #A0A0A055), 0 32px 80px rgba(0,0,0,0.18); }
+        }
+      `}</style>
       <div style={{ maxWidth: 1200, margin: "0 auto", textAlign: "center", padding: "0 16px" }}>
-
         {/* Header */}
         <h2 style={{
           fontSize: "clamp(28px, 5vw, 38px)",
@@ -159,14 +164,15 @@ export default function FeaturedOffersSlider() {
                   position: "absolute",
                   width: "260px",
                   height: "390px",
-                  borderRadius: "28px",
-                  overflow: "hidden",
-                  cursor: "pointer",
-                  zIndex: 10 - absOffset,
+                  "--glow-color": offer.accent + "88",
                   background: "#f5f5f7",
                   boxShadow: isCenter
                     ? `0 0 0 2px ${offer.accent}55, 0 0 32px 8px ${offer.accent}33, 0 32px 80px rgba(0,0,0,0.14)`
                     : "0 8px 24px rgba(0,0,0,0.06)",
+                  borderRadius: "28px",
+                  cursor: "pointer",
+                  zIndex: 10 - absOffset,
+                  animation: isCenter ? "glowPulse 2.4s ease-in-out infinite" : "none",
                 }}
               >
                 <img
@@ -345,20 +351,25 @@ export default function FeaturedOffersSlider() {
                   WebkitBackdropFilter: "blur(20px)",
                   border: "1px solid rgba(0,0,0,0.07)",
                   borderRadius: "16px",
-                  padding: "12px 18px",
-                  display: "inline-flex",
+                  padding: "10px 16px",
+                  display: "flex",
                   alignItems: "center",
-                  gap: "14px",
+                  gap: "10px",
                   alignSelf: "flex-start",
                 }}>
                   {selectedOffer.priceOld && (
-                    <span style={{ fontSize: "14px", color: "#86868B", textDecoration: "line-through", fontFamily: "var(--font-heebo)" }}>
-                      {selectedOffer.priceOld}
-                    </span>
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "1px" }}>
+                      <span style={{ fontSize: "9px", fontWeight: 700, color: "#AEAEB2", fontFamily: "var(--font-heebo)", letterSpacing: "0.04em" }}>מחיר ZAP</span>
+                      <span style={{ fontSize: "14px", color: "#86868B", textDecoration: "line-through", fontFamily: "var(--font-heebo)" }}>{selectedOffer.priceOld}</span>
+                    </div>
                   )}
-                  <span style={{ fontSize: "22px", fontWeight: 900, color: "#0066CC", fontFamily: "var(--font-heebo)" }}>
-                    {selectedOffer.priceNew}
-                  </span>
+                  {selectedOffer.priceOld && <div style={{ width: "1px", height: "32px", background: "rgba(0,0,0,0.1)" }} />}
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "1px" }}>
+                    <span style={{ fontSize: "9px", fontWeight: 700, color: "#0066CC", fontFamily: "var(--font-heebo)", letterSpacing: "0.04em" }}>מחיר BoomBuy</span>
+                    <span style={{ fontSize: "22px", fontWeight: 900, color: "#0066CC", fontFamily: "var(--font-heebo)" }}>
+                      {selectedOffer.priceNew}
+                    </span>
+                  </div>
                 </div>
 
                 <button
