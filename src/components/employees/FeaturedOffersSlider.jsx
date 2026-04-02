@@ -7,81 +7,90 @@ const OFFERS = [
     id: "fashion",
     cat: "אופנה",
     brand: "Alo Yoga",
-    title: "אלו יוגה, אדידס ונייק במחירי סיטונאי",
+    title: "Alo Yoga — פרימיום",
     priceOld: "₪499", priceNew: "₪224",
     accent: "#C8A96E",
+    desc: "אלו יוגה, אדידס ונייק ומותגי פרימיום במחירים סיטונאיים.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/39d140209_-2026-02-18T150744909.png"
   },
   {
     id: "apple",
-    cat: "אלקטרוניקה",
-    brand: "Apple & Samsung",
-    title: "מוצרי חשמל ואלקטרוניקה במחירי יבואן ובהנחות חריגות",
-    priceOld: null, priceNew: "₪3,890 ליחידה",
+    cat: "מובייל",
+    brand: "Apple",
+    title: "Apple iPhone 16 Pro — יבואן",
+    priceOld: "₪4,590", priceNew: "₪3,890",
     accent: "#A0A0A0",
+    desc: "הטבות בלעדיות על אייפון, סמסונג ומוצרי מובייל.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/66514fe66_-2026-02-18T150849922.png"
   },
   {
     id: "vacation",
-    cat: "נופש",
+    cat: "נופש וחופשות",
     brand: "מלונות בראון",
-    title: "חופשות בארץ ובחו\"ל במחירים בלעדיים — עד 50% הנחה",
+    title: "מלונות בראון — פרימיום",
     priceOld: "₪1,790", priceNew: "₪899",
     accent: "#FF9500",
+    desc: "חופשות בארץ ובחו\"ל במחירים בלעדיים — עד 50% הנחה.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7cc501b0f_-2026-03-22T133529822.png"
   },
   {
     id: "luggage",
     cat: "נסיעות",
     brand: "Kate Hill",
-    title: "סט 3 מזוודות קשיחות, יבואן רשמי. הדיל הכי חזק של השנה",
+    title: "Kate Hill — סט מזוודות",
     priceOld: "₪1,999", priceNew: "₪249",
     accent: "#F5C518",
+    desc: "סט 3 מזוודות קשיחות, יבואן רשמי. הדיל הכי חזק של השנה.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28598db7e_-2026-03-15T180501791.png"
   },
   {
     id: "super",
     cat: "יוקר המחיה",
-    brand: "סופר ובית",
-    title: "הוזלה אמיתית על מוצרי צריכה (ניקיון, קפה) ובנוסף עד 8% הנחה קבועה בסופרים המוזלים",
+    brand: "TNX",
+    title: "סופר ובית — TNX",
     priceOld: "₪350", priceNew: "₪149",
     accent: "#34C759",
+    desc: "הוזלה אמיתית על מוצרי צריכה (ניקיון, קפה) ובנוסף עד 8% הנחה קבועה בסופרים המוזלים.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e8b8ed0b8_-2026-02-18T145540109.png"
   },
   {
     id: "culture",
     cat: "תרבות",
-    brand: "הופעות והצגות",
-    title: "קזבלן, תערוכות והצגות בארץ ובחו\"ל במחירים נגישים",
+    brand: "קזבלן",
+    title: "קזבלן — הצגת השנה",
     priceOld: "₪350", priceNew: "₪77",
     accent: "#AF52DE",
+    desc: "קזבלן, תערוכות והצגות בארץ ובחו\"ל במחירים נגישים.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3c42d518b_-2026-03-22T140039783.png"
   },
   {
     id: "nespresso",
-    cat: "חשמל",
+    cat: "חשמל ואלקטרוניקה",
     brand: "Nespresso",
-    title: "מכונות קפה ומוצרי חשמל במחירי יבואן",
+    title: "Nespresso — אלקטרוניקה",
     priceOld: "₪833", priceNew: "₪589",
     accent: "#5856D6",
+    desc: "מוצרי חשמל ואלקטרוניקה במחירי יבואן ובהנחות חריגות.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/39fcbe2f7_-2026-02-18T150129609.png"
   },
   {
     id: "morning",
-    cat: "כל בוקר",
-    brand: "260 הטבות בשנה",
-    title: "חוויות ומוצרי צריכה פרימיום שאתם צורכים בכל מקרה",
+    cat: "כל בוקר הטבה חדשה",
+    brand: "260 הטבות",
+    title: "260 הטבות — פרימיום",
     priceOld: "₪499", priceNew: "₪299",
     accent: "#FF2D55",
+    desc: "חוויות ומוצרי צריכה פרימיום שאתם צורכים בכל מקרה.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/82cf01fcc_87.png"
   },
   {
     id: "dior",
     cat: "בישום",
     brand: "Dior Sauvage",
-    title: "חנות בישום במחירי יבואן",
+    title: "Dior Sauvage — יבואן",
     priceOld: "₪600", priceNew: "₪430",
     accent: "#1D1D1F",
+    desc: "חנות בישום במחירי יבואן.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/823674aab_-2026-02-18T150114784.png"
   }
 ];
@@ -342,6 +351,11 @@ export default function FeaturedOffersSlider() {
                   }}>
                     {selectedOffer.title}
                   </h3>
+                  {selectedOffer.desc && (
+                    <p style={{ fontSize: "13px", color: "#86868B", fontFamily: "var(--font-heebo)", lineHeight: 1.5, margin: "6px 0 0" }}>
+                      {selectedOffer.desc}
+                    </p>
+                  )}
                 </div>
 
                 {/* Glass price pill */}
