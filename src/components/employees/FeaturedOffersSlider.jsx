@@ -40,7 +40,7 @@ export default function FeaturedOffersSlider() {
           {OFFERS.map((offer, i) => {
             const offset = i - index;
             const absOffset = Math.abs(offset);
-            if (absOffset > 2) return null;
+            if (absOffset > 4) return null;
 
             return (
               <motion.div
