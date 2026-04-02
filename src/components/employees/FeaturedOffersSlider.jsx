@@ -1,23 +1,22 @@
 import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ChevronRight, ChevronLeft } from "lucide-react";
+import { X } from "lucide-react";
 
-// 9 הטבות מדויקות
 const OFFERS = [
   { id: "daily",     cat: "הטבה יומית",  title: "Adidas Samba",           priceOld: "₪499",   priceNew: "₪299",   accent: "#C8A96E", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/39d140209_-2026-02-18T150744909.png" },
-  { id: "apple",    cat: "מובייל",      title: "Apple iPhone 16 Pro",    priceOld: "₪4,590", priceNew: "₪3,890", accent: "#A0A0A0", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/67dbe888a_92.png" },
-  { id: "vacation", cat: "חופשות",      title: "מלונות בראון ונופש יוקרה",  priceOld: "₪1,790", priceNew: "₪899",   accent: "#FF9500", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7cc501b0f_-2026-03-22T133529822.png" },
-  { id: "luggage",  cat: "נסיעות",      title: "Kate Hill - סט מזוודות",    priceOld: "₪1,999", priceNew: "₪249",   accent: "#F5C518", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28598db7e_-2026-03-15T180501791.png" },
-  { id: "super",    cat: "יוקר המחיה", title: "סופר ובית (TNX)",         priceOld: "₪350",   priceNew: "₪149",   accent: "#34C759", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e8b8ed0b8_-2026-02-18T145540109.png" },
-  { id: "culture",  cat: "תרבות",      title: "קזבלן - הצגת השנה",      priceOld: "₪350",   priceNew: "₪77",    accent: "#AF52DE", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3c42d518b_-2026-03-22T140039783.png" },
-  { id: "nespresso",cat: "חשמל",       title: "Nespresso Inissia",       priceOld: "₪833",   priceNew: "₪589",   accent: "#5856D6", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/db8e935e8_-2026-03-22T162955489.png" },
-  { id: "morning",  cat: "כל בוקר",    title: "260 הטבות בשנה",           priceOld: "₪499",   priceNew: "₪299",   accent: "#FF2D55", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/82cf01fcc_87.png" },
-  { id: "dior",     cat: "בישום",      title: "Christian Dior Sauvage", priceOld: "₪600",   priceNew: "₪430",   accent: "#1D1D1F", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/823674aab_-2026-02-18T150114784.png" }
+  { id: "apple",     cat: "מובייל",      title: "Apple iPhone 16 Pro",    priceOld: "₪4,590", priceNew: "₪3,890", accent: "#A0A0A0", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/67dbe888a_92.png" },
+  { id: "vacation",  cat: "חופשות",      title: "מלונות בראון ונופש יוקרה", priceOld: "₪1,790", priceNew: "₪899",   accent: "#FF9500", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7cc501b0f_-2026-03-22T133529822.png" },
+  { id: "luggage",   cat: "נסיעות",      title: "Kate Hill - סט מזוודות", priceOld: "₪1,999", priceNew: "₪249",   accent: "#F5C518", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28598db7e_-2026-03-15T180501791.png" },
+  { id: "super",     cat: "יוקר המחיה", title: "סופר ובית (TNX)",        priceOld: "₪350",   priceNew: "₪149",   accent: "#34C759", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e8b8ed0b8_-2026-02-18T145540109.png" },
+  { id: "culture",   cat: "תרבות",      title: "קזבלן - הצגת השנה",      priceOld: "₪350",   priceNew: "₪77",    accent: "#AF52DE", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3c42d518b_-2026-03-22T140039783.png" },
+  { id: "nespresso", cat: "חשמל",       title: "Nespresso Inissia",      priceOld: "₪833",   priceNew: "₪589",   accent: "#5856D6", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/db8e935e8_-2026-03-22T162955489.png" },
+  { id: "morning",   cat: "כל בוקר",    title: "260 הטבות בשנה",         priceOld: "₪499",   priceNew: "₪299",   accent: "#FF2D55", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/82cf01fcc_87.png" },
+  { id: "dior",      cat: "בישום",      title: "Christian Dior Sauvage", priceOld: "₪600",   priceNew: "₪430",   accent: "#1D1D1F", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/823674aab_-2026-02-18T150114784.png" }
 ];
 
 export default function FeaturedOffersSlider() {
   const [selectedId, setSelectedId] = useState(null);
-  const [index, setIndex] = useState(3); // Kate Hill כמרכז
+  const [index, setIndex] = useState(3);
   const touchStart = useRef(0);
 
   const go = (dir) => setIndex((p) => (p + dir + OFFERS.length) % OFFERS.length);
@@ -28,8 +27,7 @@ export default function FeaturedOffersSlider() {
         <h2 style={{ fontSize: "36px", fontWeight: 900, marginBottom: "12px", fontFamily: "var(--font-heebo)", color: "#1D1D1F" }}>ככה נראית הטבה אמיתית</h2>
         <p style={{ color: "#86868B", marginBottom: "48px", fontFamily: "var(--font-heebo)" }}>לחצו על כרטיסייה לפרטים מלאים</p>
 
-        {/* 3D Container - Pokemon Logic */}
-        <div 
+        <div
           onTouchStart={(e) => touchStart.current = e.touches[0].clientX}
           onTouchEnd={(e) => {
             const diff = touchStart.current - e.changedTouches[0].clientX;
@@ -58,7 +56,7 @@ export default function FeaturedOffersSlider() {
                 style={{
                   position: "absolute", width: "270px", height: "400px", borderRadius: "32px",
                   backgroundImage: `url(${offer.img})`, backgroundSize: "cover", backgroundPosition: "center",
-                  cursor: "pointer", 
+                  cursor: "pointer",
                   boxShadow: absOffset === 0 ? `0 40px 100px ${offer.accent}33` : "0 10px 30px rgba(0,0,0,0.05)",
                   border: absOffset === 0 ? `2px solid ${offer.accent}` : "1px solid rgba(0,0,0,0.05)",
                   zIndex: 10 - absOffset, overflow: "hidden"
@@ -71,7 +69,6 @@ export default function FeaturedOffersSlider() {
           })}
         </div>
 
-        {/* Indicators */}
         <div style={{ display: "flex", justifyContent: "center", gap: "6px", marginTop: "40px" }}>
           {OFFERS.map((_, i) => (
             <button key={i} onClick={() => setIndex(i)} style={{ width: i === index ? 32 : 8, height: 4, background: i === index ? "#0066CC" : "#E5E5E7", borderRadius: 10, transition: "0.3s", border: "none", cursor: "pointer", padding: 0 }} />
@@ -79,13 +76,12 @@ export default function FeaturedOffersSlider() {
         </div>
       </div>
 
-      {/* Expanded Modal - Zero Cutoff Architecture */}
       <AnimatePresence>
         {selectedId && (
           <div style={modalOverlayStyle}>
             <motion.div layoutId={selectedId} style={modalContainerStyle}>
               <button onClick={() => setSelectedId(null)} style={closeBtnStyle}><X size={22}/></button>
-              
+
               <div style={modalContentStack}>
                 <div style={imageWrapper}>
                   <img src={OFFERS.find(o => o.id === selectedId).img} style={imgStyle} alt="Product" />
@@ -95,11 +91,11 @@ export default function FeaturedOffersSlider() {
                   <div style={modalTagStyle}>{OFFERS.find(o => o.id === selectedId).cat}</div>
                   <h3 style={modalTitle}>{OFFERS.find(o => o.id === selectedId).title}</h3>
                   <p style={modalDesc}>
-                    {selectedId === "super" 
-                      ? "הוזלה אמיתית על מוצרי צריכה (ניקיון, קפה) ובנוסף עד 8% הנחה קבועה בסופרים המוזלים." 
+                    {selectedId === "super"
+                      ? "הוזלה אמיתית על מוצרי צריכה (ניקיון, קפה) ובנוסף עד 8% הנחה קבועה בסופרים המוזלים."
                       : "מחירי יבואן ישירים ללא פערי תיווך, בלעדי לעובדי הארגון שלכם."}
                   </p>
-                  
+
                   <div style={glassContainer}>
                     <div style={pricePill}>
                       <span style={oldPrice}>{OFFERS.find(o => o.id === selectedId).priceOld}</span>
@@ -108,7 +104,7 @@ export default function FeaturedOffersSlider() {
                   </div>
 
                   <button style={finalCta} onClick={() => document.getElementById("survey-section")?.scrollIntoView({ behavior: "smooth" })}>
-                    אני רוצה את זה בארגון שלי ←
+                    אני רוצה את זה בארגון שלי
                   </button>
                 </div>
               </div>
@@ -120,7 +116,6 @@ export default function FeaturedOffersSlider() {
   );
 }
 
-// Visual Definitions
 const tagStyle = { position: "absolute", top: "16px", right: "16px", background: "rgba(0,0,0,0.6)", backdropFilter: "blur(6px)", color: "#fff", padding: "4px 12px", borderRadius: "100px", fontSize: "11px", fontWeight: 700, zIndex: 5 };
 const titleInCardStyle = { position: "absolute", bottom: "20px", width: "100%", textAlign: "center", color: "#fff", fontWeight: 800, fontSize: "15px", textShadow: "0 2px 8px rgba(0,0,0,0.5)" };
 
