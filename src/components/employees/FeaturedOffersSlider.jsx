@@ -150,7 +150,6 @@ export default function FeaturedOffersSlider() {
             perspective: "1500px",
             position: "relative",
             width: "100%",
-            overflow: "hidden",
           }}
         >
           {OFFERS.map((offer, i) => {
@@ -177,6 +176,7 @@ export default function FeaturedOffersSlider() {
                   height: "400px",
                   "--glow-color": offer.accent + "88",
                   background: "#f5f5f7",
+                  overflow: "hidden",
                   boxShadow: isCenter
                     ? `0 0 0 2px ${offer.accent}55, 0 0 32px 8px ${offer.accent}33, 0 32px 80px rgba(0,0,0,0.14)`
                     : "0 8px 24px rgba(0,0,0,0.06)",
