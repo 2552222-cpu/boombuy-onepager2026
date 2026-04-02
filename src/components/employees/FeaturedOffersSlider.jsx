@@ -11,7 +11,7 @@ const OFFERS = [
     priceOld: "₪499", priceNew: "₪224",
     accent: "#A0A0A0",
     desc: "אלו יוגה, אדידס, נייק ומותגי פרימיום במחירים סיטונאיים.",
-    img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/9349388b9_-2026-03-22T163505767.png"
+    img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/359030b5f_87.png"
   },
   {
     id: "apple",
