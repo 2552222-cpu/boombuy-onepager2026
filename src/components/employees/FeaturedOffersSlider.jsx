@@ -9,8 +9,8 @@ const OFFERS = [
     brand: "Alo Yoga",
     title: "Alo Yoga — פרימיום",
     priceOld: "₪499", priceNew: "₪224",
-    accent: "#C8A96E",
-    desc: "אלו יוגה, אדידס ונייק ומותגי פרימיום במחירים סיטונאיים.",
+    accent: "#A0A0A0",
+    desc: "אלו יוגה, אדידס, נייק ומותגי פרימיום במחירים סיטונאיים.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/39d140209_-2026-02-18T150744909.png"
   },
   {
@@ -18,7 +18,7 @@ const OFFERS = [
     cat: "מובייל",
     brand: "Apple",
     title: "Apple iPhone 16 Pro — יבואן",
-    priceOld: "₪4,590", priceNew: "₪3,890",
+    priceOld: null, priceNew: "₪3,890",
     accent: "#A0A0A0",
     desc: "הטבות בלעדיות על אייפון, סמסונג ומוצרי מובייל.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/66514fe66_-2026-02-18T150849922.png"
@@ -29,7 +29,7 @@ const OFFERS = [
     brand: "מלונות בראון",
     title: "מלונות בראון — פרימיום",
     priceOld: "₪1,790", priceNew: "₪899",
-    accent: "#FF9500",
+    accent: "#A0A0A0",
     desc: "חופשות בארץ ובחו\"ל במחירים בלעדיים — עד 50% הנחה.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7cc501b0f_-2026-03-22T133529822.png"
   },
@@ -39,8 +39,8 @@ const OFFERS = [
     brand: "Kate Hill",
     title: "Kate Hill — סט מזוודות",
     priceOld: "₪1,999", priceNew: "₪249",
-    accent: "#F5C518",
-    desc: "סט 3 מזוודות קשיחות, יבואן רשמי. הדיל הכי חזק של השנה.",
+    accent: "#A0A0A0",
+    desc: "סט 3 מזוודות קשיחות, יבואן רשמי. ההטבה המבוקשת של השנה.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28598db7e_-2026-03-15T180501791.png"
   },
   {
@@ -49,7 +49,7 @@ const OFFERS = [
     brand: "TNX",
     title: "סופר ובית — TNX",
     priceOld: "₪350", priceNew: "₪149",
-    accent: "#34C759",
+    accent: "#A0A0A0",
     desc: "הוזלה אמיתית על מוצרי צריכה (ניקיון, קפה) ובנוסף עד 8% הנחה קבועה בסופרים המוזלים.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e8b8ed0b8_-2026-02-18T145540109.png"
   },
@@ -59,8 +59,8 @@ const OFFERS = [
     brand: "קזבלן",
     title: "קזבלן — הצגת השנה",
     priceOld: "₪350", priceNew: "₪77",
-    accent: "#AF52DE",
-    desc: "קזבלן, תערוכות והצגות בארץ ובחו\"ל במחירים נגישים.",
+    accent: "#A0A0A0",
+    desc: "תערוכות, הופעות והצגות בארץ ובחו\"ל במחירים נגישים.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3c42d518b_-2026-03-22T140039783.png"
   },
   {
@@ -69,7 +69,7 @@ const OFFERS = [
     brand: "Nespresso",
     title: "Nespresso — אלקטרוניקה",
     priceOld: "₪833", priceNew: "₪589",
-    accent: "#5856D6",
+    accent: "#A0A0A0",
     desc: "מוצרי חשמל ואלקטרוניקה במחירי יבואן ובהנחות חריגות.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/39fcbe2f7_-2026-02-18T150129609.png"
   },
@@ -79,7 +79,7 @@ const OFFERS = [
     brand: "260 הטבות",
     title: "260 הטבות — פרימיום",
     priceOld: "₪499", priceNew: "₪299",
-    accent: "#FF2D55",
+    accent: "#A0A0A0",
     desc: "חוויות ומוצרי צריכה פרימיום שאתם צורכים בכל מקרה.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/82cf01fcc_87.png"
   },
@@ -89,7 +89,7 @@ const OFFERS = [
     brand: "Dior Sauvage",
     title: "Dior Sauvage — יבואן",
     priceOld: "₪600", priceNew: "₪430",
-    accent: "#1D1D1F",
+    accent: "#A0A0A0",
     desc: "חנות בישום במחירי יבואן.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/823674aab_-2026-02-18T150114784.png"
   }
@@ -147,7 +147,7 @@ export default function FeaturedOffersSlider() {
             alignItems: "center",
             justifyContent: "center",
             minHeight: "460px",
-            perspective: "1400px",
+            perspective: "1500px",
             position: "relative",
           }}
         >
@@ -172,13 +172,13 @@ export default function FeaturedOffersSlider() {
                 style={{
                   position: "absolute",
                   width: "260px",
-                  height: "390px",
+                  height: "400px",
                   "--glow-color": offer.accent + "88",
                   background: "#f5f5f7",
                   boxShadow: isCenter
                     ? `0 0 0 2px ${offer.accent}55, 0 0 32px 8px ${offer.accent}33, 0 32px 80px rgba(0,0,0,0.14)`
                     : "0 8px 24px rgba(0,0,0,0.06)",
-                  borderRadius: "28px",
+                  borderRadius: "32px",
                   cursor: "pointer",
                   zIndex: 10 - absOffset,
                   animation: isCenter ? "glowPulse 2.4s ease-in-out infinite" : "none",
@@ -294,12 +294,12 @@ export default function FeaturedOffersSlider() {
             >
               {/* Image area — 75% */}
               <div style={{
-                flex: "0 0 62%",
+                flex: "0 0 75%",
                 background: "#F5F5F7",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                padding: "32px 32px 20px",
+                padding: "40px",
                 position: "relative",
               }}>
                 <button
