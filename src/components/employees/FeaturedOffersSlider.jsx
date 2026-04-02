@@ -11,7 +11,7 @@ const OFFERS = [
     priceOld: "₪499", priceNew: "₪224",
     accent: "#A0A0A0",
     desc: "אלו יוגה, אדידס, נייק ומותגי פרימיום במחירים סיטונאיים.",
-    img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/39d140209_-2026-02-18T150744909.png"
+    img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/9349388b9_-2026-03-22T163505767.png"
   },
   {
     id: "apple",
@@ -104,12 +104,12 @@ export default function FeaturedOffersSlider() {
   const selectedOffer = OFFERS.find(o => o.id === selectedId);
 
   return (
-    <section style={{ background: "#FFFFFF", padding: "72px 0 80px", direction: "rtl", overflow: "hidden" }}>
+    <section style={{ background: "#FFFFFF", padding: "72px 0 80px", direction: "rtl", overflowX: "hidden" }}>
       <style>{`
         @keyframes glowPulse {
-          0%, 100% { box-shadow: 0 0 0 2px var(--glow-color, #A0A0A055), 0 0 28px 6px var(--glow-color, #A0A0A033), 0 32px 80px rgba(0,0,0,0.14); }
-          50% { box-shadow: 0 0 0 3px var(--glow-color, #A0A0A088), 0 0 48px 14px var(--glow-color, #A0A0A055), 0 32px 80px rgba(0,0,0,0.18); }
-        }
+        0%, 100% { box-shadow: 0 0 0 1.5px rgba(160,160,160,0.3), 0 0 20px 4px rgba(160,160,160,0.18), 0 24px 60px rgba(0,0,0,0.12); }
+        50% { box-shadow: 0 0 0 2px rgba(160,160,160,0.55), 0 0 36px 10px rgba(160,160,160,0.28), 0 24px 60px rgba(0,0,0,0.15); }
+      }
       `}</style>
       <div style={{ maxWidth: 1200, margin: "0 auto", textAlign: "center", padding: "0 16px" }}>
         {/* Header */}
@@ -149,6 +149,8 @@ export default function FeaturedOffersSlider() {
             minHeight: "460px",
             perspective: "1500px",
             position: "relative",
+            width: "100%",
+            overflow: "hidden",
           }}
         >
           {OFFERS.map((offer, i) => {
