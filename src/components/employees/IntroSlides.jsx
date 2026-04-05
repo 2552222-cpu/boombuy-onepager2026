@@ -3,65 +3,62 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const SLIDES = [
   {
+    id: 1,
     lines: ["מה אם העבודה שלך", "הייתה נותנת לך יותר?"],
     size: "clamp(32px, 8.5vw, 54px)",
     weight: 900,
     color: "#1D1D1F",
-    highlights: [],
+    highlight: null,
   },
   {
+    id: 2,
     lines: ["לא רק מתנה בחג", "משהו שמרגישים ביומיום", "בכל יום מחדש"],
     size: "clamp(26px, 7vw, 44px)",
     weight: 800,
     color: "#1D1D1F",
-    highlights: [],
+    highlight: null,
   },
   {
+    id: 3,
     lines: ["8% הנחה קבועה בסופר", "ועוד מאות מוצרים והטבות", "על המותגים שאתם בכל מקרה צורכים"],
     size: "clamp(22px, 6vw, 36px)",
     weight: 700,
     color: "#1D1D1F",
-    highlights: [],
+    highlight: null,
   },
   {
+    id: 4,
     lines: ["וכל זה בלי שהמעסיק שלך", "יוסיף עוד שקל אחד לתקציב", "שהוא ממילא מוציא"],
     size: "clamp(22px, 6vw, 36px)",
     weight: 700,
     color: "#1D1D1F",
-    highlights: ["ממילא"],
+    highlight: "ממילא",
+    highlightColor: "#007AFF",
   },
   {
+    id: 5,
     lines: ["עכשיו תראו", "איך זה נראה"],
     size: "clamp(32px, 8.5vw, 54px)",
     weight: 900,
     color: "#007AFF",
-    highlights: [],
+    highlight: null,
   },
 ];
 
-const DURATION = 6000; // ms per slide
+const DURATION = 6000;
 
-function renderLine(line, highlights, color, size, weight) {
-  if (!highlights || highlights.length === 0) {
+function LineText({ line, highlight, highlightColor, color, size, weight }) {
+  if (!highlight || !line.includes(highlight)) {
     return <span>{line}</span>;
   }
-  let result = line;
-  const parts = [];
-  let remaining = line;
-  highlights.forEach((word) => {
-    const idx = remaining.indexOf(word);
-    if (idx === -1) {
-      parts.push(<span key={remaining}>{remaining}</span>);
-      return;
-    }
-    if (idx > 0) parts.push(<span key={`pre-${word}`}>{remaining.slice(0, idx)}</span>);
-    parts.push(
-      <span key={word} style={{ color: "#007AFF" }}>{word}</span>
-    );
-    remaining = remaining.slice(idx + word.length);
-  });
-  if (remaining) parts.push(<span key="tail">{remaining}</span>);
-  return <>{parts}</>;
+  const parts = line.split(highlight);
+  return (
+    <>
+      {parts[0]}
+      <span style={{ color: highlightColor, fontWeight: weight }}>{highlight}</span>
+      {parts[1]}
+    </>
+  );
 }
 
 export default function IntroSlides({ onDone }) {
@@ -69,8 +66,14 @@ export default function IntroSlides({ onDone }) {
   const [progress, setProgress] = useState(0);
   const intervalRef = useRef(null);
   const startTimeRef = useRef(Date.now());
+  const touchStartX = useRef(0);
 
   const isLast = index === SLIDES.length - 1;
+
+  const finish = () => {
+    if (onDone) onDone();
+    document.getElementById("offers-slider")?.scrollIntoView({ behavior: "smooth" });
+  };
 
   const goNext = () => {
     if (index < SLIDES.length - 1) {
@@ -84,15 +87,10 @@ export default function IntroSlides({ onDone }) {
     if (index > 0) setIndex((p) => p - 1);
   };
 
-  const finish = () => {
-    if (onDone) onDone();
-    document.getElementById("offers-slider")?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  // Auto-advance timer
   useEffect(() => {
     setProgress(0);
     startTimeRef.current = Date.now();
+    clearInterval(intervalRef.current);
 
     intervalRef.current = setInterval(() => {
       const elapsed = Date.now() - startTimeRef.current;
@@ -111,8 +109,6 @@ export default function IntroSlides({ onDone }) {
     return () => clearInterval(intervalRef.current);
   }, [index]);
 
-  // Swipe support
-  const touchStartX = useRef(0);
   const handleTouchStart = (e) => { touchStartX.current = e.touches[0].clientX; };
   const handleTouchEnd = (e) => {
     const diff = touchStartX.current - e.changedTouches[0].clientX;
@@ -137,12 +133,7 @@ export default function IntroSlides({ onDone }) {
         overflow: "hidden",
         touchAction: "manipulation",
         fontFamily: "var(--font-heebo)",
-        background: "#FBFBFD",
-        // Subtle mesh gradient corners
-        backgroundImage: `
-          radial-gradient(ellipse at 0% 0%, rgba(0,122,255,0.055) 0%, transparent 50%),
-          radial-gradient(ellipse at 100% 100%, rgba(0,122,255,0.04) 0%, transparent 50%)
-        `,
+        background: "#FFFFFF",
       }}
     >
       {/* Progress bars */}
@@ -156,25 +147,20 @@ export default function IntroSlides({ onDone }) {
         zIndex: 20,
       }}>
         {SLIDES.map((_, i) => (
-          <div
-            key={i}
-            style={{
-              height: "2.5px",
-              flex: 1,
-              background: "rgba(0,0,0,0.08)",
+          <div key={i} style={{
+            height: "2.5px",
+            flex: 1,
+            background: "rgba(0,0,0,0.08)",
+            borderRadius: "10px",
+            overflow: "hidden",
+          }}>
+            <div style={{
+              height: "100%",
+              background: "#007AFF",
               borderRadius: "10px",
-              overflow: "hidden",
-            }}
-          >
-            <motion.div
-              style={{
-                height: "100%",
-                background: "#007AFF",
-                borderRadius: "10px",
-                width: i < index ? "100%" : i === index ? `${progress}%` : "0%",
-              }}
-              transition={{ ease: "linear" }}
-            />
+              width: i < index ? "100%" : i === index ? `${progress}%` : "0%",
+              transition: i === index ? "none" : "none",
+            }} />
           </div>
         ))}
       </div>
@@ -200,33 +186,23 @@ export default function IntroSlides({ onDone }) {
           zIndex: 10,
         }}
       >
-        {/* Pulsing green dot */}
-        <span style={{ position: "relative", width: 8, height: 8, flexShrink: 0 }}>
+        <span style={{ position: "relative", width: 8, height: 8, flexShrink: 0, display: "inline-flex" }}>
           <motion.span
             animate={{ scale: [1, 1.7, 1], opacity: [1, 0.2, 1] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             style={{
-              position: "absolute",
-              inset: 0,
-              borderRadius: "50%",
-              background: "#34C759",
-              display: "block",
+              position: "absolute", inset: 0,
+              borderRadius: "50%", background: "#34C759", display: "block",
             }}
           />
           <span style={{
-            position: "absolute",
-            inset: "1.5px",
-            borderRadius: "50%",
-            background: "#34C759",
-            display: "block",
+            position: "absolute", inset: "1.5px",
+            borderRadius: "50%", background: "#34C759", display: "block",
           }} />
         </span>
         <span style={{
-          fontSize: "12px",
-          fontWeight: 600,
-          color: "#1D3A6B",
-          fontFamily: "var(--font-heebo)",
-          whiteSpace: "nowrap",
+          fontSize: "12px", fontWeight: 600, color: "#1D3A6B",
+          fontFamily: "var(--font-heebo)", whiteSpace: "nowrap",
         }}>
           250,000+ עובדים כבר נהנים מנטו גבוה יותר
         </span>
@@ -245,11 +221,11 @@ export default function IntroSlides({ onDone }) {
       }}>
         <AnimatePresence mode="wait">
           <motion.div
-            key={index}
+            key={slide.id}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.25 }}
             style={{ textAlign: "center" }}
           >
             {slide.lines.map((line, li) => (
@@ -257,11 +233,7 @@ export default function IntroSlides({ onDone }) {
                 key={li}
                 initial={{ opacity: 0, y: 18, filter: "blur(10px)" }}
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                transition={{
-                  duration: 0.55,
-                  delay: li * 0.18,
-                  ease: [0.23, 1, 0.32, 1],
-                }}
+                transition={{ duration: 0.55, delay: li * 0.18, ease: [0.23, 1, 0.32, 1] }}
                 style={{
                   fontSize: slide.size,
                   fontWeight: slide.weight,
@@ -272,7 +244,14 @@ export default function IntroSlides({ onDone }) {
                   letterSpacing: "-0.025em",
                 }}
               >
-                {renderLine(line, slide.highlights, slide.color, slide.size, slide.weight)}
+                <LineText
+                  line={line}
+                  highlight={slide.highlight}
+                  highlightColor={slide.highlightColor}
+                  color={slide.color}
+                  size={slide.size}
+                  weight={slide.weight}
+                />
               </motion.div>
             ))}
           </motion.div>
@@ -292,7 +271,7 @@ export default function IntroSlides({ onDone }) {
       }}>
         <motion.button
           whileTap={{ scale: 0.97 }}
-          onClick={(e) => { e.stopPropagation(); goNext(); }}
+          onClick={goNext}
           style={{
             width: "100%",
             background: isLast ? "#007AFF" : "#1D1D1F",
@@ -305,7 +284,6 @@ export default function IntroSlides({ onDone }) {
             cursor: "pointer",
             fontFamily: "var(--font-heebo)",
             boxShadow: isLast ? "0 8px 24px rgba(0,122,255,0.28)" : "0 4px 14px rgba(0,0,0,0.18)",
-            transition: "background 0.25s",
             letterSpacing: "-0.01em",
           }}
         >
@@ -314,7 +292,7 @@ export default function IntroSlides({ onDone }) {
 
         {!isLast && (
           <button
-            onClick={(e) => { e.stopPropagation(); finish(); }}
+            onClick={finish}
             style={{
               background: "none",
               border: "none",
