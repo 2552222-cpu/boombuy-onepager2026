@@ -10,7 +10,7 @@ const SLIDES = [
     highlights: [],
   },
   {
-    lines: ["לא רק מתנה בחג —", "משהו שמרגישים בנטו", "בכל יום מחדש"],
+    lines: ["לא רק מתנה בחג -", "משהו שמרגישים בנטו", "בכל יום מחדש"],
     size: "clamp(26px, 7vw, 44px)",
     weight: 800,
     color: "#1D1D1F",
@@ -111,14 +111,13 @@ export default function IntroSlides({ onDone }) {
     return () => clearInterval(intervalRef.current);
   }, [index]);
 
-  // Tap left/right to navigate
-  const handleTap = (e) => {
-    const x = e.clientX;
-    const mid = window.innerWidth / 2;
-    if (x < mid) {
-      goNext();
-    } else {
-      goPrev();
+  // Swipe support
+  const touchStartX = useRef(0);
+  const handleTouchStart = (e) => { touchStartX.current = e.touches[0].clientX; };
+  const handleTouchEnd = (e) => {
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) goNext(); else goPrev();
     }
   };
 
@@ -126,7 +125,8 @@ export default function IntroSlides({ onDone }) {
 
   return (
     <section
-      onClick={handleTap}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
       style={{
         height: "100dvh",
         width: "100%",
@@ -309,7 +309,7 @@ export default function IntroSlides({ onDone }) {
             letterSpacing: "-0.01em",
           }}
         >
-          {isLast ? "בואו נתחיל ←" : "המשך"}
+          {isLast ? "ראו איך זה נראה ←" : "המשך"}
         </motion.button>
 
         {!isLast && (
