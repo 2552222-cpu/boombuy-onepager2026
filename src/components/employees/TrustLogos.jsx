@@ -105,6 +105,13 @@ export default function TrustLogos() {
 
         .jci-row:hover .jci-track{ animation-play-state:paused; }
 
+        .jci-logoCard:nth-child(6) img,
+        .jci-logoCard:nth-child(7) img,
+        .jci-logoCard:nth-child(25) img,
+        .jci-logoCard:nth-child(27) img {
+          transform: scale(1.5);
+        }
+
         .jci-logoCard{
           flex:0 0 auto;
           display:flex;
