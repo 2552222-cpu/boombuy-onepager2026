@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -91,6 +91,13 @@ export default function FeaturedOffersSlider() {
   const [selectedId, setSelectedId] = useState(null);
   const [index, setIndex] = useState(DEFAULT_INDEX);
   const touchStart = useRef(0);
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handler);
+    return () => window.removeEventListener("resize", handler);
+  }, []);
 
   const go = (dir) => setIndex((p) => (p + dir + OFFERS.length) % OFFERS.length);
   const selectedOffer = OFFERS.find(o => o.id === selectedId);
@@ -141,7 +148,35 @@ export default function FeaturedOffersSlider() {
           לחצו על כרטיסייה לפרטים מלאים
         </p>
 
-        {/* Category pills above slider */}
+        {/* Category label on mobile — shown above carousel */}
+        {isMobile && (
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={index + "-cat"}
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 6 }}
+              transition={{ duration: 0.18 }}
+              style={{ marginBottom: "16px" }}
+            >
+              <span style={{
+                background: "#1D1D1F",
+                color: "#fff",
+                borderRadius: "999px",
+                padding: "6px 18px",
+                fontSize: "13px",
+                fontWeight: 700,
+                fontFamily: "var(--font-heebo)",
+                display: "inline-block",
+              }}>
+                {currentOffer.cat}
+              </span>
+            </motion.div>
+          </AnimatePresence>
+        )}
+
+        {/* Category pills above slider — desktop only */}
+        {!isMobile && (
         <div style={{
           display: "flex",
           gap: "8px",
@@ -171,6 +206,7 @@ export default function FeaturedOffersSlider() {
             </button>
           ))}
         </div>
+        )}
 
         {/* Carousel */}
         <div
@@ -183,8 +219,9 @@ export default function FeaturedOffersSlider() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            height: "540px",
-            perspective: "1500px",
+            height: isMobile ? "70vw" : "540px",
+            maxHeight: isMobile ? "400px" : "none",
+            perspective: isMobile ? "none" : "1500px",
             position: "relative",
             width: "100%",
           }}
@@ -192,14 +229,17 @@ export default function FeaturedOffersSlider() {
           {OFFERS.map((offer, i) => {
             const offset = i - index;
             const absOffset = Math.abs(offset);
-            if (absOffset > 3) return null;
+            if (isMobile && absOffset > 0) return null;
+            if (!isMobile && absOffset > 3) return null;
             const isCenter = absOffset === 0;
 
             return (
               <motion.div
                 key={offer.id}
-                onClick={() => i === index ? setSelectedId(offer.id) : setIndex(i)}
-                animate={{
+                onClick={() => isCenter ? setSelectedId(offer.id) : setIndex(i)}
+                animate={isMobile ? {
+                  x: 0, scale: 1, rotateY: 0, z: 0, filter: "none",
+                } : {
                   x: offset * 280,
                   scale: isCenter ? 1.08 : 0.8,
                   rotateY: offset * -22,
@@ -208,9 +248,9 @@ export default function FeaturedOffersSlider() {
                 }}
                 transition={{ type: "spring", damping: 25, stiffness: 150 }}
                 style={{
-                  position: "absolute",
-                  width: "340px",
-                  height: "480px",
+                  position: isMobile ? "relative" : "absolute",
+                  width: isMobile ? "min(88vw, 340px)" : "340px",
+                  height: isMobile ? "min(70vw, 380px)" : "480px",
                   borderRadius: "24px",
                   cursor: "pointer",
                   zIndex: 10 - absOffset,
@@ -219,6 +259,7 @@ export default function FeaturedOffersSlider() {
                     ? "0 0 0 1px rgba(0,0,0,0.06), 0 40px 100px rgba(0,0,0,0.18)"
                     : "0 8px 24px rgba(0,0,0,0.06)",
                   background: "#F5F5F7",
+                  flexShrink: 0,
                 }}
               >
                 <img
@@ -226,7 +267,7 @@ export default function FeaturedOffersSlider() {
                   alt={offer.brand}
                   style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
                 />
-                {isCenter && (
+                {isCenter && !isMobile && (
                   <div style={{
                     position: "absolute",
                     bottom: 0, left: 0, right: 0,

@@ -21,6 +21,15 @@ export default function EmployeesLanding() {
   const [showJoin, setShowJoin] = useState(false);
   const [joinParams, setJoinParams] = useState({ orgKey: "", orgName: "" });
   const [introDone, setIntroDone] = useState(false);
+  const [pastBenefits, setPastBenefits] = useState(false);
+
+  React.useEffect(() => {
+    const el = document.getElementById("benefits-showcase");
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setPastBenefits(true); }, { threshold: 0.1 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -87,8 +96,8 @@ export default function EmployeesLanding() {
       </div>
       <GlobalFooter />
 
-      {/* Floating CTA - only after intro, hidden on mobile when modal could be open */}
-      {introDone && (
+      {/* Floating CTA - desktop: always after intro. Mobile: only after BenefitsShowcase */}
+      {(introDone && pastBenefits) && (
       <a
         href={`https://wa.me/972542552222?text=${encodeURIComponent("היי, ראינו את עמוד העובדים של BoomBuy ואנחנו רוצים להבין איך לצרף את הארגון שלנו.")}`}
         target="_blank"
