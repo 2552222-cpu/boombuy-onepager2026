@@ -514,17 +514,12 @@ export default function FeaturedOffersSlider() {
               <div style={{
                 flex: "1 1 0",
                 minHeight: 0,
-                background: "#F5F5F7",
-                position: "relative",
                 overflow: "hidden",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
               }}>
                 <img
                   src={selectedOffer.img}
                   alt={selectedOffer.brand}
-                  style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
+                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
                 />
               </div>
 
