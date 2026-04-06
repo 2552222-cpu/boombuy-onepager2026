@@ -159,9 +159,8 @@ export default function TrustLogos() {
           transform:scale(1.04);
         }
 
-        [data-logo-index="21"] img,
-        [data-logo-index="22"] img {
-          transform: scale(1.25);
+        [data-logo-index="24"] img {
+          transform: scale(1.15);
         }
 
         .jci-trust{
