@@ -93,13 +93,14 @@ export default function TrustLogos() {
               <div
                 key={i}
                 className="flex items-center justify-center opacity-85 hover:opacity-100 transition-opacity duration-300"
-                style={{ height: "56px", minHeight: "56px" }}
+                style={{ height: "56px", minHeight: "56px", maxHeight: "56px", overflow: "hidden" }}
               >
                 <img
                   src={logo.url}
-                  alt={logo.name}
+                  alt=""
                   className="object-contain"
                   style={{ width: "100%", height: "100%", maxWidth: "110px", maxHeight: "52px", objectFit: "contain" }}
+                  onError={(e) => { e.currentTarget.style.display = "none"; }}
                 />
               </div>
             ))}
