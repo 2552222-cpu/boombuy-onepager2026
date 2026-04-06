@@ -50,7 +50,7 @@ export default function Hero() {
               <img src={HERO_DATA.tabletImg} alt="Device Preview" style={{ width: "100%", height: "auto", objectFit: "contain", filter: "drop-shadow(0 30px 60px rgba(0,0,0,0.12))", position: "relative", zIndex: 1 }} />
               
               {/* Static tablet content image */}
-              <img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a916d74d8_1.png" alt="Offer" style={{ position: "absolute", inset: "7% 5.5%", width: "89%", height: "86%", objectFit: "contain", zIndex: 2 }} />
+              <img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6b0e6afbe_image.png" alt="Offer" style={{ position: "absolute", inset: "0", width: "100%", height: "100%", objectFit: "contain", zIndex: 2 }} />
             </div>
           </div>
 
