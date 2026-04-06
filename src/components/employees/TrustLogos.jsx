@@ -50,33 +50,35 @@ export default function TrustLogos() {
           </p>
         </motion.div>
 
-        {/* Desktop: 2 rows */}
-        <div className="hidden md:flex flex-col gap-8">
-          {[row1, row2].map((row, rowIdx) => (
-            <motion.div
-              key={rowIdx}
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 + rowIdx * 0.08 }}
-              className="flex justify-between items-center w-full"
-              style={{ padding: "0 40px" }}
+        {/* Desktop: grid 7 columns x 2 rows */}
+        <div
+          className="hidden md:grid"
+          style={{
+            gridTemplateColumns: "repeat(7, 1fr)",
+            gap: "16px",
+            padding: "0 40px",
+          }}
+        >
+          {logos.map((logo, i) => (
+            <div
+              key={i}
+              style={{
+                height: "65px",
+                padding: "8px",
+                display: "grid",
+                placeItems: "center",
+                opacity: 0.7,
+                transition: "opacity 0.25s ease",
+              }}
+              onMouseEnter={e => e.currentTarget.style.opacity = 1}
+              onMouseLeave={e => e.currentTarget.style.opacity = 0.7}
             >
-              {row.map((logo, i) => (
-                <div
-                  key={i}
-                  className="flex items-center justify-center opacity-85 hover:opacity-100 transition-opacity duration-300 flex-shrink-0"
-                  style={{ width: "calc(100% / 13 - 8px)", height: "60px", minHeight: "60px" }}
-                >
-                  <img
-                    src={logo.url}
-                    alt={logo.name}
-                    className="object-contain"
-                    style={{ width: "100%", height: "100%", maxWidth: "90px", maxHeight: "48px", objectFit: "contain" }}
-                  />
-                </div>
-              ))}
-            </motion.div>
+              <img
+                src={logo.url}
+                alt={logo.name}
+                style={{ width: "100%", height: "100%", objectFit: "contain", maxWidth: "120px", maxHeight: "49px" }}
+              />
+            </div>
           ))}
         </div>
 
@@ -86,20 +88,24 @@ export default function TrustLogos() {
            whileInView={{ opacity: 1, y: 0 }}
            viewport={{ once: true }}
            transition={{ duration: 0.6, delay: 0.08 }}
-           className="md:hidden grid grid-cols-3 gap-3"
-           style={{ padding: "0 16px" }}
+           className="md:hidden"
+           style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "12px", padding: "0 16px" }}
          >
            {logos.map((logo, i) => (
               <div
                 key={i}
-                className="flex items-center justify-center opacity-85 hover:opacity-100 transition-opacity duration-300"
-                style={{ height: "56px", minHeight: "56px", maxHeight: "56px", overflow: "hidden" }}
+                style={{
+                  height: "65px",
+                  padding: "8px",
+                  display: "grid",
+                  placeItems: "center",
+                  opacity: 0.7,
+                }}
               >
                 <img
                   src={logo.url}
-                  alt=""
-                  className="object-contain"
-                  style={{ width: "100%", height: "100%", maxWidth: "110px", maxHeight: "52px", objectFit: "contain" }}
+                  alt={logo.name}
+                  style={{ width: "100%", height: "100%", objectFit: "contain", maxWidth: "120px", maxHeight: "49px" }}
                   onError={(e) => { e.currentTarget.style.display = "none"; }}
                 />
               </div>
