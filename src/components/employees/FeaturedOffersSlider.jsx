@@ -504,7 +504,7 @@ export default function FeaturedOffersSlider() {
                 maxWidth: "520px",
                 height: "100dvh",
                 background: "#fff",
-                borderRadius: "0",
+                borderRadius: "28px 28px 0 0",
                 overflow: "hidden",
                 display: "flex",
                 flexDirection: "column",
