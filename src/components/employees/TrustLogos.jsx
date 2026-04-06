@@ -45,8 +45,8 @@ export default function TrustLogos() {
           transition={{ duration: 0.5 }}
           className="text-center mb-12 md:mb-14"
         >
-          <p className="text-lg md:text-xl font-semibold text-foreground leading-relaxed">
-            עובדים בארגונים מובילים כבר נהנים מזה
+          <p style={{ fontSize: "clamp(18px, 2.5vw, 22px)", fontWeight: 700, fontFamily: "var(--font-heebo)", color: "#1D1D1F" }}>
+            הם כבר מגדילים את הנטו לעובדים שלהם
           </p>
         </motion.div>
 
@@ -64,19 +64,20 @@ export default function TrustLogos() {
               key={i}
               style={{
                 height: "65px",
-                padding: "8px",
+                padding: "12px",
                 display: "grid",
                 placeItems: "center",
+                filter: "grayscale(100%)",
                 opacity: 0.7,
-                transition: "opacity 0.25s ease",
+                transition: "filter 0.25s ease, opacity 0.25s ease",
               }}
-              onMouseEnter={e => e.currentTarget.style.opacity = 1}
-              onMouseLeave={e => e.currentTarget.style.opacity = 0.7}
+              onMouseEnter={e => { e.currentTarget.style.filter = "grayscale(0%)"; e.currentTarget.style.opacity = 1; }}
+              onMouseLeave={e => { e.currentTarget.style.filter = "grayscale(100%)"; e.currentTarget.style.opacity = 0.7; }}
             >
               <img
                 src={logo.url}
                 alt={logo.name}
-                style={{ width: "100%", height: "100%", objectFit: "contain", maxWidth: "120px", maxHeight: "49px" }}
+                style={{ width: "100%", height: "100%", objectFit: "contain", maxWidth: "120px", maxHeight: "41px" }}
               />
             </div>
           ))}
@@ -91,21 +92,22 @@ export default function TrustLogos() {
            className="md:hidden"
            style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "12px", padding: "0 16px" }}
          >
-           {logos.map((logo, i) => (
+           {logos.slice(0, 12).map((logo, i) => (
               <div
                 key={i}
                 style={{
-                  height: "65px",
+                  height: "45px",
                   padding: "8px",
                   display: "grid",
                   placeItems: "center",
+                  filter: "grayscale(100%)",
                   opacity: 0.7,
                 }}
               >
                 <img
                   src={logo.url}
                   alt={logo.name}
-                  style={{ width: "100%", height: "100%", objectFit: "contain", maxWidth: "120px", maxHeight: "49px" }}
+                  style={{ width: "100%", height: "100%", objectFit: "contain", maxWidth: "100px", maxHeight: "35px" }}
                   onError={(e) => { e.currentTarget.style.display = "none"; }}
                 />
               </div>
