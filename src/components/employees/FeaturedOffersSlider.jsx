@@ -149,7 +149,6 @@ export default function FeaturedOffersSlider() {
             return (
               <motion.div
                 key={offer.id}
-                layoutId={offer.id}
                 onClick={() => i === index ? setSelectedId(offer.id) : setIndex(i)}
                 animate={{
                   x: offset * 240,
@@ -349,7 +348,10 @@ export default function FeaturedOffersSlider() {
             onClick={() => setSelectedId(null)}
           >
             <motion.div
-              layoutId={selectedId}
+              initial={{ opacity: 0, scale: 0.92, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.92, y: 20 }}
+              transition={{ type: "spring", damping: 22, stiffness: 220 }}
               onClick={(e) => e.stopPropagation()}
               style={{
                 width: "100%",
