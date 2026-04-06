@@ -74,7 +74,7 @@ export default function TrustLogos() {
         .jci-track{
           display:flex;
           align-items:center;
-          gap:2px;
+          gap:0px;
           width:max-content;
           position:absolute;
           left:0;
@@ -118,19 +118,16 @@ export default function TrustLogos() {
 
         .jci-logoCard img{
           display:block;
-          width:auto;
-          height:auto;
-          max-width:65%;
-          max-height:55%;
+          width:100%;
+          height:100%;
           object-fit:contain;
           object-position:center;
-          filter:none !important;
-          opacity:1 !important;
-          mix-blend-mode:normal !important;
+          padding:18px 22px;
+          box-sizing:border-box;
           transition:transform .25s ease;
         }
         .jci-logoCard:hover img{
-          transform:scale(1.06);
+          transform:scale(1.04);
         }
 
         .jci-trust{
