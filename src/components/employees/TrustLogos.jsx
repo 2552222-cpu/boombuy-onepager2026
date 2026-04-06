@@ -32,7 +32,7 @@ const logos = [
 ];
 
 export default function TrustLogos() {
-  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
 
   useEffect(() => {
     const handler = () => setIsMobile(window.innerWidth < 768);
@@ -41,123 +41,39 @@ export default function TrustLogos() {
   }, []);
 
   return (
-    <section style={{
-      background: "#fff",
-      borderTop: "1px solid rgba(0,0,0,0.07)",
-      borderBottom: "1px solid rgba(0,0,0,0.07)",
-      padding: isMobile ? "48px 0" : "64px 0",
-      overflowX: "hidden",
-    }}>
-      <motion.div
-        initial={{ opacity: 0, y: 8 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        style={{ textAlign: "center", marginBottom: isMobile ? "32px" : "40px" }}
-      >
-        <p style={{
-          fontSize: isMobile ? "18px" : "22px",
-          fontWeight: 700,
-          fontFamily: "var(--font-heebo)",
-          color: "#1D1D1F",
-          margin: 0,
-        }}>
+    <section style={{ background: "#fff", padding: isMobile ? "48px 20px" : "80px 40px", borderTop: "1px solid #f0f0f0" }}>
+      <div style={{ maxWidth: "1240px", margin: "0 auto" }}>
+        <motion.p 
+          initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+          style={{ textAlign: "center", fontSize: isMobile ? "19px" : "24px", fontWeight: 800, marginBottom: isMobile ? "32px" : "56px", color: "#1D1D1F" }}
+        >
           הם כבר מגדילים את הנטו לעובדים שלהם
-        </p>
-      </motion.div>
-
-      {isMobile ? (
-        // Mobile: 3 columns
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gap: "12px",
-          padding: "0 16px",
+        </motion.p>
+        
+        <div style={{ 
+          display: "grid", 
+          gridTemplateColumns: isMobile ? "repeat(3, 1fr)" : "repeat(7, 1fr)", 
+          gap: isMobile ? "12px" : "24px",
+          alignItems: "center" 
         }}>
           {logos.map((logo, i) => (
-            <div
+            <motion.div
               key={i}
-              style={{
-                height: "90px",
-                padding: "6px",
-                display: "grid",
-                placeItems: "center",
-                background: "#F5F5F7",
-                borderRadius: "12px",
-                filter: "grayscale(100%)",
-                opacity: 0.7,
-                transition: "all 0.2s ease",
+              whileHover={{ scale: 1.05 }}
+              style={{ 
+                height: isMobile ? "70px" : "90px", 
+                display: "flex", alignItems: "center", justifyContent: "center",
+                background: "#F9F9FB", borderRadius: "16px", padding: "10px",
+                filter: "grayscale(100%)", opacity: 0.6, transition: "0.3s"
               }}
+              onMouseEnter={(e) => { e.currentTarget.style.filter = "grayscale(0%)"; e.currentTarget.style.opacity = "1"; e.currentTarget.style.background = "#fff"; e.currentTarget.style.boxShadow = "0 10px 30px rgba(0,0,0,0.08)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.filter = "grayscale(100%)"; e.currentTarget.style.opacity = "0.6"; e.currentTarget.style.background = "#F9F9FB"; e.currentTarget.style.boxShadow = "none"; }}
             >
-              <img
-                src={logo.url}
-                alt={logo.name}
-                style={{
-                   maxWidth: "98%",
-                   maxHeight: (logo.name === "צ'k" || logo.name === "פונטי" || logo.name === "בזן" || logo.name === "אלקטרה אפיקים") ? "85px" : "75px",
-                   objectFit: "contain",
-                   display: "block",
-                 }}
-                onError={(e) => { e.currentTarget.style.display = "none"; }}
-              />
-            </div>
+              <img src={logo.url} alt={logo.name} style={{ maxWidth: "85%", maxHeight: "65%", objectFit: "contain" }} />
+            </motion.div>
           ))}
         </div>
-      ) : (
-        // Desktop: 7 columns table-like grid
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(7, 1fr)",
-          gap: "20px",
-          padding: "0 48px",
-          maxWidth: "1400px",
-          margin: "0 auto",
-        }}>
-          {logos.map((logo, i) => (
-            <div
-              key={i}
-              style={{
-                height: "130px",
-                padding: "8px 6px",
-                display: "grid",
-                placeItems: "center",
-                background: "#F9F9FB",
-                borderRadius: "14px",
-                border: "1px solid rgba(0,0,0,0.06)",
-                filter: "grayscale(100%)",
-                opacity: 0.7,
-                transition: "all 0.25s ease",
-                cursor: "default",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.filter = "grayscale(0%)";
-                e.currentTarget.style.opacity = "1";
-                e.currentTarget.style.background = "#fff";
-                e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.1)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.filter = "grayscale(100%)";
-                e.currentTarget.style.opacity = "0.7";
-                e.currentTarget.style.background = "#F9F9FB";
-                e.currentTarget.style.boxShadow = "none";
-              }}
-            >
-              <img
-                src={logo.url}
-                alt={logo.name}
-                style={{
-                   maxWidth: "100%",
-                   maxHeight: (logo.name === "צ'k" || logo.name === "פונטי" || logo.name === "בזן" || logo.name === "אלקטרה אפיקים") ? "115px" : "100px",
-                   objectFit: "contain",
-                   display: "block",
-                   width: "auto",
-                 }}
-                onError={(e) => { e.currentTarget.style.display = "none"; }}
-              />
-            </div>
-          ))}
-        </div>
-      )}
+      </div>
     </section>
   );
 }
