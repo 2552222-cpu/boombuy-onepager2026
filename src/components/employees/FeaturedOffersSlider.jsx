@@ -508,12 +508,11 @@ export default function FeaturedOffersSlider() {
                 overflow: "hidden",
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "space-between",
               }}
             >
               {/* Hero image */}
               <div style={{
-                flex: "0 0 46%",
+                flex: "1 1 0",
                 minHeight: 0,
                 background: "#F5F5F7",
                 position: "relative",
@@ -534,13 +533,11 @@ export default function FeaturedOffersSlider() {
 
               {/* Content */}
               <div style={{
-                flex: 1,
-                padding: "10px 18px calc(env(safe-area-inset-bottom, 0px) + 16px)",
-                minHeight: 0,
+                flexShrink: 0,
+                padding: "10px 18px calc(env(safe-area-inset-bottom, 0px) + 14px)",
                 display: "flex",
                 flexDirection: "column",
-                gap: "6px",
-                overflowY: "auto",
+                gap: "8px",
                 background: "#fff",
               }}>
                 <div style={{ textAlign: "right" }}>
