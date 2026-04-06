@@ -8,8 +8,10 @@ function Row({ items, dir = "left", duration = 85 }) {
       <div className={trackClass} style={{ ["--jci-dur"]: `${duration}s` }}>
         {[...items, ...items].map((src, i) => {
           const logoObj = logoList.find(l => l.url === src);
+          const logoIndex = logoList.findIndex(l => l.url === src);
           return (
-          <div key={`${src}-${i}`} className="jci-logoCard" data-logo-name={logoObj?.name || "unknown"}>
+          <div key={`${src}-${i}`} className="jci-logoCard" data-logo-name={logoObj?.name || "unknown"} data-logo-index={logoIndex}>
+            <div className="jci-label">{logoIndex + 1}. {logoObj?.name}</div>
             <img src={src} alt={logoObj?.name || "לוגו לקוח"} loading="lazy" decoding="async" width="200" height="100" />
           </div>
         );
@@ -118,6 +120,29 @@ export default function TrustLogos() {
           height:100px;
           padding:0;
           box-sizing:border-box;
+          position:relative;
+        }
+
+        .jci-label{
+          position:absolute;
+          top:4px;
+          right:4px;
+          background:rgba(0,0,0,0.7);
+          color:#fff;
+          font-size:11px;
+          font-weight:700;
+          padding:3px 6px;
+          border-radius:4px;
+          pointer-events:none;
+          z-index:10;
+          white-space:nowrap;
+          max-width:95%;
+          overflow:hidden;
+          text-overflow:ellipsis;
+        }
+
+        .jci-logoCard{
+          position:relative;
         }
 
         .jci-logoCard img{
