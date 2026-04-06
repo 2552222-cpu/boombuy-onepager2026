@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
 const OFFERS = [
   {
@@ -95,6 +95,15 @@ export default function FeaturedOffersSlider() {
   const go = (dir) => setIndex((p) => (p + dir + OFFERS.length) % OFFERS.length);
   const selectedOffer = OFFERS.find(o => o.id === selectedId);
   const currentOffer = OFFERS[index];
+
+  const modalNext = () => {
+    const i = OFFERS.findIndex(o => o.id === selectedId);
+    setSelectedId(OFFERS[(i + 1) % OFFERS.length].id);
+  };
+  const modalPrev = () => {
+    const i = OFFERS.findIndex(o => o.id === selectedId);
+    setSelectedId(OFFERS[(i - 1 + OFFERS.length) % OFFERS.length].id);
+  };
 
   return (
     <section style={{ background: "#FFFFFF", padding: "72px 0 80px", direction: "rtl", overflowX: "hidden" }}>
@@ -353,11 +362,7 @@ export default function FeaturedOffersSlider() {
 
       {/* Full-Screen Modal */}
       <AnimatePresence>
-        {selectedId && selectedOffer && (() => {
-          const selectedIndex = OFFERS.findIndex(o => o.id === selectedId);
-          const goPrev = (e) => { e.stopPropagation(); setSelectedId(OFFERS[(selectedIndex - 1 + OFFERS.length) % OFFERS.length].id); };
-          const goNext = (e) => { e.stopPropagation(); setSelectedId(OFFERS[(selectedIndex + 1) % OFFERS.length].id); };
-          return (
+        {selectedId && selectedOffer && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -375,23 +380,23 @@ export default function FeaturedOffersSlider() {
             }}
             onClick={() => setSelectedId(null)}
           >
-            {/* Close button — above the sheet */}
+            {/* Close button — floating above sheet */}
             <button
-              onClick={() => setSelectedId(null)}
+              onClick={(e) => { e.stopPropagation(); setSelectedId(null); }}
               style={{
                 position: "absolute",
-                top: "clamp(16px, 4vh, 32px)",
+                top: "20px",
                 left: "50%",
                 transform: "translateX(-50%)",
-                background: "rgba(255,255,255,0.18)",
-                backdropFilter: "blur(12px)",
-                border: "1.5px solid rgba(255,255,255,0.35)",
-                color: "#fff",
-                width: "44px", height: "44px",
+                background: "rgba(255,255,255,0.2)",
+                backdropFilter: "blur(10px)",
+                WebkitBackdropFilter: "blur(10px)",
+                border: "1.5px solid rgba(255,255,255,0.4)",
+                width: "48px", height: "48px",
                 borderRadius: "50%",
                 cursor: "pointer",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                zIndex: 10,
+                zIndex: 2010,
                 boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
               }}
             >
@@ -400,49 +405,51 @@ export default function FeaturedOffersSlider() {
 
             {/* Prev arrow */}
             <button
-              onClick={goPrev}
+              onClick={(e) => { e.stopPropagation(); modalPrev(); }}
               style={{
                 position: "absolute",
-                left: "clamp(12px, 3vw, 32px)",
-                bottom: "clamp(40%, 46vh, 52%)",
-                transform: "translateY(50%)",
-                background: "rgba(255,255,255,0.18)",
-                backdropFilter: "blur(12px)",
-                border: "1.5px solid rgba(255,255,255,0.35)",
-                color: "#fff",
+                right: "16px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                background: "rgba(255,255,255,0.2)",
+                backdropFilter: "blur(10px)",
+                WebkitBackdropFilter: "blur(10px)",
+                border: "1.5px solid rgba(255,255,255,0.4)",
                 width: "48px", height: "48px",
                 borderRadius: "50%",
                 cursor: "pointer",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                zIndex: 10,
-                boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
-                fontSize: "22px",
+                zIndex: 2010,
+                boxShadow: "0 4px 20px rgba(0,0,0,0.25)",
               }}
-            >‹</button>
+            >
+              <ChevronRight size={22} color="#fff" strokeWidth={2.5} />
+            </button>
 
             {/* Next arrow */}
             <button
-              onClick={goNext}
+              onClick={(e) => { e.stopPropagation(); modalNext(); }}
               style={{
                 position: "absolute",
-                right: "clamp(12px, 3vw, 32px)",
-                bottom: "clamp(40%, 46vh, 52%)",
-                transform: "translateY(50%)",
-                background: "rgba(255,255,255,0.18)",
-                backdropFilter: "blur(12px)",
-                border: "1.5px solid rgba(255,255,255,0.35)",
-                color: "#fff",
+                left: "16px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                background: "rgba(255,255,255,0.2)",
+                backdropFilter: "blur(10px)",
+                WebkitBackdropFilter: "blur(10px)",
+                border: "1.5px solid rgba(255,255,255,0.4)",
                 width: "48px", height: "48px",
                 borderRadius: "50%",
                 cursor: "pointer",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                zIndex: 10,
-                boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
-                fontSize: "22px",
+                zIndex: 2010,
+                boxShadow: "0 4px 20px rgba(0,0,0,0.25)",
               }}
-            >›</button>
+            >
+              <ChevronLeft size={22} color="#fff" strokeWidth={2.5} />
+            </button>
 
-          <motion.div
+            <motion.div
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
@@ -489,7 +496,6 @@ export default function FeaturedOffersSlider() {
                 overflowY: "auto",
                 background: "#fff",
               }}>
-                {/* Title */}
                 <div style={{ textAlign: "right" }}>
                   <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.07em", color: "#AEAEB2", textTransform: "uppercase", fontFamily: "var(--font-heebo)", margin: "0 0 2px" }}>
                     {selectedOffer.cat} · {selectedOffer.brand}
@@ -524,7 +530,6 @@ export default function FeaturedOffersSlider() {
                   )}
                 </div>
 
-                {/* CTA */}
                 <button
                   onClick={() => {
                     setSelectedId(null);
@@ -550,8 +555,7 @@ export default function FeaturedOffersSlider() {
               </div>
             </motion.div>
           </motion.div>
-          );
-        })()}
+        )}
       </AnimatePresence>
     </section>
   );
