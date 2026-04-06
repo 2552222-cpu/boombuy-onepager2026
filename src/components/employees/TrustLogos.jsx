@@ -38,9 +38,9 @@ export default function TrustLogos() {
           padding:0 20px;
         }
         .jci-title{
-          font-size:44px;
-          font-weight:800;
-          color:#0F1117;
+          font-size:clamp(28px, 5vw, 48px);
+          font-weight:900;
+          color:#1D1D1F;
           letter-spacing:-0.025em;
           margin:0 0 12px;
           line-height:1.15;
@@ -74,7 +74,7 @@ export default function TrustLogos() {
         .jci-track{
           display:flex;
           align-items:center;
-          gap:8px;
+          gap:2px;
           width:max-content;
           position:absolute;
           left:0;
@@ -110,9 +110,9 @@ export default function TrustLogos() {
           display:flex;
           align-items:center;
           justify-content:center;
-          width:240px;
-          height:132px;
-          padding:12px 16px;
+          width:180px;
+          height:100px;
+          padding:8px 12px;
           box-sizing:border-box;
         }
 
@@ -145,21 +145,22 @@ export default function TrustLogos() {
         }
 
         @media (max-width:1024px){
-          .jci-title{ font-size:36px; }
-          .jci-track{ gap:8px; }
-          .jci-logoCard{ width:210px; height:116px; padding:10px 14px; }
-          .jci-row{ height:116px; }
+          .jci-title{ font-size:32px; }
+          .jci-track{ gap:2px; }
+          .jci-logoCard{ width:160px; height:90px; padding:8px 10px; }
+          .jci-row{ height:90px; }
         }
 
         @media (max-width:768px){
-          .jci-logoWall{ padding:64px 0 72px; }
-          .jci-title{ font-size:28px; }
-          .jci-subtitle{ font-size:13px; }
-          .jci-rows{ gap:4px; }
-          .jci-track{ gap:2px; }
-          .jci-logoCard{ width:140px; height:96px; padding:8px 8px; }
-          .jci-trust{ font-size:12px; margin-top:32px; }
-          .jci-row{ height:96px; }
+          .jci-logoWall{ padding:56px 0 64px; }
+          .jci-head{ margin:0 auto 32px; }
+          .jci-title{ font-size:clamp(22px, 4.5vw, 28px); }
+          .jci-subtitle{ font-size:12px; }
+          .jci-rows{ gap:2px; }
+          .jci-track{ gap:1px; }
+          .jci-logoCard{ width:100px; height:72px; padding:6px 6px; }
+          .jci-trust{ font-size:11px; margin-top:24px; padding:0 16px; }
+          .jci-row{ height:72px; }
         }
       `}</style>
 
@@ -169,8 +170,8 @@ export default function TrustLogos() {
       </div>
 
       <div className="jci-rows">
-        <Row items={rowA} dir="left" duration={85} />
-        <Row items={rowB} dir="right" duration={92} />
+        <Row items={rowA} dir="left" duration={60} />
+        <Row items={rowB} dir="right" duration={65} />
       </div>
 
       <p className="jci-trust">
