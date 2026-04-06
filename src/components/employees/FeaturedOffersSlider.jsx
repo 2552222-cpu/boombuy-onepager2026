@@ -380,19 +380,18 @@ export default function FeaturedOffersSlider() {
             }}
             onClick={() => setSelectedId(null)}
           >
-            {/* Close button — floating above sheet */}
+            {/* Close button — top left inside the sheet on mobile, floating on desktop */}
             <button
               onClick={(e) => { e.stopPropagation(); setSelectedId(null); }}
               style={{
                 position: "absolute",
-                top: "20px",
-                left: "50%",
-                transform: "translateX(-50%)",
-                background: "rgba(255,255,255,0.2)",
+                top: "16px",
+                left: "16px",
+                background: "rgba(0,0,0,0.35)",
                 backdropFilter: "blur(10px)",
                 WebkitBackdropFilter: "blur(10px)",
-                border: "1.5px solid rgba(255,255,255,0.4)",
-                width: "48px", height: "48px",
+                border: "1.5px solid rgba(255,255,255,0.3)",
+                width: "44px", height: "44px",
                 borderRadius: "50%",
                 cursor: "pointer",
                 display: "flex", alignItems: "center", justifyContent: "center",
@@ -400,7 +399,7 @@ export default function FeaturedOffersSlider() {
                 boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
               }}
             >
-              <X size={22} color="#fff" strokeWidth={2.5} />
+              <X size={20} color="#fff" strokeWidth={2.5} />
             </button>
 
             {/* Prev arrow */}
@@ -409,18 +408,18 @@ export default function FeaturedOffersSlider() {
               style={{
                 position: "absolute",
                 right: "16px",
-                top: "50%",
+                top: "30%",
                 transform: "translateY(-50%)",
-                background: "rgba(255,255,255,0.2)",
+                background: "rgba(0,0,0,0.3)",
                 backdropFilter: "blur(10px)",
                 WebkitBackdropFilter: "blur(10px)",
-                border: "1.5px solid rgba(255,255,255,0.4)",
-                width: "48px", height: "48px",
+                border: "1.5px solid rgba(255,255,255,0.3)",
+                width: "44px", height: "44px",
                 borderRadius: "50%",
                 cursor: "pointer",
                 display: "flex", alignItems: "center", justifyContent: "center",
                 zIndex: 2010,
-                boxShadow: "0 4px 20px rgba(0,0,0,0.25)",
+                boxShadow: "0 4px 16px rgba(0,0,0,0.25)",
               }}
             >
               <ChevronRight size={22} color="#fff" strokeWidth={2.5} />
@@ -432,18 +431,18 @@ export default function FeaturedOffersSlider() {
               style={{
                 position: "absolute",
                 left: "16px",
-                top: "50%",
+                top: "30%",
                 transform: "translateY(-50%)",
-                background: "rgba(255,255,255,0.2)",
+                background: "rgba(0,0,0,0.3)",
                 backdropFilter: "blur(10px)",
                 WebkitBackdropFilter: "blur(10px)",
-                border: "1.5px solid rgba(255,255,255,0.4)",
-                width: "48px", height: "48px",
+                border: "1.5px solid rgba(255,255,255,0.3)",
+                width: "44px", height: "44px",
                 borderRadius: "50%",
                 cursor: "pointer",
                 display: "flex", alignItems: "center", justifyContent: "center",
                 zIndex: 2010,
-                boxShadow: "0 4px 20px rgba(0,0,0,0.25)",
+                boxShadow: "0 4px 16px rgba(0,0,0,0.25)",
               }}
             >
               <ChevronLeft size={22} color="#fff" strokeWidth={2.5} />
@@ -458,17 +457,18 @@ export default function FeaturedOffersSlider() {
               style={{
                 width: "100%",
                 maxWidth: "520px",
-                height: "92vh",
+                height: "100dvh",
                 background: "#fff",
-                borderRadius: "32px 32px 0 0",
+                borderRadius: "0",
                 overflow: "hidden",
                 display: "flex",
                 flexDirection: "column",
               }}
             >
-              {/* Hero image — 60% */}
+              {/* Hero image */}
               <div style={{
-                flex: "0 0 60%",
+                flex: "0 0 55%",
+                minHeight: 0,
                 background: "#F5F5F7",
                 position: "relative",
                 overflow: "hidden",
@@ -486,10 +486,11 @@ export default function FeaturedOffersSlider() {
                 }} />
               </div>
 
-              {/* Console — 40% */}
+              {/* Console */}
               <div style={{
-                flex: "0 0 40%",
-                padding: "12px 24px 28px",
+                flex: 1,
+                padding: "12px 24px 32px",
+                minHeight: 0,
                 display: "flex",
                 flexDirection: "column",
                 gap: "10px",

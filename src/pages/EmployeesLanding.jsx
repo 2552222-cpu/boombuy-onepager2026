@@ -87,7 +87,7 @@ export default function EmployeesLanding() {
       </div>
       <GlobalFooter />
 
-      {/* Floating CTA - only after intro */}
+      {/* Floating CTA - only after intro, hidden on mobile when modal could be open */}
       {introDone && (
       <a
         href={`https://wa.me/972542552222?text=${encodeURIComponent("היי, ראינו את עמוד העובדים של BoomBuy ואנחנו רוצים להבין איך לצרף את הארגון שלנו.")}`}
