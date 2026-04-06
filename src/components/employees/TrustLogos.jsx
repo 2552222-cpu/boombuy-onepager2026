@@ -30,7 +30,7 @@ const logos = [
   { name: "רמלאל", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ee6b05338_-2026-04-03T180125393.png" },
   { name: "בזק בתקשורת", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8b28ec6fc_71.png" },
   { name: "דלק", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/be9e3de1a_-2026-03-22T184841801.png" },
-  { name: "דיסקונט", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ec8786cef_-2026-04-06T000000000.png" },
+  { name: "פוטום", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/photom_logo.png" },
 ];
 
 export default function TrustLogos() {
@@ -80,8 +80,8 @@ export default function TrustLogos() {
             <div
               key={i}
               style={{
-                height: "80px",
-                padding: "8px",
+                height: "90px",
+                padding: "6px",
                 display: "grid",
                 placeItems: "center",
                 background: "#F5F5F7",
@@ -95,8 +95,8 @@ export default function TrustLogos() {
                 src={logo.url}
                 alt={logo.name}
                 style={{
-                    maxWidth: "95%",
-                    maxHeight: "65px",
+                    maxWidth: "98%",
+                    maxHeight: "75px",
                     objectFit: "contain",
                     display: "block",
                   }}
@@ -119,8 +119,8 @@ export default function TrustLogos() {
             <div
               key={i}
               style={{
-                height: "110px",
-                padding: "10px 8px",
+                height: "130px",
+                padding: "8px 6px",
                 display: "grid",
                 placeItems: "center",
                 background: "#F9F9FB",
@@ -149,7 +149,7 @@ export default function TrustLogos() {
                 alt={logo.name}
                 style={{
                     maxWidth: "100%",
-                    maxHeight: "80px",
+                    maxHeight: "100px",
                     objectFit: "contain",
                     display: "block",
                     width: "auto",
