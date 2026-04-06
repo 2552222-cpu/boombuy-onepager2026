@@ -31,9 +31,6 @@ const logos = [
   { name: "בזק בתקשורת", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8b28ec6fc_71.png" },
 ];
 
-// Pad to full 7-column rows (28 total)
-const DESKTOP_LOGOS = [...logos, { name: "", url: "" }]; // 28 items
-
 export default function TrustLogos() {
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
 
@@ -48,7 +45,7 @@ export default function TrustLogos() {
       background: "#fff",
       borderTop: "1px solid rgba(0,0,0,0.07)",
       borderBottom: "1px solid rgba(0,0,0,0.07)",
-      padding: isMobile ? "40px 0 48px" : "56px 0 64px",
+      padding: isMobile ? "48px 0" : "64px 0",
       overflowX: "hidden",
     }}>
       <motion.div
@@ -56,7 +53,7 @@ export default function TrustLogos() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
-        style={{ textAlign: "center", marginBottom: isMobile ? "28px" : "36px" }}
+        style={{ textAlign: "center", marginBottom: isMobile ? "32px" : "40px" }}
       >
         <p style={{
           fontSize: isMobile ? "18px" : "22px",
@@ -70,61 +67,93 @@ export default function TrustLogos() {
       </motion.div>
 
       {isMobile ? (
-        /* Mobile: 3 columns, all logos */
+        // Mobile: 3 columns
         <div style={{
           display: "grid",
           gridTemplateColumns: "repeat(3, 1fr)",
-          gap: "8px",
+          gap: "12px",
           padding: "0 16px",
         }}>
           {logos.map((logo, i) => (
-            <div key={i} style={{
-              height: "60px",
-              display: "grid",
-              placeItems: "center",
-              filter: "grayscale(100%)",
-              opacity: 0.7,
-            }}>
+            <div
+              key={i}
+              style={{
+                height: "70px",
+                padding: "10px",
+                display: "grid",
+                placeItems: "center",
+                background: "#F5F5F7",
+                borderRadius: "12px",
+                filter: "grayscale(100%)",
+                opacity: 0.7,
+                transition: "all 0.2s ease",
+              }}
+            >
               <img
                 src={logo.url}
                 alt={logo.name}
-                style={{ maxWidth: "100%", maxHeight: "40px", objectFit: "contain" }}
-                onError={e => { e.currentTarget.style.display = "none"; }}
+                style={{
+                  maxWidth: "90%",
+                  maxHeight: "50px",
+                  objectFit: "contain",
+                  display: "block",
+                }}
+                onError={(e) => { e.currentTarget.style.display = "none"; }}
               />
             </div>
           ))}
         </div>
       ) : (
-        /* Desktop: 7 columns */
+        // Desktop: 7 columns table-like grid
         <div style={{
           display: "grid",
           gridTemplateColumns: "repeat(7, 1fr)",
-          gap: "0",
+          gap: "20px",
           padding: "0 48px",
+          maxWidth: "1400px",
+          margin: "0 auto",
         }}>
-          {DESKTOP_LOGOS.map((logo, i) => (
+          {logos.map((logo, i) => (
             <div
               key={i}
               style={{
-                height: "80px",
-                padding: "12px 16px",
+                height: "90px",
+                padding: "14px 12px",
                 display: "grid",
                 placeItems: "center",
-                filter: logo.url ? "grayscale(100%)" : "none",
-                opacity: logo.url ? 0.7 : 0,
-                transition: "filter 0.25s ease, opacity 0.25s ease",
-                cursor: logo.url ? "default" : "default",
+                background: "#F9F9FB",
+                borderRadius: "14px",
+                border: "1px solid rgba(0,0,0,0.06)",
+                filter: "grayscale(100%)",
+                opacity: 0.7,
+                transition: "all 0.25s ease",
+                cursor: "default",
               }}
-              onMouseEnter={e => { if (logo.url) { e.currentTarget.style.filter = "grayscale(0%)"; e.currentTarget.style.opacity = 1; }}}
-              onMouseLeave={e => { if (logo.url) { e.currentTarget.style.filter = "grayscale(100%)"; e.currentTarget.style.opacity = 0.7; }}}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.filter = "grayscale(0%)";
+                e.currentTarget.style.opacity = "1";
+                e.currentTarget.style.background = "#fff";
+                e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.1)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.filter = "grayscale(100%)";
+                e.currentTarget.style.opacity = "0.7";
+                e.currentTarget.style.background = "#F9F9FB";
+                e.currentTarget.style.boxShadow = "none";
+              }}
             >
-              {logo.url && (
-                <img
-                  src={logo.url}
-                  alt={logo.name}
-                  style={{ maxWidth: "130px", maxHeight: "48px", objectFit: "contain", width: "100%" }}
-                />
-              )}
+              <img
+                src={logo.url}
+                alt={logo.name}
+                style={{
+                  maxWidth: "100%",
+                  maxHeight: "60px",
+                  objectFit: "contain",
+                  display: "block",
+                  width: "auto",
+                }}
+                onError={(e) => { e.currentTarget.style.display = "none"; }}
+              />
             </div>
           ))}
         </div>
