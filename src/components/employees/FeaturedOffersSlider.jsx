@@ -120,7 +120,7 @@ export default function FeaturedOffersSlider() {
           fontWeight: 500,
           lineHeight: 1.5,
         }}>
-          דוגמאות לחיסכון חריג והגדלת נטו
+          דוגמאות להטבות אמיתיות עם חיסכון חריג לעובדים
         </p>
         <p style={{
           color: "#AEAEB2",
