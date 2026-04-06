@@ -83,15 +83,11 @@ export default function TrustLogos() {
           from { transform: translateX(0); }
           to { transform: translateX(-50%); }
         }
-        @keyframes marquee-ltr {
-          from { transform: translateX(0); }
-          to { transform: translateX(50%); }
-        }
         .marquee-rtl {
           animation: marquee-rtl 35s linear infinite;
         }
         .marquee-ltr {
-          animation: marquee-ltr 35s linear infinite;
+          animation: marquee-rtl 38s linear infinite reverse;
         }
       `}</style>
 
@@ -151,7 +147,7 @@ export default function TrustLogos() {
           paddingBottom: "8px",
         }}>
           <div className="marquee-track marquee-ltr">
-            {[...logos.slice(14), ...logos, ...logos].map((logo, i) => (
+            {[...logos, ...logos].map((logo, i) => (
               <LogoCard key={`ltr-${i}`} logo={logo} />
             ))}
           </div>
