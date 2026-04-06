@@ -420,7 +420,7 @@ export default function FeaturedOffersSlider() {
               WebkitBackdropFilter: "blur(16px)",
               zIndex: 2000,
               display: "flex",
-              alignItems: "flex-end",
+              alignItems: window.innerWidth >= 768 ? "center" : "flex-end",
               justifyContent: "center",
             }}
             onClick={() => setSelectedId(null)}
@@ -494,17 +494,18 @@ export default function FeaturedOffersSlider() {
             </button>
 
             <motion.div
-              initial={{ y: "100%" }}
-              animate={{ y: 0 }}
-              exit={{ y: "100%" }}
+              initial={{ y: window.innerWidth >= 768 ? 0 : "100%", opacity: window.innerWidth >= 768 ? 0 : 1, scale: window.innerWidth >= 768 ? 0.96 : 1 }}
+              animate={{ y: 0, opacity: 1, scale: 1 }}
+              exit={{ y: window.innerWidth >= 768 ? 0 : "100%", opacity: window.innerWidth >= 768 ? 0 : 1, scale: window.innerWidth >= 768 ? 0.96 : 1 }}
               transition={{ type: "spring", damping: 25, stiffness: 150 }}
               onClick={(e) => e.stopPropagation()}
               style={{
                 width: "100%",
-                maxWidth: "520px",
-                height: "100dvh",
+                maxWidth: "420px",
+                height: window.innerWidth >= 768 ? "auto" : "100dvh",
+                maxHeight: window.innerWidth >= 768 ? "88dvh" : "100dvh",
                 background: "#fff",
-                borderRadius: "28px 28px 0 0",
+                borderRadius: window.innerWidth >= 768 ? "24px" : "28px 28px 0 0",
                 overflow: "hidden",
                 display: "flex",
                 flexDirection: "column",
@@ -514,13 +515,17 @@ export default function FeaturedOffersSlider() {
               <div style={{
                 flex: "1 1 0",
                 minHeight: 0,
+                background: "#F5F5F7",
                 position: "relative",
                 overflow: "hidden",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}>
                 <img
                   src={selectedOffer.img}
                   alt={selectedOffer.brand}
-                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", position: "absolute", inset: 0 }}
+                  style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
                 />
               </div>
 
