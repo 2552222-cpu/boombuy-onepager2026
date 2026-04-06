@@ -118,10 +118,10 @@ export default function TrustLogos() {
 
         .jci-logoCard img{
           display:block;
-          width:100%;
-          height:100%;
-          max-width:100%;
-          max-height:100%;
+          width:auto;
+          height:auto;
+          max-width:65%;
+          max-height:55%;
           object-fit:contain;
           object-position:center;
           filter:none !important;
@@ -165,7 +165,7 @@ export default function TrustLogos() {
       `}</style>
 
       <div className="jci-head">
-        <h2 className="jci-title">הארגונים הגדולים בישראל סומכים עלינו</h2>
+        <h2 className="jci-title">הם כבר מגדילים את הנטו לעובדים שלהם</h2>
         <p className="jci-subtitle">מאות ארגונים · 250,000+ עובדים כבר בפנים</p>
       </div>
 
