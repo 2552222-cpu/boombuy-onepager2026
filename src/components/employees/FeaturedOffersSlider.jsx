@@ -112,7 +112,7 @@ export default function FeaturedOffersSlider() {
                 <button onClick={() => setSelectedId(null)} style={{ position: "absolute", top: 20, left: 20, background: "rgba(0,0,0,0.3)", border: "none", width: "40px", height: "40px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10 }}>
                   <X size={20} color="#fff" />
                 </button>
-                <img src={selectedOffer.img} alt={selectedOffer.brand} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                <img src={selectedOffer.img} alt={selectedOffer.brand} style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }} />
               </div>
 
               {/* CONTENT AREA */}
