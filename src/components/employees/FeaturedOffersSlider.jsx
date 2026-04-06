@@ -197,79 +197,13 @@ export default function FeaturedOffersSlider() {
                   />
                 </div>
 
-                {/* Glass Pills — only on center card */}
-                {isCenter && (
-                  <div style={{
-                    position: "absolute",
-                    bottom: "-22px",
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    display: "flex",
-                    gap: "6px",
-                    alignItems: "center",
-                    zIndex: 20,
-                    whiteSpace: "nowrap",
-                  }}>
-                    {/* Old price pill */}
-                    {offer.priceOld && (
-                      <div style={{
-                        background: "rgba(255,255,255,0.72)",
-                        backdropFilter: "blur(25px)",
-                        WebkitBackdropFilter: "blur(25px)",
-                        border: "1px solid rgba(255,255,255,0.6)",
-                        borderRadius: "999px",
-                        padding: "5px 12px",
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
-                      }}>
-                        <span style={{ fontSize: "9px", fontWeight: 600, color: "#AEAEB2", fontFamily: "var(--font-heebo)" }}>מחיר ZAP</span>
-                        <span style={{ fontSize: "13px", color: "#86868B", textDecoration: "line-through", fontFamily: "var(--font-heebo)", fontWeight: 500 }}>{offer.priceOld}</span>
-                      </div>
-                    )}
-
-                    {/* New price pill */}
-                    <div style={{
-                      background: "rgba(255,255,255,0.72)",
-                      backdropFilter: "blur(25px)",
-                      WebkitBackdropFilter: "blur(25px)",
-                      border: "1px solid rgba(255,255,255,0.6)",
-                      borderRadius: "999px",
-                      padding: "5px 14px",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
-                    }}>
-                      <span style={{ fontSize: "9px", fontWeight: 600, color: "#007AFF", fontFamily: "var(--font-heebo)" }}>מחיר BoomBuy</span>
-                      <span style={{ fontSize: "18px", fontWeight: 900, color: "#1D1D1F", fontFamily: "var(--font-heebo)" }}>{offer.priceNew}</span>
-                    </div>
-
-                    {/* Saving pill */}
-                    {offer.saving && (
-                      <div style={{
-                        background: "#007AFF",
-                        borderRadius: "999px",
-                        padding: "5px 14px",
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        boxShadow: "0 4px 14px rgba(0,122,255,0.3)",
-                      }}>
-                        <span style={{ fontSize: "9px", fontWeight: 600, color: "rgba(255,255,255,0.75)", fontFamily: "var(--font-heebo)" }}>החיסכון שלך</span>
-                        <span style={{ fontSize: "15px", fontWeight: 900, color: "#fff", fontFamily: "var(--font-heebo)" }}>{offer.saving}</span>
-                      </div>
-                    )}
-                  </div>
-                )}
               </motion.div>
             );
           })}
         </div>
 
-        {/* Card title below */}
-        <div style={{ marginTop: "56px", minHeight: "44px" }}>
+        {/* Card title + price pills below */}
+        <div style={{ marginTop: "56px" }}>
           <AnimatePresence mode="wait">
             <motion.div
               key={index}
@@ -277,30 +211,89 @@ export default function FeaturedOffersSlider() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.25 }}
+              style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "14px" }}
             >
-              <p style={{
-                fontSize: "12px",
-                fontWeight: 700,
-                color: "#AEAEB2",
-                fontFamily: "var(--font-heebo)",
-                marginBottom: "4px",
-                textTransform: "uppercase",
-                letterSpacing: "0.06em",
+              <div>
+                <p style={{
+                  fontSize: "12px",
+                  fontWeight: 700,
+                  color: "#AEAEB2",
+                  fontFamily: "var(--font-heebo)",
+                  marginBottom: "4px",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.06em",
+                }}>
+                  {OFFERS[index].cat} · {OFFERS[index].brand}
+                </p>
+                <p style={{
+                  fontSize: "17px",
+                  fontWeight: 900,
+                  color: "#1D1D1F",
+                  fontFamily: "var(--font-heebo)",
+                  maxWidth: "340px",
+                  margin: "0 auto",
+                  lineHeight: 1.3,
+                  letterSpacing: "-0.02em",
+                }}>
+                  {OFFERS[index].title}
+                </p>
+              </div>
+
+              {/* Price pills row */}
+              <div style={{
+                display: "flex",
+                gap: "8px",
+                alignItems: "center",
+                justifyContent: "center",
+                flexWrap: "wrap",
               }}>
-                {OFFERS[index].cat} · {OFFERS[index].brand}
-              </p>
-              <p style={{
-                fontSize: "17px",
-                fontWeight: 900,
-                color: "#1D1D1F",
-                fontFamily: "var(--font-heebo)",
-                maxWidth: "340px",
-                margin: "0 auto",
-                lineHeight: 1.3,
-                letterSpacing: "-0.02em",
-              }}>
-                {OFFERS[index].title}
-              </p>
+                {OFFERS[index].priceOld && (
+                  <div style={{
+                    background: "rgba(255,255,255,0.85)",
+                    backdropFilter: "blur(20px)",
+                    WebkitBackdropFilter: "blur(20px)",
+                    border: "1px solid rgba(0,0,0,0.08)",
+                    borderRadius: "999px",
+                    padding: "6px 14px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
+                  }}>
+                    <span style={{ fontSize: "9px", fontWeight: 700, color: "#AEAEB2", fontFamily: "var(--font-heebo)" }}>מחיר שוק</span>
+                    <span style={{ fontSize: "14px", color: "#86868B", textDecoration: "line-through", fontFamily: "var(--font-heebo)", fontWeight: 500 }}>{OFFERS[index].priceOld}</span>
+                  </div>
+                )}
+                <div style={{
+                  background: "rgba(255,255,255,0.85)",
+                  backdropFilter: "blur(20px)",
+                  WebkitBackdropFilter: "blur(20px)",
+                  border: "1px solid rgba(0,102,204,0.15)",
+                  borderRadius: "999px",
+                  padding: "6px 16px",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  boxShadow: "0 2px 8px rgba(0,102,204,0.1)",
+                }}>
+                  <span style={{ fontSize: "9px", fontWeight: 700, color: "#007AFF", fontFamily: "var(--font-heebo)" }}>מחיר BoomBuy</span>
+                  <span style={{ fontSize: "20px", fontWeight: 900, color: "#1D1D1F", fontFamily: "var(--font-heebo)" }}>{OFFERS[index].priceNew}</span>
+                </div>
+                {OFFERS[index].saving && (
+                  <div style={{
+                    background: "#007AFF",
+                    borderRadius: "999px",
+                    padding: "6px 16px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    boxShadow: "0 4px 14px rgba(0,122,255,0.3)",
+                  }}>
+                    <span style={{ fontSize: "9px", fontWeight: 600, color: "rgba(255,255,255,0.75)", fontFamily: "var(--font-heebo)" }}>החיסכון שלך</span>
+                    <span style={{ fontSize: "16px", fontWeight: 900, color: "#fff", fontFamily: "var(--font-heebo)" }}>{OFFERS[index].saving}</span>
+                  </div>
+                )}
+              </div>
             </motion.div>
           </AnimatePresence>
         </div>
