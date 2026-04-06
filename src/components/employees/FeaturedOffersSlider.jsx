@@ -415,12 +415,12 @@ export default function FeaturedOffersSlider() {
             transition={{ duration: 0.2 }}
             style={{
               position: "fixed", inset: 0,
-              background: "rgba(0,0,0,0.6)",
+              background: "rgba(0,0,0,0.75)",
               backdropFilter: "blur(16px)",
               WebkitBackdropFilter: "blur(16px)",
               zIndex: 2000,
               display: "flex",
-              alignItems: window.innerWidth >= 768 ? "center" : "flex-end",
+              alignItems: "flex-end",
               justifyContent: "center",
             }}
             onClick={() => setSelectedId(null)}
@@ -453,7 +453,7 @@ export default function FeaturedOffersSlider() {
               style={{
                 position: "absolute",
                 right: "16px",
-                top: "30%",
+                top: "40%",
                 transform: "translateY(-50%)",
                 background: "rgba(0,0,0,0.3)",
                 backdropFilter: "blur(10px)",
@@ -476,7 +476,7 @@ export default function FeaturedOffersSlider() {
               style={{
                 position: "absolute",
                 left: "16px",
-                top: "30%",
+                top: "40%",
                 transform: "translateY(-50%)",
                 background: "rgba(0,0,0,0.3)",
                 backdropFilter: "blur(10px)",
@@ -494,74 +494,83 @@ export default function FeaturedOffersSlider() {
             </button>
 
             <motion.div
-              initial={{ y: window.innerWidth >= 768 ? 0 : "100%", opacity: window.innerWidth >= 768 ? 0 : 1, scale: window.innerWidth >= 768 ? 0.96 : 1 }}
-              animate={{ y: 0, opacity: 1, scale: 1 }}
-              exit={{ y: window.innerWidth >= 768 ? 0 : "100%", opacity: window.innerWidth >= 768 ? 0 : 1, scale: window.innerWidth >= 768 ? 0.96 : 1 }}
-              transition={{ type: "spring", damping: 25, stiffness: 150 }}
+              initial={{ y: isMobile ? "100%" : "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 28, stiffness: 180 }}
               onClick={(e) => e.stopPropagation()}
               style={{
-                width: "100%",
-                maxWidth: "420px",
-                height: window.innerWidth >= 768 ? "80dvh" : "100dvh",
+                width: isMobile ? "100%" : "100vw",
+                maxWidth: isMobile ? "420px" : "100vw",
+                height: isMobile ? "92dvh" : "100dvh",
                 background: "#fff",
-                borderRadius: window.innerWidth >= 768 ? "24px" : "28px 28px 0 0",
+                borderRadius: isMobile ? "28px 28px 0 0" : "0",
                 overflow: "hidden",
                 display: "flex",
                 flexDirection: "column",
+                position: "relative",
               }}
             >
-              {/* Hero image */}
+              {/* Hero image — 70% height */}
               <div style={{
-                flex: "1 1 0",
-                minHeight: 0,
+                height: "70%",
                 overflow: "hidden",
+                flexShrink: 0,
               }}>
                 <img
                   src={selectedOffer.img}
                   alt={selectedOffer.brand}
-                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: isMobile ? "cover" : "contain",
+                    objectPosition: "center",
+                    display: "block",
+                    background: "#F5F5F7",
+                  }}
                 />
               </div>
 
-              {/* Content */}
+              {/* Content — bottom 30% */}
               <div style={{
-                flexShrink: 0,
-                padding: "10px 18px calc(env(safe-area-inset-bottom, 0px) + 14px)",
+                flex: 1,
+                padding: "12px 20px calc(env(safe-area-inset-bottom, 0px) + 16px)",
                 display: "flex",
                 flexDirection: "column",
-                gap: "8px",
+                gap: "10px",
                 background: "#fff",
+                justifyContent: "space-between",
               }}>
                 <div style={{ textAlign: "right" }}>
                   <p style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.04em", color: "#AEAEB2", textTransform: "uppercase", fontFamily: "var(--font-heebo)", margin: 0 }}>
                     {selectedOffer.cat} · {selectedOffer.brand}
                   </p>
-                  <h3 style={{ fontSize: "17px", fontWeight: 900, color: "#1D1D1F", fontFamily: "var(--font-heebo)", lineHeight: 1.15, margin: "2px 0 0" }}>
+                  <h3 style={{ fontSize: "19px", fontWeight: 900, color: "#1D1D1F", fontFamily: "var(--font-heebo)", lineHeight: 1.15, margin: "2px 0 0" }}>
                     {selectedOffer.title}
                   </h3>
                   {selectedOffer.desc && (
-                    <p style={{ fontSize: "12px", color: "#86868B", fontFamily: "var(--font-heebo)", lineHeight: 1.4, margin: "3px 0 0" }}>
+                    <p style={{ fontSize: "12px", color: "#86868B", fontFamily: "var(--font-heebo)", lineHeight: 1.4, margin: "4px 0 0" }}>
                       {selectedOffer.desc}
                     </p>
                   )}
                 </div>
 
                 {/* Price row */}
-                <div style={{ display: "flex", gap: "6px", alignItems: "center", direction: "rtl" }}>
+                <div style={{ display: "flex", gap: "6px", alignItems: "center", direction: "rtl", flexWrap: "wrap" }}>
                   {selectedOffer.priceOld && (
-                    <div style={{ background: "#F5F5F7", border: "1px solid rgba(0,0,0,0.08)", borderRadius: "999px", padding: "4px 12px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+                    <div style={{ background: "#F5F5F7", border: "1px solid rgba(0,0,0,0.08)", borderRadius: "999px", padding: "5px 14px", display: "flex", flexDirection: "column", alignItems: "center" }}>
                       <span style={{ ...PILL_LABEL_STYLE, color: "#AEAEB2" }}>{selectedOffer.priceOldLabel}</span>
-                      <span style={{ ...PILL_VALUE_STYLE, color: "#86868B", textDecoration: "line-through" }}>{selectedOffer.priceOld}</span>
+                      <span style={{ ...PILL_VALUE_STYLE, fontSize: "18px", color: "#86868B", textDecoration: "line-through" }}>{selectedOffer.priceOld}</span>
                     </div>
                   )}
-                  <div style={{ background: "#fff", border: "1.5px solid rgba(0,102,204,0.2)", borderRadius: "999px", padding: "4px 14px", display: "flex", flexDirection: "column", alignItems: "center", boxShadow: "0 2px 10px rgba(0,102,204,0.1)" }}>
+                  <div style={{ background: "#fff", border: "1.5px solid rgba(0,102,204,0.2)", borderRadius: "999px", padding: "5px 18px", display: "flex", flexDirection: "column", alignItems: "center", boxShadow: "0 2px 10px rgba(0,102,204,0.1)" }}>
                     <span style={{ ...PILL_LABEL_STYLE, color: "#007AFF" }}>מחיר לעובד</span>
-                    <span style={{ ...PILL_VALUE_STYLE, color: "#1D1D1F" }}>{selectedOffer.priceNew}</span>
+                    <span style={{ ...PILL_VALUE_STYLE, fontSize: "22px", color: "#1D1D1F" }}>{selectedOffer.priceNew}</span>
                   </div>
                   {selectedOffer.saving && (
-                    <div style={{ background: "#007AFF", borderRadius: "999px", padding: "4px 12px", display: "flex", flexDirection: "column", alignItems: "center", boxShadow: "0 4px 14px rgba(0,122,255,0.3)" }}>
+                    <div style={{ background: "#007AFF", borderRadius: "999px", padding: "5px 16px", display: "flex", flexDirection: "column", alignItems: "center", boxShadow: "0 4px 14px rgba(0,122,255,0.3)" }}>
                       <span style={{ ...PILL_LABEL_STYLE, color: "rgba(255,255,255,0.75)" }}>החיסכון שלך</span>
-                      <span style={{ ...PILL_VALUE_STYLE, color: "#fff" }}>{selectedOffer.saving}</span>
+                      <span style={{ ...PILL_VALUE_STYLE, fontSize: "22px", color: "#fff" }}>{selectedOffer.saving}</span>
                     </div>
                   )}
                 </div>
@@ -576,10 +585,10 @@ export default function FeaturedOffersSlider() {
                     background: "#007AFF",
                     color: "#fff",
                     border: "none",
-                    padding: "11px",
+                    padding: "13px",
                     borderRadius: "14px",
                     fontWeight: 700,
-                    fontSize: "14px",
+                    fontSize: "15px",
                     cursor: "pointer",
                     boxShadow: "0 8px 24px rgba(0,122,255,0.28)",
                     fontFamily: "var(--font-heebo)",
