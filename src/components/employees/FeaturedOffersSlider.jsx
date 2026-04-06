@@ -521,6 +521,11 @@ export default function FeaturedOffersSlider() {
                 alignItems: "center",
                 justifyContent: "center",
               }}>
+                <img
+                  src={selectedOffer.img}
+                  alt={selectedOffer.brand}
+                  style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
+                />
                 <div style={{
                   position: "absolute", bottom: 0, left: 0, right: 0,
                   height: "80px",
