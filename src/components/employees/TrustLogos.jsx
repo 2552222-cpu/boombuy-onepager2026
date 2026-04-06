@@ -30,17 +30,40 @@ const logos = [
   { name: "HOT mobile", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/5f7a627b6_-2026-04-06T212635319.png" },
 ];
 
+const LogoCard = ({ logo, onMouseEnter, onMouseLeave }) => (
+  <div
+    style={{
+      width: "120px",
+      height: "80px",
+      background: "#F9F9FB",
+      borderRadius: "14px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "12px",
+      transition: "filter 0.3s, opacity 0.3s, boxShadow 0.3s",
+      cursor: "pointer",
+      flexShrink: 0,
+    }}
+    className="logo-card"
+    onMouseEnter={onMouseEnter}
+    onMouseLeave={onMouseLeave}
+  >
+    <img 
+      src={logo.url} 
+      alt={logo.name} 
+      style={{ width: "100%", height: "100%", objectFit: "contain" }} 
+    />
+  </div>
+);
+
 export default function TrustLogos() {
   return (
     <section style={{ background: "#fff", padding: "80px 40px", borderTop: "1px solid #f0f0f0" }}>
       <style>{`
-        @keyframes marquee-rtl {
-          from { transform: translateX(0); }
-          to { transform: translateX(-50%); }
-        }
-        @keyframes marquee-ltr {
-          from { transform: translateX(-50%); }
-          to { transform: translateX(0); }
+        .logo-card {
+          filter: grayscale(100%);
+          opacity: 0.5;
         }
         .marquee-track {
           display: flex;
@@ -50,6 +73,19 @@ export default function TrustLogos() {
         }
         .marquee-track:hover {
           animation-play-state: paused;
+        }
+        .marquee-track:hover .logo-card {
+          filter: grayscale(0%);
+          opacity: 1;
+          box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+        @keyframes marquee-rtl {
+          from { transform: translateX(0); }
+          to { transform: translateX(-50%); }
+        }
+        @keyframes marquee-ltr {
+          from { transform: translateX(0); }
+          to { transform: translateX(50%); }
         }
         .marquee-rtl {
           animation: marquee-rtl 35s linear infinite;
@@ -70,52 +106,20 @@ export default function TrustLogos() {
           הם כבר מגדילים את הנטו לעובדים שלהם
         </h2>
 
-        {/* שורה 1: RTL (מימין לשמאל) */}
+        {/* שורה 1: RTL */}
         <div style={{ 
           marginBottom: "32px", 
           overflow: "hidden", 
           position: "relative", 
-          height: "104px" 
+          height: "96px",
+          paddingTop: "8px",
+          paddingBottom: "8px",
         }}>
-          <div className="marquee-track marquee-rtl" style={{ display: "flex", gap: "16px" }}>
+          <div className="marquee-track marquee-rtl">
             {[...logos, ...logos].map((logo, i) => (
-              <div
-                key={`rtl-${i}`}
-                style={{
-                  width: "120px",
-                  height: "80px",
-                  background: "#F9F9FB",
-                  borderRadius: "14px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  padding: "12px",
-                  filter: "grayscale(100%)",
-                  opacity: 0.5,
-                  transition: "filter 0.3s, opacity 0.3s, boxShadow 0.3s",
-                  cursor: "pointer",
-                  flexShrink: 0,
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.filter = "grayscale(0%)";
-                  e.currentTarget.style.opacity = "1";
-                  e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.1)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.filter = "grayscale(100%)";
-                  e.currentTarget.style.opacity = "0.5";
-                  e.currentTarget.style.boxShadow = "none";
-                }}
-              >
-                <img 
-                  src={logo.url} 
-                  alt={logo.name} 
-                  style={{ width: "100%", height: "100%", objectFit: "contain" }} 
-                />
-              </div>
+              <LogoCard key={`rtl-${i}`} logo={logo} />
             ))}
           </div>
-          {/* Fade edges */}
           <div style={{
             position: "absolute",
             left: 0,
@@ -138,51 +142,19 @@ export default function TrustLogos() {
           }} />
         </div>
 
-        {/* שורה 2: LTR (משמאל לימין) */}
+        {/* שורה 2: LTR */}
         <div style={{ 
           overflow: "hidden", 
           position: "relative", 
-          height: "104px" 
+          height: "96px",
+          paddingTop: "8px",
+          paddingBottom: "8px",
         }}>
-          <div className="marquee-track marquee-ltr" style={{ display: "flex", gap: "16px" }}>
-            {[...logos, ...logos].map((logo, i) => (
-              <div
-                key={`ltr-${i}`}
-                style={{
-                  width: "120px",
-                  height: "80px",
-                  background: "#F9F9FB",
-                  borderRadius: "14px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  padding: "12px",
-                  filter: "grayscale(100%)",
-                  opacity: 0.5,
-                  transition: "filter 0.3s, opacity 0.3s, boxShadow 0.3s",
-                  cursor: "pointer",
-                  flexShrink: 0,
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.filter = "grayscale(0%)";
-                  e.currentTarget.style.opacity = "1";
-                  e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.1)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.filter = "grayscale(100%)";
-                  e.currentTarget.style.opacity = "0.5";
-                  e.currentTarget.style.boxShadow = "none";
-                }}
-              >
-                <img 
-                  src={logo.url} 
-                  alt={logo.name} 
-                  style={{ width: "100%", height: "100%", objectFit: "contain" }} 
-                />
-              </div>
+          <div className="marquee-track marquee-ltr">
+            {[...logos.slice(14), ...logos, ...logos].map((logo, i) => (
+              <LogoCard key={`ltr-${i}`} logo={logo} />
             ))}
           </div>
-          {/* Fade edges */}
           <div style={{
             position: "absolute",
             left: 0,

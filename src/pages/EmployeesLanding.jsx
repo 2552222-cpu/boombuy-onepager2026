@@ -84,10 +84,10 @@ export default function EmployeesLanding() {
           <FeaturedOffersSlider />
         </div>
         <Hero />
+        <TrustLogos />
         <div id="benefits-showcase">
           <BenefitsShowcase />
         </div>
-        <TrustLogos />
         <ZeroBudget />
         <DigitalWallet imageUrl={WALLET_IMAGE_URL} />
         <Testimonials />
