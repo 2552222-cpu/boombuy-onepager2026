@@ -176,7 +176,7 @@ export default function FeaturedOffersSlider() {
                   style={{
                     width: "100%",
                     height: "100%",
-                    objectFit: "contain",
+                    objectFit: "cover",
                     display: "block",
                   }}
                 />
@@ -336,9 +336,7 @@ export default function FeaturedOffersSlider() {
                 flex: "0 0 65%",
                 background: "#F5F5F7",
                 position: "relative",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                overflow: "hidden",
               }}>
                 <button
                   onClick={() => setSelectedId(null)}
@@ -357,12 +355,20 @@ export default function FeaturedOffersSlider() {
                   src={selectedOffer.img}
                   alt={selectedOffer.brand}
                   style={{
-                    width: "80%",
-                    height: "80%",
-                    objectFit: "contain",
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
                     display: "block",
                   }}
                 />
+                {/* Smooth gradient into console */}
+                <div style={{
+                  position: "absolute",
+                  bottom: 0, left: 0, right: 0,
+                  height: "80px",
+                  background: "linear-gradient(to bottom, transparent, #fff)",
+                  pointerEvents: "none",
+                }} />
               </div>
 
               {/* Console — 35% */}
