@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import React from "react";
 
 const logos = [
   { name: "לאומי", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/2f10b2609_17.png" },
@@ -32,46 +31,178 @@ const logos = [
 ];
 
 export default function TrustLogos() {
-  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
-
-  useEffect(() => {
-    const handler = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener("resize", handler);
-    return () => window.removeEventListener("resize", handler);
-  }, []);
-
   return (
-    <section style={{ background: "#fff", padding: isMobile ? "48px 20px" : "80px 40px", borderTop: "1px solid #f0f0f0" }}>
+    <section style={{ background: "#fff", padding: "80px 40px", borderTop: "1px solid #f0f0f0" }}>
+      <style>{`
+        @keyframes marquee-rtl {
+          from { transform: translateX(0); }
+          to { transform: translateX(-50%); }
+        }
+        @keyframes marquee-ltr {
+          from { transform: translateX(-50%); }
+          to { transform: translateX(0); }
+        }
+        .marquee-track {
+          display: flex;
+          gap: 16px;
+          width: fit-content;
+          animation-play-state: running;
+        }
+        .marquee-track:hover {
+          animation-play-state: paused;
+        }
+        .marquee-rtl {
+          animation: marquee-rtl 35s linear infinite;
+        }
+        .marquee-ltr {
+          animation: marquee-ltr 35s linear infinite;
+        }
+      `}</style>
+
       <div style={{ maxWidth: "1240px", margin: "0 auto" }}>
-        <motion.p 
-          initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-          style={{ textAlign: "center", fontSize: isMobile ? "19px" : "24px", fontWeight: 800, marginBottom: isMobile ? "32px" : "56px", color: "#1D1D1F" }}
-        >
-          הם כבר מגדילים את הנטו לעובדים שלהם
-        </motion.p>
-        
-        <div style={{ 
-          display: "grid", 
-          gridTemplateColumns: isMobile ? "repeat(3, 1fr)" : "repeat(7, 1fr)", 
-          gap: isMobile ? "12px" : "24px",
-          alignItems: "center" 
+        <h2 style={{ 
+          textAlign: "center", 
+          fontSize: "clamp(18px, 2.5vw, 24px)", 
+          fontWeight: 800, 
+          marginBottom: "56px", 
+          color: "#1D1D1F" 
         }}>
-          {logos.map((logo, i) => (
-            <motion.div
-              key={i}
-              whileHover={{ scale: 1.05 }}
-              style={{ 
-                height: isMobile ? "70px" : "90px", 
-                display: "flex", alignItems: "center", justifyContent: "center",
-                background: "#F9F9FB", borderRadius: "16px", padding: "10px",
-                filter: "grayscale(100%)", opacity: 0.6, transition: "0.3s"
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.filter = "grayscale(0%)"; e.currentTarget.style.opacity = "1"; e.currentTarget.style.background = "#fff"; e.currentTarget.style.boxShadow = "0 10px 30px rgba(0,0,0,0.08)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.filter = "grayscale(100%)"; e.currentTarget.style.opacity = "0.6"; e.currentTarget.style.background = "#F9F9FB"; e.currentTarget.style.boxShadow = "none"; }}
-            >
-              <img src={logo.url} alt={logo.name} style={{ maxWidth: "85%", maxHeight: "65%", objectFit: "contain" }} />
-            </motion.div>
-          ))}
+          הם כבר מגדילים את הנטו לעובדים שלהם
+        </h2>
+
+        {/* שורה 1: RTL (מימין לשמאל) */}
+        <div style={{ 
+          marginBottom: "32px", 
+          overflow: "hidden", 
+          position: "relative", 
+          height: "104px" 
+        }}>
+          <div className="marquee-track marquee-rtl" style={{ display: "flex", gap: "16px" }}>
+            {[...logos, ...logos].map((logo, i) => (
+              <div
+                key={`rtl-${i}`}
+                style={{
+                  width: "120px",
+                  height: "80px",
+                  background: "#F9F9FB",
+                  borderRadius: "14px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: "12px",
+                  filter: "grayscale(100%)",
+                  opacity: 0.5,
+                  transition: "filter 0.3s, opacity 0.3s, boxShadow 0.3s",
+                  cursor: "pointer",
+                  flexShrink: 0,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.filter = "grayscale(0%)";
+                  e.currentTarget.style.opacity = "1";
+                  e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.1)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.filter = "grayscale(100%)";
+                  e.currentTarget.style.opacity = "0.5";
+                  e.currentTarget.style.boxShadow = "none";
+                }}
+              >
+                <img 
+                  src={logo.url} 
+                  alt={logo.name} 
+                  style={{ width: "100%", height: "100%", objectFit: "contain" }} 
+                />
+              </div>
+            ))}
+          </div>
+          {/* Fade edges */}
+          <div style={{
+            position: "absolute",
+            left: 0,
+            top: 0,
+            width: "100px",
+            height: "100%",
+            background: "linear-gradient(to right, #fff, transparent)",
+            zIndex: 10,
+            pointerEvents: "none",
+          }} />
+          <div style={{
+            position: "absolute",
+            right: 0,
+            top: 0,
+            width: "100px",
+            height: "100%",
+            background: "linear-gradient(to left, #fff, transparent)",
+            zIndex: 10,
+            pointerEvents: "none",
+          }} />
+        </div>
+
+        {/* שורה 2: LTR (משמאל לימין) */}
+        <div style={{ 
+          overflow: "hidden", 
+          position: "relative", 
+          height: "104px" 
+        }}>
+          <div className="marquee-track marquee-ltr" style={{ display: "flex", gap: "16px" }}>
+            {[...logos, ...logos].map((logo, i) => (
+              <div
+                key={`ltr-${i}`}
+                style={{
+                  width: "120px",
+                  height: "80px",
+                  background: "#F9F9FB",
+                  borderRadius: "14px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: "12px",
+                  filter: "grayscale(100%)",
+                  opacity: 0.5,
+                  transition: "filter 0.3s, opacity 0.3s, boxShadow 0.3s",
+                  cursor: "pointer",
+                  flexShrink: 0,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.filter = "grayscale(0%)";
+                  e.currentTarget.style.opacity = "1";
+                  e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.1)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.filter = "grayscale(100%)";
+                  e.currentTarget.style.opacity = "0.5";
+                  e.currentTarget.style.boxShadow = "none";
+                }}
+              >
+                <img 
+                  src={logo.url} 
+                  alt={logo.name} 
+                  style={{ width: "100%", height: "100%", objectFit: "contain" }} 
+                />
+              </div>
+            ))}
+          </div>
+          {/* Fade edges */}
+          <div style={{
+            position: "absolute",
+            left: 0,
+            top: 0,
+            width: "100px",
+            height: "100%",
+            background: "linear-gradient(to right, #fff, transparent)",
+            zIndex: 10,
+            pointerEvents: "none",
+          }} />
+          <div style={{
+            position: "absolute",
+            right: 0,
+            top: 0,
+            width: "100px",
+            height: "100%",
+            background: "linear-gradient(to left, #fff, transparent)",
+            zIndex: 10,
+            pointerEvents: "none",
+          }} />
         </div>
       </div>
     </section>
