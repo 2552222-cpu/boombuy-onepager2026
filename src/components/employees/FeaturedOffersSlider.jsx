@@ -415,8 +415,8 @@ export default function FeaturedOffersSlider() {
             transition={{ duration: 0.22 }}
             style={{
               position: "fixed", inset: 0,
-              background: "rgba(0,0,0,0.8)",
-              backdropFilter: "blur(15px)",
+              background: "rgba(0,0,0,0.85)",
+              backdropFilter: "blur(20px)",
               WebkitBackdropFilter: "blur(15px)",
               zIndex: 2000,
               display: "flex",
@@ -463,9 +463,9 @@ export default function FeaturedOffersSlider() {
               transition={{ type: "spring", damping: 28, stiffness: 200 }}
               onClick={(e) => e.stopPropagation()}
               style={{
-                width: "100%",
+                width: isMobile ? "100%" : "92vw",
                 maxWidth: isMobile ? "480px" : "1100px",
-                height: "85vh",
+                height: isMobile ? "85dvh" : "85vh",
                 background: "#fff",
                 borderRadius: isMobile ? "28px 28px 0 0" : "24px",
                 overflow: "hidden",
@@ -475,7 +475,7 @@ export default function FeaturedOffersSlider() {
               }}
             >
               {/* Image — 65% */}
-              <div style={{ height: "65%", overflow: "hidden", background: "#F5F5F7", flexShrink: 0, padding: 0 }}>
+              <div style={{ height: isMobile ? "60%" : "65%", overflow: "hidden", background: "#F5F5F7", flexShrink: 0, padding: 0 }}>
                 <img
                   src={selectedOffer.img}
                   alt={selectedOffer.brand}
@@ -483,34 +483,41 @@ export default function FeaturedOffersSlider() {
                 />
               </div>
 
-              {/* Info — 35% */}
+              {/* Info — 35% (mobile 40%) */}
               <div style={{
                 flex: 1,
-                padding: "40px",
-                display: "flex", flexDirection: "column", gap: "12px",
+                padding: isMobile ? "20px 18px" : "40px",
+                display: "flex", flexDirection: "column", gap: isMobile ? "10px" : "12px",
                 background: "#fff", direction: "rtl",
-                justifyContent: "space-between",
-                paddingBottom: `calc(40px + env(safe-area-inset-bottom, 0px))`,
+                justifyContent: isMobile ? "flex-start" : "space-between",
+                paddingBottom: isMobile ? `calc(20px + env(safe-area-inset-bottom, 0px))` : `calc(40px + env(safe-area-inset-bottom, 0px))`,
+                overflowY: isMobile ? "auto" : "visible",
               }}>
-                {/* Category & Brand Outside */}
-                <div style={{
-                  position: "absolute", top: "-50px", right: "0",
-                  textAlign: "right",
-                }}>
-                  <p style={{ fontSize: "12px", fontWeight: 700, color: "#fff", textTransform: "uppercase", fontFamily: "var(--font-heebo)", margin: 0, letterSpacing: "0.06em" }}>
-                    {selectedOffer.cat}
-                  </p>
-                  <p style={{ fontSize: "16px", fontWeight: 900, color: "#fff", fontFamily: "var(--font-heebo)", margin: "4px 0 0" }}>
-                    {selectedOffer.brand}
-                  </p>
-                </div>
+                {/* Category & Brand Outside — Desktop Only */}
+                {!isMobile && (
+                  <div style={{
+                    position: "absolute", top: "-50px", right: "0",
+                    textAlign: "right",
+                  }}>
+                    <p style={{ fontSize: "12px", fontWeight: 700, color: "#fff", textTransform: "uppercase", fontFamily: "var(--font-heebo)", margin: 0, letterSpacing: "0.06em" }}>
+                      {selectedOffer.cat}
+                    </p>
+                    <p style={{ fontSize: "16px", fontWeight: 900, color: "#fff", fontFamily: "var(--font-heebo)", margin: "4px 0 0" }}>
+                      {selectedOffer.brand}
+                    </p>
+                  </div>
+                )}
 
                 {/* Title */}
                 <div>
-                  <p style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.05em", color: "#AEAEB2", textTransform: "uppercase", fontFamily: "var(--font-heebo)", margin: 0, display: "none" }}>
-                    {selectedOffer.brand} · {selectedOffer.cat}
-                  </p>
-                  <h3 style={{ fontSize: "18px", fontWeight: 900, color: "#1D1D1F", fontFamily: "var(--font-heebo)", lineHeight: 1.2, margin: "3px 0 0" }}>
+                  {isMobile && (
+                    <>
+                      <p style={{ fontSize: "11px", fontWeight: 700, color: "#0066CC", textTransform: "uppercase", fontFamily: "var(--font-heebo)", margin: 0, marginBottom: "4px", letterSpacing: "0.05em" }}>
+                        {selectedOffer.cat} · {selectedOffer.brand}
+                      </p>
+                    </>
+                  )}
+                  <h3 style={{ fontSize: isMobile ? "16px" : "18px", fontWeight: 900, color: "#1D1D1F", fontFamily: "var(--font-heebo)", lineHeight: 1.2, margin: isMobile ? "2px 0 0" : "3px 0 0" }}>
                     {selectedOffer.title}
                   </h3>
                   {selectedOffer.desc && (
@@ -520,8 +527,8 @@ export default function FeaturedOffersSlider() {
                   )}
                 </div>
 
-                {/* Prices */}
-                <div style={{ display: "flex", gap: "6px", alignItems: "center", justifyContent: "flex-end" }}>
+                {/* Prices — Single Row */}
+                <div style={{ display: "flex", gap: isMobile ? "4px" : "6px", alignItems: "center", justifyContent: isMobile ? "center" : "flex-end", flexWrap: isMobile ? "wrap" : "nowrap" }}>
                   {selectedOffer.priceOld && (
                     <div style={{ background: "#F5F5F7", border: "1px solid rgba(0,0,0,0.08)", borderRadius: "999px", padding: "4px 12px", display: "flex", flexDirection: "column", alignItems: "center" }}>
                       <span style={{ ...PILL_LABEL_STYLE, color: "#AEAEB2" }}>{selectedOffer.priceOldLabel}</span>
@@ -547,16 +554,17 @@ export default function FeaturedOffersSlider() {
                     setTimeout(() => document.getElementById("survey-section")?.scrollIntoView({ behavior: "smooth" }), 200);
                   }}
                   style={{
-                    width: "360px",
+                    width: isMobile ? "100%" : "380px",
                     margin: "0 auto",
-                    marginBottom: "20px",
+                    marginTop: isMobile ? "6px" : "0",
+                    marginBottom: isMobile ? "0" : "40px",
                     background: "#007AFF",
                     color: "#fff",
                     border: "none",
                     padding: "12px",
                     borderRadius: "14px",
                     fontWeight: 700,
-                    fontSize: "14px",
+                    fontSize: isMobile ? "13px" : "14px",
                     cursor: "pointer",
                     boxShadow: "0 8px 24px rgba(0,122,255,0.28)",
                     fontFamily: "var(--font-heebo)",
