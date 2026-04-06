@@ -269,7 +269,7 @@ export default function FeaturedOffersSlider() {
                 <img
                   src={offer.img}
                   alt={offer.brand}
-                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", borderRadius: "24px" }}
                 />
                 {isCenter && !isMobile && (
                   <div style={{
@@ -517,17 +517,16 @@ export default function FeaturedOffersSlider() {
                 background: "#F5F5F7",
                 position: "relative",
                 overflow: "hidden",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}>
-                <img
-                  src={selectedOffer.img}
-                  alt={selectedOffer.brand}
-                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-                />
                 <div style={{
                   position: "absolute", bottom: 0, left: 0, right: 0,
                   height: "80px",
                   background: "linear-gradient(to bottom, transparent, #fff)",
                   pointerEvents: "none",
+                  zIndex: 1,
                 }} />
               </div>
 
