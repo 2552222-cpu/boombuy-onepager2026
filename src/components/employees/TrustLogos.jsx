@@ -29,8 +29,6 @@ const logos = [
   { name: "Check Point", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e71824c2e_-2026-04-02T203121306.png" },
   { name: "רמלאל", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ee6b05338_-2026-04-03T180125393.png" },
   { name: "בזק בתקשורת", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8b28ec6fc_71.png" },
-  { name: "דלק", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/be9e3de1a_-2026-03-22T184841801.png" },
-  { name: "פוטום", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/photom_logo.png" },
 ];
 
 export default function TrustLogos() {
@@ -95,11 +93,11 @@ export default function TrustLogos() {
                 src={logo.url}
                 alt={logo.name}
                 style={{
-                    maxWidth: "98%",
-                    maxHeight: "75px",
-                    objectFit: "contain",
-                    display: "block",
-                  }}
+                   maxWidth: "98%",
+                   maxHeight: (logo.name === "צ'k" || logo.name === "פונטי" || logo.name === "בזן" || logo.name === "אלקטרה אפיקים") ? "85px" : "75px",
+                   objectFit: "contain",
+                   display: "block",
+                 }}
                 onError={(e) => { e.currentTarget.style.display = "none"; }}
               />
             </div>
@@ -148,12 +146,12 @@ export default function TrustLogos() {
                 src={logo.url}
                 alt={logo.name}
                 style={{
-                    maxWidth: "100%",
-                    maxHeight: "100px",
-                    objectFit: "contain",
-                    display: "block",
-                    width: "auto",
-                  }}
+                   maxWidth: "100%",
+                   maxHeight: (logo.name === "צ'k" || logo.name === "פונטי" || logo.name === "בזן" || logo.name === "אלקטרה אפיקים") ? "115px" : "100px",
+                   objectFit: "contain",
+                   display: "block",
+                   width: "auto",
+                 }}
                 onError={(e) => { e.currentTarget.style.display = "none"; }}
               />
             </div>
