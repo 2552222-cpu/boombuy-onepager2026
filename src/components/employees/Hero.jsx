@@ -9,7 +9,7 @@ const HERO_DATA = {
   primaryCTA: "ענו על 3 שאלות קצרות ←",
   secondaryCTA: "שתפו עם החברים",
   microCopy: "15 שניות · בלי הרשמה · סייעו לנו לסייע לכם להגדיל את הנטו כבר מהחודש הבא",
-  image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/66514fe66_-2026-02-18T150849922.png" 
+  image: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/adc2ee1bb_1.png" 
 };
 
 export default function Hero() {
