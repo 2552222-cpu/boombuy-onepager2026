@@ -353,7 +353,11 @@ export default function FeaturedOffersSlider() {
 
       {/* Full-Screen Modal */}
       <AnimatePresence>
-        {selectedId && selectedOffer && (
+        {selectedId && selectedOffer && (() => {
+          const selectedIndex = OFFERS.findIndex(o => o.id === selectedId);
+          const goPrev = (e) => { e.stopPropagation(); setSelectedId(OFFERS[(selectedIndex - 1 + OFFERS.length) % OFFERS.length].id); };
+          const goNext = (e) => { e.stopPropagation(); setSelectedId(OFFERS[(selectedIndex + 1) % OFFERS.length].id); };
+          return (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -371,7 +375,74 @@ export default function FeaturedOffersSlider() {
             }}
             onClick={() => setSelectedId(null)}
           >
-            <motion.div
+            {/* Close button — above the sheet */}
+            <button
+              onClick={() => setSelectedId(null)}
+              style={{
+                position: "absolute",
+                top: "clamp(16px, 4vh, 32px)",
+                left: "50%",
+                transform: "translateX(-50%)",
+                background: "rgba(255,255,255,0.18)",
+                backdropFilter: "blur(12px)",
+                border: "1.5px solid rgba(255,255,255,0.35)",
+                color: "#fff",
+                width: "44px", height: "44px",
+                borderRadius: "50%",
+                cursor: "pointer",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                zIndex: 10,
+                boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
+              }}
+            >
+              <X size={22} color="#fff" strokeWidth={2.5} />
+            </button>
+
+            {/* Prev arrow */}
+            <button
+              onClick={goPrev}
+              style={{
+                position: "absolute",
+                left: "clamp(12px, 3vw, 32px)",
+                bottom: "clamp(40%, 46vh, 52%)",
+                transform: "translateY(50%)",
+                background: "rgba(255,255,255,0.18)",
+                backdropFilter: "blur(12px)",
+                border: "1.5px solid rgba(255,255,255,0.35)",
+                color: "#fff",
+                width: "48px", height: "48px",
+                borderRadius: "50%",
+                cursor: "pointer",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                zIndex: 10,
+                boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
+                fontSize: "22px",
+              }}
+            >‹</button>
+
+            {/* Next arrow */}
+            <button
+              onClick={goNext}
+              style={{
+                position: "absolute",
+                right: "clamp(12px, 3vw, 32px)",
+                bottom: "clamp(40%, 46vh, 52%)",
+                transform: "translateY(50%)",
+                background: "rgba(255,255,255,0.18)",
+                backdropFilter: "blur(12px)",
+                border: "1.5px solid rgba(255,255,255,0.35)",
+                color: "#fff",
+                width: "48px", height: "48px",
+                borderRadius: "50%",
+                cursor: "pointer",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                zIndex: 10,
+                boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
+                fontSize: "22px",
+              }}
+            >›</button>
+
+          <motion.div
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
@@ -395,19 +466,6 @@ export default function FeaturedOffersSlider() {
                 position: "relative",
                 overflow: "hidden",
               }}>
-                <button
-                  onClick={() => setSelectedId(null)}
-                  style={{
-                    position: "absolute", top: "16px", left: "16px",
-                    background: "rgba(0,0,0,0.08)",
-                    border: "none", width: "40px", height: "40px",
-                    borderRadius: "50%", cursor: "pointer",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    zIndex: 10,
-                  }}
-                >
-                  <X size={20} color="#1D1D1F" />
-                </button>
                 <img
                   src={selectedOffer.img}
                   alt={selectedOffer.brand}
@@ -492,7 +550,8 @@ export default function FeaturedOffersSlider() {
               </div>
             </motion.div>
           </motion.div>
-        )}
+          );
+        })()}
       </AnimatePresence>
     </section>
   );
