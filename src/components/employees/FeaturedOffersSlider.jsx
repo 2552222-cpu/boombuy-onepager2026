@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -50,7 +50,7 @@ const OFFERS = [
     title: "iPhone 16 Pro — יבואן",
     priceOldLabel: "מחיר זאפ",
     priceOld: "₪4,590", priceNew: "₪3,890", saving: "₪700",
-    desc: "אייפון 16 פרו במחיר יבואן רשמי — ישירות מהמחסן, ללא תוספות, ללא עמלות.",
+    desc: "אייפון, סמסונג ומובייל במחירי יבואן — ישירות מהמחסן, ללא תוספות, ללא עמלות.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/66514fe66_-2026-02-18T150849922.png"
   },
   {
@@ -87,6 +87,10 @@ const OFFERS = [
 
 const DEFAULT_INDEX = 4; // iPhone in center
 
+// Shared pill sizes
+const PILL_LABEL_STYLE = { fontSize: "9px", fontWeight: 700, fontFamily: "var(--font-heebo)" };
+const PILL_VALUE_STYLE = { fontSize: "16px", fontWeight: 900, fontFamily: "var(--font-heebo)" };
+
 export default function FeaturedOffersSlider() {
   const [selectedId, setSelectedId] = useState(null);
   const [index, setIndex] = useState(DEFAULT_INDEX);
@@ -113,7 +117,7 @@ export default function FeaturedOffersSlider() {
   };
 
   return (
-    <section style={{ background: "#FFFFFF", padding: "72px 0 80px", direction: "rtl", overflowX: "hidden" }}>
+    <section style={{ background: "#FFFFFF", padding: "52px 0 56px", direction: "rtl", overflowX: "hidden" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", textAlign: "center", padding: "0 16px" }}>
 
         {/* Header */}
@@ -140,7 +144,7 @@ export default function FeaturedOffersSlider() {
         </p>
         <p style={{
           color: "#AEAEB2",
-          marginBottom: "32px",
+          marginBottom: "28px",
           fontFamily: "var(--font-heebo)",
           fontSize: "13px",
           fontWeight: 600,
@@ -157,14 +161,14 @@ export default function FeaturedOffersSlider() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 6 }}
               transition={{ duration: 0.18 }}
-              style={{ marginBottom: "16px" }}
+              style={{ marginBottom: "10px" }}
             >
               <span style={{
                 background: "#1D1D1F",
                 color: "#fff",
                 borderRadius: "999px",
-                padding: "6px 18px",
-                fontSize: "13px",
+                padding: "4px 14px",
+                fontSize: "12px",
                 fontWeight: 700,
                 fontFamily: "var(--font-heebo)",
                 display: "inline-block",
@@ -177,35 +181,35 @@ export default function FeaturedOffersSlider() {
 
         {/* Category pills above slider — desktop only */}
         {!isMobile && (
-        <div style={{
-          display: "flex",
-          gap: "8px",
-          justifyContent: "center",
-          flexWrap: "wrap",
-          marginBottom: "32px",
-        }}>
-          {OFFERS.map((o, i) => (
-            <button
-              key={o.id}
-              onClick={() => setIndex(i)}
-              style={{
-                background: i === index ? "#1D1D1F" : "#F5F5F7",
-                color: i === index ? "#fff" : "#86868B",
-                border: "none",
-                borderRadius: "999px",
-                padding: "5px 14px",
-                fontSize: "12px",
-                fontWeight: 700,
-                fontFamily: "var(--font-heebo)",
-                cursor: "pointer",
-                transition: "all 0.2s",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {o.cat}
-            </button>
-          ))}
-        </div>
+          <div style={{
+            display: "flex",
+            gap: "8px",
+            justifyContent: "center",
+            flexWrap: "wrap",
+            marginBottom: "32px",
+          }}>
+            {OFFERS.map((o, i) => (
+              <button
+                key={o.id}
+                onClick={() => setIndex(i)}
+                style={{
+                  background: i === index ? "#1D1D1F" : "#F5F5F7",
+                  color: i === index ? "#fff" : "#86868B",
+                  border: "none",
+                  borderRadius: "999px",
+                  padding: "5px 14px",
+                  fontSize: "12px",
+                  fontWeight: 700,
+                  fontFamily: "var(--font-heebo)",
+                  cursor: "pointer",
+                  transition: "all 0.2s",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {o.cat}
+              </button>
+            ))}
+          </div>
         )}
 
         {/* Carousel */}
@@ -219,8 +223,8 @@ export default function FeaturedOffersSlider() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            height: isMobile ? "70vw" : "540px",
-            maxHeight: isMobile ? "400px" : "none",
+            height: isMobile ? "86vw" : "540px",
+            maxHeight: isMobile ? "480px" : "none",
             perspective: isMobile ? "none" : "1500px",
             position: "relative",
             width: "100%",
@@ -249,8 +253,8 @@ export default function FeaturedOffersSlider() {
                 transition={{ type: "spring", damping: 25, stiffness: 150 }}
                 style={{
                   position: isMobile ? "relative" : "absolute",
-                  width: isMobile ? "min(88vw, 340px)" : "340px",
-                  height: isMobile ? "min(70vw, 380px)" : "480px",
+                  width: isMobile ? "min(94vw, 360px)" : "340px",
+                  height: isMobile ? "min(86vw, 480px)" : "480px",
                   borderRadius: "24px",
                   cursor: "pointer",
                   zIndex: 10 - absOffset,
@@ -297,22 +301,22 @@ export default function FeaturedOffersSlider() {
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.2 }}
             style={{
-              marginTop: "28px",
-              marginBottom: "12px",
+              marginTop: "12px",
+              marginBottom: "8px",
               background: "#F5F5F7",
               border: "1px solid rgba(0,0,0,0.07)",
-              borderRadius: "14px",
-              padding: "10px 18px",
+              borderRadius: "10px",
+              padding: "6px 14px",
               display: "inline-block",
               maxWidth: "480px",
             }}
           >
             <p style={{
-              fontSize: "13px",
+              fontSize: "11px",
               color: "#3A3A3C",
               fontFamily: "var(--font-heebo)",
               fontWeight: 500,
-              lineHeight: 1.55,
+              lineHeight: 1.4,
               margin: 0,
             }}>
               {currentOffer.desc}
@@ -330,7 +334,7 @@ export default function FeaturedOffersSlider() {
             transition={{ duration: 0.22 }}
             style={{
               display: "flex",
-              gap: "8px",
+              gap: "6px",
               alignItems: "center",
               justifyContent: "center",
               flexWrap: "wrap",
@@ -341,47 +345,47 @@ export default function FeaturedOffersSlider() {
                 background: "#F5F5F7",
                 border: "1px solid rgba(0,0,0,0.08)",
                 borderRadius: "999px",
-                padding: "6px 16px",
+                padding: "4px 12px",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
               }}>
-                <span style={{ fontSize: "9px", fontWeight: 700, color: "#AEAEB2", fontFamily: "var(--font-heebo)" }}>{currentOffer.priceOldLabel}</span>
-                <span style={{ fontSize: "15px", color: "#86868B", textDecoration: "line-through", fontFamily: "var(--font-heebo)", fontWeight: 600 }}>{currentOffer.priceOld}</span>
+                <span style={{ ...PILL_LABEL_STYLE, color: "#AEAEB2" }}>{currentOffer.priceOldLabel}</span>
+                <span style={{ ...PILL_VALUE_STYLE, color: "#86868B", textDecoration: "line-through" }}>{currentOffer.priceOld}</span>
               </div>
             )}
             <div style={{
               background: "#fff",
               border: "1.5px solid rgba(0,102,204,0.2)",
               borderRadius: "999px",
-              padding: "6px 20px",
+              padding: "4px 16px",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               boxShadow: "0 2px 12px rgba(0,102,204,0.1)",
             }}>
-              <span style={{ fontSize: "9px", fontWeight: 700, color: "#007AFF", fontFamily: "var(--font-heebo)" }}>מחיר לעובד</span>
-              <span style={{ fontSize: "22px", fontWeight: 900, color: "#1D1D1F", fontFamily: "var(--font-heebo)" }}>{currentOffer.priceNew}</span>
+              <span style={{ ...PILL_LABEL_STYLE, color: "#007AFF" }}>מחיר לעובד</span>
+              <span style={{ ...PILL_VALUE_STYLE, color: "#1D1D1F" }}>{currentOffer.priceNew}</span>
             </div>
             {currentOffer.saving && (
               <div style={{
                 background: "#007AFF",
                 borderRadius: "999px",
-                padding: "6px 18px",
+                padding: "4px 14px",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
                 boxShadow: "0 4px 16px rgba(0,122,255,0.35)",
               }}>
-                <span style={{ fontSize: "9px", fontWeight: 600, color: "rgba(255,255,255,0.75)", fontFamily: "var(--font-heebo)" }}>החיסכון שלך</span>
-                <span style={{ fontSize: "18px", fontWeight: 900, color: "#fff", fontFamily: "var(--font-heebo)" }}>{currentOffer.saving}</span>
+                <span style={{ ...PILL_LABEL_STYLE, color: "rgba(255,255,255,0.75)" }}>החיסכון שלך</span>
+                <span style={{ ...PILL_VALUE_STYLE, color: "#fff" }}>{currentOffer.saving}</span>
               </div>
             )}
           </motion.div>
         </AnimatePresence>
 
         {/* Dots */}
-        <div style={{ display: "flex", justifyContent: "center", gap: "6px", marginTop: "24px" }}>
+        <div style={{ display: "flex", justifyContent: "center", gap: "6px", marginTop: "20px" }}>
           {OFFERS.map((_, i) => (
             <button
               key={i}
@@ -421,7 +425,7 @@ export default function FeaturedOffersSlider() {
             }}
             onClick={() => setSelectedId(null)}
           >
-            {/* Close button — top left inside the sheet on mobile, floating on desktop */}
+            {/* Close button */}
             <button
               onClick={(e) => { e.stopPropagation(); setSelectedId(null); }}
               style={{
@@ -527,47 +531,47 @@ export default function FeaturedOffersSlider() {
                 }} />
               </div>
 
-              {/* Console */}
+              {/* Content */}
               <div style={{
                 flex: 1,
-                padding: "12px 24px 32px",
+                padding: "10px 20px 28px",
                 minHeight: 0,
                 display: "flex",
                 flexDirection: "column",
-                gap: "10px",
+                gap: "8px",
                 overflowY: "auto",
                 background: "#fff",
               }}>
                 <div style={{ textAlign: "right" }}>
-                  <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.07em", color: "#AEAEB2", textTransform: "uppercase", fontFamily: "var(--font-heebo)", margin: "0 0 2px" }}>
+                  <p style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.04em", color: "#AEAEB2", textTransform: "uppercase", fontFamily: "var(--font-heebo)", margin: 0 }}>
                     {selectedOffer.cat} · {selectedOffer.brand}
                   </p>
-                  <h3 style={{ fontSize: "19px", fontWeight: 900, color: "#1D1D1F", fontFamily: "var(--font-heebo)", lineHeight: 1.15, margin: 0, letterSpacing: "-0.02em" }}>
+                  <h3 style={{ fontSize: "17px", fontWeight: 900, color: "#1D1D1F", fontFamily: "var(--font-heebo)", lineHeight: 1.15, margin: "2px 0 0" }}>
                     {selectedOffer.title}
                   </h3>
                   {selectedOffer.desc && (
-                    <p style={{ fontSize: "13px", color: "#86868B", fontFamily: "var(--font-heebo)", lineHeight: 1.5, margin: "4px 0 0" }}>
+                    <p style={{ fontSize: "12px", color: "#86868B", fontFamily: "var(--font-heebo)", lineHeight: 1.4, margin: "3px 0 0" }}>
                       {selectedOffer.desc}
                     </p>
                   )}
                 </div>
 
                 {/* Price row */}
-                <div style={{ display: "flex", gap: "8px", alignItems: "center", direction: "rtl" }}>
+                <div style={{ display: "flex", gap: "6px", alignItems: "center", direction: "rtl" }}>
                   {selectedOffer.priceOld && (
-                    <div style={{ background: "#F5F5F7", border: "1px solid rgba(0,0,0,0.08)", borderRadius: "999px", padding: "5px 14px", display: "flex", flexDirection: "column", alignItems: "center" }}>
-                      <span style={{ fontSize: "9px", fontWeight: 700, color: "#AEAEB2", fontFamily: "var(--font-heebo)" }}>{selectedOffer.priceOldLabel}</span>
-                      <span style={{ fontSize: "14px", color: "#86868B", textDecoration: "line-through", fontFamily: "var(--font-heebo)", fontWeight: 600 }}>{selectedOffer.priceOld}</span>
+                    <div style={{ background: "#F5F5F7", border: "1px solid rgba(0,0,0,0.08)", borderRadius: "999px", padding: "4px 12px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+                      <span style={{ ...PILL_LABEL_STYLE, color: "#AEAEB2" }}>{selectedOffer.priceOldLabel}</span>
+                      <span style={{ ...PILL_VALUE_STYLE, color: "#86868B", textDecoration: "line-through" }}>{selectedOffer.priceOld}</span>
                     </div>
                   )}
-                  <div style={{ background: "#fff", border: "1.5px solid rgba(0,102,204,0.2)", borderRadius: "999px", padding: "5px 18px", display: "flex", flexDirection: "column", alignItems: "center", boxShadow: "0 2px 10px rgba(0,102,204,0.1)" }}>
-                    <span style={{ fontSize: "9px", fontWeight: 700, color: "#007AFF", fontFamily: "var(--font-heebo)" }}>מחיר לעובד</span>
-                    <span style={{ fontSize: "22px", fontWeight: 900, color: "#1D1D1F", fontFamily: "var(--font-heebo)" }}>{selectedOffer.priceNew}</span>
+                  <div style={{ background: "#fff", border: "1.5px solid rgba(0,102,204,0.2)", borderRadius: "999px", padding: "4px 14px", display: "flex", flexDirection: "column", alignItems: "center", boxShadow: "0 2px 10px rgba(0,102,204,0.1)" }}>
+                    <span style={{ ...PILL_LABEL_STYLE, color: "#007AFF" }}>מחיר לעובד</span>
+                    <span style={{ ...PILL_VALUE_STYLE, color: "#1D1D1F" }}>{selectedOffer.priceNew}</span>
                   </div>
                   {selectedOffer.saving && (
-                    <div style={{ background: "#007AFF", borderRadius: "999px", padding: "5px 16px", display: "flex", flexDirection: "column", alignItems: "center", boxShadow: "0 4px 14px rgba(0,122,255,0.3)" }}>
-                      <span style={{ fontSize: "9px", fontWeight: 600, color: "rgba(255,255,255,0.75)", fontFamily: "var(--font-heebo)" }}>החיסכון שלך</span>
-                      <span style={{ fontSize: "18px", fontWeight: 900, color: "#fff", fontFamily: "var(--font-heebo)" }}>{selectedOffer.saving}</span>
+                    <div style={{ background: "#007AFF", borderRadius: "999px", padding: "4px 12px", display: "flex", flexDirection: "column", alignItems: "center", boxShadow: "0 4px 14px rgba(0,122,255,0.3)" }}>
+                      <span style={{ ...PILL_LABEL_STYLE, color: "rgba(255,255,255,0.75)" }}>החיסכון שלך</span>
+                      <span style={{ ...PILL_VALUE_STYLE, color: "#fff" }}>{selectedOffer.saving}</span>
                     </div>
                   )}
                 </div>
