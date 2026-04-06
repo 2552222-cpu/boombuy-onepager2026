@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 const logos = [
@@ -31,89 +31,104 @@ const logos = [
   { name: "בזק בתקשורת", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8b28ec6fc_71.png" },
 ];
 
+// Pad to full 7-column rows (28 total)
+const DESKTOP_LOGOS = [...logos, { name: "", url: "" }]; // 28 items
+
 export default function TrustLogos() {
-  const row1 = logos.slice(0, 13);
-  const row2 = logos.slice(13, 26);
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handler);
+    return () => window.removeEventListener("resize", handler);
+  }, []);
 
   return (
-    <section className="py-8 md:py-20 bg-white border-t border-b border-border/30" style={{ overflowX: 'hidden', maxWidth: '100vw' }}>
-      <div className="w-full" style={{ maxWidth: '100vw' }}>
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-12 md:mb-14"
-        >
-          <p style={{ fontSize: "clamp(18px, 2.5vw, 22px)", fontWeight: 700, fontFamily: "var(--font-heebo)", color: "#1D1D1F" }}>
-            הם כבר מגדילים את הנטו לעובדים שלהם
-          </p>
-        </motion.div>
+    <section style={{
+      background: "#fff",
+      borderTop: "1px solid rgba(0,0,0,0.07)",
+      borderBottom: "1px solid rgba(0,0,0,0.07)",
+      padding: isMobile ? "40px 0 48px" : "56px 0 64px",
+      overflowX: "hidden",
+    }}>
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+        style={{ textAlign: "center", marginBottom: isMobile ? "28px" : "36px" }}
+      >
+        <p style={{
+          fontSize: isMobile ? "18px" : "22px",
+          fontWeight: 700,
+          fontFamily: "var(--font-heebo)",
+          color: "#1D1D1F",
+          margin: 0,
+        }}>
+          הם כבר מגדילים את הנטו לעובדים שלהם
+        </p>
+      </motion.div>
 
-        {/* Desktop: grid 7 columns x 2 rows */}
-        <div
-          className="hidden md:grid"
-          style={{
-            gridTemplateColumns: "repeat(7, 1fr)",
-            gap: "16px",
-            padding: "0 40px",
-          }}
-        >
+      {isMobile ? (
+        /* Mobile: 3 columns, all logos */
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: "8px",
+          padding: "0 16px",
+        }}>
           {logos.map((logo, i) => (
-            <div
-              key={i}
-              style={{
-                height: "65px",
-                padding: "12px",
-                display: "grid",
-                placeItems: "center",
-                filter: "grayscale(100%)",
-                opacity: 0.7,
-                transition: "filter 0.25s ease, opacity 0.25s ease",
-              }}
-              onMouseEnter={e => { e.currentTarget.style.filter = "grayscale(0%)"; e.currentTarget.style.opacity = 1; }}
-              onMouseLeave={e => { e.currentTarget.style.filter = "grayscale(100%)"; e.currentTarget.style.opacity = 0.7; }}
-            >
+            <div key={i} style={{
+              height: "60px",
+              display: "grid",
+              placeItems: "center",
+              filter: "grayscale(100%)",
+              opacity: 0.7,
+            }}>
               <img
                 src={logo.url}
                 alt={logo.name}
-                style={{ width: "100%", height: "100%", objectFit: "contain", maxWidth: "120px", maxHeight: "41px" }}
+                style={{ maxWidth: "100%", maxHeight: "40px", objectFit: "contain" }}
+                onError={e => { e.currentTarget.style.display = "none"; }}
               />
             </div>
           ))}
         </div>
-
-        {/* Mobile: grid 3 columns */}
-         <motion.div
-           initial={{ opacity: 0, y: 12 }}
-           whileInView={{ opacity: 1, y: 0 }}
-           viewport={{ once: true }}
-           transition={{ duration: 0.6, delay: 0.08 }}
-           className="md:hidden"
-           style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "12px", padding: "0 16px" }}
-         >
-           {logos.map((logo, i) => (
-              <div
-                key={i}
-                style={{
-                  height: "60px",
-                  padding: "8px",
-                  display: "grid",
-                  placeItems: "center",
-                  filter: "grayscale(100%)",
-                  opacity: 0.7,
-                }}
-              >
+      ) : (
+        /* Desktop: 7 columns */
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(7, 1fr)",
+          gap: "0",
+          padding: "0 48px",
+        }}>
+          {DESKTOP_LOGOS.map((logo, i) => (
+            <div
+              key={i}
+              style={{
+                height: "80px",
+                padding: "12px 16px",
+                display: "grid",
+                placeItems: "center",
+                filter: logo.url ? "grayscale(100%)" : "none",
+                opacity: logo.url ? 0.7 : 0,
+                transition: "filter 0.25s ease, opacity 0.25s ease",
+                cursor: logo.url ? "default" : "default",
+              }}
+              onMouseEnter={e => { if (logo.url) { e.currentTarget.style.filter = "grayscale(0%)"; e.currentTarget.style.opacity = 1; }}}
+              onMouseLeave={e => { if (logo.url) { e.currentTarget.style.filter = "grayscale(100%)"; e.currentTarget.style.opacity = 0.7; }}}
+            >
+              {logo.url && (
                 <img
                   src={logo.url}
                   alt={logo.name}
-                  style={{ width: "100%", height: "100%", objectFit: "contain", maxWidth: "110px", maxHeight: "44px" }}
-                  onError={(e) => { e.currentTarget.style.display = "none"; }}
+                  style={{ maxWidth: "130px", maxHeight: "48px", objectFit: "contain", width: "100%" }}
                 />
-              </div>
-            ))}
-         </motion.div>
-      </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 }
