@@ -69,45 +69,48 @@ export default function FeaturedOffersSlider() {
         </div>
       </div>
 
-      {/* Modal - Edge-to-Edge */}
+      {/* Modal - מניעת חיתוך במובייל */}
       <AnimatePresence>
         {selectedId && selectedOffer && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.75)", backdropFilter: "blur(20px)", zIndex: 2000, display: "flex", alignItems: "center", justifyContent: "center", padding: isMobile ? "0" : "20px" }}
+            style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.85)", backdropFilter: "blur(20px)", zIndex: 2000, display: "flex", alignItems: "center", justifyContent: "center", padding: isMobile ? "0" : "20px" }}
             onClick={() => setSelectedId(null)}>
             <motion.div layoutId={selectedId} onClick={e => e.stopPropagation()}
-              style={{ width: "95vw", maxWidth: "1100px", background: "#fff", borderRadius: isMobile ? "32px 32px 0 0" : "40px", boxShadow: "0 40px 100px rgba(0,0,0,0.3)", overflow: "hidden", display: "flex", flexDirection: isMobile ? "column" : "row-reverse", maxHeight: isMobile ? "95dvh" : "85dvh" }}>
+              style={{ width: isMobile ? "100%" : "1100px", height: isMobile ? "100dvh" : "85vh", background: "#fff", borderRadius: isMobile ? "0" : "40px", overflow: "hidden", display: "flex", flexDirection: isMobile ? "column" : "row-reverse", maxHeight: isMobile ? "100dvh" : "85dvh" }}>
               
-              {/* IMAGE AREA - Edge to Edge */}
-              <div style={{ flex: isMobile ? "0 0 400px" : "1.3", position: "relative", padding: 0, overflow: "hidden" }}>
-                <button onClick={() => setSelectedId(null)} style={{ position: "absolute", top: 20, left: 20, background: "rgba(0,0,0,0.3)", border: "none", width: "40px", height: "40px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10 }}>
+              {/* IMAGE AREA - 50% גובה במובייל */}
+              <div style={{ flex: isMobile ? "0 0 50%" : "1.3", background: "#F5F5F7", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+                <button onClick={() => setSelectedId(null)} style={{ position: "absolute", top: 20, left: 20, background: "rgba(0,0,0,0.2)", border: "none", width: "40px", height: "40px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10 }}>
                   <X size={20} color="#fff" />
                 </button>
-                <img src={selectedOffer.img} alt={selectedOffer.brand} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                <img src={selectedOffer.img} alt={selectedOffer.brand} style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }} />
               </div>
 
-              {/* CONTENT AREA */}
-              <div style={{ flex: "1", padding: isMobile ? "30px 24px" : "60px", textAlign: "right", display: "flex", flexDirection: "column", justifyContent: "center", direction: "rtl" }}>
-                <p style={{ fontSize: "14px", fontWeight: 800, color: "#0055CC", marginBottom: "8px", fontFamily: "var(--font-heebo)" }}>{selectedOffer.cat} · {selectedOffer.brand}</p>
-                <h3 style={{ fontSize: "clamp(24px, 4vw, 42px)", fontWeight: 900, color: "#15172A", lineHeight: 1.1, marginBottom: "20px", fontFamily: "var(--font-heebo)" }}>{selectedOffer.title}</h3>
-                <p style={{ fontSize: "17px", color: "#6E6E73", lineHeight: 1.6, marginBottom: "40px", fontFamily: "var(--font-heebo)" }}>{selectedOffer.desc}</p>
-                
-                <div style={{ display: "flex", gap: "12px", marginBottom: "40px" }}>
-                  {[
-                    { lbl: selectedOffer.labelOld, val: selectedOffer.priceOld, strike: true, color: "#86868B" },
-                    { lbl: "מחיר לעובד", val: selectedOffer.priceNew, color: "#0055CC" },
-                    { lbl: "החיסכון שלך", val: selectedOffer.saving, color: "#1A7A43", bg: "rgba(52,199,89,0.1)" }
-                  ].map((c, i) => (
-                    <div key={i} style={{ flex: 1, background: c.bg || "#F5F5F7", borderRadius: "20px", padding: "16px 10px", textAlign: "center" }}>
-                      <p style={{ fontSize: "11px", fontWeight: 700, color: "#86868B", marginBottom: "4px", fontFamily: "var(--font-heebo)" }}>{c.lbl}</p>
-                      <p style={{ fontSize: isMobile ? "18px" : "24px", fontWeight: 900, color: c.color, textDecoration: c.strike ? "line-through" : "none", fontFamily: "var(--font-heebo)" }}>{c.val}</p>
-                    </div>
-                  ))}
+              {/* CONTENT AREA - עם Scroll לחץ */}
+              <div style={{ flex: "1", padding: isMobile ? "24px 20px" : "60px", textAlign: "right", display: "flex", flexDirection: "column", justifyContent: "center", direction: "rtl", overflowY: "auto", fontFamily: "var(--font-heebo)" }}>
+                <div>
+                  <p style={{ fontSize: "14px", fontWeight: 800, color: "#0055CC", marginBottom: "8px", fontFamily: "var(--font-heebo)" }}>{selectedOffer.cat} · {selectedOffer.brand}</p>
+                  <h3 style={{ fontSize: isMobile ? "24px" : "42px", fontWeight: 900, color: "#15172A", lineHeight: 1.1, marginBottom: "20px", fontFamily: "var(--font-heebo)" }}>{selectedOffer.title}</h3>
+                  <p style={{ fontSize: isMobile ? "16px" : "17px", color: "#6E6E73", lineHeight: 1.6, marginBottom: isMobile ? "20px" : "40px", fontFamily: "var(--font-heebo)" }}>{selectedOffer.desc}</p>
                 </div>
-
-                <button style={{ background: "#0055CC", color: "#fff", border: "none", padding: "22px", borderRadius: "24px", fontSize: "19px", fontWeight: 900, cursor: "pointer", boxShadow: "0 15px 40px rgba(0,85,204,0.35)", fontFamily: "var(--font-heebo)" }}>
-                  אני רוצה את זה בארגון שלי ←
-                </button>
+                
+                <div style={{ marginTop: "auto" }}>
+                  <div style={{ display: "flex", gap: "10px", marginBottom: "24px" }}>
+                    {[
+                      { lbl: selectedOffer.labelOld, val: selectedOffer.priceOld, strike: true, color: "#86868B" },
+                      { lbl: "מחיר לעובד", val: selectedOffer.priceNew, color: "#0055CC" },
+                      { lbl: "החיסכון שלך", val: selectedOffer.saving, color: "#1A7A43", bg: "rgba(52,199,89,0.1)" }
+                    ].map((c, i) => (
+                      <div key={i} style={{ flex: 1, background: c.bg || "#F5F5F7", borderRadius: "16px", padding: isMobile ? "12px 6px" : "16px 10px", textAlign: "center" }}>
+                        <p style={{ fontSize: "10px", fontWeight: 700, color: "#86868B", marginBottom: "4px", fontFamily: "var(--font-heebo)" }}>{c.lbl}</p>
+                        <p style={{ fontSize: isMobile ? "17px" : "24px", fontWeight: 900, color: c.color, textDecoration: c.strike ? "line-through" : "none", fontFamily: "var(--font-heebo)" }}>{c.val}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <button style={{ width: "100%", background: "#0055CC", color: "#fff", border: "none", padding: "22px", borderRadius: "24px", fontSize: "19px", fontWeight: 900, cursor: "pointer", boxShadow: "0 15px 40px rgba(0,85,204,0.35)", fontFamily: "var(--font-heebo)" }}>
+                    אני רוצה את זה בארגון שלי ←
+                  </button>
+                </div>
               </div>
             </motion.div>
           </motion.div>
