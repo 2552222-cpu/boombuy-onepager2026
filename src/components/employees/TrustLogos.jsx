@@ -92,11 +92,11 @@ export default function TrustLogos() {
            className="md:hidden"
            style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "12px", padding: "0 16px" }}
          >
-           {logos.slice(0, 12).map((logo, i) => (
+           {logos.map((logo, i) => (
               <div
                 key={i}
                 style={{
-                  height: "45px",
+                  height: "60px",
                   padding: "8px",
                   display: "grid",
                   placeItems: "center",
@@ -107,7 +107,7 @@ export default function TrustLogos() {
                 <img
                   src={logo.url}
                   alt={logo.name}
-                  style={{ width: "100%", height: "100%", objectFit: "contain", maxWidth: "100px", maxHeight: "35px" }}
+                  style={{ width: "100%", height: "100%", objectFit: "contain", maxWidth: "110px", maxHeight: "44px" }}
                   onError={(e) => { e.currentTarget.style.display = "none"; }}
                 />
               </div>
