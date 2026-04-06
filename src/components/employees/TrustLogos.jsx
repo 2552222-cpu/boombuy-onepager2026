@@ -154,7 +154,6 @@ export default function TrustLogos() {
           padding:4px 8px;
           box-sizing:border-box;
           transition:transform .25s ease;
-          transform:scale(1.35);
         }
         .jci-logoCard:hover img{
           transform:scale(1.04);
