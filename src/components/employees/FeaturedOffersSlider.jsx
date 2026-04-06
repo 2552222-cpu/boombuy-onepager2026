@@ -64,8 +64,8 @@ export default function FeaturedOffersSlider() {
               <motion.div key={offer.id} layoutId={offer.id} onClick={() => i === index ? setSelectedId(offer.id) : setIndex(i)}
                 animate={{ x: offset * (isMobile ? 210 : 230), scale: isCenter ? 1.1 : 0.82, rotateY: offset * -26, z: isCenter ? 150 : -80, filter: isCenter ? "none" : `blur(${Math.min(abs * 1.5, 4)}px) brightness(${0.85 - abs * 0.1})` }}
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                style={{ position: "absolute", width: "260px", height: "420px", background: "#F5F5F7", borderRadius: "32px", overflow: "hidden", cursor: "pointer", zIndex: 10 - abs, boxShadow: isCenter ? "0 32px 80px rgba(0,0,0,0.12)" : "0 6px 20px rgba(0,0,0,0.06)", display: "flex", flexDirection: "column" }}>
-                <img src={offer.img} alt={offer.brand} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                style={{ position: "absolute", width: "260px", height: "420px", background: "#F5F5F7", borderRadius: "32px", overflow: "hidden", cursor: "pointer", zIndex: 10 - abs, boxShadow: isCenter ? "0 32px 80px rgba(0,0,0,0.12)" : "0 6px 20px rgba(0,0,0,0.06)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+                <img src={offer.img} alt={offer.brand} style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }} />
               </motion.div>
             );
           })}
