@@ -1,16 +1,20 @@
 import React from "react";
-import { rowA, rowB } from "../../utils/logoData";
+import { logoList, rowA, rowB } from "../../utils/logoData";
 
 function Row({ items, dir = "left", duration = 85 }) {
   const trackClass = dir === "left" ? "jci-track jci-left" : "jci-track jci-right";
   return (
     <div className="jci-row">
       <div className={trackClass} style={{ ["--jci-dur"]: `${duration}s` }}>
-        {[...items, ...items].map((src, i) => (
-          <div key={`${src}-${i}`} className="jci-logoCard">
-            <img src={src} alt="לוגו לקוח" loading="lazy" decoding="async" width="200" height="100" />
+        {[...items, ...items].map((src, i) => {
+          const logoObj = logoList.find(l => l.url === src);
+          return (
+          <div key={`${src}-${i}`} className="jci-logoCard" data-logo-name={logoObj?.name || "unknown"}>
+            <img src={src} alt={logoObj?.name || "לוגו לקוח"} loading="lazy" decoding="async" width="200" height="100" />
           </div>
-        ))}
+        );
+        })}
+
       </div>
     </div>
   );
