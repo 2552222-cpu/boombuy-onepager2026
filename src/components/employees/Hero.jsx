@@ -56,17 +56,17 @@ export default function Hero() {
           </div>
 
           {/* IMAGE SIDE - עם אנימציית ציפה */}
-          <div style={{ flex: "1", display: "flex", justifyContent: "center", minWidth: "320px" }}>
+          <div style={{ flex: "1", display: "flex", justifyContent: "center", minWidth: "320px", padding: "0 16px" }}>
             <motion.div
               animate={{ y: [0, -15, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              style={{ width: "100%", maxWidth: "500px" }}
+              style={{ width: "100%", maxWidth: "clamp(280px, 90vw, 500px)" }}
             >
               <div style={{ 
-                background: "#F5F5F7", borderRadius: "60px", padding: "40px", 
+                background: "#F5F5F7", borderRadius: "clamp(40px, 8vw, 60px)", padding: "clamp(24px, 6vw, 40px)", 
                 boxShadow: "inset 0 0 40px rgba(0,0,0,0.02), 0 30px 60px rgba(0,0,0,0.05)" 
               }}>
-                <img src={HERO_DATA.image} alt="iPhone 16 Pro" style={{ width: "100%", height: "auto", objectFit: "contain", filter: "drop-shadow(0 30px 50px rgba(0,0,0,0.1))" }} />
+                <img src={HERO_DATA.image} alt="Tablet offer" style={{ width: "100%", height: "auto", objectFit: "contain", filter: "drop-shadow(0 30px 50px rgba(0,0,0,0.1))" }} />
               </div>
             </motion.div>
           </div>
