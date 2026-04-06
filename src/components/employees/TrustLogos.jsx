@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 const logos = [
   { name: "לאומי", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/2f10b2609_17.png" },
-  { name: "ישראייר", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3375a8756_-2026-03-22T223046698.png" },
+  { name: "ישראייר", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/f26a5145d_-2026-02-18T184914549.png" },
   { name: "תעש", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8003c0d5a_62.png" },
   { name: "קרן קיימת", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/dff369112_61.png" },
   { name: "Estee Lauder", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a6011911e_42.png" },
