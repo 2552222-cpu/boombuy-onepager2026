@@ -8,7 +8,8 @@ const OFFERS = [
     cat: "אופנה",
     brand: "Alo Yoga",
     title: "Alo Yoga — פרימיום",
-    priceOld: "₪499", priceNew: "₪224",
+    priceOld: "₪499", priceNew: "₪224", saving: "₪275",
+    desc: "אלו יוגה, אדידס, נייק ומותגי פרימיום במחירים סיטונאיים.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/359030b5f_87.png"
   },
   {
@@ -16,7 +17,8 @@ const OFFERS = [
     cat: "מובייל",
     brand: "Apple",
     title: "iPhone 16 Pro — יבואן",
-    priceOld: "₪4,590", priceNew: "₪3,890",
+    priceOld: "₪4,590", priceNew: "₪3,890", saving: "₪700",
+    desc: "הטבות בלעדיות על אייפון, סמסונג ומוצרי מובייל.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/66514fe66_-2026-02-18T150849922.png"
   },
   {
@@ -24,7 +26,8 @@ const OFFERS = [
     cat: "נופש וחופשות",
     brand: "מלונות בראון",
     title: "מלונות בראון — פרימיום",
-    priceOld: "₪1,790", priceNew: "₪899",
+    priceOld: "₪1,790", priceNew: "₪899", saving: "₪891",
+    desc: "חופשות בארץ ובחו\"\u05dc במחירים בלעדיים — עד 50% הנחה.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7cc501b0f_-2026-03-22T133529822.png"
   },
   {
@@ -32,7 +35,8 @@ const OFFERS = [
     cat: "נסיעות",
     brand: "Kate Hill",
     title: "Kate Hill — סט מזוודות",
-    priceOld: "₪1,999", priceNew: "₪249",
+    priceOld: "₪1,999", priceNew: "₪249", saving: "₪1,750",
+    desc: "סט 3 מזוודות קשיחות, יבואן רשמי. ההטבה המבוקשת של השנה.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28598db7e_-2026-03-15T180501791.png"
   },
   {
@@ -40,7 +44,8 @@ const OFFERS = [
     cat: "יוקר המחיה",
     brand: "TNX",
     title: "סופר ובית — TNX",
-    priceOld: "₪350", priceNew: "₪149",
+    priceOld: "₪350", priceNew: "₪149", saving: "₪201",
+    desc: "הוזלה אמיתית על מוצרי צריכה ובנוסף עד 8% הנחה קבועה בסופרים המוזלים.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e8b8ed0b8_-2026-02-18T145540109.png"
   },
   {
@@ -48,7 +53,8 @@ const OFFERS = [
     cat: "תרבות",
     brand: "קזבלן",
     title: "קזבלן — הצגת השנה",
-    priceOld: "₪350", priceNew: "₪77",
+    priceOld: "₪350", priceNew: "₪77", saving: "₪273",
+    desc: "תערוכות, הופעות והצגות בארץ ובחו\"\u05dc במחירים נגישים.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3c42d518b_-2026-03-22T140039783.png"
   },
   {
@@ -56,7 +62,8 @@ const OFFERS = [
     cat: "חשמל ואלקטרוניקה",
     brand: "Nespresso",
     title: "מכונת נספרסו — יבואן",
-    priceOld: "₪833", priceNew: "₪589",
+    priceOld: "₪833", priceNew: "₪589", saving: "₪244",
+    desc: "מוצרי חשמל ואלקטרוניקה במחירי יבואן ובהנחות חריגות.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/39fcbe2f7_-2026-02-18T150129609.png"
   },
   {
@@ -64,7 +71,8 @@ const OFFERS = [
     cat: "כל בוקר הטבה חדשה",
     brand: "260 הטבות",
     title: "260 הטבות — פרימיום",
-    priceOld: "₪499", priceNew: "₪299",
+    priceOld: "₪499", priceNew: "₪299", saving: "₪200",
+    desc: "חוויות ומוצרי צריכה פרימיום שאתם צורכים בכל מקרה.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/b7485969d_-2026-02-18T150744909.png"
   },
   {
@@ -72,17 +80,13 @@ const OFFERS = [
     cat: "בישום",
     brand: "Dior",
     title: "Dior Sauvage — יבואן",
-    priceOld: "₪600", priceNew: "₪430",
+    priceOld: "₪600", priceNew: "₪430", saving: "₪170",
+    desc: "חנות בישום במחירי יבואן.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/823674aab_-2026-02-18T150114784.png"
   }
 ];
 
-function calcSaving(priceOld, priceNew) {
-  if (!priceOld) return null;
-  const old = parseInt(priceOld.replace(/[^\d]/g, ""));
-  const nw = parseInt(priceNew.replace(/[^\d]/g, ""));
-  return `₪${old - nw}`;
-}
+
 
 export default function FeaturedOffersSlider() {
   const [selectedId, setSelectedId] = useState(null);
@@ -141,7 +145,6 @@ export default function FeaturedOffersSlider() {
             const absOffset = Math.abs(offset);
             if (absOffset > 4) return null;
             const isCenter = absOffset === 0;
-            const saving = calcSaving(offer.priceOld, offer.priceNew);
 
             return (
               <motion.div
@@ -245,7 +248,7 @@ export default function FeaturedOffersSlider() {
                     </div>
 
                     {/* Saving pill */}
-                    {saving && (
+                    {offer.saving && (
                       <div style={{
                         background: "#007AFF",
                         borderRadius: "999px",
@@ -256,7 +259,7 @@ export default function FeaturedOffersSlider() {
                         boxShadow: "0 4px 14px rgba(0,122,255,0.3)",
                       }}>
                         <span style={{ fontSize: "9px", fontWeight: 600, color: "rgba(255,255,255,0.75)", fontFamily: "var(--font-heebo)" }}>החיסכון שלך</span>
-                        <span style={{ fontSize: "15px", fontWeight: 900, color: "#fff", fontFamily: "var(--font-heebo)" }}>{saving}</span>
+                        <span style={{ fontSize: "15px", fontWeight: 900, color: "#fff", fontFamily: "var(--font-heebo)" }}>{offer.saving}</span>
                       </div>
                     )}
                   </div>
@@ -401,7 +404,7 @@ export default function FeaturedOffersSlider() {
                 textAlign: "right",
                 display: "flex",
                 flexDirection: "column",
-                gap: "12px",
+                gap: "10px",
                 overflowY: "auto",
               }}>
                 <div>
@@ -419,40 +422,45 @@ export default function FeaturedOffersSlider() {
                   }}>
                     {selectedOffer.title}
                   </h3>
+                  {selectedOffer.desc && (
+                    <p style={{ fontSize: "13px", color: "#86868B", fontFamily: "var(--font-heebo)", lineHeight: 1.5, margin: "6px 0 0" }}>
+                      {selectedOffer.desc}
+                    </p>
+                  )}
                 </div>
 
-                {/* Price pills */}
-                <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                {/* Glass price pill */}
+                <div style={{
+                  background: "rgba(245,245,247,0.85)",
+                  backdropFilter: "blur(20px)",
+                  WebkitBackdropFilter: "blur(20px)",
+                  border: "1px solid rgba(0,0,0,0.07)",
+                  borderRadius: "16px",
+                  padding: "10px 16px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  alignSelf: "flex-start",
+                }}>
                   {selectedOffer.priceOld && (
-                    <div style={{
-                      background: "#F5F5F7",
-                      borderRadius: "12px",
-                      padding: "8px 14px",
-                      display: "flex", flexDirection: "column", alignItems: "flex-end",
-                    }}>
-                      <span style={{ fontSize: "9px", fontWeight: 700, color: "#AEAEB2", fontFamily: "var(--font-heebo)" }}>מחיר ZAP</span>
-                      <span style={{ fontSize: "15px", color: "#86868B", textDecoration: "line-through", fontFamily: "var(--font-heebo)" }}>{selectedOffer.priceOld}</span>
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "1px" }}>
+                      <span style={{ fontSize: "9px", fontWeight: 700, color: "#AEAEB2", fontFamily: "var(--font-heebo)", letterSpacing: "0.04em" }}>מחיר שוק</span>
+                      <span style={{ fontSize: "14px", color: "#86868B", textDecoration: "line-through", fontFamily: "var(--font-heebo)" }}>{selectedOffer.priceOld}</span>
                     </div>
                   )}
-                  <div style={{
-                    background: "#EBF3FF",
-                    borderRadius: "12px",
-                    padding: "8px 14px",
-                    display: "flex", flexDirection: "column", alignItems: "flex-end",
-                  }}>
-                    <span style={{ fontSize: "9px", fontWeight: 700, color: "#007AFF", fontFamily: "var(--font-heebo)" }}>מחיר BoomBuy</span>
+                  {selectedOffer.priceOld && <div style={{ width: "1px", height: "32px", background: "rgba(0,0,0,0.1)" }} />}
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "1px" }}>
+                    <span style={{ fontSize: "9px", fontWeight: 700, color: "#007AFF", fontFamily: "var(--font-heebo)", letterSpacing: "0.04em" }}>מחיר לעובד</span>
                     <span style={{ fontSize: "22px", fontWeight: 900, color: "#007AFF", fontFamily: "var(--font-heebo)" }}>{selectedOffer.priceNew}</span>
                   </div>
-                  {calcSaving(selectedOffer.priceOld, selectedOffer.priceNew) && (
-                    <div style={{
-                      background: "#007AFF",
-                      borderRadius: "12px",
-                      padding: "8px 14px",
-                      display: "flex", flexDirection: "column", alignItems: "flex-end",
-                    }}>
-                      <span style={{ fontSize: "9px", fontWeight: 700, color: "rgba(255,255,255,0.75)", fontFamily: "var(--font-heebo)" }}>החיסכון שלך</span>
-                      <span style={{ fontSize: "20px", fontWeight: 900, color: "#fff", fontFamily: "var(--font-heebo)" }}>{calcSaving(selectedOffer.priceOld, selectedOffer.priceNew)}</span>
-                    </div>
+                  {selectedOffer.saving && (
+                    <>
+                      <div style={{ width: "1px", height: "32px", background: "rgba(0,0,0,0.1)" }} />
+                      <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "1px" }}>
+                        <span style={{ fontSize: "9px", fontWeight: 700, color: "#34C759", fontFamily: "var(--font-heebo)", letterSpacing: "0.04em" }}>החיסכון שלך</span>
+                        <span style={{ fontSize: "18px", fontWeight: 900, color: "#34C759", fontFamily: "var(--font-heebo)" }}>{selectedOffer.saving}</span>
+                      </div>
+                    </>
                   )}
                 </div>
 
