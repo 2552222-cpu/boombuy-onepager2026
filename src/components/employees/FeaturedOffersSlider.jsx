@@ -415,9 +415,9 @@ export default function FeaturedOffersSlider() {
             transition={{ duration: 0.22 }}
             style={{
               position: "fixed", inset: 0,
-              background: "rgba(0,0,0,0.72)",
-              backdropFilter: "blur(20px)",
-              WebkitBackdropFilter: "blur(20px)",
+              background: "rgba(0,0,0,0.8)",
+              backdropFilter: "blur(15px)",
+              WebkitBackdropFilter: "blur(15px)",
               zIndex: 2000,
               display: "flex",
               alignItems: isMobile ? "flex-end" : "center",
@@ -464,8 +464,8 @@ export default function FeaturedOffersSlider() {
               onClick={(e) => e.stopPropagation()}
               style={{
                 width: "100%",
-                maxWidth: isMobile ? "480px" : "480px",
-                height: isMobile ? "90dvh" : "85dvh",
+                maxWidth: isMobile ? "480px" : "1100px",
+                height: "85vh",
                 background: "#fff",
                 borderRadius: isMobile ? "28px 28px 0 0" : "24px",
                 overflow: "hidden",
@@ -474,8 +474,8 @@ export default function FeaturedOffersSlider() {
                 boxShadow: "0 32px 80px rgba(0,0,0,0.35)",
               }}
             >
-              {/* Image — 70% */}
-              <div style={{ height: "70%", overflow: "hidden", background: "#F5F5F7", flexShrink: 0 }}>
+              {/* Image — 65% */}
+              <div style={{ height: "65%", overflow: "hidden", background: "#F5F5F7", flexShrink: 0, padding: 0 }}>
                 <img
                   src={selectedOffer.img}
                   alt={selectedOffer.brand}
@@ -483,17 +483,31 @@ export default function FeaturedOffersSlider() {
                 />
               </div>
 
-              {/* Info — 30% */}
+              {/* Info — 35% */}
               <div style={{
                 flex: 1,
-                padding: "14px 18px calc(env(safe-area-inset-bottom, 0px) + 14px)",
-                display: "flex", flexDirection: "column", gap: "10px",
+                padding: "40px",
+                display: "flex", flexDirection: "column", gap: "12px",
                 background: "#fff", direction: "rtl",
                 justifyContent: "space-between",
+                paddingBottom: `calc(40px + env(safe-area-inset-bottom, 0px))`,
               }}>
+                {/* Category & Brand Outside */}
+                <div style={{
+                  position: "absolute", top: "-50px", right: "0",
+                  textAlign: "right",
+                }}>
+                  <p style={{ fontSize: "12px", fontWeight: 700, color: "#fff", textTransform: "uppercase", fontFamily: "var(--font-heebo)", margin: 0, letterSpacing: "0.06em" }}>
+                    {selectedOffer.cat}
+                  </p>
+                  <p style={{ fontSize: "16px", fontWeight: 900, color: "#fff", fontFamily: "var(--font-heebo)", margin: "4px 0 0" }}>
+                    {selectedOffer.brand}
+                  </p>
+                </div>
+
                 {/* Title */}
                 <div>
-                  <p style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.05em", color: "#AEAEB2", textTransform: "uppercase", fontFamily: "var(--font-heebo)", margin: 0 }}>
+                  <p style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.05em", color: "#AEAEB2", textTransform: "uppercase", fontFamily: "var(--font-heebo)", margin: 0, display: "none" }}>
                     {selectedOffer.brand} · {selectedOffer.cat}
                   </p>
                   <h3 style={{ fontSize: "18px", fontWeight: 900, color: "#1D1D1F", fontFamily: "var(--font-heebo)", lineHeight: 1.2, margin: "3px 0 0" }}>
@@ -507,7 +521,7 @@ export default function FeaturedOffersSlider() {
                 </div>
 
                 {/* Prices */}
-                <div style={{ display: "flex", gap: "6px", alignItems: "center", flexWrap: "wrap" }}>
+                <div style={{ display: "flex", gap: "6px", alignItems: "center", justifyContent: "flex-end" }}>
                   {selectedOffer.priceOld && (
                     <div style={{ background: "#F5F5F7", border: "1px solid rgba(0,0,0,0.08)", borderRadius: "999px", padding: "4px 12px", display: "flex", flexDirection: "column", alignItems: "center" }}>
                       <span style={{ ...PILL_LABEL_STYLE, color: "#AEAEB2" }}>{selectedOffer.priceOldLabel}</span>
@@ -527,31 +541,30 @@ export default function FeaturedOffersSlider() {
                 </div>
 
                 {/* CTA */}
-                <div style={{ display: "flex", justifyContent: "center" }}>
-                  <button
-                    onClick={() => {
-                      setSelectedId(null);
-                      setTimeout(() => document.getElementById("survey-section")?.scrollIntoView({ behavior: "smooth" }), 200);
-                    }}
-                    style={{
-                      width: "100%",
-                      maxWidth: "400px",
-                      background: "#007AFF",
-                      color: "#fff",
-                      border: "none",
-                      padding: "12px",
-                      borderRadius: "14px",
-                      fontWeight: 700,
-                      fontSize: "14px",
-                      cursor: "pointer",
-                      boxShadow: "0 8px 24px rgba(0,122,255,0.28)",
-                      fontFamily: "var(--font-heebo)",
-                      letterSpacing: "-0.01em",
-                    }}
-                  >
-                    אני רוצה את זה בארגון שלי ←
-                  </button>
-                </div>
+                <button
+                  onClick={() => {
+                    setSelectedId(null);
+                    setTimeout(() => document.getElementById("survey-section")?.scrollIntoView({ behavior: "smooth" }), 200);
+                  }}
+                  style={{
+                    width: "360px",
+                    margin: "0 auto",
+                    marginBottom: "20px",
+                    background: "#007AFF",
+                    color: "#fff",
+                    border: "none",
+                    padding: "12px",
+                    borderRadius: "14px",
+                    fontWeight: 700,
+                    fontSize: "14px",
+                    cursor: "pointer",
+                    boxShadow: "0 8px 24px rgba(0,122,255,0.28)",
+                    fontFamily: "var(--font-heebo)",
+                    letterSpacing: "-0.01em",
+                  }}
+                >
+                  אני רוצה את זה בארגון שלי ←
+                </button>
               </div>
             </motion.div>
           </motion.div>
