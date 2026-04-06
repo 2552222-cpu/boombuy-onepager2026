@@ -57,7 +57,7 @@ export default function FeaturedOffersSlider() {
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                 style={{ position: "absolute", width: "260px", height: "420px", background: "#F5F5F7", borderRadius: "32px", overflow: "hidden", cursor: "pointer", zIndex: 10 - abs, boxShadow: isCenter ? "0 32px 80px rgba(0,0,0,0.12)" : "0 6px 20px rgba(0,0,0,0.06)", display: "flex", flexDirection: "column" }}>
                 <div style={{ flex: "0 0 72%", background: "#F0F0F2", display: "flex", alignItems: "center", justifyContent: "center", padding: "12px", borderRadius: "32px 32px 0 0", overflow: "hidden" }}>
-                  <img src={offer.img} alt={offer.brand} style={{ width: "100%", height: "100%", objectFit: "contain", borderRadius: "24px 24px 0 0" }} />
+                  <img src={offer.img} alt={offer.brand} style={{ width: "100%", height: "100%", objectFit: "contain", borderRadius: "32px 32px 0 0" }} />
                 </div>
                 <div style={{ flex: 1, padding: "12px", background: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }}>
                    <p style={{ fontSize: "14px", fontWeight: 800, color: "#1D1D1F", fontFamily: "var(--font-heebo)" }}>{offer.brand}</p>
