@@ -28,7 +28,7 @@ const logos = [
   { name: "דלק", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/be9e3de1a_-2026-03-22T184841801.png" },
   { name: "Check Point", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e71824c2e_-2026-04-02T203121306.png" },
   { name: "רמלאל", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ee6b05338_-2026-04-03T180125393.png" },
-  { name: "בזק בתקשורת", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8b28ec6fc_71.png" },
+  { name: "HOT mobile", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/5f7a627b6_-2026-04-06T212635319.png" },
 ];
 
 export default function TrustLogos() {
