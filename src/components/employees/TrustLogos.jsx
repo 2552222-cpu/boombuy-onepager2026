@@ -112,7 +112,7 @@ export default function TrustLogos() {
           justify-content:center;
           width:180px;
           height:100px;
-          padding:8px 12px;
+          padding:0;
           box-sizing:border-box;
         }
 
@@ -122,7 +122,7 @@ export default function TrustLogos() {
           height:100%;
           object-fit:contain;
           object-position:center;
-          padding:18px 22px;
+          padding:10px 14px;
           box-sizing:border-box;
           transition:transform .25s ease;
         }
@@ -155,7 +155,7 @@ export default function TrustLogos() {
           .jci-subtitle{ font-size:12px; }
           .jci-rows{ gap:2px; }
           .jci-track{ gap:1px; }
-          .jci-logoCard{ width:100px; height:72px; padding:6px 6px; }
+          .jci-logoCard{ width:120px; height:80px; padding:0; }
           .jci-trust{ font-size:11px; margin-top:24px; padding:0 16px; }
           .jci-row{ height:72px; }
         }
