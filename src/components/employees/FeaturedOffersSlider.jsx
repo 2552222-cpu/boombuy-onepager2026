@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { X } from "lucide-react";
 
-// --- הנתונים המדויקים שלך: בלי בלבולי מוח ---
+// --- נתונים מילה במילה ---
 const OFFERS = [
   { id: "culture", cat: "תרבות ופנאי", brand: "קזבלן", title: "קזבלן · הצגת השנה", priceOld: "₪350", priceNew: "₪77", saving: "₪273", labelOld: "מחיר שוק", desc: "תערוכות, הופעות והצגות בארץ ובחו\"ל במחירים נגישים.", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3c42d518b_-2026-03-22T140039783.png" },
   { id: "fashion", cat: "אופנה ומותגים", brand: "Alo Yoga", title: "Alo Yoga · פרימיום", priceOld: "₪499", priceNew: "₪224", saving: "₪275", labelOld: "מחיר שוק", desc: "אלו יוגה, אדידס, נייק ומותגי פרימיום במחירים סיטונאיים.", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/359030b5f_87.png" },
@@ -18,7 +18,6 @@ const OFFERS = [
 export default function FeaturedOffersSlider() {
   const [selectedId, setSelectedId] = useState(null);
   const [index, setIndex] = useState(3);
-  const touchStart = useRef(0);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -32,7 +31,7 @@ export default function FeaturedOffersSlider() {
   const go = dir => setIndex(p => (p + dir + OFFERS.length) % OFFERS.length);
 
   return (
-    <section id="offers-slider" style={{ background: "#FFFFFF", padding: isMobile ? "60px 0" : "80px 0", direction: "rtl", overflowX: "hidden", borderTop: "1px solid rgba(0,0,0,0.06)" }}>
+    <section id="offers-slider" style={{ background: "#FFFFFF", padding: "80px 0", direction: "rtl", overflowX: "hidden", borderTop: "1px solid rgba(0,0,0,0.06)" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto", textAlign: "center", padding: "0 16px" }}>
         
         <h2 style={{ fontSize: "clamp(28px, 5vw, 48px)", fontWeight: 900, marginBottom: "10px", fontFamily: "var(--font-heebo)", color: "#15172A", letterSpacing: "-0.03em", lineHeight: 1.1 }}>
@@ -42,9 +41,8 @@ export default function FeaturedOffersSlider() {
           מחירים חריגים ותנאים בלעדיים שנפתחו רק עבורכם
         </p>
 
-        {/* מנוע הסליידר המקורי */}
-        <div onTouchStart={e => { touchStart.current = e.touches[0].clientX; }} onTouchEnd={e => { const diff = touchStart.current - e.changedTouches[0].clientX; if (Math.abs(diff) > 50) go(diff > 0 ? 1 : -1); }}
-          style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "480px", perspective: "1500px", position: "relative", width: "100%" }}>
+        {/* Carousel */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "480px", perspective: "1500px", position: "relative", width: "100%" }}>
           {OFFERS.map((offer, i) => {
             const offset = i - index;
             const abs = Math.abs(offset);
@@ -56,12 +54,7 @@ export default function FeaturedOffersSlider() {
                 animate={{ x: offset * (isMobile ? 210 : 230), scale: isCenter ? 1.1 : 0.82, rotateY: offset * -26, z: isCenter ? 150 : -80, filter: isCenter ? "none" : `blur(${Math.min(abs * 1.5, 4)}px) brightness(${0.85 - abs * 0.1})` }}
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                 style={{ position: "absolute", width: "260px", height: "420px", background: "#F5F5F7", borderRadius: "32px", overflow: "hidden", cursor: "pointer", zIndex: 10 - abs, boxShadow: isCenter ? "0 32px 80px rgba(0,0,0,0.12)" : "0 6px 20px rgba(0,0,0,0.06)", display: "flex", flexDirection: "column" }}>
-                <div style={{ flex: "0 0 72%", background: "#F0F0F2", display: "flex", alignItems: "center", justifyContent: "center", padding: "12px", borderRadius: "32px 32px 0 0", overflow: "hidden" }}>
-                  <img src={offer.img} alt={offer.brand} style={{ width: "100%", height: "100%", objectFit: "contain", borderRadius: "32px 32px 0 0" }} />
-                </div>
-                <div style={{ flex: 1, padding: "12px", background: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                   <p style={{ fontSize: "14px", fontWeight: 800, color: "#1D1D1F", fontFamily: "var(--font-heebo)" }}>{offer.brand}</p>
-                </div>
+                <img src={offer.img} alt={offer.brand} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
               </motion.div>
             );
           })}
@@ -76,6 +69,7 @@ export default function FeaturedOffersSlider() {
         </div>
       </div>
 
+      {/* Modal - Edge-to-Edge */}
       <AnimatePresence>
         {selectedId && selectedOffer && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -84,32 +78,34 @@ export default function FeaturedOffersSlider() {
             <motion.div layoutId={selectedId} onClick={e => e.stopPropagation()}
               style={{ width: "95vw", maxWidth: "1100px", background: "#fff", borderRadius: isMobile ? "32px 32px 0 0" : "40px", boxShadow: "0 40px 100px rgba(0,0,0,0.3)", overflow: "hidden", display: "flex", flexDirection: isMobile ? "column" : "row-reverse", maxHeight: isMobile ? "95dvh" : "85dvh" }}>
               
-              <div style={{ flex: isMobile ? "0 0 350px" : "1.3", background: "#F5F5F7", display: "flex", alignItems: "center", justifyContent: "center", padding: "40px", position: "relative" }}>
-                <button onClick={() => setSelectedId(null)} style={{ position: "absolute", top: 20, left: 20, background: "rgba(0,0,0,0.06)", border: "none", width: "40px", height: "40px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10 }}>
-                  <X size={20} color="#1D1D1F" />
+              {/* IMAGE AREA - Edge to Edge */}
+              <div style={{ flex: isMobile ? "0 0 400px" : "1.3", position: "relative", padding: 0, overflow: "hidden" }}>
+                <button onClick={() => setSelectedId(null)} style={{ position: "absolute", top: 20, left: 20, background: "rgba(0,0,0,0.3)", border: "none", width: "40px", height: "40px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10 }}>
+                  <X size={20} color="#fff" />
                 </button>
-                <img src={selectedOffer.img} alt={selectedOffer.brand} style={{ width: "100%", height: "100%", objectFit: "contain", maxHeight: isMobile ? "280px" : "550px" }} />
+                <img src={selectedOffer.img} alt={selectedOffer.brand} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
               </div>
 
+              {/* CONTENT AREA */}
               <div style={{ flex: "1", padding: isMobile ? "30px 24px" : "60px", textAlign: "right", display: "flex", flexDirection: "column", justifyContent: "center", direction: "rtl" }}>
                 <p style={{ fontSize: "14px", fontWeight: 800, color: "#0055CC", marginBottom: "8px", fontFamily: "var(--font-heebo)" }}>{selectedOffer.cat} · {selectedOffer.brand}</p>
-                <h3 style={{ fontSize: "clamp(24px, 4vw, 42px)", fontWeight: 900, color: "#15172A", lineHeight: 1.1, marginBottom: "20px" }}>{selectedOffer.title}</h3>
-                <p style={{ fontSize: "17px", color: "#6E6E73", lineHeight: 1.6, marginBottom: "40px" }}>{selectedOffer.desc}</p>
+                <h3 style={{ fontSize: "clamp(24px, 4vw, 42px)", fontWeight: 900, color: "#15172A", lineHeight: 1.1, marginBottom: "20px", fontFamily: "var(--font-heebo)" }}>{selectedOffer.title}</h3>
+                <p style={{ fontSize: "17px", color: "#6E6E73", lineHeight: 1.6, marginBottom: "40px", fontFamily: "var(--font-heebo)" }}>{selectedOffer.desc}</p>
                 
                 <div style={{ display: "flex", gap: "12px", marginBottom: "40px" }}>
                   {[
                     { lbl: selectedOffer.labelOld, val: selectedOffer.priceOld, strike: true, color: "#86868B" },
-                    { lbl: "מחיר לעובד", val: selectedOffer.priceNew, color: "#0055CC", bold: true },
+                    { lbl: "מחיר לעובד", val: selectedOffer.priceNew, color: "#0055CC" },
                     { lbl: "החיסכון שלך", val: selectedOffer.saving, color: "#1A7A43", bg: "rgba(52,199,89,0.1)" }
                   ].map((c, i) => (
                     <div key={i} style={{ flex: 1, background: c.bg || "#F5F5F7", borderRadius: "20px", padding: "16px 10px", textAlign: "center" }}>
-                      <p style={{ fontSize: "11px", fontWeight: 700, color: "#86868B", marginBottom: "4px" }}>{c.lbl}</p>
-                      <p style={{ fontSize: isMobile ? "18px" : "24px", fontWeight: 900, color: c.color, textDecoration: c.strike ? "line-through" : "none" }}>{c.val}</p>
+                      <p style={{ fontSize: "11px", fontWeight: 700, color: "#86868B", marginBottom: "4px", fontFamily: "var(--font-heebo)" }}>{c.lbl}</p>
+                      <p style={{ fontSize: isMobile ? "18px" : "24px", fontWeight: 900, color: c.color, textDecoration: c.strike ? "line-through" : "none", fontFamily: "var(--font-heebo)" }}>{c.val}</p>
                     </div>
                   ))}
                 </div>
 
-                <button style={{ background: "#0055CC", color: "#fff", border: "none", padding: "22px", borderRadius: "24px", fontSize: "19px", fontWeight: 900, cursor: "pointer", boxShadow: "0 15px 40px rgba(0,85,204,0.35)", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
+                <button style={{ background: "#0055CC", color: "#fff", border: "none", padding: "22px", borderRadius: "24px", fontSize: "19px", fontWeight: 900, cursor: "pointer", boxShadow: "0 15px 40px rgba(0,85,204,0.35)", fontFamily: "var(--font-heebo)" }}>
                   אני רוצה את זה בארגון שלי ←
                 </button>
               </div>
