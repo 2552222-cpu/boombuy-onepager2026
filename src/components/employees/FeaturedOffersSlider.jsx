@@ -27,7 +27,7 @@ const OFFERS = [
     brand: "מלונות בראון",
     title: "מלונות בראון — פרימיום",
     priceOld: "₪1,790", priceNew: "₪899", saving: "₪891",
-    desc: "חופשות בארץ ובחו\"\u05dc במחירים בלעדיים — עד 50% הנחה.",
+    desc: "חופשות בארץ ובחו\"ל במחירים בלעדיים — עד 50% הנחה.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7cc501b0f_-2026-03-22T133529822.png"
   },
   {
@@ -54,7 +54,7 @@ const OFFERS = [
     brand: "קזבלן",
     title: "קזבלן — הצגת השנה",
     priceOld: "₪350", priceNew: "₪77", saving: "₪273",
-    desc: "תערוכות, הופעות והצגות בארץ ובחו\"\u05dc במחירים נגישים.",
+    desc: "תערוכות, הופעות והצגות בארץ ובחו\"ל במחירים נגישים.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3c42d518b_-2026-03-22T140039783.png"
   },
   {
@@ -85,8 +85,6 @@ const OFFERS = [
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/823674aab_-2026-02-18T150114784.png"
   }
 ];
-
-
 
 export default function FeaturedOffersSlider() {
   const [selectedId, setSelectedId] = useState(null);
@@ -120,7 +118,7 @@ export default function FeaturedOffersSlider() {
           fontWeight: 700,
           lineHeight: 1.5,
         }}>
-          ככה אנחנו מגדילים את נטו העובד — דוגמאות לחיסכון חריג
+          לחצו על כרטיסייה לפרטים מלאים
         </p>
 
         {/* Carousel */}
@@ -134,7 +132,7 @@ export default function FeaturedOffersSlider() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            minHeight: "480px",
+            height: "540px",
             perspective: "1500px",
             position: "relative",
             width: "100%",
@@ -143,7 +141,7 @@ export default function FeaturedOffersSlider() {
           {OFFERS.map((offer, i) => {
             const offset = i - index;
             const absOffset = Math.abs(offset);
-            if (absOffset > 4) return null;
+            if (absOffset > 3) return null;
             const isCenter = absOffset === 0;
 
             return (
@@ -151,152 +149,129 @@ export default function FeaturedOffersSlider() {
                 key={offer.id}
                 onClick={() => i === index ? setSelectedId(offer.id) : setIndex(i)}
                 animate={{
-                  x: offset * 240,
-                  scale: isCenter ? 1.12 : 0.84,
-                  rotateY: offset * -25,
-                  z: isCenter ? 150 : -80,
-                  filter: isCenter ? "none" : `blur(3px) brightness(0.75)`,
+                  x: offset * 280,
+                  scale: isCenter ? 1.08 : 0.8,
+                  rotateY: offset * -22,
+                  z: isCenter ? 100 : -100,
+                  filter: isCenter ? "none" : `blur(2px) brightness(0.7)`,
                 }}
-                transition={{ type: "spring", damping: 20, stiffness: 180 }}
+                transition={{ type: "spring", damping: 25, stiffness: 150 }}
                 style={{
                   position: "absolute",
-                  width: "260px",
-                  height: "400px",
-                  background: "#F5F5F7",
-                  overflow: "visible",
-                  borderRadius: "28px",
+                  width: "340px",
+                  height: "480px",
+                  borderRadius: "24px",
                   cursor: "pointer",
                   zIndex: 10 - absOffset,
+                  overflow: "hidden",
                   boxShadow: isCenter
-                    ? "0 0 0 1px rgba(0,0,0,0.06), 0 32px 80px rgba(0,0,0,0.14)"
+                    ? "0 0 0 1px rgba(0,0,0,0.06), 0 40px 100px rgba(0,0,0,0.18)"
                     : "0 8px 24px rgba(0,0,0,0.06)",
+                  background: "#F5F5F7",
                 }}
               >
-                {/* Image container */}
-                <div style={{
-                  width: "100%",
-                  height: "100%",
-                  background: "#F5F5F7",
-                  borderRadius: "28px",
-                  overflow: "hidden",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  padding: "15%",
-                  boxSizing: "border-box",
-                }}>
-                  <img
-                    src={offer.img}
-                    alt={offer.brand}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "contain",
-                      display: "block",
-                    }}
-                  />
-                </div>
-
+                <img
+                  src={offer.img}
+                  alt={offer.brand}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                    display: "block",
+                  }}
+                />
+                {/* Subtle brand label on center card */}
+                {isCenter && (
+                  <div style={{
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    padding: "32px 20px 20px",
+                    background: "linear-gradient(to top, rgba(0,0,0,0.35) 0%, transparent 100%)",
+                    textAlign: "right",
+                  }}>
+                    <p style={{
+                      fontSize: "11px", fontWeight: 700, color: "rgba(255,255,255,0.7)",
+                      fontFamily: "var(--font-heebo)", letterSpacing: "0.06em",
+                      textTransform: "uppercase", margin: 0,
+                    }}>
+                      {offer.cat}
+                    </p>
+                    <p style={{
+                      fontSize: "16px", fontWeight: 900, color: "#fff",
+                      fontFamily: "var(--font-heebo)", margin: "2px 0 0",
+                      letterSpacing: "-0.01em",
+                    }}>
+                      {offer.brand}
+                    </p>
+                  </div>
+                )}
               </motion.div>
             );
           })}
         </div>
 
-        {/* Card title + price pills below */}
-        <div style={{ marginTop: "56px" }}>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.25 }}
-              style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "14px" }}
-            >
-              <div>
-                <p style={{
-                  fontSize: "12px",
-                  fontWeight: 700,
-                  color: "#AEAEB2",
-                  fontFamily: "var(--font-heebo)",
-                  marginBottom: "4px",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.06em",
-                }}>
-                  {OFFERS[index].cat} · {OFFERS[index].brand}
-                </p>
-                <p style={{
-                  fontSize: "17px",
-                  fontWeight: 900,
-                  color: "#1D1D1F",
-                  fontFamily: "var(--font-heebo)",
-                  maxWidth: "340px",
-                  margin: "0 auto",
-                  lineHeight: 1.3,
-                  letterSpacing: "-0.02em",
-                }}>
-                  {OFFERS[index].title}
-                </p>
-              </div>
-
-              {/* Price pills row */}
+        {/* Price pills below carousel */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.22 }}
+            style={{
+              marginTop: "28px",
+              display: "flex",
+              gap: "8px",
+              alignItems: "center",
+              justifyContent: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            {OFFERS[index].priceOld && (
               <div style={{
+                background: "#F5F5F7",
+                border: "1px solid rgba(0,0,0,0.08)",
+                borderRadius: "999px",
+                padding: "6px 16px",
                 display: "flex",
-                gap: "8px",
+                flexDirection: "column",
                 alignItems: "center",
-                justifyContent: "center",
-                flexWrap: "wrap",
               }}>
-                {OFFERS[index].priceOld && (
-                  <div style={{
-                    background: "rgba(255,255,255,0.85)",
-                    backdropFilter: "blur(20px)",
-                    WebkitBackdropFilter: "blur(20px)",
-                    border: "1px solid rgba(0,0,0,0.08)",
-                    borderRadius: "999px",
-                    padding: "6px 14px",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
-                  }}>
-                    <span style={{ fontSize: "9px", fontWeight: 700, color: "#AEAEB2", fontFamily: "var(--font-heebo)" }}>מחיר שוק</span>
-                    <span style={{ fontSize: "14px", color: "#86868B", textDecoration: "line-through", fontFamily: "var(--font-heebo)", fontWeight: 500 }}>{OFFERS[index].priceOld}</span>
-                  </div>
-                )}
-                <div style={{
-                  background: "rgba(255,255,255,0.85)",
-                  backdropFilter: "blur(20px)",
-                  WebkitBackdropFilter: "blur(20px)",
-                  border: "1px solid rgba(0,102,204,0.15)",
-                  borderRadius: "999px",
-                  padding: "6px 16px",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  boxShadow: "0 2px 8px rgba(0,102,204,0.1)",
-                }}>
-                  <span style={{ fontSize: "9px", fontWeight: 700, color: "#007AFF", fontFamily: "var(--font-heebo)" }}>מחיר BoomBuy</span>
-                  <span style={{ fontSize: "20px", fontWeight: 900, color: "#1D1D1F", fontFamily: "var(--font-heebo)" }}>{OFFERS[index].priceNew}</span>
-                </div>
-                {OFFERS[index].saving && (
-                  <div style={{
-                    background: "#007AFF",
-                    borderRadius: "999px",
-                    padding: "6px 16px",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    boxShadow: "0 4px 14px rgba(0,122,255,0.3)",
-                  }}>
-                    <span style={{ fontSize: "9px", fontWeight: 600, color: "rgba(255,255,255,0.75)", fontFamily: "var(--font-heebo)" }}>החיסכון שלך</span>
-                    <span style={{ fontSize: "16px", fontWeight: 900, color: "#fff", fontFamily: "var(--font-heebo)" }}>{OFFERS[index].saving}</span>
-                  </div>
-                )}
+                <span style={{ fontSize: "9px", fontWeight: 700, color: "#AEAEB2", fontFamily: "var(--font-heebo)" }}>מחיר שוק</span>
+                <span style={{ fontSize: "15px", color: "#86868B", textDecoration: "line-through", fontFamily: "var(--font-heebo)", fontWeight: 600 }}>{OFFERS[index].priceOld}</span>
               </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
+            )}
+            <div style={{
+              background: "#fff",
+              border: "1.5px solid rgba(0,102,204,0.2)",
+              borderRadius: "999px",
+              padding: "6px 20px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              boxShadow: "0 2px 12px rgba(0,102,204,0.1)",
+            }}>
+              <span style={{ fontSize: "9px", fontWeight: 700, color: "#007AFF", fontFamily: "var(--font-heebo)" }}>מחיר BoomBuy</span>
+              <span style={{ fontSize: "22px", fontWeight: 900, color: "#1D1D1F", fontFamily: "var(--font-heebo)" }}>{OFFERS[index].priceNew}</span>
+            </div>
+            {OFFERS[index].saving && (
+              <div style={{
+                background: "#007AFF",
+                borderRadius: "999px",
+                padding: "6px 18px",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                boxShadow: "0 4px 16px rgba(0,122,255,0.35)",
+              }}>
+                <span style={{ fontSize: "9px", fontWeight: 600, color: "rgba(255,255,255,0.75)", fontFamily: "var(--font-heebo)" }}>החיסכון שלך</span>
+                <span style={{ fontSize: "18px", fontWeight: 900, color: "#fff", fontFamily: "var(--font-heebo)" }}>{OFFERS[index].saving}</span>
+              </div>
+            )}
+          </motion.div>
+        </AnimatePresence>
 
         {/* Dots */}
         <div style={{ display: "flex", justifyContent: "center", gap: "6px", marginTop: "24px" }}>
@@ -319,7 +294,7 @@ export default function FeaturedOffersSlider() {
         </div>
       </div>
 
-      {/* Modal */}
+      {/* Full-Screen Modal */}
       <AnimatePresence>
         {selectedId && selectedOffer && (
           <motion.div
@@ -329,136 +304,151 @@ export default function FeaturedOffersSlider() {
             transition={{ duration: 0.2 }}
             style={{
               position: "fixed", inset: 0,
-              background: "rgba(0,0,0,0.5)",
-              backdropFilter: "blur(12px)",
-              WebkitBackdropFilter: "blur(12px)",
+              background: "rgba(0,0,0,0.6)",
+              backdropFilter: "blur(16px)",
+              WebkitBackdropFilter: "blur(16px)",
               zIndex: 2000,
               display: "flex",
-              alignItems: "center",
+              alignItems: "flex-end",
               justifyContent: "center",
-              padding: "20px",
             }}
             onClick={() => setSelectedId(null)}
           >
             <motion.div
-              initial={{ opacity: 0, scale: 0.92, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.92, y: 20 }}
-              transition={{ type: "spring", damping: 22, stiffness: 220 }}
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 150 }}
               onClick={(e) => e.stopPropagation()}
               style={{
                 width: "100%",
-                maxWidth: "420px",
+                maxWidth: "520px",
+                height: "92vh",
                 background: "#fff",
-                borderRadius: "36px",
-                boxShadow: "0 40px 120px rgba(0,0,0,0.18)",
+                borderRadius: "32px 32px 0 0",
                 overflow: "hidden",
                 display: "flex",
                 flexDirection: "column",
-                maxHeight: "90vh",
               }}
             >
-              {/* Image area */}
+              {/* Hero image — 65% */}
               <div style={{
+                flex: "0 0 65%",
                 background: "#F5F5F7",
+                position: "relative",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                padding: "50px 40px 40px",
-                position: "relative",
-                minHeight: "280px",
               }}>
                 <button
                   onClick={() => setSelectedId(null)}
                   style={{
                     position: "absolute", top: "16px", left: "16px",
-                    background: "rgba(0,0,0,0.07)",
-                    border: "none", width: "36px", height: "36px",
+                    background: "rgba(0,0,0,0.08)",
+                    border: "none", width: "40px", height: "40px",
                     borderRadius: "50%", cursor: "pointer",
                     display: "flex", alignItems: "center", justifyContent: "center",
                     zIndex: 10,
                   }}
                 >
-                  <X size={18} color="#1D1D1F" />
+                  <X size={20} color="#1D1D1F" />
                 </button>
                 <img
                   src={selectedOffer.img}
                   alt={selectedOffer.brand}
                   style={{
-                    maxWidth: "100%",
-                    maxHeight: "220px",
+                    width: "80%",
+                    height: "80%",
                     objectFit: "contain",
                     display: "block",
                   }}
                 />
               </div>
 
-              {/* Content area */}
+              {/* Console — 35% */}
               <div style={{
-                padding: "20px 24px 28px",
-                textAlign: "right",
+                flex: "0 0 35%",
+                padding: "20px 24px 32px",
                 display: "flex",
                 flexDirection: "column",
-                gap: "10px",
+                gap: "12px",
                 overflowY: "auto",
+                background: "#fff",
               }}>
-                <div>
+                {/* Title */}
+                <div style={{ textAlign: "right" }}>
                   <p style={{
                     fontSize: "11px", fontWeight: 700, letterSpacing: "0.07em",
                     color: "#AEAEB2", textTransform: "uppercase",
-                    fontFamily: "var(--font-heebo)", marginBottom: "4px",
+                    fontFamily: "var(--font-heebo)", margin: "0 0 3px",
                   }}>
                     {selectedOffer.cat} · {selectedOffer.brand}
                   </p>
                   <h3 style={{
                     fontSize: "20px", fontWeight: 900, color: "#1D1D1F",
-                    fontFamily: "var(--font-heebo)", lineHeight: 1.2, margin: 0,
+                    fontFamily: "var(--font-heebo)", lineHeight: 1.15, margin: 0,
                     letterSpacing: "-0.02em",
                   }}>
                     {selectedOffer.title}
                   </h3>
                   {selectedOffer.desc && (
-                    <p style={{ fontSize: "13px", color: "#86868B", fontFamily: "var(--font-heebo)", lineHeight: 1.5, margin: "6px 0 0" }}>
+                    <p style={{ fontSize: "13px", color: "#86868B", fontFamily: "var(--font-heebo)", lineHeight: 1.5, margin: "4px 0 0" }}>
                       {selectedOffer.desc}
                     </p>
                   )}
                 </div>
 
-                {/* Glass price pill */}
+                {/* Price row */}
                 <div style={{
-                  background: "rgba(245,245,247,0.85)",
-                  backdropFilter: "blur(20px)",
-                  WebkitBackdropFilter: "blur(20px)",
-                  border: "1px solid rgba(0,0,0,0.07)",
-                  borderRadius: "16px",
-                  padding: "10px 16px",
                   display: "flex",
+                  gap: "8px",
                   alignItems: "center",
-                  gap: "10px",
-                  alignSelf: "flex-start",
+                  direction: "rtl",
                 }}>
                   {selectedOffer.priceOld && (
-                    <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "1px" }}>
-                      <span style={{ fontSize: "9px", fontWeight: 700, color: "#AEAEB2", fontFamily: "var(--font-heebo)", letterSpacing: "0.04em" }}>מחיר שוק</span>
-                      <span style={{ fontSize: "14px", color: "#86868B", textDecoration: "line-through", fontFamily: "var(--font-heebo)" }}>{selectedOffer.priceOld}</span>
+                    <div style={{
+                      background: "#F5F5F7",
+                      border: "1px solid rgba(0,0,0,0.08)",
+                      borderRadius: "999px",
+                      padding: "5px 14px",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                    }}>
+                      <span style={{ fontSize: "9px", fontWeight: 700, color: "#AEAEB2", fontFamily: "var(--font-heebo)" }}>מחיר שוק</span>
+                      <span style={{ fontSize: "14px", color: "#86868B", textDecoration: "line-through", fontFamily: "var(--font-heebo)", fontWeight: 600 }}>{selectedOffer.priceOld}</span>
                     </div>
                   )}
-                  {selectedOffer.priceOld && <div style={{ width: "1px", height: "32px", background: "rgba(0,0,0,0.1)" }} />}
-                  <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "1px" }}>
-                    <span style={{ fontSize: "9px", fontWeight: 700, color: "#007AFF", fontFamily: "var(--font-heebo)", letterSpacing: "0.04em" }}>מחיר לעובד</span>
-                    <span style={{ fontSize: "22px", fontWeight: 900, color: "#007AFF", fontFamily: "var(--font-heebo)" }}>{selectedOffer.priceNew}</span>
+                  <div style={{
+                    background: "#fff",
+                    border: "1.5px solid rgba(0,102,204,0.2)",
+                    borderRadius: "999px",
+                    padding: "5px 18px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    boxShadow: "0 2px 10px rgba(0,102,204,0.1)",
+                  }}>
+                    <span style={{ fontSize: "9px", fontWeight: 700, color: "#007AFF", fontFamily: "var(--font-heebo)" }}>מחיר לעובד</span>
+                    <span style={{ fontSize: "22px", fontWeight: 900, color: "#1D1D1F", fontFamily: "var(--font-heebo)" }}>{selectedOffer.priceNew}</span>
                   </div>
                   {selectedOffer.saving && (
-                    <>
-                      <div style={{ width: "1px", height: "32px", background: "rgba(0,0,0,0.1)" }} />
-                      <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "1px" }}>
-                        <span style={{ fontSize: "9px", fontWeight: 700, color: "#34C759", fontFamily: "var(--font-heebo)", letterSpacing: "0.04em" }}>החיסכון שלך</span>
-                        <span style={{ fontSize: "18px", fontWeight: 900, color: "#34C759", fontFamily: "var(--font-heebo)" }}>{selectedOffer.saving}</span>
-                      </div>
-                    </>
+                    <div style={{
+                      background: "#007AFF",
+                      borderRadius: "999px",
+                      padding: "5px 16px",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      boxShadow: "0 4px 14px rgba(0,122,255,0.3)",
+                    }}>
+                      <span style={{ fontSize: "9px", fontWeight: 600, color: "rgba(255,255,255,0.75)", fontFamily: "var(--font-heebo)" }}>החיסכון שלך</span>
+                      <span style={{ fontSize: "18px", fontWeight: 900, color: "#fff", fontFamily: "var(--font-heebo)" }}>{selectedOffer.saving}</span>
+                    </div>
                   )}
                 </div>
 
+                {/* CTA */}
                 <button
                   onClick={() => {
                     setSelectedId(null);
@@ -469,15 +459,15 @@ export default function FeaturedOffersSlider() {
                     background: "#007AFF",
                     color: "#fff",
                     border: "none",
-                    padding: "15px",
+                    padding: "14px",
                     borderRadius: "16px",
                     fontWeight: 800,
                     fontSize: "15px",
                     cursor: "pointer",
                     boxShadow: "0 8px 24px rgba(0,122,255,0.28)",
                     fontFamily: "var(--font-heebo)",
-                    marginTop: "4px",
                     letterSpacing: "-0.01em",
+                    marginTop: "auto",
                   }}
                 >
                   אני רוצה את זה בארגון שלי ←
