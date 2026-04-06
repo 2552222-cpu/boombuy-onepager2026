@@ -502,8 +502,7 @@ export default function FeaturedOffersSlider() {
               style={{
                 width: "100%",
                 maxWidth: "420px",
-                height: window.innerWidth >= 768 ? "auto" : "100dvh",
-                maxHeight: window.innerWidth >= 768 ? "88dvh" : "100dvh",
+                height: window.innerWidth >= 768 ? "80dvh" : "100dvh",
                 background: "#fff",
                 borderRadius: window.innerWidth >= 768 ? "24px" : "28px 28px 0 0",
                 overflow: "hidden",
