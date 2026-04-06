@@ -508,11 +508,12 @@ export default function FeaturedOffersSlider() {
                 overflow: "hidden",
                 display: "flex",
                 flexDirection: "column",
+                justifyContent: "space-between",
               }}
             >
               {/* Hero image */}
               <div style={{
-                flex: "0 0 55%",
+                flex: "0 0 46%",
                 minHeight: 0,
                 background: "#F5F5F7",
                 position: "relative",
@@ -534,11 +535,11 @@ export default function FeaturedOffersSlider() {
               {/* Content */}
               <div style={{
                 flex: 1,
-                padding: "10px 20px 28px",
+                padding: "10px 18px calc(env(safe-area-inset-bottom, 0px) + 16px)",
                 minHeight: 0,
                 display: "flex",
                 flexDirection: "column",
-                gap: "8px",
+                gap: "6px",
                 overflowY: "auto",
                 background: "#fff",
               }}>
@@ -586,10 +587,10 @@ export default function FeaturedOffersSlider() {
                     background: "#007AFF",
                     color: "#fff",
                     border: "none",
-                    padding: "14px",
-                    borderRadius: "16px",
-                    fontWeight: 800,
-                    fontSize: "15px",
+                    padding: "11px",
+                    borderRadius: "14px",
+                    fontWeight: 700,
+                    fontSize: "14px",
                     cursor: "pointer",
                     boxShadow: "0 8px 24px rgba(0,122,255,0.28)",
                     fontFamily: "var(--font-heebo)",
