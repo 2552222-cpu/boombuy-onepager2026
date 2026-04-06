@@ -29,6 +29,8 @@ const logos = [
   { name: "Check Point", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e71824c2e_-2026-04-02T203121306.png" },
   { name: "רמלאל", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ee6b05338_-2026-04-03T180125393.png" },
   { name: "בזק בתקשורת", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8b28ec6fc_71.png" },
+  { name: "דלק", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/be9e3de1a_-2026-03-22T184841801.png" },
+  { name: "דיסקונט", url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ec8786cef_-2026-04-06T000000000.png" },
 ];
 
 export default function TrustLogos() {
@@ -78,8 +80,8 @@ export default function TrustLogos() {
             <div
               key={i}
               style={{
-                height: "70px",
-                padding: "10px",
+                height: "80px",
+                padding: "8px",
                 display: "grid",
                 placeItems: "center",
                 background: "#F5F5F7",
@@ -93,11 +95,11 @@ export default function TrustLogos() {
                 src={logo.url}
                 alt={logo.name}
                 style={{
-                  maxWidth: "90%",
-                  maxHeight: "50px",
-                  objectFit: "contain",
-                  display: "block",
-                }}
+                    maxWidth: "95%",
+                    maxHeight: "65px",
+                    objectFit: "contain",
+                    display: "block",
+                  }}
                 onError={(e) => { e.currentTarget.style.display = "none"; }}
               />
             </div>
@@ -117,8 +119,8 @@ export default function TrustLogos() {
             <div
               key={i}
               style={{
-                height: "90px",
-                padding: "14px 12px",
+                height: "110px",
+                padding: "10px 8px",
                 display: "grid",
                 placeItems: "center",
                 background: "#F9F9FB",
@@ -146,12 +148,12 @@ export default function TrustLogos() {
                 src={logo.url}
                 alt={logo.name}
                 style={{
-                  maxWidth: "100%",
-                  maxHeight: "60px",
-                  objectFit: "contain",
-                  display: "block",
-                  width: "auto",
-                }}
+                    maxWidth: "100%",
+                    maxHeight: "80px",
+                    objectFit: "contain",
+                    display: "block",
+                    width: "auto",
+                  }}
                 onError={(e) => { e.currentTarget.style.display = "none"; }}
               />
             </div>
