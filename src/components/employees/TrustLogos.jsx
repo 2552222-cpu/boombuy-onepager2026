@@ -122,7 +122,7 @@ export default function TrustLogos() {
           height:100%;
           object-fit:contain;
           object-position:center;
-          padding:10px 14px;
+          padding:4px 8px;
           box-sizing:border-box;
           transition:transform .25s ease;
         }
