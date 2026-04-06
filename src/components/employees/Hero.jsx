@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 // --- HERO JSON DATA: מילה במילה מהתמונות שלך, כולל אדידס ---
 const HERO_DATA = {
@@ -13,25 +13,10 @@ const HERO_DATA = {
   tabletImg: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/66514fe66_-2026-02-18T150849922.png", // Tablet Original from user
 };
 
-// Sub-components to animate INSIDE the tablet screen
-const DATA_STREAM = [
-  { id: 1, label: "תרבות ופנאי", brand: "קזבלן", priceOld: "₪350", priceNew: "₪77" },
-  { id: 2, label: "אופנה ומותגים", brand: "Alo Yoga", priceOld: "₪499", priceNew: "₪224" },
-  { id: 3, label: "כל בוקר הטבה, אטרקציה או חוויה חדשה", brand: "Adidas Samba", priceOld: "₪499", priceNew: "₪299" }, // Adidas special text
-  { id: 4, label: "מובייל", brand: "Apple", priceOld: "₪4,590", priceNew: "₪3,890" }
-];
+
 
 export default function Hero() {
-  const [streamIndex, setStreamIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-
-  // Index to cycle data inside tablet
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setStreamIndex((prevIndex) => (prevIndex + 1) % DATA_STREAM.length);
-    }, 4000); // cycle data every 4 seconds
-    return () => clearInterval(interval);
-  }, []);
 
   // Mobile check
   useEffect(() => {
@@ -64,40 +49,8 @@ export default function Hero() {
               {/* Tablet Image from original assets */}
               <img src={HERO_DATA.tabletImg} alt="Device Preview" style={{ width: "100%", height: "auto", objectFit: "contain", filter: "drop-shadow(0 30px 60px rgba(0,0,0,0.12))", position: "relative", zIndex: 1 }} />
               
-              {/* DATA STREAM ANIMATION INSIDE TABLET SCREEN AREA */}
-              <div style={{ position: "absolute", inset: "7% 5.5%", zIndex: 2, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", pointerEvents: "none" }}>
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={streamIndex}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 1.05 }}
-                    transition={{ duration: 0.8, ease: "easeInOut" }}
-                    style={{
-                      width: "85%",
-                      height: "85%",
-                      background: "rgba(255,255,255,0.95)",
-                      backdropFilter: "blur(20px)",
-                      borderRadius: "20px",
-                      boxShadow: "0 10px 40px rgba(0,0,0,0.1)",
-                      padding: "15px",
-                      textAlign: "center",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-around"
-                    }}>
-                    <p style={{ fontSize: "12px", fontWeight: 700, color: "#86868B" }}>הנטו שלך שווה יותר:</p>
-                    <p style={{ fontSize: "18px", fontWeight: 900, color: "#1D1D1F" }}>{DATA_STREAM[streamIndex].brand}</p>
-                    <p style={{ fontSize: "11px", fontWeight: 600, color: "#2D63D0", background: "rgba(45,99,208,0.1)", padding: "2px 8px", borderRadius: "100px", alignSelf: "center" }}>
-                      {DATA_STREAM[streamIndex].label}
-                    </p>
-                    <p style={{ fontSize: "18px", fontWeight: 900, color: "#1D1D1F" }}>
-                      <span style={{ textDecoration: "line-through", color: "#AEAEB2", marginRight: "8px" }}>{DATA_STREAM[streamIndex].priceOld}</span>
-                      <span style={{ color: "#2D63D0" }}>{DATA_STREAM[streamIndex].priceNew}</span>
-                    </p>
-                  </motion.div>
-                </AnimatePresence>
-              </div>
+              {/* Static tablet content image */}
+              <img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a916d74d8_1.png" alt="Offer" style={{ position: "absolute", inset: "7% 5.5%", width: "89%", height: "86%", objectFit: "contain", zIndex: 2 }} />
             </div>
           </div>
 
