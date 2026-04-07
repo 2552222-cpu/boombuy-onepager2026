@@ -161,7 +161,6 @@ function CategoryModal({ category, onClose, onCTA }) {
                 <span className="w-1.5 h-1.5 rounded-full bg-blue-400 flex-shrink-0" />
                 <p className="text-blue-700 font-bold text-sm">{category.sub}</p>
               </div>
-              <div className="border-t border-slate-100" />
 
               {/* Glassmorphism CTA */}
               <div className="relative mt-auto pt-4">
@@ -208,7 +207,7 @@ export default function BenefitsShowcase() {
               className="cursor-pointer bg-white rounded-[40px] border border-slate-100 shadow-sm flex flex-col overflow-hidden"
             >
               {/* Image area */}
-              <div className="aspect-square bg-white rounded-[40px] m-2 flex items-center justify-center overflow-hidden">
+              <div className="aspect-square bg-white flex items-center justify-center overflow-hidden rounded-t-[40px]">
                 <img src={cat.previewImage} alt={cat.title} className="max-w-full max-h-full object-contain p-3" />
               </div>
 
