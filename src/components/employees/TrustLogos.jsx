@@ -174,7 +174,7 @@ export default function TrustLogos() {
         [data-logo-index="17"] img { transform: scale(1.2); }
         [data-logo-index="18"] img { transform: scale(1.25); }
         [data-logo-index="20"] img { transform: scale(1.3); }
-        [data-logo-index="24"] img { transform: scale(1.25); }
+        [data-logo-index="24"] img { transform: scale(1.5); }
         [data-logo-index="25"] img { transform: scale(1.2); }
         [data-logo-index="26"] img { transform: scale(0.72); }
 
