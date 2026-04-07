@@ -32,9 +32,12 @@ export const logoList = [
 
 export const allLogos = logoList.map(l => l.url);
 
-export const rowA = allLogos.slice(0, 13);
+// שורה 1: 2 ממלאים + מרכז (25,22,23,12,11,1,13,10,9) + 2 ממלאים
+// מרכז = indices: 24,21,22,11,10,0,12,9,8
+const rowAIndices = [3, 4,  24, 21, 22, 11, 10, 0, 12, 9, 8,  5, 7];
+export const rowA = rowAIndices.map(i => allLogos[i]);
 
-// rowB reordered: logos 15,16,19,25 (1-based) = indices 14,15,18,24 placed in center
-// Note: logo 25 is now at index 2 (swapped with logo 3), so center uses index 2
-const rowBIndices = [13, 16, 17, 19, 20, 14, 15, 18, 24, 21, 22, 23, 25, 26];
+// שורה 2: 3 ממלאים + מרכז (16,19,7,24,14,27,20,15) + 3 ממלאים
+// מרכז = indices: 15,18,6,23,13,26,19,14
+const rowBIndices = [1, 2, 16,  15, 18, 6, 23, 13, 26, 19, 14,  17, 20, 25];
 export const rowB = rowBIndices.map(i => allLogos[i]);
