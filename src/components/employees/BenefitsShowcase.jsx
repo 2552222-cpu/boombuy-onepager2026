@@ -156,10 +156,12 @@ function CategoryModal({ category, onClose, onCTA }) {
                 </p>
               </div>
 
-              {/* Sub info card */}
-              <div className="bg-slate-50 rounded-[24px] p-4 border border-slate-100">
+              {/* Sub info */}
+              <div className="flex items-center gap-2 py-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-400 flex-shrink-0" />
                 <p className="text-blue-700 font-bold text-sm">{category.sub}</p>
               </div>
+              <div className="border-t border-slate-100" />
 
               {/* Glassmorphism CTA */}
               <div className="relative mt-auto pt-4">
