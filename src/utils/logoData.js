@@ -1,8 +1,9 @@
 // כל הלוגואים שמורים במקום אחד עם שמות
+// לוגו 3 (תעש) ולוגו 25 (Check Point) הוחלפו במיקומם
 export const logoList = [
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/2f10b2609_17.png", name: "לאומי" },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/f26a5145d_-2026-02-18T184914549.png", name: "ישראייר" },
-  { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8003c0d5a_62.png", name: "תעש" },
+  { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e71824c2e_-2026-04-02T203121306.png", name: "Check Point" },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/dff369112_61.png", name: "קרן קיימת" },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a6011911e_42.png", name: "Estee Lauder" },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6ecb1d12e_48.png", name: "ORT" },
@@ -24,7 +25,7 @@ export const logoList = [
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6862cd610_-2026-03-22T184752919.png", name: "דופלט" },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/62fa4ae8e_-2026-03-22T184709815.png", name: "בנק לאומי" },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/be9e3de1a_-2026-03-22T184841801.png", name: "דלק" },
-  { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e71824c2e_-2026-04-02T203121306.png", name: "Check Point" },
+  { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8003c0d5a_62.png", name: "תעש" },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ee6b05338_-2026-04-03T180125393.png", name: "רמלאל" },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/5f7a627b6_-2026-04-06T212635319.png", name: "HOT mobile" },
 ];
@@ -34,5 +35,6 @@ export const allLogos = logoList.map(l => l.url);
 export const rowA = allLogos.slice(0, 13);
 
 // rowB reordered: logos 15,16,19,25 (1-based) = indices 14,15,18,24 placed in center
-const rowBIndices = [13, 16, 17, 19, 20, 14, 15, 18, 24, 21, 22, 23, 25, 26];
+// Note: logo 25 is now at index 2 (swapped with logo 3), so center uses index 2
+const rowBIndices = [13, 16, 17, 19, 20, 14, 15, 18, 2, 21, 22, 23, 25, 26];
 export const rowB = rowBIndices.map(i => allLogos[i]);
