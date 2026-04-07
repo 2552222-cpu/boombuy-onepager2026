@@ -10,8 +10,7 @@ function Row({ items, dir = "left", duration = 85 }) {
           const logoObj = logoList.find(l => l.url === src);
           const logoIndex = logoList.findIndex(l => l.url === src);
           return (
-          <div key={`${src}-${i}`} className="jci-logoCard" data-logo-name={logoObj?.name || "unknown"} data-logo-index={logoIndex}>
-            <div className="jci-label">{logoIndex + 1}. {logoObj?.name}</div>
+          <div key={`${src}-${i}`} className="jci-logoCard" data-logo-index={logoIndex}>
             <img src={src} alt={logoObj?.name || "לוגו לקוח"} loading="lazy" decoding="async" width="200" height="100" />
           </div>
         );
