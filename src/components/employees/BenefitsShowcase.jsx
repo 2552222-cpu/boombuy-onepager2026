@@ -29,7 +29,7 @@ const FAIRS_EXTRA = ["https://media.base44.com/images/public/69bc4105141d932b80b
 const categories = [
   { id: "daily", emoji: "⚡", title: "כל בוקר הטבה חדשה", description: "כל יום מתחיל בהטבה חדשה שנשלחת לעובד בוואטסאפ — על מוצרי צריכה, מותגי פרימיום, חוויות ואטרקציות — תמיד במחיר הנמוך ביותר בישראל.", sub: "260 הטבות בשנה - ישירות לוואטסאפ שלך", tag: "המחיר הנמוך בישראל. תמיד.", tagBg: "bg-slate-700", previewImage: DAILY_PREVIEW, mainImage: DAILY_EXTRA[0], extraImages: DAILY_EXTRA.slice(1) },
   { id: "tech", emoji: "📱", title: "חשמל ואלקטרוניקה", description: "חנות קבועה של מוצרי חשמל, אלקטרוניקה, מחשבים וסלולר במחירי יבואן - מהמותגים שעובדים באמת רוצים.", sub: "Apple, Samsung, Dyson, Ninja ועוד", tag: "מחיר יבואן", tagBg: "bg-slate-600", previewImage: TECH_PREVIEW, mainImage: TECH_EXTRA[0], extraImages: TECH_EXTRA.slice(1) },
-  { id: "super", emoji: "🛒", title: "פארם, סופר ויוקר המחיה", description: "שוברי קניות לסופרמרקט והנחות קבועות על מוצרי יומיום - ערך מוחשי שמרגישים שוב ושוב בסל הקניות.", sub: "הנחה קבועה של עד 8% ברשתות הסופרים המוזלים", tag: "עד 8% תמיד", tagBg: "bg-emerald-700", previewImage: SUPER_PREVIEW, mainImage: SUPER_EXTRA[0], extraImages: SUPER_EXTRA.slice(1) },
+  { id: "super", emoji: "🛒", title: "פארם, סופר ויוקר המחיה", description: "שוברי קניות לסופרמרקט והנחות קבועות על מוצרי יומיום - ערך מוחשי שמרגישים שוב ושוב בסל הקניות.", sub: "הנחה קבועה של עד 8% ברשתות הסופרים המוזלים", tag: "הנחה קבועה של 8% בסופר! (למטה ברשתות הדיסקאונט המוזלות)", tagBg: "bg-emerald-700", previewImage: SUPER_PREVIEW, mainImage: SUPER_EXTRA[0], extraImages: SUPER_EXTRA.slice(1) },
   { id: "gift", emoji: "🎁", title: "מתנת חג — עם בחירה", description: "המתנה נשארת - אבל עכשיו העובד בוחר מה הוא באמת רוצה. ארנק דיגיטלי גמיש עם מגוון רחב של אפשרויות.", sub: "ארנק ממותג · בחירה חופשית · ניהול מרכזי", tag: "בחירה חופשית", tagBg: "bg-violet-700", previewImage: GIFT_PREVIEW, mainImage: GIFT_PREVIEW, extraImages: [] },
   { id: "vacation", emoji: "✈️", title: "נופש וחופשות", description: "חבילות טיסה, מלון, הופעות ומשחקי ספורט בארץ ובחו\"ל - במחירים שסגורים רק לעובדי הארגון.", sub: "בארץ ובחו\"ל · מחירים בלעדיים", tag: "מחירים בלעדיים", tagBg: "bg-sky-700", previewImage: VACATION_PREVIEW, mainImage: VACATION_EXTRA[0], extraImages: VACATION_EXTRA.slice(1) },
   { id: "culture", emoji: "🎭", title: "תרבות ופנאי", description: "הופעות, הצגות, פארקי שעשועים ואטרקציות - כי חוויית עובד טובה לא נגמרת בסוף יום העבודה.", sub: "כרטיסים · הנחות כניסה · אירועים", tag: "הנחת עובד", tagBg: "bg-rose-700", previewImage: CULTURE_PREVIEW, mainImage: CULTURE_EXTRA[0], extraImages: CULTURE_EXTRA.slice(1) },
@@ -155,20 +155,41 @@ export default function BenefitsShowcase() {
           <h2 className="text-2xl md:text-4xl font-black text-slate-900">מה עוד מחכה לך בפנים?</h2>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
           {categories.map((cat) => (
-            <div 
-              key={cat.id} 
+            <motion.div
+              key={cat.id}
               onClick={() => setSelectedCategory(cat)}
-              className="cursor-pointer group bg-white rounded-[28px] border border-slate-100 shadow-sm hover:shadow-xl transition-all p-2 flex flex-col"
+              whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(0,0,0,0.10)" }}
+              transition={{ type: "spring", stiffness: 300, damping: 22 }}
+              className="cursor-pointer bg-white rounded-[40px] border border-slate-100 shadow-sm flex flex-col overflow-hidden"
             >
-              <div className="aspect-square bg-[#F8F9FA] rounded-[24px] p-4 flex items-center justify-center overflow-hidden mb-3">
-                <img src={cat.previewImage} alt={cat.title} className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500" />
+              {/* Image area */}
+              <div className="aspect-square bg-[#F5F7FA] rounded-[36px] m-2 flex items-center justify-center overflow-hidden">
+                <img src={cat.previewImage} alt={cat.title} className="max-w-full max-h-full object-contain p-3" />
               </div>
-              <div className="px-2 pb-2">
+
+              {/* Title */}
+              <div className="px-3 pt-1 pb-2">
                 <h3 className="text-xs md:text-sm font-bold text-slate-800 line-clamp-1">{cat.emoji} {cat.title}</h3>
               </div>
-            </div>
+
+              {/* Glassmorphism CTA */}
+              <div className="px-2 pb-3 mt-auto">
+                <div className="relative">
+                  <motion.div
+                    animate={{ boxShadow: ["0 0 0px rgba(37,99,235,0)", "0 0 8px rgba(37,99,235,0.35)", "0 0 0px rgba(37,99,235,0)"] }}
+                    transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute inset-0 rounded-2xl"
+                  />
+                  <div className="relative bg-white/60 backdrop-blur-md border border-blue-200/70 rounded-2xl px-3 py-2 text-center">
+                    <p className="text-[10px] md:text-[11px] font-semibold text-blue-600 leading-tight">
+                      אלו רק חלק מההטבות מהקטגוריה. לחצו לגלות:
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           ))}
         </div>
       </div>
