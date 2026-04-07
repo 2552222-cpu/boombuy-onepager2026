@@ -89,7 +89,7 @@ export default function EmployeesLanding() {
           <BenefitsShowcase />
         </div>
         <ZeroBudget />
-        <DigitalWallet imageUrl={WALLET_IMAGE_URL} />
+
         <Testimonials />
         <Survey />
         <FinalBand />
