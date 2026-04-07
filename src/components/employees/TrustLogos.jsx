@@ -159,15 +159,23 @@ export default function TrustLogos() {
           transform:scale(1.04);
         }
 
+        [data-logo-index="0"] img { transform: scale(1.2); }
         [data-logo-index="1"] img { transform: scale(1.4); }
         [data-logo-index="2"] img { transform: scale(1.5); }
-        [data-logo-index="6"] img { transform: scale(1.25); }
-        [data-logo-index="7"] img { transform: scale(1.25); }
-        [data-logo-index="8"] img { transform: scale(1.25); }
-        [data-logo-index="9"] img { transform: scale(0.6); }
+        [data-logo-index="4"] img { transform: scale(1.2); }
+        [data-logo-index="5"] img { transform: scale(1.2); }
+        [data-logo-index="6"] img { transform: scale(1.2); }
+        [data-logo-index="7"] img { transform: scale(1.2); }
+        [data-logo-index="8"] img { transform: scale(1.2); }
+        [data-logo-index="9"] img { transform: scale(1.2); }
+        [data-logo-index="12"] img { transform: scale(1.2); }
+        [data-logo-index="13"] img { transform: scale(1.2); }
+        [data-logo-index="16"] img { transform: scale(1.2); }
+        [data-logo-index="17"] img { transform: scale(1.2); }
         [data-logo-index="20"] img { transform: scale(1.3); }
         [data-logo-index="24"] img { transform: scale(1.5); }
-        [data-logo-index="26"] img { transform: scale(0.6); }
+        [data-logo-index="25"] img { transform: scale(1.2); }
+        [data-logo-index="26"] img { transform: scale(1.2); }
 
 
 
