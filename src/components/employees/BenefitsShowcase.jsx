@@ -72,81 +72,91 @@ function CategoryModal({ category, onClose, onCTA }) {
         exit={{ y: "100%", opacity: 0 }}
         transition={{ type: "spring", damping: 30, stiffness: 300 }}
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-5xl h-[92vh] md:h-auto md:max-h-[85vh] bg-white rounded-t-[32px] md:rounded-[40px] overflow-hidden flex flex-col"
+        className="relative w-full max-w-5xl h-[92vh] md:h-auto md:max-h-[88vh] bg-white rounded-t-[40px] md:rounded-[40px] overflow-hidden flex flex-col"
         dir="rtl"
       >
-        {/* כפתור סגירה מעוגל וצף */}
-        <button 
-          onClick={onClose} 
+        {/* Close button */}
+        <button
+          onClick={onClose}
           className="absolute top-4 left-4 z-[1010] w-10 h-10 rounded-full bg-black/10 hover:bg-black/20 flex items-center justify-center transition-colors"
         >
-          <X className="w-6 h-6 text-slate-800" />
+          <X className="w-5 h-5 text-slate-700" />
         </button>
 
-        {/* קונטיינר גלילה אחד לכל התוכן */}
-        <div className="flex-1 overflow-y-auto no-scrollbar">
-          <div className="flex flex-col lg:flex-row-reverse w-full min-h-full">
-            
-            {/* צד תמונה */}
-            <div className="w-full lg:w-3/5 bg-[#F1F3F5] p-6 flex flex-col items-center justify-center min-h-[350px] lg:min-h-[500px]">
-              <div className="relative w-full flex-1 flex items-center justify-center">
-                <AnimatePresence mode="wait">
-                  <motion.img
-                    key={activeImage}
-                    src={activeImage}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    className="max-w-full max-h-[45vh] lg:max-h-[60vh] object-contain drop-shadow-2xl"
-                  />
-                </AnimatePresence>
-              </div>
+        {/* Single scroll container */}
+        <div className="flex-1 overflow-y-auto">
+          <div className="flex flex-col lg:flex-row-reverse">
 
-              {/* גלריה קומפקטית */}
+            {/* Image side */}
+            <div className="w-full lg:w-3/5 bg-[#F5F7FA] p-6 flex flex-col items-center justify-center min-h-[300px] lg:min-h-[480px]">
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={activeImage}
+                  src={activeImage}
+                  initial={{ opacity: 0, scale: 0.92 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.92 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 28 }}
+                  className="max-w-full max-h-[40vh] lg:max-h-[50vh] object-contain drop-shadow-2xl"
+                />
+              </AnimatePresence>
+
+              {/* Thumbnails */}
               {gallery.length > 1 && (
-                <div className="flex gap-2 mt-6 overflow-x-auto pb-2 w-full justify-center no-scrollbar px-4">
-                  {gallery.map((url, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setActiveImage(url)}
-                      className={`flex-shrink-0 w-14 h-14 rounded-xl border-2 transition-all ${
-                        activeImage === url ? "border-blue-600 scale-110 shadow-md" : "border-transparent opacity-40"
-                      }`}
-                    >
-                      <img src={url} className="w-full h-full object-contain p-1" alt="" />
-                    </button>
-                  ))}
+                <div className="mt-6 w-full px-2">
+                  <p className="text-[11px] font-semibold text-slate-400 mb-3 text-center">עוד הטבות מהקטגוריה ששווה להכיר:</p>
+                  <div className="flex gap-2 overflow-x-auto pb-1 justify-center">
+                    {gallery.map((url, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setActiveImage(url)}
+                        className={`flex-shrink-0 w-20 h-20 rounded-2xl border-2 bg-white shadow-sm transition-all ${
+                          activeImage === url ? "border-blue-500 scale-105 shadow-md" : "border-slate-100 hover:border-blue-300"
+                        }`}
+                      >
+                        <img src={url} className="w-full h-full object-contain p-2 rounded-2xl" alt="" />
+                      </button>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
 
-            {/* צד תוכן */}
-            <div className="w-full lg:w-2/5 p-8 md:p-12 flex flex-col justify-between">
+            {/* Content side */}
+            <div className="w-full lg:w-2/5 p-8 md:p-10 flex flex-col gap-5">
               <div>
-                <span className={`${category.tagBg} text-white text-[10px] font-bold px-3 py-1 rounded-full inline-block mb-4`}>
+                <span className="bg-blue-50 text-blue-600 text-[11px] font-bold px-3 py-1.5 rounded-full inline-block mb-4 border border-blue-100">
                   {category.tag}
                 </span>
-                <h2 className="text-2xl md:text-3xl font-black text-slate-900 mb-4 leading-tight">
+                <h2 className="text-2xl md:text-3xl font-black text-slate-900 mb-3 leading-tight">
                   {category.title}
                 </h2>
-                <p className="text-slate-600 text-base md:text-lg leading-relaxed mb-6 font-medium">
+                <p className="text-slate-600 text-base leading-relaxed font-medium">
                   {category.description}
                 </p>
-                <div className="bg-blue-50/50 rounded-2xl p-4 border border-blue-100/50 text-blue-700/80 font-bold text-sm">
-                  {category.sub}
-                </div>
               </div>
 
-              {/* כפתור מוקטן ומדויק */}
-              <div className="mt-10 mb-4">
+              {/* Sub info card */}
+              <div className="bg-slate-50 rounded-[24px] p-4 border border-slate-100">
+                <p className="text-blue-700 font-bold text-sm">{category.sub}</p>
+              </div>
+
+              {/* Glassmorphism CTA */}
+              <div className="relative mt-auto pt-4">
+                <motion.div
+                  animate={{ boxShadow: ["0 0 0px rgba(37,99,235,0)", "0 0 16px rgba(37,99,235,0.4)", "0 0 0px rgba(37,99,235,0)"] }}
+                  transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute inset-0 rounded-[28px]"
+                />
                 <button
                   onClick={onCTA}
-                  className="w-full bg-[#0066CC] text-white font-bold py-3.5 rounded-2xl shadow-lg hover:bg-blue-700 transition-all active:scale-[0.97] text-base"
+                  className="relative w-full bg-[#0066CC] text-white font-bold py-4 rounded-[28px] shadow-lg hover:bg-blue-700 transition-all active:scale-[0.97] text-base"
                 >
                   אני רוצה את זה בארגון שלי ←
                 </button>
               </div>
             </div>
+
           </div>
         </div>
       </motion.div>
