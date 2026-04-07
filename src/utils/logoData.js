@@ -1,9 +1,9 @@
 // כל הלוגואים שמורים במקום אחד עם שמות
-// לוגו 3 (תעש) ולוגו 25 (Check Point) הוחלפו במיקומם
+// לוגו 3 = תעש (index 2), לוגו 25 = Check Point (index 24)
 export const logoList = [
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/2f10b2609_17.png", name: "לאומי" },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/f26a5145d_-2026-02-18T184914549.png", name: "ישראייר" },
-  { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e71824c2e_-2026-04-02T203121306.png", name: "Check Point" },
+  { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8003c0d5a_62.png", name: "תעש" },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/dff369112_61.png", name: "קרן קיימת" },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a6011911e_42.png", name: "Estee Lauder" },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6ecb1d12e_48.png", name: "ORT" },
@@ -25,7 +25,7 @@ export const logoList = [
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6862cd610_-2026-03-22T184752919.png", name: "דופלט" },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/62fa4ae8e_-2026-03-22T184709815.png", name: "בנק לאומי" },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/be9e3de1a_-2026-03-22T184841801.png", name: "דלק" },
-  { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8003c0d5a_62.png", name: "תעש" },
+  { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e71824c2e_-2026-04-02T203121306.png", name: "Check Point" },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ee6b05338_-2026-04-03T180125393.png", name: "רמלאל" },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/5f7a627b6_-2026-04-06T212635319.png", name: "HOT mobile" },
 ];
