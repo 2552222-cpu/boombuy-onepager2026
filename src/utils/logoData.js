@@ -36,5 +36,5 @@ export const rowA = allLogos.slice(0, 13);
 
 // rowB reordered: logos 15,16,19,25 (1-based) = indices 14,15,18,24 placed in center
 // Note: logo 25 is now at index 2 (swapped with logo 3), so center uses index 2
-const rowBIndices = [13, 16, 17, 19, 20, 14, 15, 18, 2, 21, 22, 23, 25, 26];
+const rowBIndices = [13, 16, 17, 19, 20, 14, 15, 18, 24, 21, 22, 23, 25, 26];
 export const rowB = rowBIndices.map(i => allLogos[i]);
