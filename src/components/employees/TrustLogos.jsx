@@ -156,16 +156,17 @@ export default function TrustLogos() {
           transition:transform .25s ease;
         }
         .jci-logoCard:hover img{
-          transform:scale(1.04);
+          filter: brightness(1.05);
         }
 
         [data-logo-index="0"] img { transform: scale(1.2); }
-        [data-logo-index="1"] img { transform: scale(1.25); }
+        [data-logo-index="1"] img { transform: scale(1.5); }
         [data-logo-index="2"] img { transform: scale(1.5); }
-        [data-logo-index="4"] img { transform: scale(1.2); }
-        [data-logo-index="5"] img { transform: scale(1.2); }
-        [data-logo-index="6"] img { transform: scale(1.2); }
-        [data-logo-index="7"] img { transform: scale(1.2); }
+        [data-logo-index="3"] img { transform: scale(1.2); }
+        [data-logo-index="4"] img { transform: scale(1.44); }
+        [data-logo-index="5"] img { transform: scale(1.44); }
+        [data-logo-index="6"] img { transform: scale(1.44); }
+        [data-logo-index="7"] img { transform: scale(1.44); }
         [data-logo-index="8"] img { transform: scale(1.2); }
         [data-logo-index="9"] img { transform: scale(0.72); }
         [data-logo-index="12"] img { transform: scale(1.2); }
@@ -174,7 +175,7 @@ export default function TrustLogos() {
         [data-logo-index="17"] img { transform: scale(1.2); }
         [data-logo-index="18"] img { transform: scale(1.25); }
         [data-logo-index="20"] img { transform: scale(1.3); }
-        [data-logo-index="24"] img { transform: scale(1.5); }
+        [data-logo-index="24"] img { transform: scale(1.8); }
         [data-logo-index="25"] img { transform: scale(1.2); }
         [data-logo-index="26"] img { transform: scale(0.72); }
 
