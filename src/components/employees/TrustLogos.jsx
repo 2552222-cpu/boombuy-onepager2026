@@ -160,10 +160,11 @@ export default function TrustLogos() {
         }
 
         [data-logo-index="1"] img { transform: scale(1.4); }
+        [data-logo-index="2"] img { transform: scale(1.5); }
         [data-logo-index="6"] img { transform: scale(1.25); }
         [data-logo-index="7"] img { transform: scale(1.25); }
         [data-logo-index="8"] img { transform: scale(1.25); }
-        [data-logo-index="9"] img { transform: scale(0.75); }
+        [data-logo-index="9"] img { transform: scale(0.6); }
         [data-logo-index="20"] img { transform: scale(1.3); }
         [data-logo-index="24"] img { transform: scale(1.5); }
         [data-logo-index="25"] img { transform: scale(0.75); }
