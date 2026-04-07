@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Zap, Smartphone, ShoppingCart, Gift, Plane, Music, Shirt, Store } from "lucide-react";
+import { X, Zap, Smartphone, ShoppingCart, Gift, Plane, Music, Shirt, Store, ChevronLeft, ChevronRight } from "lucide-react";
 
 // ─── DATA ───────────────────────────────────────────────────────────────────
 const DAILY_PREVIEW = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7e52326a0_-2026-03-22T160414836.png";
@@ -51,7 +51,11 @@ const categories = [
 // ─── MODAL ────────────────────────────────────────────────────────────────────
 function CategoryModal({ category, onClose, onCTA }) {
   const gallery = [category.mainImage, ...(category.extraImages || [])].filter(Boolean);
-  const [activeImage, setActiveImage] = useState(gallery[0]);
+  const [activeIdx, setActiveIdx] = useState(0);
+  const activeImage = gallery[activeIdx];
+
+  const goPrev = (e) => { e.stopPropagation(); setActiveIdx((i) => (i - 1 + gallery.length) % gallery.length); };
+  const goNext = (e) => { e.stopPropagation(); setActiveIdx((i) => (i + 1) % gallery.length); };
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -89,29 +93,45 @@ function CategoryModal({ category, onClose, onCTA }) {
 
             {/* Image side */}
             <div className="w-full lg:w-3/5 bg-[#F5F7FA] p-6 flex flex-col items-center justify-center min-h-[300px] lg:min-h-[480px]">
-              <AnimatePresence mode="wait">
-                <motion.img
-                  key={activeImage}
-                  src={activeImage}
-                  initial={{ opacity: 0, scale: 0.92 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.92 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 28 }}
-                  className="max-w-full max-h-[40vh] lg:max-h-[50vh] object-contain drop-shadow-2xl"
-                />
-              </AnimatePresence>
+              <div className="relative w-full flex items-center justify-center">
+                {/* Prev arrow */}
+                {gallery.length > 1 && (
+                  <button onClick={goPrev} className="absolute right-0 z-10 w-9 h-9 rounded-full bg-white/80 shadow-md flex items-center justify-center hover:bg-white transition-all">
+                    <ChevronRight className="w-5 h-5 text-slate-600" />
+                  </button>
+                )}
+
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={activeImage}
+                    src={activeImage}
+                    initial={{ opacity: 0, scale: 0.92 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.92 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 28 }}
+                    className="max-w-[80%] max-h-[40vh] lg:max-h-[50vh] object-contain drop-shadow-2xl"
+                  />
+                </AnimatePresence>
+
+                {/* Next arrow */}
+                {gallery.length > 1 && (
+                  <button onClick={goNext} className="absolute left-0 z-10 w-9 h-9 rounded-full bg-white/80 shadow-md flex items-center justify-center hover:bg-white transition-all">
+                    <ChevronLeft className="w-5 h-5 text-slate-600" />
+                  </button>
+                )}
+              </div>
 
               {/* Thumbnails */}
               {gallery.length > 1 && (
                 <div className="mt-6 w-full px-2">
                   <p className="text-[11px] font-semibold text-slate-400 mb-3 text-center">עוד הטבות מהקטגוריה ששווה להכיר:</p>
-                  <div className="flex gap-2 overflow-x-auto pb-1 justify-center">
+                  <div className="flex gap-2 overflow-x-auto pb-1 justify-center" style={{ WebkitOverflowScrolling: "touch" }}>
                     {gallery.map((url, i) => (
                       <button
                         key={i}
-                        onClick={() => setActiveImage(url)}
+                        onClick={() => setActiveIdx(i)}
                         className={`flex-shrink-0 w-20 h-20 rounded-2xl border-2 bg-white shadow-sm transition-all ${
-                          activeImage === url ? "border-blue-500 scale-105 shadow-md" : "border-slate-100 hover:border-blue-300"
+                          i === activeIdx ? "border-blue-500 scale-105 shadow-md" : "border-slate-100 hover:border-blue-300"
                         }`}
                       >
                         <img src={url} className="w-full h-full object-contain p-2 rounded-2xl" alt="" />
