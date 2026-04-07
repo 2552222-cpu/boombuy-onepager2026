@@ -176,7 +176,7 @@ export default function BenefitsShowcase() {
               className="cursor-pointer bg-white rounded-[40px] border border-slate-100 shadow-sm flex flex-col overflow-hidden"
             >
               {/* Image area */}
-              <div className="aspect-square bg-[#F5F7FA] rounded-[36px] m-2 flex items-center justify-center overflow-hidden">
+              <div className="aspect-square bg-[#F5F7FA] rounded-[40px] m-2 flex items-center justify-center overflow-hidden">
                 <img src={cat.previewImage} alt={cat.title} className="max-w-full max-h-full object-contain p-3" />
               </div>
 
