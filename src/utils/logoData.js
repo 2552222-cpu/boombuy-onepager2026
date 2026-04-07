@@ -32,4 +32,7 @@ export const logoList = [
 export const allLogos = logoList.map(l => l.url);
 
 export const rowA = allLogos.slice(0, 13);
-export const rowB = allLogos.slice(13, 27);
+
+// rowB reordered: logos 15,16,19,25 (1-based) = indices 14,15,18,24 placed in center
+const rowBIndices = [13, 16, 17, 19, 20, 14, 15, 18, 24, 21, 22, 23, 25, 26];
+export const rowB = rowBIndices.map(i => allLogos[i]);
