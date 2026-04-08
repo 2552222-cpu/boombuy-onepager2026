@@ -162,6 +162,11 @@ function CategoryModal({ category, onClose, onCTA }) {
                 <p className="text-blue-700 font-bold text-sm">{category.sub}</p>
               </div>
 
+              {/* Nexus text */}
+              <p className="text-slate-500 text-xs leading-relaxed">
+                הטבה זו וכלל ההטבות במערכת נוצרות ומסובסדות אוטומטית הודות לטכנולוגיית ה-<strong>Nexus</strong> של בום ביי. המערכת מייצרת את ערך החיסכון באופן עצמאי ומיידי, ללא צורך בסבסוד נוסף או השתתפות תקציבית מצד המעסיק.
+              </p>
+
               {/* Glassmorphism CTA */}
               <div className="relative mt-auto pt-4">
                 <motion.div
@@ -226,8 +231,8 @@ export default function BenefitsShowcase() {
                     className="absolute inset-0 rounded-2xl"
                   />
                   <div className="relative bg-white/60 backdrop-blur-md border border-blue-200/70 rounded-2xl px-3 py-2 text-center">
-                    <p className="text-[10px] md:text-[11px] font-semibold text-blue-600 leading-tight">
-                      אלו רק חלק מההטבות מהקטגוריה. לחצו לגלות:
+                    <p className="text-[11px] md:text-[13px] font-bold text-blue-600 leading-tight">
+                      לחצו לראות את פרטי ההטבה
                     </p>
                   </div>
                 </div>
