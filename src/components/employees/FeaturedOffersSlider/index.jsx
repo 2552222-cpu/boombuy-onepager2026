@@ -71,17 +71,17 @@ export default function FeaturedOffersSlider() {
             const isCenter = abs === 0;
 
             return (
-              <motion.div key={offer.id} layoutId={offer.id}
+              <motion.div key={offer.id}
                 onClick={() => i === index ? setSelectedId(offer.id) : setIndex(i)}
                 animate={{ x: offset * (isMobile ? 210 : 230), scale: isCenter ? 1.1 : 0.82, rotateY: offset * -26, z: isCenter ? 150 : -80, filter: isCenter ? "none" : `blur(${Math.min(abs * 1.5, 4)}px) brightness(${0.85 - abs * 0.1})` }}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
                 style={{ position: "absolute", width: "260px", cursor: "pointer", zIndex: 10 - abs, display: "flex", flexDirection: isMobile ? "column-reverse" : "column", alignItems: "center", gap: 12 }}
               >
                 {/* Card image */}
                 <div style={{ width: "100%", height: "420px", background: "#F5F5F7", borderRadius: "32px", overflow: "hidden", boxShadow: isCenter ? "0 32px 80px rgba(0,0,0,0.12)" : "0 6px 20px rgba(0,0,0,0.06)", flexShrink: 0 }}>
-                  <img src={offer.img} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  <img src={offer.img} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
                 </div>
-                {/* Glassmorphism CTA — outside the card */}
+                {/* Glassmorphism CTA */}
                 <div style={{ width: "90%", flexShrink: 0 }}>
                   <motion.div
                     animate={{ boxShadow: ["0 0 0px rgba(37,99,235,0)", "0 0 12px rgba(37,99,235,0.5)", "0 0 0px rgba(37,99,235,0)"] }}
@@ -111,7 +111,12 @@ export default function FeaturedOffersSlider() {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.85)", backdropFilter: "blur(20px)", zIndex: 2000, display: "flex", alignItems: "center", justifyContent: "center", padding: isMobile ? "0" : "20px" }}
             onClick={() => setSelectedId(null)}>
-            <motion.div layoutId={selectedId} onClick={e => e.stopPropagation()}
+            <motion.div
+            initial={{ opacity: 0, scale: 0.94 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.94 }}
+            transition={{ duration: 0.28, ease: "easeOut" }}
+            onClick={e => e.stopPropagation()}
               style={{ width: isMobile ? "100%" : "1100px", height: isMobile ? "100dvh" : "85vh", background: "#fff", borderRadius: isMobile ? "0" : "40px", overflow: "hidden", display: "flex", flexDirection: isMobile ? "column" : "row-reverse", maxHeight: isMobile ? "100dvh" : "85dvh" }}>
 
               {/* IMAGE AREA */}
