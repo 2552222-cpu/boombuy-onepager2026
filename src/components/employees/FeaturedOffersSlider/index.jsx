@@ -1,8 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
-// --- JSON DATA: הטקסטים המדויקים שלך, כולל אדידס ---
 const OFFERS = [
   { id: "culture", cat: "תרבות ופנאי", brand: "קזבלן", title: "קזבלן · הצגת השנה", priceOld: "₪350", priceNew: "₪77", saving: "₪273", labelOld: "מחיר שוק", desc: "תערוכות, הופעות והצגות בארץ ובחו\"ל במחירים נגישים.", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3c42d518b_-2026-03-22T140039783.png" },
   { id: "fashion", cat: "אופנה ומותגים", brand: "Alo Yoga", title: "Alo Yoga · פרימיום", priceOld: "₪499", priceNew: "₪224", saving: "₪275", labelOld: "מחיר שוק", desc: "אלו יוגה, אדידס, נייק ומותגי פרימיום במחירים סיטונאיים.", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/359030b5f_87.png" },
@@ -18,6 +17,7 @@ const OFFERS = [
 export default function FeaturedOffersSlider() {
   const [selectedId, setSelectedId] = useState(null);
   const [index, setIndex] = useState(3);
+  const [hovered, setHovered] = useState(false);
   const touchStart = useRef(0);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -36,9 +36,34 @@ export default function FeaturedOffersSlider() {
         <h2 style={{ fontSize: "clamp(28px, 5vw, 48px)", fontWeight: 900, marginBottom: "10px", color: "#15172A", letterSpacing: "-0.03em" }}>ככה אנחנו מגדילים לכם את הנטו</h2>
         <p style={{ color: "#86868B", marginBottom: "52px", fontSize: "clamp(15px, 2vw, 18px)", fontWeight: 400 }}>דוגמאות להטבות אמיתיות עם חיסכון חריג לעובדים</p>
 
-        {/* Carousel Engine - המבנה המקורי */}
-        <div onTouchStart={e => { touchStart.current = e.touches[0].clientX; }} onTouchEnd={e => { const diff = touchStart.current - e.changedTouches[0].clientX; if (Math.abs(diff) > 50) go(diff > 0 ? 1 : -1); }}
-          style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "480px", perspective: "1500px", position: "relative" }}>
+        {/* Carousel */}
+        <div
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+          onTouchStart={e => { touchStart.current = e.touches[0].clientX; }}
+          onTouchEnd={e => { const diff = touchStart.current - e.changedTouches[0].clientX; if (Math.abs(diff) > 50) go(diff > 0 ? 1 : -1); }}
+          style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "480px", perspective: "1500px", position: "relative" }}
+        >
+          {/* Nav arrows */}
+          <AnimatePresence>
+            {(hovered || isMobile) && (
+              <>
+                <motion.button key="left" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                  onClick={() => go(1)}
+                  style={{ position: "absolute", left: isMobile ? 4 : -10, zIndex: 50, width: 44, height: 44, borderRadius: "50%", background: "rgba(255,255,255,0.9)", border: "1px solid rgba(0,0,0,0.08)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", boxShadow: "0 4px 16px rgba(0,0,0,0.1)", outline: "none" }}
+                >
+                  <ChevronLeft size={22} color="#1D1D1F" />
+                </motion.button>
+                <motion.button key="right" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                  onClick={() => go(-1)}
+                  style={{ position: "absolute", right: isMobile ? 4 : -10, zIndex: 50, width: 44, height: 44, borderRadius: "50%", background: "rgba(255,255,255,0.9)", border: "1px solid rgba(0,0,0,0.08)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", boxShadow: "0 4px 16px rgba(0,0,0,0.1)", outline: "none" }}
+                >
+                  <ChevronRight size={22} color="#1D1D1F" />
+                </motion.button>
+              </>
+            )}
+          </AnimatePresence>
+
           {OFFERS.map((offer, i) => {
             const offset = i - index;
             const abs = Math.abs(offset);
@@ -46,11 +71,26 @@ export default function FeaturedOffersSlider() {
             const isCenter = abs === 0;
 
             return (
-              <motion.div key={offer.id} layoutId={offer.id} onClick={() => i === index ? setSelectedId(offer.id) : setIndex(i)}
+              <motion.div key={offer.id} layoutId={offer.id}
+                onClick={() => i === index ? setSelectedId(offer.id) : setIndex(i)}
                 animate={{ x: offset * (isMobile ? 210 : 230), scale: isCenter ? 1.1 : 0.82, rotateY: offset * -26, z: isCenter ? 150 : -80, filter: isCenter ? "none" : `blur(${Math.min(abs * 1.5, 4)}px) brightness(${0.85 - abs * 0.1})` }}
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                style={{ position: "absolute", width: "260px", height: "420px", background: "#F5F5F7", borderRadius: "32px", overflow: "hidden", cursor: "pointer", zIndex: 10 - abs, boxShadow: isCenter ? "0 32px 80px rgba(0,0,0,0.12)" : "0 6px 20px rgba(0,0,0,0.06)", display: "flex", flexDirection: "column" }}>
-                <img src={offer.img} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                style={{ position: "absolute", width: "260px", height: "420px", background: "#F5F5F7", borderRadius: "32px", overflow: "hidden", cursor: "pointer", zIndex: 10 - abs, boxShadow: isCenter ? "0 32px 80px rgba(0,0,0,0.12)" : "0 6px 20px rgba(0,0,0,0.06)", display: "flex", flexDirection: "column" }}
+              >
+                <img src={offer.img} style={{ width: "100%", flex: 1, objectFit: "cover" }} />
+                {/* Glassmorphism CTA */}
+                <div style={{ padding: "0 10px 14px", flexShrink: 0 }}>
+                  <div style={{ position: "relative" }}>
+                    <motion.div
+                      animate={{ boxShadow: ["0 0 0px rgba(37,99,235,0)", "0 0 12px rgba(37,99,235,0.5)", "0 0 0px rgba(37,99,235,0)"] }}
+                      transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+                      style={{ position: "absolute", inset: 0, borderRadius: 14 }}
+                    />
+                    <div style={{ position: "relative", background: "rgba(255,255,255,0.65)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: "1px solid rgba(37,99,235,0.25)", borderRadius: 14, padding: "9px 8px", textAlign: "center" }}>
+                      <p style={{ fontSize: 12, fontWeight: 700, color: "#0055CC", margin: 0, fontFamily: "var(--font-heebo)" }}>לחצו לגלות את פרטי ההטבה</p>
+                    </div>
+                  </div>
+                </div>
               </motion.div>
             );
           })}
@@ -65,7 +105,7 @@ export default function FeaturedOffersSlider() {
         </div>
       </div>
 
-      {/* MODAL - התיקון ההנדסי (1100px + ללא חיתוך) */}
+      {/* MODAL */}
       <AnimatePresence>
         {selectedId && selectedOffer && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -73,25 +113,37 @@ export default function FeaturedOffersSlider() {
             onClick={() => setSelectedId(null)}>
             <motion.div layoutId={selectedId} onClick={e => e.stopPropagation()}
               style={{ width: isMobile ? "100%" : "1100px", height: isMobile ? "100dvh" : "85vh", background: "#fff", borderRadius: isMobile ? "0" : "40px", overflow: "hidden", display: "flex", flexDirection: isMobile ? "column" : "row-reverse", maxHeight: isMobile ? "100dvh" : "85dvh" }}>
-              
-              {/* IMAGE AREA - Edge to Edge look */}
+
+              {/* IMAGE AREA */}
               <div style={{ flex: isMobile ? "0 0 50%" : "1.3", background: "#F5F5F7", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
-                <button onClick={() => setSelectedId(null)} style={{ position: "absolute", top: 20, left: 20, background: "rgba(0,0,0,0.2)", border: "none", width: "40px", height: "40px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10 }}>
+                {/* Modal nav arrows */}
+                <button onClick={(e) => { e.stopPropagation(); go(-1); setSelectedId(OFFERS[(index - 1 + OFFERS.length) % OFFERS.length].id); }}
+                  style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.85)", border: "none", width: 36, height: 36, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", zIndex: 10, boxShadow: "0 2px 10px rgba(0,0,0,0.12)" }}>
+                  <ChevronRight size={18} color="#1D1D1F" />
+                </button>
+                <button onClick={(e) => { e.stopPropagation(); go(1); setSelectedId(OFFERS[(index + 1) % OFFERS.length].id); }}
+                  style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.85)", border: "none", width: 36, height: 36, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", zIndex: 10, boxShadow: "0 2px 10px rgba(0,0,0,0.12)" }}>
+                  <ChevronLeft size={18} color="#1D1D1F" />
+                </button>
+                <button onClick={() => setSelectedId(null)} style={{ position: "absolute", top: 20, left: 20, background: "rgba(0,0,0,0.2)", border: "none", width: "40px", height: "40px", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 20 }}>
                   <X size={20} color="#fff" />
                 </button>
                 <img src={selectedOffer.img} style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }} />
               </div>
 
-              {/* CONTENT AREA - עם גלילה למניעת חיתוך המחירים */}
+              {/* CONTENT AREA */}
               <div style={{ flex: "1", padding: isMobile ? "24px 20px" : "60px", textAlign: "right", display: "flex", flexDirection: "column", justifyContent: "space-between", direction: "rtl", overflowY: "auto", background: "#fff" }}>
                 <div>
                   <p style={{ fontSize: "14px", fontWeight: 800, color: "#0055CC", marginBottom: "8px" }}>{selectedOffer.cat} · {selectedOffer.brand}</p>
-                  <h3 style={{ fontSize: isMobile ? "24px" : "42px", fontWeight: 900, color: "#15172A", lineHeight: 1.1, marginBottom: "20px" }}>{selectedOffer.title}</h3>
-                  <p style={{ fontSize: isMobile ? "16px" : "17px", color: "#6E6E73", lineHeight: 1.5, marginBottom: "30px" }}>{selectedOffer.desc}</p>
+                  <h3 style={{ fontSize: isMobile ? "24px" : "42px", fontWeight: 900, color: "#15172A", lineHeight: 1.1, marginBottom: "16px" }}>{selectedOffer.title}</h3>
+                  <p style={{ fontSize: isMobile ? "16px" : "17px", color: "#6E6E73", lineHeight: 1.5, marginBottom: "16px" }}>{selectedOffer.desc}</p>
+                  {/* Nexus */}
+                  <p style={{ fontSize: "12px", color: "#6E6E73", lineHeight: 1.65, marginBottom: "24px", borderRight: "3px solid #E5E7EB", paddingRight: "10px" }}>
+                    הטבה זו נוצרת ומסובסדת אוטומטית הודות לטכנולוגיית ה-<strong style={{ color: "#15172A" }}>Nexus</strong> של בום ביי. המערכת מייצרת את ערך החיסכון באופן עצמאי, ללא צורך בסבסוד או השתתפות תקציבית מצד המעסיק.
+                  </p>
                 </div>
-                
+
                 <div>
-                  {/* PRICING TABLE - הקפסולות שאהבת */}
                   <div style={{ display: "flex", gap: "10px", marginBottom: "32px" }}>
                     {[
                       { lbl: selectedOffer.labelOld, val: selectedOffer.priceOld, strike: true, color: "#86868B" },
