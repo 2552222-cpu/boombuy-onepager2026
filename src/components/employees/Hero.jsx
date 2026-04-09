@@ -40,17 +40,21 @@ export default function Hero() {
           {/* iPhone Section */}
           <div style={{ flex: "1", display: "flex", flexDirection: "column", alignItems: "center", minWidth: "300px", marginBottom: isMobile ? "50px" : "0" }}>
             {/* Floating iPhone */}
-            <motion.div
-              animate={{ y: [0, -12, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              style={{ background: "#fff", borderRadius: "48px", padding: "24px", boxShadow: "0 40px 100px rgba(0,0,0,0.18), 0 8px 30px rgba(0,0,0,0.08)", display: "inline-block" }}
-            >
-              <img
+            <div style={{ position: "relative", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+              {/* Backlight glow */}
+              <motion.div
+                animate={{ opacity: [0.5, 1, 0.5], scale: [0.9, 1.05, 0.9] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                style={{ position: "absolute", width: "100%", height: "100%", borderRadius: "50%", background: "radial-gradient(ellipse at center, rgba(120,80,255,0.25) 0%, rgba(37,99,235,0.2) 40%, transparent 70%)", filter: "blur(32px)", zIndex: 0 }}
+              />
+              <motion.img
                 src={HERO_DATA.iPhoneImg}
                 alt="iPhone 16 Pro"
-                style={{ width: "100%", maxWidth: "320px", height: "auto", objectFit: "contain", display: "block" }}
+                animate={{ y: [0, -14, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                style={{ width: "100%", maxWidth: "416px", height: "auto", objectFit: "contain", display: "block", position: "relative", zIndex: 1 }}
               />
-            </motion.div>
+            </div>
 
             {/* Price Cubes */}
             <div style={{ display: "flex", gap: "10px", marginTop: "28px", width: "100%", maxWidth: "380px" }}>
