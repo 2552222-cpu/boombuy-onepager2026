@@ -125,7 +125,7 @@ function CategoryModal({ category, onClose, onCTA }) {
               {gallery.length > 1 && (
                 <div className="mt-6 w-full px-2">
                   <p className="text-[11px] font-semibold text-slate-400 mb-3 text-center">עוד הטבות מהקטגוריה ששווה להכיר:</p>
-                  <div className="flex gap-2 overflow-x-auto pb-1 justify-center" style={{ WebkitOverflowScrolling: "touch" }}>
+                  <div className="flex gap-2 overflow-x-auto justify-center" style={{ WebkitOverflowScrolling: "touch", scrollbarWidth: "none", msOverflowStyle: "none" }}>
                     {gallery.map((url, i) => (
                       <button
                         key={i}
