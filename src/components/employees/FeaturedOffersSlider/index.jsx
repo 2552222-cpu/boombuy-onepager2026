@@ -139,7 +139,7 @@ export default function FeaturedOffersSlider() {
                   <p style={{ fontSize: isMobile ? "16px" : "17px", color: "#6E6E73", lineHeight: 1.5, marginBottom: "16px" }}>{selectedOffer.desc}</p>
                   {/* Nexus */}
                   <p style={{ fontSize: "12px", color: "#6E6E73", lineHeight: 1.65, marginBottom: "24px", borderRight: "3px solid #E5E7EB", paddingRight: "10px" }}>
-                    הטבה זו נוצרת ומסובסדת אוטומטית הודות לטכנולוגיית ה-<strong style={{ color: "#15172A" }}>Nexus</strong> של בום ביי. המערכת מייצרת את ערך החיסכון באופן עצמאי, ללא צורך בסבסוד או השתתפות תקציבית מצד המעסיק.
+                    הטבה זו וכלל ההטבות במערכת נוצרות ומסובסדות אוטומטית הודות לטכנולוגיית ה-<strong style={{ color: "#15172A" }}>Nexus</strong> של בום ביי. המערכת מייצרת את ערך החיסכון באופן עצמאי, ללא צורך בסבסוד נוסף מצד המעסיק.
                   </p>
                 </div>
 

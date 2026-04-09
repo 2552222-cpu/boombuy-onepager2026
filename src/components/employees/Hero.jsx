@@ -38,7 +38,7 @@ export default function Hero() {
         <div style={{ display: "flex", flexDirection: isMobile ? "column-reverse" : "row-reverse", alignItems: "center", gap: "60px", flexWrap: "wrap" }}>
           
           {/* iPhone Section */}
-          <div style={{ flex: "1", display: "flex", flexDirection: "column", alignItems: "center", minWidth: "300px", marginBottom: isMobile ? "50px" : "0" }}>
+          <div style={{ flex: "1", display: "flex", flexDirection: "column", alignItems: "center", minWidth: "300px", marginBottom: isMobile ? "0" : "0", marginTop: isMobile ? "0" : "0" }}>
             {/* Floating iPhone */}
             <div style={{ position: "relative", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
               {/* Backlight glow */}
@@ -83,7 +83,7 @@ export default function Hero() {
           </div>
 
           {/* Text Section */}
-          <div id="text-section" style={{ flex: "1.2", minWidth: "320px", textAlign: isMobile ? "center" : "right" }}>
+          <div id="text-section" style={{ flex: "1.2", minWidth: "320px", textAlign: isMobile ? "center" : "right", marginBottom: isMobile ? "40px" : "0" }}>
             <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
               style={{ fontSize: "clamp(38px, 6vw, 76px)", fontWeight: 900, lineHeight: 1.05, color: "#1D1D1F", margin: 0, letterSpacing: "-0.04em", fontFamily: "var(--font-heebo)" }}
             >

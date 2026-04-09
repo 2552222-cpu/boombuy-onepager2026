@@ -50,7 +50,7 @@ export default function DigitalWallet({ imageUrl }) {
 
 
 
-            <div className="bg-white rounded-2xl md:rounded-3xl border border-border/40 p-4 md:p-8 shadow-md space-y-3 md:space-y-5">
+            <div className="bg-white rounded-2xl md:rounded-3xl p-4 md:p-8 shadow-md space-y-3 md:space-y-5">
               {points.map((point, i) => (
                 <motion.div
                   key={i}

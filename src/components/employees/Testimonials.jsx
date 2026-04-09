@@ -57,7 +57,7 @@ export default function Testimonials() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.45, delay: i * 0.08 }}
-              className="bg-secondary/40 rounded-lg md:rounded-2xl p-4 md:p-6 border border-border/30"
+              className="bg-secondary/40 rounded-lg md:rounded-2xl p-4 md:p-6"
             >
               <Stars />
               <p className="text-sm md:text-[15px] leading-relaxed mb-3 md:mb-4 text-foreground/90">

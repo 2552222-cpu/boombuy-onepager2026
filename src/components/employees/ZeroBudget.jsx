@@ -6,8 +6,6 @@ export default function ZeroBudget() {
     <section
       style={{
         background: "#FAFAFA",
-        borderTop: "1px solid rgba(0,0,0,0.06)",
-        borderBottom: "1px solid rgba(0,0,0,0.06)",
         overflowX: "hidden",
         maxWidth: "100vw",
       }}

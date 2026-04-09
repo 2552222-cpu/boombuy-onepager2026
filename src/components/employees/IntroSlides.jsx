@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+const POWER_WORDS = ["נטו", "חיסכון", "Nexus", "כסף"];
+
 const SLIDES = [
   {
     id: 1,
@@ -45,20 +47,28 @@ const SLIDES = [
   },
 ];
 
-const DURATION = 6000;
+function highlightPowerWords(text) {
+  const regex = new RegExp(`(${POWER_WORDS.join("|")})`, "g");
+  const parts = text.split(regex);
+  return parts.map((part, i) =>
+    POWER_WORDS.includes(part)
+      ? <span key={i} style={{ color: "#0066CC", fontWeight: 900 }}>{part}</span>
+      : part
+  );
+}
 
 function LineText({ line, highlight, highlightColor, color, size, weight }) {
-  if (!highlight || !line.includes(highlight)) {
-    return <span>{line}</span>;
+  if (highlight && line.includes(highlight)) {
+    const parts = line.split(highlight);
+    return (
+      <>
+        {parts[0]}
+        <span style={{ color: highlightColor, fontWeight: weight }}>{highlight}</span>
+        {parts[1]}
+      </>
+    );
   }
-  const parts = line.split(highlight);
-  return (
-    <>
-      {parts[0]}
-      <span style={{ color: highlightColor, fontWeight: weight }}>{highlight}</span>
-      {parts[1]}
-    </>
-  );
+  return <span>{highlightPowerWords(line)}</span>;
 }
 
 export default function IntroSlides({ onDone }) {

@@ -163,8 +163,8 @@ function CategoryModal({ category, onClose, onCTA }) {
               </div>
 
               {/* Nexus text */}
-              <p className="text-slate-500 text-xs leading-relaxed">
-                הטבה זו וכלל ההטבות במערכת נוצרות ומסובסדות אוטומטית הודות לטכנולוגיית ה-<strong>Nexus</strong> של בום ביי. המערכת מייצרת את ערך החיסכון באופן עצמאי ומיידי, ללא צורך בסבסוד נוסף או השתתפות תקציבית מצד המעסיק.
+              <p className="text-slate-500 text-xs leading-relaxed" style={{ borderRight: "3px solid #E5E7EB", paddingRight: "10px" }}>
+                הטבה זו וכלל ההטבות במערכת נוצרות ומסובסדות אוטומטית הודות לטכנולוגיית ה-<strong>Nexus</strong> של בום ביי. המערכת מייצרת את ערך החיסכון באופן עצמאי, ללא צורך בסבסוד נוסף מצד המעסיק.
               </p>
 
               {/* Glassmorphism CTA */}
