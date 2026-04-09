@@ -11,6 +11,7 @@ import Testimonials from "../components/employees/Testimonials";
 import Survey from "../components/employees/Survey";
 import FinalBand from "../components/employees/FinalBand";
 import ZeroBudget from "../components/employees/ZeroBudget";
+import SavingsInfographic from "../components/employees/SavingsInfographic";
 import JoinScreen from "../components/employees/JoinScreen";
 
 const PROOF_IMAGE_URL = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e5b27b9ef_-2026-03-16T131338488.png";
@@ -80,10 +81,11 @@ export default function EmployeesLanding() {
       <GlobalHeader />
       <div className="flex-1">
         <IntroSlides onDone={() => setIntroDone(true)} />
+        <Hero />
         <div id="offers-slider">
           <FeaturedOffersSlider />
         </div>
-        <Hero />
+        <SavingsInfographic />
         <TrustLogos />
         <div id="benefits-showcase">
           <BenefitsShowcase />

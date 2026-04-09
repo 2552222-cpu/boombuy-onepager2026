@@ -132,6 +132,13 @@ export default function Survey() {
       }}
     >
       <div className="max-w-xl mx-auto">
+        {/* Ambassador nudge */}
+        <div style={{ background: "rgba(0,102,204,0.06)", border: "1px solid rgba(0,102,204,0.15)", borderRadius: 16, padding: "14px 18px", marginBottom: 24, textAlign: "center" }}>
+          <p style={{ fontSize: 14, fontWeight: 600, color: "#0066CC", lineHeight: 1.55, fontFamily: "var(--font-heebo)", margin: 0 }}>
+            💡 ידעת? תוכל להגדיל ב-80% את הסיכוי להכניס את בום ביי לארגון שלך אם עוד 20 עובדים יענו על השאלון הקצר.
+          </p>
+        </div>
+
         {/* Header */}
         <div className="text-center mb-10">
           <h2

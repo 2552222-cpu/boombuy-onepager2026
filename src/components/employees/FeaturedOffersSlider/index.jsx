@@ -68,14 +68,18 @@ export default function FeaturedOffersSlider() {
             const offset = i - index;
             const abs = Math.abs(offset);
             if (abs > 4) return null;
+            // wrap-around: also check the circular distance
+            const circOffset = offset > OFFERS.length / 2 ? offset - OFFERS.length : offset < -OFFERS.length / 2 ? offset + OFFERS.length : offset;
+            const circAbs = Math.abs(circOffset);
+            if (circAbs > 4) return null;
             const isCenter = abs === 0;
 
             return (
               <motion.div key={offer.id}
                 onClick={() => i === index ? setSelectedId(offer.id) : setIndex(i)}
-                animate={{ x: offset * (isMobile ? 210 : 230), scale: isCenter ? 1.1 : 0.82, rotateY: offset * -26, z: isCenter ? 150 : -80, filter: isCenter ? "none" : `blur(${Math.min(abs * 1.5, 4)}px) brightness(${0.85 - abs * 0.1})` }}
+                animate={{ x: circOffset * (isMobile ? 210 : 230), scale: isCenter ? 1.1 : 0.82, rotateY: circOffset * -26, z: isCenter ? 150 : -80, filter: isCenter ? "none" : `blur(${Math.min(abs * 1.5, 4)}px) brightness(${0.85 - abs * 0.1})` }}
                 transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                style={{ position: "absolute", width: "260px", cursor: "pointer", zIndex: 10 - abs, display: "flex", flexDirection: isMobile ? "column-reverse" : "column", alignItems: "center", gap: 12 }}
+                style={{ position: "absolute", width: "260px", cursor: "pointer", zIndex: 10 - circAbs, display: "flex", flexDirection: isMobile ? "column-reverse" : "column", alignItems: "center", gap: 12 }}
               >
                 {/* Card image */}
                 <div style={{ width: "100%", height: "420px", background: "#F5F5F7", borderRadius: "32px", overflow: "hidden", boxShadow: isCenter ? "0 32px 80px rgba(0,0,0,0.12)" : "0 6px 20px rgba(0,0,0,0.06)", flexShrink: 0 }}>
@@ -86,7 +90,7 @@ export default function FeaturedOffersSlider() {
                   <motion.div
                     animate={{ boxShadow: ["0 0 0px rgba(37,99,235,0)", "0 0 12px rgba(37,99,235,0.5)", "0 0 0px rgba(37,99,235,0)"] }}
                     transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-                    style={{ backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", border: "1px solid rgba(37,99,235,0.25)", borderRadius: 14, height: 36, display: "flex", alignItems: "center", justifyContent: "center" }}
+                    style={{ background: "rgba(255,255,255,0.5)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", border: "1px solid rgba(37,99,235,0.25)", borderRadius: 14, height: 36, display: "flex", alignItems: "center", justifyContent: "center" }}
                   >
                     <p style={{ fontSize: 13, fontWeight: 700, color: "#0055CC", margin: 0, fontFamily: "var(--font-heebo)" }}>לחצו לגלות את פרטי ההטבה</p>
                   </motion.div>
@@ -120,7 +124,7 @@ export default function FeaturedOffersSlider() {
               style={{ width: isMobile ? "100%" : "1100px", height: isMobile ? "100dvh" : "85vh", background: "#fff", borderRadius: isMobile ? "0" : "40px", overflow: "hidden", display: "flex", flexDirection: isMobile ? "column" : "row-reverse", maxHeight: isMobile ? "100dvh" : "85dvh" }}>
 
               {/* IMAGE AREA */}
-              <div style={{ flex: isMobile ? "0 0 50%" : "1.3", background: "#F5F5F7", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+              <div style={{ flex: isMobile ? "0 0 50%" : "1.3", background: "#fff", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
                 {/* Modal nav arrows */}
                 <button onClick={(e) => { e.stopPropagation(); go(-1); setSelectedId(OFFERS[(index - 1 + OFFERS.length) % OFFERS.length].id); }}
                   style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.85)", border: "none", width: 36, height: 36, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", zIndex: 10, boxShadow: "0 2px 10px rgba(0,0,0,0.12)" }}>
