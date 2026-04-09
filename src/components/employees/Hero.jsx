@@ -35,7 +35,7 @@ export default function Hero() {
           </div>
         </div>
 
-        <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row-reverse", alignItems: "center", gap: "60px", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", flexDirection: isMobile ? "column-reverse" : "row-reverse", alignItems: "center", gap: "60px", flexWrap: "wrap" }}>
           
           {/* iPhone Section */}
           <div style={{ flex: "1", display: "flex", flexDirection: "column", alignItems: "center", minWidth: "300px", marginBottom: isMobile ? "50px" : "0" }}>

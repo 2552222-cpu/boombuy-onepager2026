@@ -79,15 +79,15 @@ export default function FeaturedOffersSlider() {
               >
                 <img src={offer.img} style={{ width: "100%", flex: 1, objectFit: "cover" }} />
                 {/* Glassmorphism CTA */}
-                <div style={{ padding: "0 10px 14px", flexShrink: 0 }}>
-                  <div style={{ position: "relative" }}>
+                <div style={{ padding: "0 10px 20px", flexShrink: 0, display: "flex", justifyContent: "center" }}>
+                  <div style={{ position: "relative", width: "90%" }}>
                     <motion.div
                       animate={{ boxShadow: ["0 0 0px rgba(37,99,235,0)", "0 0 12px rgba(37,99,235,0.5)", "0 0 0px rgba(37,99,235,0)"] }}
                       transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
                       style={{ position: "absolute", inset: 0, borderRadius: 14 }}
                     />
-                    <div style={{ position: "relative", background: "rgba(255,255,255,0.65)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: "1px solid rgba(37,99,235,0.25)", borderRadius: 14, padding: "9px 8px", textAlign: "center" }}>
-                      <p style={{ fontSize: 12, fontWeight: 700, color: "#0055CC", margin: 0, fontFamily: "var(--font-heebo)" }}>לחצו לגלות את פרטי ההטבה</p>
+                    <div style={{ position: "relative", background: "rgba(255,255,255,0.7)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", border: "1px solid rgba(37,99,235,0.2)", borderRadius: 14, height: 36, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <p style={{ fontSize: 13, fontWeight: 700, color: "#0055CC", margin: 0, fontFamily: "var(--font-heebo)" }}>לחצו לגלות את פרטי ההטבה</p>
                     </div>
                   </div>
                 </div>

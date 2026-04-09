@@ -89,24 +89,7 @@ export default function IntroSlides({ onDone }) {
 
   useEffect(() => {
     setProgress(0);
-    startTimeRef.current = Date.now();
-    clearInterval(intervalRef.current);
-
-    intervalRef.current = setInterval(() => {
-      const elapsed = Date.now() - startTimeRef.current;
-      const pct = Math.min((elapsed / DURATION) * 100, 100);
-      setProgress(pct);
-      if (elapsed >= DURATION) {
-        clearInterval(intervalRef.current);
-        if (index < SLIDES.length - 1) {
-          setIndex((p) => p + 1);
-        } else {
-          finish();
-        }
-      }
-    }, 50);
-
-    return () => clearInterval(intervalRef.current);
+    return () => {};
   }, [index]);
 
   const handleTouchStart = (e) => { touchStartX.current = e.touches[0].clientX; };
