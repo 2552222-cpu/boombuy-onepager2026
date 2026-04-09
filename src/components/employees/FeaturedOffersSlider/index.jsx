@@ -75,21 +75,21 @@ export default function FeaturedOffersSlider() {
                 onClick={() => i === index ? setSelectedId(offer.id) : setIndex(i)}
                 animate={{ x: offset * (isMobile ? 210 : 230), scale: isCenter ? 1.1 : 0.82, rotateY: offset * -26, z: isCenter ? 150 : -80, filter: isCenter ? "none" : `blur(${Math.min(abs * 1.5, 4)}px) brightness(${0.85 - abs * 0.1})` }}
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                style={{ position: "absolute", width: "260px", height: "420px", background: "#F5F5F7", borderRadius: "32px", overflow: "hidden", cursor: "pointer", zIndex: 10 - abs, boxShadow: isCenter ? "0 32px 80px rgba(0,0,0,0.12)" : "0 6px 20px rgba(0,0,0,0.06)", display: "flex", flexDirection: "column" }}
+                style={{ position: "absolute", width: "260px", cursor: "pointer", zIndex: 10 - abs, display: "flex", flexDirection: isMobile ? "column-reverse" : "column", alignItems: "center", gap: 12 }}
               >
-                <img src={offer.img} style={{ width: "100%", flex: 1, objectFit: "cover" }} />
-                {/* Glassmorphism CTA */}
-                <div style={{ padding: "0 10px 20px", flexShrink: 0, display: "flex", justifyContent: "center" }}>
-                  <div style={{ position: "relative", width: "90%" }}>
-                    <motion.div
-                      animate={{ boxShadow: ["0 0 0px rgba(37,99,235,0)", "0 0 12px rgba(37,99,235,0.5)", "0 0 0px rgba(37,99,235,0)"] }}
-                      transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-                      style={{ position: "absolute", inset: 0, borderRadius: 14 }}
-                    />
-                    <div style={{ position: "relative", background: "rgba(255,255,255,0.7)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", border: "1px solid rgba(37,99,235,0.2)", borderRadius: 14, height: 36, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      <p style={{ fontSize: 13, fontWeight: 700, color: "#0055CC", margin: 0, fontFamily: "var(--font-heebo)" }}>לחצו לגלות את פרטי ההטבה</p>
-                    </div>
-                  </div>
+                {/* Card image */}
+                <div style={{ width: "100%", height: "420px", background: "#F5F5F7", borderRadius: "32px", overflow: "hidden", boxShadow: isCenter ? "0 32px 80px rgba(0,0,0,0.12)" : "0 6px 20px rgba(0,0,0,0.06)", flexShrink: 0 }}>
+                  <img src={offer.img} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                </div>
+                {/* Glassmorphism CTA — outside the card */}
+                <div style={{ width: "90%", flexShrink: 0 }}>
+                  <motion.div
+                    animate={{ boxShadow: ["0 0 0px rgba(37,99,235,0)", "0 0 12px rgba(37,99,235,0.5)", "0 0 0px rgba(37,99,235,0)"] }}
+                    transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+                    style={{ backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", border: "1px solid rgba(37,99,235,0.25)", borderRadius: 14, height: 36, display: "flex", alignItems: "center", justifyContent: "center" }}
+                  >
+                    <p style={{ fontSize: 13, fontWeight: 700, color: "#0055CC", margin: 0, fontFamily: "var(--font-heebo)" }}>לחצו לגלות את פרטי ההטבה</p>
+                  </motion.div>
                 </div>
               </motion.div>
             );
