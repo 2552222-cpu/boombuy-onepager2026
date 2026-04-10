@@ -135,6 +135,9 @@ export default function Survey() {
           source: "employees",
           currentCount: 1,
           lastJoinedAt: new Date().toISOString(),
+          orgSize,
+          holidayBudget,
+          activities: [painPoint, currentClub, welfareBudget].filter(Boolean),
           initiatorName: hrName.trim() || undefined,
           initiatorPhone: hrPhone.trim() || undefined,
         });

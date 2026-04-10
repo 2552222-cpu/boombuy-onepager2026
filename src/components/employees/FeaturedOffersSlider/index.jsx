@@ -16,7 +16,7 @@ const OFFERS = [
 
 export default function FeaturedOffersSlider() {
   const [selectedId, setSelectedId] = useState(null);
-  const [index, setIndex] = useState(4);
+  const [index, setIndex] = useState(5);
   const [hovered, setHovered] = useState(false);
   const touchStart = useRef(0);
   const [isMobile, setIsMobile] = useState(false);
