@@ -183,7 +183,7 @@ export default function TrustLogos() {
         .jci-vcol-wrap{
           flex:1;
           max-width:50%;
-          height:400px; /* 5 × 80px cards */
+          height:500px;
           overflow:hidden;
           position:relative;
           border-radius:16px;
@@ -209,8 +209,8 @@ export default function TrustLogos() {
         }
         .jci-vcol-wrap:hover .jci-vcol-track{ animation-play-state:paused; }
         .jci-vcol-card{
-          flex:0 0 80px;
-          height:80px;
+          flex:0 0 100px;
+          height:100px;
           display:flex;
           align-items:center;
           justify-content:center;
@@ -218,10 +218,10 @@ export default function TrustLogos() {
           border-bottom:1px solid rgba(0,0,0,0.05);
         }
         .jci-vcol-card img{
-          width:80%;
-          height:60px;
+          width:90%;
+          height:80px;
           object-fit:contain;
-          padding:6px;
+          padding:8px;
         }
 
         .jci-trust{
