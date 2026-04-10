@@ -2,14 +2,9 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Copy, MessageCircle } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { buildWaMessage } from "@/utils/messages";
 
-const getShareMessage = (orgKey) => {
-  const resultsLink = orgKey ? `https://boom-perk-flow.base44.app/join/${orgKey}` : "https://boom-perk-flow.base44.app";
 
-  return `חבר'ה, ענו על 3 שאלות — אנחנו בונים ביחד מה לומר ל-HR.
-30 שניות, אנונימי לחלוטין:
-${resultsLink}`;
-};
 
 export default function ShareScreen({ groupRequest, orgKey, onContinue }) {
   const { toast } = useToast();
@@ -19,7 +14,7 @@ export default function ShareScreen({ groupRequest, orgKey, onContinue }) {
     toast({ title: "הועתק ✓" });
   };
 
-  const shareMessage = getShareMessage(orgKey);
+  const shareMessage = buildWaMessage(groupRequest?.orgName || "", orgKey || "", groupRequest?.currentCount || 1);
 
   const handleWhatsApp = () => {
     const encoded = encodeURIComponent(shareMessage);

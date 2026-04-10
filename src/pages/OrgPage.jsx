@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { base44 } from "@/api/base44Client";
+import { buildWaMessage, buildLetterMessage } from "@/utils/messages";
 
 const TARGET_1 = 10;
 const TARGET_2 = 20;
-const BASE_URL = "https://boom-perk-flow.base44.app";
+
 
 // ─── Local storage helpers ─────────────────────────────────────────────────────
 function getBrowserToken() {
@@ -37,44 +38,13 @@ function markSurveyDone(orgKey) {
   localStorage.setItem("boomBuySurveyDone", JSON.stringify(orgs));
 }
 
-// ─── Message generators ────────────────────────────────────────────────────────
+// ─── Message generators — delegate to canonical source ───────────────────────
 function waMsg(orgName, count, orgSlug) {
-  const link = `${BASE_URL}/join/${encodeURIComponent(orgSlug)}`;
-  const countWord = count === 1 ? "עובד אחד" : `${count} עובדים`;
-  if (count >= TARGET_2) {
-    return `היי 👋\n\n${countWord} מ${orgName} כבר הצטרפו לבקשה להכניס את בום ביי לארגון.\n\nבום ביי זה: אייפון במחיר יבואן, 8% הנחה קבועה בסופר, חופשות וביגוד פרימיום — בלי שהארגון מוציא שקל נוסף.\n\nאם גם אתם רוצים — הצטרפו לבקשה:\n${link}`;
-  }
-  if (count >= TARGET_1) {
-    const remaining = TARGET_2 - count;
-    return `היי 👋\n\n${countWord} מ${orgName} כבר חתמו על בקשה להכניס את בום ביי לארגון.\n\nחסרים עוד ${remaining} כדי להגיע ל-20 — וזה מה שיגרום להנהלה להתייחס ברצינות.\n\nמצטרפים כאן (10 שניות):\n${link}`;
-  }
-  const remaining = TARGET_1 - count;
-  return `היי 👋\n\nהרגע הצטרפתי לבקשה שתכניס את בום ביי ל${orgName}.\n\nבום ביי זה הטבות אמיתיות — מחירי יבואן, הנחות בסופר, חופשות — בלי שהארגון משלם.\n\nחסרים עוד ${remaining} אנשים כדי שנגיע ל-10 ונתקדם.\n\nמצטרפים כאן:\n${link}`;
+  return buildWaMessage(orgName, orgSlug, count);
 }
 
 function letterMsg(orgName, count, orgKey) {
-  const orgLink = orgKey ? `${BASE_URL}/join/${encodeURIComponent(orgKey)}` : BASE_URL;
-  const countWord = count === 1 ? "עובד אחד" : `${count} עובדים`;
-  return `שלום,
-
-אנחנו קבוצת עובדים מ-${orgName} שמעוניינת לבדוק את האפשרות להכניס את מועדון בום ביי לארגון.
-
-כיום חתמו על הבקשה ${countWord} מתוך הארגון.
-
-מה שבום ביי נותן:
-• 8% הנחה קבועה ברשתות הסופרמרקט הגדולות
-• מחירי יבואן על Apple, Samsung ומוצרי חשמל
-• חופשות, תרבות ומותגי פרימיום
-• מתנת חג גמישה עם בחירה חופשית
-
-הכל בלי עלות נוספת לארגון.
-
-נשמח לתאם פגישת דמו קצרה (15 דקות) להצגה ישירה.
-
-קישור לעמוד הבקשה: ${orgLink}
-
-לתיאום פגישה: ארי, 054-255-2222
-או בוואטסאפ: wa.me/972542552222`;
+  return buildLetterMessage(orgName, orgKey, count);
 }
 
 // ─── Micro Survey ─────────────────────────────────────────────────────────────

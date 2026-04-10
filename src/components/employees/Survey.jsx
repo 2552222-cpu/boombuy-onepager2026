@@ -11,9 +11,9 @@ const ORG_SIZE_OPTIONS = [
 ];
 
 const HOLIDAY_BUDGET_OPTIONS = [
-  { label: "200₪–400₪" },
-  { label: "400₪–600₪" },
-  { label: "600₪+" },
+  { label: "200-400 ₪" },
+  { label: "400-600 ₪" },
+  { label: "600+ ₪" },
   { label: "לא מקבלים מתנות" },
 ];
 

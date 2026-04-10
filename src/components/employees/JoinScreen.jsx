@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { MessageCircle } from "lucide-react";
 import { base44 } from "@/api/base44Client";
+import { buildWaMessage } from "@/utils/messages";
 
 const TARGET_1 = 10;
 const TARGET_2 = 20;
@@ -103,19 +104,7 @@ export default function JoinScreen({ orgKey, orgName, onContinue }) {
   const milestoneLabel = count >= TARGET_2 ? 'זה כבר כוח שאי אפשר להתעלם ממנו' : 'יש כאן מסה ראשונית';
 
   const handleShareWhatsApp = () => {
-    const msg = `חבר'ה 👋
-
-ענינו על סקר של BoomBuy —
-מתברר שאפשר לקבל יותר מהתקציב
-שהחברה כבר נותנת לנו.
-
-אנחנו אוספים עובדים כדי
-להעביר בקשה ל-HR ביחד —
-ביחד זה הרבה יותר חזק.
-
-30 שניות — ממש שווה:
-https://boom-perk-flow.base44.app/join/${orgKey}`;
-
+    const msg = buildWaMessage(orgName, orgKey, newCount);
     const encoded = encodeURIComponent(msg);
     window.open(`https://wa.me/?text=${encoded}`, "_blank");
   };

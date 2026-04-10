@@ -3,27 +3,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Share2, Copy, Users, CheckCircle } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import InitiatorForm from "./InitiatorForm";
+import { buildWaMessage, buildLetterMessage } from "@/utils/messages";
 
 function normalizeKey(str) {
   return str.trim().toLowerCase().replace(/\s+/g, "-");
 }
 
-function buildShareLink(orgKey, orgName) {
-  const encoded = encodeURIComponent(orgName);
-  return `https://www.boombuyonepage.com/employees?sign=1&org=${orgKey}&orgName=${encoded}`;
-}
 
-function buildShareMsg(orgKey, orgName, count) {
-  const link = buildShareLink(orgKey, orgName);
-  if (count >= 2) {
-    return `כבר ${count} עובדים אצלנו הצטרפו לבקשה לבדוק את BoomBuy.\nאם גם אתם רוצים שנעביר את זה ל-HR בצורה חזקה יותר, תצטרפו גם:\n${link}`;
-  }
-  return `חבר'ה, מצאתי עמוד קצר שמראה איך אפשר לקבל יותר דרך מקום העבודה - סופר, חשמל, חופשות והטבות יומיומיות, בלי שהחברה תשלם יותר.\n\nאם זה מעניין גם אתכם, תיכנסו לדקה.\nאם נהיה כמה עובדים מאותו ארגון, נוכל להעביר את זה יחד ל-HR וזה יהיה הרבה יותר חזק 💪\n${link}`;
-}
-
-function buildHRMsg(count, orgName) {
-  return `היי, ${count} עובדים אצלנו כבר הצטרפו לבקשה לבדוק את BoomBuy.\n\nמדובר בפתרון שיכול לתת לעובדים יותר ערך דרך התקציב שכבר קיים, עם הטבות יומיומיות ויותר בחירה במתנות לחג - בלי שהחברה תצטרך להוסיף תקציב.\n\nנשמח אם תבדקו אם זה יכול להתאים גם אצלנו:\nhttps://www.boombuyonepage.com`;
-}
 
 function getMilestone(count) {
   if (count >= 10) return 10;
@@ -169,17 +155,17 @@ export default function GroupRequestBlock({ defaultOrgName = "", defaultOrgKey =
   };
 
   const handleShare = () => {
-    const msg = buildShareMsg(orgKey, orgName, count);
+    const msg = buildWaMessage(orgName, orgKey, count);
     window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
   };
 
   const handleSendHR = () => {
-    const msg = buildHRMsg(count, orgName);
+    const msg = buildLetterMessage(orgName, orgKey, count);
     window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
   };
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(buildHRMsg(count, orgName));
+    navigator.clipboard.writeText(buildLetterMessage(orgName, orgKey, count));
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };

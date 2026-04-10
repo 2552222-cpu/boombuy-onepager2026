@@ -1,24 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { base44 } from "@/api/base44Client";
+import { buildWaMessage, buildLetterMessage } from "@/utils/messages";
 
 const TARGET = 5;
 
-const WA_MSG = () =>
-  `חבר׳ה, מצאתי דרך לקבל מחירי יבואן על Apple, הנחות קבועות בסופר והטבות נוספות - בלי שהארגון יוסיף תקציב. אם נהיה לפחות 5 עובדים שמעוניינים, אפשר להוציא את זה לדרך. מי איתי? https://boom-perk-flow.base44.app`;
 
-const LETTER_MSG = (orgName) =>
-  `שלום [שם],
-
-קבוצת עובדים מתוך ${orgName || "[שם הארגון]"} ביקשה לבחון את ההצטרפות למועדון BoomBuy.
-
-המהלך מאפשר לעובדים לקבל מחירי סיטונאות על מוצרי פרימיום, הנחות קבועות בסופר ובפארם, ומתנות חג גמישות - והכול ב-0 ש"ח תוספת תקציב לארגון.
-
-נשמח שתבחנו תיאום פגישת דמו קצרה מול צוות בום-ביי:
-https://www.boombuyonepage.com
-
-אפשר גם לפנות אלינו ישירות כאן:
-https://wa.me/972542552222`;
 
 export default function ResultScreen({ group, orgName, orgKey, orgSize, holidayBudget, activities }) {
   const topRef = useRef(null);
@@ -38,7 +25,7 @@ export default function ResultScreen({ group, orgName, orgKey, orgSize, holidayB
   const [letterCopied, setLetterCopied] = useState(false);
 
   const handleWACopy = async () => {
-    await navigator.clipboard.writeText(WA_MSG());
+    await navigator.clipboard.writeText(buildWaMessage(orgName, orgKey, currentCount));
     setWaCopied(true);
     setTimeout(() => setWaCopied(false), 2000);
     if (group?.id) {
@@ -47,7 +34,7 @@ export default function ResultScreen({ group, orgName, orgKey, orgSize, holidayB
   };
 
   const handleLetterCopy = async () => {
-    await navigator.clipboard.writeText(LETTER_MSG(orgName));
+    await navigator.clipboard.writeText(buildLetterMessage(orgName, orgKey, currentCount));
     setLetterCopied(true);
     setTimeout(() => setLetterCopied(false), 2000);
     if (group?.id) {
@@ -346,7 +333,7 @@ export default function ResultScreen({ group, orgName, orgKey, orgSize, holidayB
                 whiteSpace: "pre-line",
               }}
             >
-              {WA_MSG()}
+              {buildWaMessage(orgName, orgKey, currentCount)}
             </div>
             <button
               onClick={handleWACopy}
@@ -399,7 +386,7 @@ export default function ResultScreen({ group, orgName, orgKey, orgSize, holidayB
                 whiteSpace: "pre-line",
               }}
             >
-              {LETTER_MSG(orgName)}
+              {buildLetterMessage(orgName, orgKey, currentCount)}
             </div>
             <button
               onClick={handleLetterCopy}
