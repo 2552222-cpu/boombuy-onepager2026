@@ -6,13 +6,28 @@ import { useNavigate } from "react-router-dom";
 const ORG_SIZE_OPTIONS = [
   { label: "עד 50 עובדים" },
   { label: "50–250 עובדים" },
-  { label: "מעל 250 עובדים" },
+  { label: "250–1000 עובדים" },
+  { label: "1000+ עובדים" },
 ];
 
 const HOLIDAY_BUDGET_OPTIONS = [
-  { label: "עד 200 ₪ לעובד" },
-  { label: "200–500 ₪ לעובד" },
-  { label: "מעל 500 ₪ לעובד" },
+  { label: "200₪–400₪" },
+  { label: "400₪–600₪" },
+  { label: "600₪+" },
+  { label: "לא מקבלים מתנות" },
+];
+
+const CURRENT_CLUB_OPTIONS = [
+  { label: "יש מועדון חזק" },
+  { label: "יש משהו בסיסי" },
+  { label: "אין כלום כרגע" },
+];
+
+const PAIN_POINTS_OPTIONS = [
+  { label: "סופר ופארם" },
+  { label: "חשמל וטקסטיל" },
+  { label: "דלק" },
+  { label: "חופשות" },
 ];
 
 const ACTIVITIES_OPTIONS = ["ימי גיבוש", "מתנות חג", "ימי הולדת", "יום המשפחה"];
@@ -31,6 +46,8 @@ export default function Survey() {
   const [orgName, setOrgName] = useState("");
   const [orgSize, setOrgSize] = useState("");
   const [holidayBudget, setHolidayBudget] = useState("");
+  const [currentClub, setCurrentClub] = useState("");
+  const [painPoint, setPainPoint] = useState("");
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(false);
   const [resultText, setResultText] = useState("");
@@ -49,6 +66,16 @@ export default function Survey() {
   const handleBudget = (label) => {
     setHolidayBudget(label);
     setStep(3);
+  };
+
+  const handleClub = (label) => {
+    setCurrentClub(label);
+    setStep(4);
+  };
+
+  const handlePainPoint = (label) => {
+    setPainPoint(label);
+    handleFinish(label);
   };
 
   const toggleActivity = (a) => {
@@ -73,9 +100,9 @@ export default function Survey() {
     return "נראה שהטבות יוקר המחיה — הנחות בסופר, פארם ומוצרי יומיום — יהיו המשמעותיות ביותר עבור העובדים בארגון שלכם.";
   };
 
-  const handleFinish = async (skipActivities = false) => {
+  const handleFinish = async (painPointVal) => {
     setLoading(true);
-    const finalActivities = skipActivities ? [] : activities;
+    const finalActivities = [];
     const orgKey = normalizeOrgKey(orgName);
     try {
       const existing = await base44.entities.GroupRequest.filter({ orgKey });
@@ -113,7 +140,7 @@ export default function Survey() {
       }
       const framing = getResultFraming(holidayBudget, finalActivities);
       setResultText(framing);
-      setStep(4);
+      setStep(5);
     } catch (err) {
       console.error(err);
     } finally {
@@ -173,8 +200,7 @@ export default function Survey() {
               fontFamily: "var(--font-heebo)",
             }}
           >
-            <span>שלב {Math.min(step + 1, 3)} מתוך 3</span>
-            {step === 3 && <span style={{ color: "#0066CC" }}>אופציונלי</span>}
+            <span>שלב {Math.min(step + 1, 4)} מתוך 4</span>
           </div>
           <div
             style={{
@@ -191,7 +217,7 @@ export default function Survey() {
                 borderRadius: "9999px",
               }}
               initial={{ width: 0 }}
-              animate={{ width: `${((Math.min(step, 2) + 1) / 3) * 100}%` }}
+              animate={{ width: `${((Math.min(step, 3) + 1) / 4) * 100}%` }}
               transition={{ duration: 0.4 }}
             />
           </div>
@@ -380,105 +406,34 @@ export default function Survey() {
               </div>
             </motion.div>
           ) : step === 3 ? (
-            <motion.div
-              key="step3"
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -14 }}
-              transition={{ duration: 0.28 }}
-            >
-              <h3
-                style={{
-                  fontSize: "20px",
-                  fontWeight: 700,
-                  marginBottom: "6px",
-                  textAlign: "center",
-                  fontFamily: "var(--font-heebo)",
-                }}
-              >
-                פעילויות רווחה קיימות
+            <motion.div key="step3" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -14 }} transition={{ duration: 0.28 }}>
+              <h3 style={{ fontSize: "20px", fontWeight: 700, marginBottom: "16px", textAlign: "center", fontFamily: "var(--font-heebo)" }}>
+                האם קיים כיום מועדון הטבות?
               </h3>
-              <p
-                style={{
-                  fontSize: "13px",
-                  color: "#86868B",
-                  textAlign: "center",
-                  marginBottom: "16px",
-                  fontFamily: "var(--font-heebo)",
-                }}
-              >
-                בחרו הכל שרלוונטי (אופציונלי)
-              </p>
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: "10px",
-                  marginBottom: "16px",
-                }}
-              >
-                {ACTIVITIES_OPTIONS.map((a) => (
-                  <button
-                    key={a}
-                    onClick={() => toggleActivity(a)}
-                    style={{
-                      background: activities.includes(a) ? "#EBF3FF" : "#fff",
-                      border: activities.includes(a)
-                        ? "1.5px solid #0066CC"
-                        : "1px solid rgba(0,0,0,0.1)",
-                      borderRadius: "12px",
-                      padding: "12px 14px",
-                      fontSize: "14px",
-                      fontWeight: activities.includes(a) ? 700 : 500,
-                      fontFamily: "var(--font-heebo)",
-                      color: activities.includes(a) ? "#0066CC" : "#1D1D1F",
-                      cursor: "pointer",
-                      transition: "all 0.15s",
-                    }}
-                  >
-                    {a}
-                  </button>
+              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                {CURRENT_CLUB_OPTIONS.map((opt) => (
+                  <button key={opt.label} onClick={() => handleClub(opt.label)}
+                    style={{ background: "#fff", border: "1px solid rgba(0,0,0,0.1)", borderRadius: "12px", padding: "14px 18px", fontSize: "15px", fontWeight: 500, fontFamily: "var(--font-heebo)", textAlign: "right", cursor: "pointer", transition: "border-color 0.15s, background 0.15s" }}
+                    onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#0066CC"; e.currentTarget.style.background = "#F0F6FF"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(0,0,0,0.1)"; e.currentTarget.style.background = "#fff"; }}
+                  >{opt.label}</button>
                 ))}
               </div>
-              <button
-                onClick={() => handleFinish(false)}
-                style={{
-                  width: "100%",
-                  background: "#0066CC",
-                  color: "#fff",
-                  fontWeight: 700,
-                  fontSize: "15px",
-                  padding: "14px",
-                  borderRadius: "12px",
-                  border: "none",
-                  cursor: "pointer",
-                  fontFamily: "var(--font-heebo)",
-                  marginBottom: "10px",
-                  transition: "background 0.15s",
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "#0055AA")}
-                onMouseLeave={(e) => (e.currentTarget.style.background = "#0066CC")}
-              >
-                המשך
-              </button>
-              <button
-                onClick={() => handleFinish(true)}
-                style={{
-                  width: "100%",
-                  background: "transparent",
-                  color: "#86868B",
-                  fontWeight: 500,
-                  fontSize: "14px",
-                  padding: "12px",
-                  borderRadius: "12px",
-                  border: "1px solid rgba(0,0,0,0.08)",
-                  cursor: "pointer",
-                  fontFamily: "var(--font-heebo)",
-                  transition: "background 0.15s",
-                }}
-              >
-                דלג
-              </button>
+            </motion.div>
+          ) : step === 4 ? (
+            <motion.div key="step4" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -14 }} transition={{ duration: 0.28 }}>
+              <h3 style={{ fontSize: "20px", fontWeight: 700, marginBottom: "16px", textAlign: "center", fontFamily: "var(--font-heebo)" }}>
+                איפה העובדים הכי מרגישים את יוקר המחיה?
+              </h3>
+              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                {PAIN_POINTS_OPTIONS.map((opt) => (
+                  <button key={opt.label} onClick={() => handlePainPoint(opt.label)}
+                    style={{ background: "#fff", border: "1px solid rgba(0,0,0,0.1)", borderRadius: "12px", padding: "14px 18px", fontSize: "15px", fontWeight: 500, fontFamily: "var(--font-heebo)", textAlign: "right", cursor: "pointer", transition: "border-color 0.15s, background 0.15s" }}
+                    onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#0066CC"; e.currentTarget.style.background = "#F0F6FF"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(0,0,0,0.1)"; e.currentTarget.style.background = "#fff"; }}
+                  >{opt.label}</button>
+                ))}
+              </div>
             </motion.div>
           ) : (
             <motion.div
@@ -509,6 +464,7 @@ export default function Survey() {
               </div>
               <button
                 onClick={() => navigate("/join/" + normalizeOrgKey(orgName))}
+                key="step5"
                 style={{
                   width: "100%",
                   background: "#0066CC",
