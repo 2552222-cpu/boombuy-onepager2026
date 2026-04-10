@@ -1,8 +1,12 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-// Helper: wrap number+₪ in ltr span to prevent bidi reordering in RTL context
-const Shekel = ({ val }) => <span dir="ltr">{val}₪</span>;
+// Helper: force LTR rendering so ₪ stays after the number in RTL context
+const Shekel = ({ val }) => (
+  <span style={{ display: "inline-block", direction: "ltr", unicodeBidi: "isolate" }}>
+    {val}₪
+  </span>
+);
 
 const cards = [
   {

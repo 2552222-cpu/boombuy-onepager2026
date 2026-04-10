@@ -35,14 +35,16 @@ export default function ZeroBudget() {
             textAlign: "center",
           }}>
             {/* Force LTR so ₪ appears after 0 */}
-            <span dir="ltr" style={{
+            <span style={{
+              display: "inline-block",
+              direction: "ltr",
+              unicodeBidi: "isolate",
               fontSize: "clamp(48px, 6vw, 64px)",
               fontWeight: 900,
               color: "#0066CC",
               letterSpacing: "-0.04em",
               lineHeight: 1,
               fontFamily: "var(--font-heebo)",
-              display: "inline-block",
             }}>
               0₪
             </span>
@@ -72,7 +74,7 @@ export default function ZeroBudget() {
               fontFamily: "var(--font-heebo)",
               color: "#1D1D1F",
             }}>
-              <span dir="ltr" style={{ display: "inline-block" }}>0₪</span> תוספת תקציב לארגון שלך.
+              <span style={{ display: "inline-block", direction: "ltr", unicodeBidi: "isolate" }}>0₪</span> תוספת תקציב לארגון שלך.
             </h2>
             <p style={{
               fontSize: "clamp(16px, 1.4vw, 19px)",
