@@ -5,7 +5,6 @@ import { base44 } from "@/api/base44Client";
 
 const TARGET_1 = 10;
 const TARGET_2 = 20;
-
 const BASE_URL = "https://boom-perk-flow.base44.app";
 
 function getBrowserToken() {
@@ -59,6 +58,91 @@ ${orgLink}
 https://wa.me/972542552222`;
 }
 
+// ─── Micro Survey ─────────────────────────────────────────────────────────────
+const MICRO_Q1 = ["סופר ופארם", "חשמל ואלקטרוניקה", "דלק ותחבורה", "חופשות ונסיעות"];
+const MICRO_Q2 = ["מאוד חשוב לי", "דיי חשוב", "לא ממש"];
+
+function MicroSurvey({ orgKey, orgName, onDone }) {
+  const [q1, setQ1] = useState("");
+  const [q2, setQ2] = useState("");
+  const [step, setStep] = useState(1);
+
+  const handleQ1 = (ans) => {
+    setQ1(ans);
+    setStep(2);
+  };
+
+  const handleQ2 = async (ans) => {
+    setQ2(ans);
+    try {
+      await base44.entities.SurveyResponse.create({
+        orgKey,
+        orgName,
+        answer1: q1,
+        answer2: ans,
+        answer3: "",
+        sessionToken: getBrowserToken(),
+      });
+    } catch {}
+    onDone();
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      style={{ background: "#fff", borderRadius: "16px", border: "1px solid rgba(0,102,204,0.15)", padding: "22px 20px" }}
+    >
+      <p style={{ fontSize: "11px", fontWeight: 700, color: "#0066CC", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: "8px" }}>
+        שאלה {step} מתוך 2 · 10 שניות
+      </p>
+      <AnimatePresence mode="wait">
+        {step === 1 && (
+          <motion.div key="q1" initial={{ opacity: 0, x: 14 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -14 }}>
+            <p style={{ fontSize: "16px", fontWeight: 800, marginBottom: "14px", lineHeight: 1.35 }}>
+              איפה אתם הכי מרגישים את יוקר המחיה?
+            </p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+              {MICRO_Q1.map((opt) => (
+                <button
+                  key={opt}
+                  onClick={() => handleQ1(opt)}
+                  style={{ background: "#F5F5F7", border: "1px solid rgba(0,0,0,0.1)", borderRadius: "999px", padding: "9px 16px", fontSize: "14px", fontWeight: 600, cursor: "pointer", fontFamily: "var(--font-heebo)", transition: "all 0.15s" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = "#EBF3FF"; e.currentTarget.style.borderColor = "#0066CC"; e.currentTarget.style.color = "#0066CC"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = "#F5F5F7"; e.currentTarget.style.borderColor = "rgba(0,0,0,0.1)"; e.currentTarget.style.color = "inherit"; }}
+                >
+                  {opt}
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+        {step === 2 && (
+          <motion.div key="q2" initial={{ opacity: 0, x: 14 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -14 }}>
+            <p style={{ fontSize: "16px", fontWeight: 800, marginBottom: "14px", lineHeight: 1.35 }}>
+              כמה חשוב לך שהארגון יאמץ הטבות אמיתיות?
+            </p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+              {MICRO_Q2.map((opt) => (
+                <button
+                  key={opt}
+                  onClick={() => handleQ2(opt)}
+                  style={{ background: "#F5F5F7", border: "1px solid rgba(0,0,0,0.1)", borderRadius: "999px", padding: "9px 16px", fontSize: "14px", fontWeight: 600, cursor: "pointer", fontFamily: "var(--font-heebo)", transition: "all 0.15s" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = "#EBF3FF"; e.currentTarget.style.borderColor = "#0066CC"; e.currentTarget.style.color = "#0066CC"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = "#F5F5F7"; e.currentTarget.style.borderColor = "rgba(0,0,0,0.1)"; e.currentTarget.style.color = "inherit"; }}
+                >
+                  {opt}
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
+// ─── Main Page ────────────────────────────────────────────────────────────────
 export default function OrgPage() {
   const { orgSlug } = useParams();
   const [group, setGroup] = useState(null);
@@ -69,6 +153,8 @@ export default function OrgPage() {
   const [memberDept, setMemberDept] = useState("");
   const [joining, setJoining] = useState(false);
   const [justJoined, setJustJoined] = useState(false);
+  const [showMicroSurvey, setShowMicroSurvey] = useState(false);
+  const [surveyDone, setSurveyDone] = useState(false);
   const [waCopied, setWaCopied] = useState(false);
   const [letterCopied, setLetterCopied] = useState(false);
 
@@ -123,6 +209,7 @@ export default function OrgPage() {
       setShowJoinForm(false);
       setMemberName("");
       setMemberDept("");
+      setShowMicroSurvey(true);
     } catch (err) {
       console.error(err);
     } finally {
@@ -170,37 +257,56 @@ export default function OrgPage() {
   return (
     <div dir="rtl" style={{ minHeight: "100vh", background: "#F5F5F7", fontFamily: "var(--font-heebo)", padding: "0 0 60px" }}>
       {/* Header */}
-      <div style={{ background: "#fff", borderBottom: "1px solid rgba(0,0,0,0.06)", padding: "14px 20px", display: "flex", alignItems: "center", gap: "10px" }}>
+      <div style={{ background: "#fff", borderBottom: "1px solid rgba(0,0,0,0.06)", padding: "14px 20px" }}>
         <a href="/" style={{ textDecoration: "none" }}>
           <span style={{ fontSize: "20px", fontWeight: 900, color: "#0066CC", letterSpacing: "-0.02em" }}>BoomBuy</span>
         </a>
       </div>
 
-      <div style={{ maxWidth: 520, margin: "0 auto", padding: "32px 16px", display: "flex", flexDirection: "column", gap: "20px" }}>
+      <div style={{ maxWidth: 520, margin: "0 auto", padding: "32px 16px", display: "flex", flexDirection: "column", gap: "16px" }}>
 
-        {/* Title */}
+        {/* Hero title */}
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}
-          style={{ background: "#fff", borderRadius: "20px", border: "1px solid rgba(0,0,0,0.07)", padding: "28px 24px", textAlign: "center" }}>
-          <h1 style={{ fontSize: "clamp(22px, 5vw, 28px)", fontWeight: 900, letterSpacing: "-0.025em", marginBottom: "8px" }}>
+          style={{ background: "linear-gradient(135deg, #0055CC 0%, #1A7AFF 100%)", borderRadius: "24px", padding: "32px 26px", textAlign: "center" }}>
+          <p style={{ fontSize: "13px", fontWeight: 700, color: "rgba(255,255,255,0.7)", marginBottom: "8px", letterSpacing: "0.04em" }}>
+            עמיתים מ-{group.orgName} מזמינים אותך
+          </p>
+          <h1 style={{ fontSize: "clamp(22px, 5vw, 30px)", fontWeight: 900, letterSpacing: "-0.03em", color: "#fff", lineHeight: 1.2, marginBottom: "10px" }}>
             בואו נכניס את BoomBuy ל-{group.orgName}
           </h1>
-          <p style={{ fontSize: "15px", color: "#86868B", lineHeight: 1.6 }}>
-            כבר <strong style={{ color: "#0066CC" }}>{count}</strong> עובדים הצטרפו.{" "}
-            {count < TARGET_1 ? `ב-10 כבר מרגישים מסה ראשונית.` : count < TARGET_2 ? `ב-20 זה כבר כוח שאי אפשר להתעלם ממנו.` : `כל הצטרפות נוספת מחזקת את הפנייה.`}
+          <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.8)", lineHeight: 1.6 }}>
+            הטבות אמיתיות לעובדים · 0₪ עלות לארגון · טכנולוגיית Nexus
+          </p>
+        </motion.div>
+
+        {/* Group Letter */}
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.05 }}
+          style={{ background: "#fff", borderRadius: "16px", border: "1px solid rgba(0,0,0,0.07)", padding: "22px 22px" }}>
+          <p style={{ fontSize: "11px", fontWeight: 700, color: "#86868B", marginBottom: "10px", textTransform: "uppercase", letterSpacing: "0.06em" }}>מכתב קבוצתי</p>
+          <p style={{ fontSize: "14px", lineHeight: 1.75, color: "#1D1D1F", whiteSpace: "pre-line" }}>
+{`שלום,
+
+אנחנו קבוצת עובדים מ-${group.orgName} שמאמינה שמגיע לנו יותר.
+
+BoomBuy מאפשרת לנו לקבל:
+• 8% הנחה קבועה בסופרמרקטים
+• מחירי יבואן על Apple, Samsung ועוד
+• חופשות, תרבות ומותגי פרימיום במחירים בלעדיים
+• מתנת חג עם בחירה חופשית
+
+הכול בלי שהארגון מוציא שקל נוסף.
+
+${count} עובדים כבר חתמו על הבקשה. הצטרפות שלך מחזקת אותנו.`}
           </p>
         </motion.div>
 
         {/* Progress */}
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.07 }}
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }}
           style={{ background: "#fff", borderRadius: "16px", border: "1px solid rgba(0,0,0,0.07)", padding: "20px 22px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
             <span style={{ fontWeight: 700, fontSize: "15px", color: "#1D1D1F" }}>{count} / {currentTarget} עובדים</span>
-            {count < currentTarget && (
-              <span style={{ fontSize: "12px", color: "#86868B" }}>עוד {currentTarget - count} להשלמת היעד</span>
-            )}
-            {count >= TARGET_2 && (
-              <span style={{ fontSize: "12px", color: "#34C759", fontWeight: 700 }}>✓ עברתם 20!</span>
-            )}
+            {count < currentTarget && <span style={{ fontSize: "12px", color: "#86868B" }}>עוד {currentTarget - count} להשלמת היעד</span>}
+            {count >= TARGET_2 && <span style={{ fontSize: "12px", color: "#34C759", fontWeight: 700 }}>✓ עברתם 20!</span>}
           </div>
           <div style={{ height: "8px", background: "rgba(0,0,0,0.07)", borderRadius: "9999px", overflow: "hidden" }}>
             <motion.div
@@ -215,91 +321,115 @@ export default function OrgPage() {
           </p>
         </motion.div>
 
-        {/* Join / Already joined */}
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.12 }}
+        {/* Join / Already joined / Micro-survey */}
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.15 }}
           style={{ background: "#fff", borderRadius: "16px", border: "1px solid rgba(0,0,0,0.07)", padding: "20px 22px" }}>
-
-          {alreadyJoined ? (
-            <div style={{ textAlign: "center", padding: "8px 0" }}>
-              <div style={{ fontSize: "28px", marginBottom: "8px" }}>✅</div>
-              <p style={{ fontWeight: 700, fontSize: "15px", color: "#34C759", marginBottom: "4px" }}>
-                {justJoined ? "הצטרפתם בהצלחה!" : "כבר הצטרפתם לבקשה של הארגון הזה"}
-              </p>
-              <p style={{ fontSize: "13px", color: "#86868B" }}>שתפו עוד עמיתים כדי להגדיל את הסיכוי</p>
-            </div>
-          ) : (
-            <>
-              {!showJoinForm ? (
+          <AnimatePresence mode="wait">
+            {showMicroSurvey && !surveyDone ? (
+              <MicroSurvey
+                key="survey"
+                orgKey={orgSlug}
+                orgName={group.orgName}
+                onDone={() => setSurveyDone(true)}
+              />
+            ) : justJoined && surveyDone ? (
+              <motion.div key="done" initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: "center", padding: "8px 0" }}>
+                <div style={{ fontSize: "32px", marginBottom: "8px" }}>🎉</div>
+                <p style={{ fontWeight: 800, fontSize: "16px", color: "#34C759", marginBottom: "6px" }}>הצטרפתם בהצלחה!</p>
+                <p style={{ fontSize: "13px", color: "#86868B" }}>תודה על המשוב. עכשיו שתפו עוד עמיתים 👇</p>
+              </motion.div>
+            ) : alreadyJoined ? (
+              <motion.div key="already" style={{ textAlign: "center", padding: "8px 0" }}>
+                <div style={{ fontSize: "28px", marginBottom: "8px" }}>✅</div>
+                <p style={{ fontWeight: 700, fontSize: "15px", color: "#34C759", marginBottom: "4px" }}>כבר הצטרפתם לבקשה</p>
+                <p style={{ fontSize: "13px", color: "#86868B" }}>שתפו עוד עמיתים כדי להגדיל את הסיכוי</p>
+              </motion.div>
+            ) : !showJoinForm ? (
+              <motion.div key="cta">
+                <p style={{ fontSize: "14px", fontWeight: 700, marginBottom: "12px", textAlign: "center" }}>
+                  הצטרפו לבקשה הקבוצתית
+                </p>
                 <button
                   onClick={() => setShowJoinForm(true)}
                   style={{ width: "100%", background: "#0066CC", color: "#fff", fontWeight: 800, fontSize: "16px", padding: "15px", borderRadius: "13px", border: "none", cursor: "pointer", fontFamily: "var(--font-heebo)", boxShadow: "0 6px 20px rgba(0,102,204,0.25)" }}
                 >
-                  הצטרפו גם אתם
+                  כן, אני מצטרף ←
                 </button>
-              ) : (
-                <AnimatePresence>
-                  <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}>
-                    <p style={{ fontWeight: 700, fontSize: "15px", marginBottom: "14px" }}>מה שמך?</p>
-                    <input
-                      type="text"
-                      value={memberName}
-                      onChange={(e) => setMemberName(e.target.value)}
-                      placeholder="שם פרטי"
-                      style={{ width: "100%", padding: "12px 14px", borderRadius: "10px", border: "1px solid rgba(0,0,0,0.12)", background: "#F5F5F7", fontFamily: "var(--font-heebo)", fontSize: "15px", marginBottom: "10px", boxSizing: "border-box", textAlign: "right" }}
-                      autoFocus
-                    />
-                    <input
-                      type="text"
-                      value={memberDept}
-                      onChange={(e) => setMemberDept(e.target.value)}
-                      placeholder="מחלקה / תפקיד (אופציונלי)"
-                      style={{ width: "100%", padding: "12px 14px", borderRadius: "10px", border: "1px solid rgba(0,0,0,0.12)", background: "#F5F5F7", fontFamily: "var(--font-heebo)", fontSize: "15px", marginBottom: "12px", boxSizing: "border-box", textAlign: "right" }}
-                    />
-                    <div style={{ display: "flex", gap: "10px" }}>
-                      <button
-                        onClick={handleJoin}
-                        disabled={!memberName.trim() || joining}
-                        style={{ flex: 1, background: memberName.trim() ? "#0066CC" : "#C7C7CC", color: "#fff", fontWeight: 700, fontSize: "14px", padding: "13px", borderRadius: "10px", border: "none", cursor: memberName.trim() ? "pointer" : "default", fontFamily: "var(--font-heebo)" }}
-                      >
-                        {joining ? "שומר..." : "הצטרפו"}
-                      </button>
-                      <button
-                        onClick={() => setShowJoinForm(false)}
-                        style={{ background: "transparent", color: "#86868B", fontSize: "13px", padding: "13px 16px", borderRadius: "10px", border: "1px solid rgba(0,0,0,0.1)", cursor: "pointer", fontFamily: "var(--font-heebo)" }}
-                      >
-                        ביטול
-                      </button>
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
-              )}
-            </>
-          )}
+                <p style={{ fontSize: "12px", color: "#AEAEB2", textAlign: "center", marginTop: "10px" }}>
+                  אנונימי לחלוטין · לא נשמר מידע רגיש
+                </p>
+              </motion.div>
+            ) : (
+              <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                <p style={{ fontWeight: 700, fontSize: "15px", marginBottom: "14px" }}>מה שמך?</p>
+                <input
+                  type="text"
+                  value={memberName}
+                  onChange={(e) => setMemberName(e.target.value)}
+                  placeholder="שם פרטי"
+                  style={{ width: "100%", padding: "12px 14px", borderRadius: "10px", border: "1px solid rgba(0,0,0,0.12)", background: "#F5F5F7", fontFamily: "var(--font-heebo)", fontSize: "15px", marginBottom: "10px", boxSizing: "border-box", textAlign: "right" }}
+                  autoFocus
+                />
+                <input
+                  type="text"
+                  value={memberDept}
+                  onChange={(e) => setMemberDept(e.target.value)}
+                  placeholder="מחלקה / תפקיד (אופציונלי)"
+                  style={{ width: "100%", padding: "12px 14px", borderRadius: "10px", border: "1px solid rgba(0,0,0,0.12)", background: "#F5F5F7", fontFamily: "var(--font-heebo)", fontSize: "15px", marginBottom: "12px", boxSizing: "border-box", textAlign: "right" }}
+                />
+                <div style={{ display: "flex", gap: "10px" }}>
+                  <button
+                    onClick={handleJoin}
+                    disabled={!memberName.trim() || joining}
+                    style={{ flex: 1, background: memberName.trim() ? "#0066CC" : "#C7C7CC", color: "#fff", fontWeight: 700, fontSize: "14px", padding: "13px", borderRadius: "10px", border: "none", cursor: memberName.trim() ? "pointer" : "default", fontFamily: "var(--font-heebo)" }}
+                  >
+                    {joining ? "שומר..." : "הצטרפו"}
+                  </button>
+                  <button
+                    onClick={() => setShowJoinForm(false)}
+                    style={{ background: "transparent", color: "#86868B", fontSize: "13px", padding: "13px 16px", borderRadius: "10px", border: "1px solid rgba(0,0,0,0.1)", cursor: "pointer", fontFamily: "var(--font-heebo)" }}
+                  >
+                    ביטול
+                  </button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
 
-        {/* Actions */}
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.18 }}
+        {/* Share actions */}
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}
           style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
 
-          {/* WA Message */}
+          {/* WA share */}
           <div style={{ background: "#fff", borderRadius: "16px", border: "1px solid rgba(0,0,0,0.07)", padding: "18px 20px" }}>
             <p style={{ fontWeight: 700, fontSize: "14px", marginBottom: "8px" }}>הודעה מוכנה לקבוצת העובדים</p>
-            <div style={{ background: "#F5F5F7", borderRadius: "10px", padding: "11px 13px", fontSize: "12.5px", color: "#444", lineHeight: 1.65, marginBottom: "10px", whiteSpace: "pre-line" }}>
-              {waMsg(group.orgName, count, orgSlug)}
+            <div style={{ background: "#F5F5F7", borderRadius: "10px", padding: "11px 13px", fontSize: "12.5px", color: "#444", lineHeight: 1.65, marginBottom: "10px", whiteSpace: "pre-line", maxHeight: "120px", overflow: "hidden" }}>
+              {waMsg(group.orgName, count, orgSlug).slice(0, 220)}...
             </div>
-            <button
-              onClick={handleWACopy}
-              style={{ background: waCopied ? "#34C759" : "#0066CC", color: "#fff", fontWeight: 700, fontSize: "13px", padding: "10px 18px", borderRadius: "10px", border: "none", cursor: "pointer", fontFamily: "var(--font-heebo)", transition: "background 0.15s" }}
-            >
-              {waCopied ? "הועתק! ✓" : "העתק הודעה לקבוצת העובדים"}
-            </button>
+            <div style={{ display: "flex", gap: "8px" }}>
+              <button
+                onClick={handleWACopy}
+                style={{ flex: 1, background: waCopied ? "#34C759" : "#0066CC", color: "#fff", fontWeight: 700, fontSize: "13px", padding: "10px", borderRadius: "10px", border: "none", cursor: "pointer", fontFamily: "var(--font-heebo)", transition: "background 0.15s" }}
+              >
+                {waCopied ? "הועתק! ✓" : "העתק הודעה"}
+              </button>
+              <a
+                href={`https://wa.me/?text=${encodeURIComponent(waMsg(group.orgName, count, orgSlug))}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ flex: 1, background: "#25D366", color: "#fff", fontWeight: 700, fontSize: "13px", padding: "10px", borderRadius: "10px", textAlign: "center", textDecoration: "none", fontFamily: "var(--font-heebo)", display: "flex", alignItems: "center", justifyContent: "center" }}
+              >
+                שלח בוואטסאפ ←
+              </a>
+            </div>
           </div>
 
           {/* Management Letter */}
           <div style={{ background: "#fff", borderRadius: "16px", border: "1px solid rgba(0,0,0,0.07)", padding: "18px 20px" }}>
             <p style={{ fontWeight: 700, fontSize: "14px", marginBottom: "8px" }}>מכתב מוכן להנהלה / ועד / רווחה</p>
-            <div style={{ background: "#F5F5F7", borderRadius: "10px", padding: "11px 13px", fontSize: "12.5px", color: "#444", lineHeight: 1.65, marginBottom: "10px", whiteSpace: "pre-line" }}>
-              {letterMsg(group.orgName, count, orgSlug)}
+            <div style={{ background: "#F5F5F7", borderRadius: "10px", padding: "11px 13px", fontSize: "12.5px", color: "#444", lineHeight: 1.65, marginBottom: "10px", whiteSpace: "pre-line", maxHeight: "100px", overflow: "hidden" }}>
+              {letterMsg(group.orgName, count, orgSlug).slice(0, 200)}...
             </div>
             <button
               onClick={handleLetterCopy}
