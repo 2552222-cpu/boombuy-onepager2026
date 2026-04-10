@@ -2,9 +2,9 @@ import React from "react";
 import { motion } from "framer-motion";
 
 const PROOF_CARDS = [
-  { label: "מחיר לעובדים", value: "249 ₪", highlight: false },
-  { label: "מחיר נמוך בזאפ", value: "1,999 ₪", highlight: false },
-  { label: "החיסכון שלך", value: "1,750 ₪", highlight: true },
+  { label: "מחיר לעובדים", value: <bdi dir="ltr">249₪</bdi>, highlight: false },
+  { label: "מחיר נמוך בזאפ", value: <bdi dir="ltr">1,999₪</bdi>, highlight: false },
+  { label: "החיסכון שלך", value: <bdi dir="ltr">1,750₪</bdi>, highlight: true },
 ];
 
 export default function ProofImage({ imageUrl }) {

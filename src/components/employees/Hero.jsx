@@ -6,6 +6,7 @@ const HERO_DATA = {
   headline: "הנטו שלך שווה יותר ממה שאתה חושב",
   subheadline: "אייפון במחיר יבואן · תרבות · חופשות והטבות יומיומיות. הכל כבר כלול בתקציב שהארגון ממילא משלם. פשוט מקבלים יותר.",
   primaryCTA: "אני רוצה לראות איך זה נראה ←",
+  mobileCTA: "גלו את ההטבות ↓",
   iPhoneImg: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/66514fe66_-2026-02-18T150849922.png",
 };
 
@@ -21,6 +22,11 @@ export default function Hero() {
 
   const scrollToSurvey = () => {
     document.getElementById("survey-section")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  // Mobile: scroll to proof first (offers), not to survey directly
+  const scrollToOffers = () => {
+    document.getElementById("offers-slider")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -101,14 +107,24 @@ export default function Hero() {
             </motion.p>
 
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} style={{ marginTop: "44px" }}>
-              <motion.button
-                onClick={scrollToSurvey}
-                animate={{ boxShadow: ["0 15px 35px rgba(45,99,208,0.25)", "0 15px 45px rgba(45,99,208,0.5)", "0 15px 35px rgba(45,99,208,0.25)"] }}
-                transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-                style={{ background: "#2D63D0", color: "#fff", border: "none", padding: "20px 40px", borderRadius: "18px", fontSize: "18px", fontWeight: 800, cursor: "pointer", width: isMobile ? "100%" : "auto" }}
-              >
-                {HERO_DATA.primaryCTA}
-              </motion.button>
+              {isMobile ? (
+                /* Mobile: soft secondary CTA — scroll to offers first, not survey */
+                <button
+                  onClick={scrollToOffers}
+                  style={{ background: "#F5F5F7", color: "#1D1D1F", border: "1px solid rgba(0,0,0,0.12)", padding: "16px 32px", borderRadius: "18px", fontSize: "16px", fontWeight: 700, cursor: "pointer", width: "100%" }}
+                >
+                  {HERO_DATA.mobileCTA}
+                </button>
+              ) : (
+                <motion.button
+                  onClick={scrollToSurvey}
+                  animate={{ boxShadow: ["0 15px 35px rgba(45,99,208,0.25)", "0 15px 45px rgba(45,99,208,0.5)", "0 15px 35px rgba(45,99,208,0.25)"] }}
+                  transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+                  style={{ background: "#2D63D0", color: "#fff", border: "none", padding: "20px 40px", borderRadius: "18px", fontSize: "18px", fontWeight: 800, cursor: "pointer" }}
+                >
+                  {HERO_DATA.primaryCTA}
+                </motion.button>
+              )}
             </motion.div>
 
             <p style={{ marginTop: "20px", fontSize: "14px", color: "#86868B", fontWeight: 600 }}>3 שאלות · 15 שניות · בלי הרשמה</p>
