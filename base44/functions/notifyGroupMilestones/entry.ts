@@ -1,6 +1,7 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 
 const TEAM_EMAIL = Deno.env.get("TEAM_EMAIL");
+const EXTRA_EMAILS = ["ari@boombuy.co.il", "uriel@boombuy.co.il"];
 const APP_URL = "https://boom-perk-flow.base44.app";
 
 const MILESTONES = [
@@ -49,12 +50,13 @@ ${extra}`;
 
     // Org created
     if (event === "org_created") {
-      if (TEAM_EMAIL) {
+      const allEmails = [...(TEAM_EMAIL ? [TEAM_EMAIL] : []), ...EXTRA_EMAILS];
+      for (const email of allEmails) {
         await base44.asServiceRole.integrations.Core.SendEmail({
-          to: TEAM_EMAIL,
+          to: email,
           subject: `✅ ארגון חדש ב-BoomBuy: ${orgName}`,
           body: teamBody(""),
-        });
+        }).catch(() => {});
       }
       return Response.json({ ok: true, event: "org_created" });
     }
@@ -65,12 +67,13 @@ ${extra}`;
         if (prevCount < m.threshold && newCount >= m.threshold && !group[m.flag]) {
           await base44.asServiceRole.entities.GroupRequest.update(group.id, { [m.flag]: true });
 
-          if (TEAM_EMAIL) {
+          const milestoneEmails = [...(TEAM_EMAIL ? [TEAM_EMAIL] : []), ...EXTRA_EMAILS];
+          for (const email of milestoneEmails) {
             await base44.asServiceRole.integrations.Core.SendEmail({
-              to: TEAM_EMAIL,
+              to: email,
               subject: m.teamSubject(orgName, newCount),
               body: teamBody(""),
-            });
+            }).catch(() => {});
           }
 
           if (group.initiatorEmail) {
@@ -84,12 +87,15 @@ ${extra}`;
       }
 
       // After milestone 20 — notify team on every new member
-      if (prevCount >= 20 && TEAM_EMAIL) {
-        await base44.asServiceRole.integrations.Core.SendEmail({
-          to: TEAM_EMAIL,
-          subject: `עובד נוסף הצטרף ל-${orgName} (${newCount} סה"כ)`,
-          body: teamBody(""),
-        });
+      if (prevCount >= 20) {
+        const postMilestoneEmails = [...(TEAM_EMAIL ? [TEAM_EMAIL] : []), ...EXTRA_EMAILS];
+        for (const email of postMilestoneEmails) {
+          await base44.asServiceRole.integrations.Core.SendEmail({
+            to: email,
+            subject: `עובד נוסף הצטרף ל-${orgName} (${newCount} סה"כ)`,
+            body: teamBody(""),
+          }).catch(() => {});
+        }
       }
 
       return Response.json({ ok: true, event: "member_joined", newCount });

@@ -84,10 +84,10 @@ export default function EmployeesLanding() {
       <div className="flex-1">
         <IntroSlides onDone={() => setIntroDone(true)} />
         <Hero />
+        <EconomicSection />
         <div id="offers-slider">
           <FeaturedOffersSlider />
         </div>
-        <EconomicSection />
         <TrustLogos />
         <div id="benefits-showcase">
           <BenefitsShowcase />

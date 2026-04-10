@@ -32,6 +32,12 @@ const PAIN_POINTS_OPTIONS = [
 
 const ACTIVITIES_OPTIONS = ["ימי גיבוש", "מתנות חג", "ימי הולדת", "יום המשפחה"];
 
+const WELFARE_BUDGET_OPTIONS = [
+  { label: "כן, יש תקציבים (ימי הולדת, משפחה וכו׳)" },
+  { label: "רק ימי גיבוש" },
+  { label: "לא ממש" },
+];
+
 const normalizeOrgKey = (name) =>
   name
     .trim()
@@ -51,6 +57,9 @@ export default function Survey() {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(false);
   const [resultText, setResultText] = useState("");
+  const [welfareBudget, setWelfareBudget] = useState("");
+  const [hrName, setHrName] = useState("");
+  const [hrPhone, setHrPhone] = useState("");
   const navigate = useNavigate();
 
   const handleOrgNameNext = () => {
@@ -73,9 +82,14 @@ export default function Survey() {
     setStep(4);
   };
 
+  const handleWelfareBudget = (label) => {
+    setWelfareBudget(label);
+    setStep(5);
+  };
+
   const handlePainPoint = (label) => {
     setPainPoint(label);
-    handleFinish(label);
+    setStep(6);
   };
 
   const toggleActivity = (a) => {
@@ -100,7 +114,7 @@ export default function Survey() {
     return "נראה שהטבות יוקר המחיה — הנחות בסופר, פארם ומוצרי יומיום — יהיו המשמעותיות ביותר עבור העובדים בארגון שלכם.";
   };
 
-  const handleFinish = async (painPointVal) => {
+  const handleFinish = async () => {
     setLoading(true);
     const finalActivities = [];
     const orgKey = normalizeOrgKey(orgName);
@@ -121,6 +135,8 @@ export default function Survey() {
           source: "employees",
           currentCount: 1,
           lastJoinedAt: new Date().toISOString(),
+          initiatorName: hrName.trim() || undefined,
+          initiatorPhone: hrPhone.trim() || undefined,
         });
         const browserToken = `browser_${Date.now()}_${Math.random()}`;
         const firstMember = await base44.entities.GroupMember.create({
@@ -140,7 +156,7 @@ export default function Survey() {
       }
       const framing = getResultFraming(holidayBudget, finalActivities);
       setResultText(framing);
-      setStep(5);
+      setStep(7);
     } catch (err) {
       console.error(err);
     } finally {
@@ -200,7 +216,7 @@ export default function Survey() {
               fontFamily: "var(--font-heebo)",
             }}
           >
-            <span>שלב {Math.min(step + 1, 4)} מתוך 4</span>
+            <span>שלב {Math.min(step + 1, 6)} מתוך 6</span>
           </div>
           <div
             style={{
@@ -217,7 +233,7 @@ export default function Survey() {
                 borderRadius: "9999px",
               }}
               initial={{ width: 0 }}
-              animate={{ width: `${((Math.min(step, 3) + 1) / 4) * 100}%` }}
+              animate={{ width: `${((Math.min(step, 5) + 1) / 6) * 100}%` }}
               transition={{ duration: 0.4 }}
             />
           </div>
@@ -408,17 +424,67 @@ export default function Survey() {
           ) : step === 4 ? (
             <motion.div key="step4" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -14 }} transition={{ duration: 0.28 }}>
               <h3 style={{ fontSize: "20px", fontWeight: 700, marginBottom: "16px", textAlign: "center", fontFamily: "var(--font-heebo)" }}>
-                איפה העובדים הכי מרגישים את יוקר המחיה?
+                האם יש תקציבי רווחה נוספים?
               </h3>
               <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                {PAIN_POINTS_OPTIONS.map((opt) => (
-                  <button key={opt.label} onClick={() => handlePainPoint(opt.label)}
-                    style={{ background: "#fff", border: "1px solid rgba(0,0,0,0.1)", borderRadius: "12px", padding: "14px 18px", fontSize: "15px", fontWeight: 500, fontFamily: "var(--font-heebo)", textAlign: "right", cursor: "pointer", transition: "border-color 0.15s, background 0.15s" }}
+                {WELFARE_BUDGET_OPTIONS.map((opt) => (
+                  <button key={opt.label} onClick={() => handleWelfareBudget(opt.label)}
+                    style={{ background: "#fff", border: "1px solid rgba(0,0,0,0.1)", borderRadius: "12px", padding: "14px 18px", fontSize: "15px", fontWeight: 500, fontFamily: "var(--font-heebo)", textAlign: "right", cursor: "pointer" }}
                     onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#0066CC"; e.currentTarget.style.background = "#F0F6FF"; }}
                     onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(0,0,0,0.1)"; e.currentTarget.style.background = "#fff"; }}
                   >{opt.label}</button>
                 ))}
               </div>
+            </motion.div>
+          ) : step === 5 ? (
+            <motion.div key="step5" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -14 }} transition={{ duration: 0.28 }}>
+              <h3 style={{ fontSize: "20px", fontWeight: 700, marginBottom: "8px", textAlign: "center", fontFamily: "var(--font-heebo)" }}>
+                איפה העובדים הכי מרגישים את יוקר המחיה?
+              </h3>
+              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                {PAIN_POINTS_OPTIONS.map((opt) => (
+                  <button key={opt.label} onClick={() => handlePainPoint(opt.label)}
+                    style={{ background: "#fff", border: "1px solid rgba(0,0,0,0.1)", borderRadius: "12px", padding: "14px 18px", fontSize: "15px", fontWeight: 500, fontFamily: "var(--font-heebo)", textAlign: "right", cursor: "pointer" }}
+                    onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#0066CC"; e.currentTarget.style.background = "#F0F6FF"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(0,0,0,0.1)"; e.currentTarget.style.background = "#fff"; }}
+                  >{opt.label}</button>
+                ))}
+              </div>
+            </motion.div>
+          ) : step === 6 ? (
+            <motion.div key="step6" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -14 }} transition={{ duration: 0.28 }}>
+              <h3 style={{ fontSize: "20px", fontWeight: 700, marginBottom: "6px", textAlign: "center", fontFamily: "var(--font-heebo)" }}>
+                מידע מודיעיני (אופציונלי)
+              </h3>
+              <p style={{ fontSize: "13px", color: "#86868B", textAlign: "center", marginBottom: "18px", fontFamily: "var(--font-heebo)" }}>
+                שם וטלפון של מנהלת רווחה / HR או איש קשר בוועד העובדים — יעזור לנו להגיע לאנשים הנכונים.
+              </p>
+              <input
+                type="text"
+                value={hrName}
+                onChange={(e) => setHrName(e.target.value)}
+                placeholder="שם מנהלת הרווחה / HR"
+                style={{ width: "100%", padding: "13px 15px", fontSize: "15px", borderRadius: "11px", border: "1px solid rgba(0,0,0,0.12)", background: "#fff", fontFamily: "var(--font-heebo)", marginBottom: "10px", textAlign: "right", boxSizing: "border-box" }}
+              />
+              <input
+                type="tel"
+                value={hrPhone}
+                onChange={(e) => setHrPhone(e.target.value)}
+                placeholder="טלפון נייד / משרד"
+                style={{ width: "100%", padding: "13px 15px", fontSize: "15px", borderRadius: "11px", border: "1px solid rgba(0,0,0,0.12)", background: "#fff", fontFamily: "var(--font-heebo)", marginBottom: "14px", textAlign: "right", boxSizing: "border-box" }}
+              />
+              <button
+                onClick={handleFinish}
+                style={{ width: "100%", background: "#0066CC", color: "#fff", fontWeight: 700, fontSize: "15px", padding: "14px", borderRadius: "12px", border: "none", cursor: "pointer", fontFamily: "var(--font-heebo)", marginBottom: "10px" }}
+              >
+                סיום ←
+              </button>
+              <button
+                onClick={handleFinish}
+                style={{ width: "100%", background: "none", border: "none", color: "#AEAEB2", fontSize: "13px", cursor: "pointer", fontFamily: "var(--font-heebo)" }}
+              >
+                דלג
+              </button>
             </motion.div>
           ) : (
             <motion.div
