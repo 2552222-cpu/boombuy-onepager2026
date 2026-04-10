@@ -225,25 +225,10 @@ export default function Survey() {
 
         <AnimatePresence mode="wait">
           {loading ? (
-            <motion.div
-              key="loading"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="flex flex-col items-center py-16 gap-4"
-            >
-              <div
-                style={{
-                  width: 36,
-                  height: 36,
-                  border: "3px solid rgba(0,102,204,0.15)",
-                  borderTopColor: "#0066CC",
-                  borderRadius: "50%",
-                  animation: "spin 0.8s linear infinite",
-                }}
-              />
-              <p style={{ color: "#86868B", fontSize: "14px", fontFamily: "var(--font-heebo)" }}>
-                מכין את התוצאה שלך...
-              </p>
+            <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center py-16 gap-4">
+              <div style={{ width: 48, height: 48, border: "3px solid rgba(0,102,204,0.12)", borderTopColor: "#0066CC", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
+              <p style={{ color: "#0066CC", fontSize: "15px", fontWeight: 700, fontFamily: "var(--font-heebo)" }}>מנתח נתוני ארגון...</p>
+              <p style={{ color: "#AEAEB2", fontSize: "12px", fontFamily: "var(--font-heebo)" }}>AI · Nexus Engine · 0₪ Optimization</p>
             </motion.div>
           ) : step === 0 ? (
             <motion.div
@@ -462,26 +447,24 @@ export default function Survey() {
                   </p>
                 </div>
               </div>
+              {/* 80% Ambassador bubble */}
+              <div style={{ background: "rgba(0,102,204,0.06)", border: "1px solid rgba(0,102,204,0.18)", borderRadius: 20, padding: "18px 20px", marginBottom: 20, textAlign: "center" }}>
+                <p style={{ fontSize: 28, fontWeight: 900, color: "#0066CC", marginBottom: 4, fontFamily: "var(--font-heebo)" }}>80%</p>
+                <p style={{ fontSize: 14, fontWeight: 600, color: "#1D1D1F", marginBottom: 6, lineHeight: 1.45, fontFamily: "var(--font-heebo)" }}>
+                  אם עוד 20 עמיתים יצטרפו — נגדיל ב-80% את הסיכוי להכניס את בום ביי לארגון!
+                </p>
+                <a
+                  href={`https://wa.me/?text=${encodeURIComponent("היי! הצטרפתי לבקשה קבוצתית להכנסת הטבות בום ביי לארגון שלנו. שווה לכם גם — " + window.location.origin + "/join/" + normalizeOrgKey(orgName))}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ display: "block", background: "#25D366", color: "#fff", textDecoration: "none", padding: "11px", borderRadius: 14, fontSize: 14, fontWeight: 700, fontFamily: "var(--font-heebo)", marginTop: 10 }}
+                >
+                  שתפו עמיתים בוואטסאפ ←
+                </a>
+              </div>
               <button
                 onClick={() => navigate("/join/" + normalizeOrgKey(orgName))}
-                key="step5"
-                style={{
-                  width: "100%",
-                  background: "#0066CC",
-                  color: "#fff",
-                  fontWeight: 700,
-                  fontSize: "15px",
-                  padding: "14px",
-                  borderRadius: "12px",
-                  border: "none",
-                  cursor: "pointer",
-                  fontFamily: "var(--font-heebo)",
-                  marginBottom: "10px",
-                  transition: "background 0.15s",
-                  boxShadow: "0 6px 20px rgba(0,102,204,0.24)",
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "#0055AA")}
-                onMouseLeave={(e) => (e.currentTarget.style.background = "#0066CC")}
+                style={{ width: "100%", background: "#0066CC", color: "#fff", fontWeight: 700, fontSize: "15px", padding: "14px", borderRadius: "12px", border: "none", cursor: "pointer", fontFamily: "var(--font-heebo)", boxShadow: "0 6px 20px rgba(0,102,204,0.24)" }}
               >
                 המשך לפתוח בקשה לארגון
               </button>
