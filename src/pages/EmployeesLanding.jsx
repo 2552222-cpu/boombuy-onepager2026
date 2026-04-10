@@ -11,7 +11,6 @@ import Testimonials from "../components/employees/Testimonials";
 import Survey from "../components/employees/Survey";
 import FinalBand from "../components/employees/FinalBand";
 import ZeroBudget from "../components/employees/ZeroBudget";
-import SavingsInfographic from "../components/employees/SavingsInfographic";
 import EconomicSection from "../components/employees/EconomicSection";
 import FloatingWhatsApp from "../components/employees/FloatingWhatsApp";
 

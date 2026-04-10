@@ -495,7 +495,7 @@ export default function Survey() {
             </motion.div>
           ) : (
             <motion.div
-              key="step4"
+              key="result"
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -14 }}

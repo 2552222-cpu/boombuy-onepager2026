@@ -211,8 +211,8 @@ export default function AdminDashboard() {
     return () => unsub();
   }, []);
 
-  // Admin-only guard
-  if (!loading && user && user.role !== 'admin') {
+  // Admin-only guard — blocks both non-admin AND unauthenticated users
+  if (!loading && (!user || user.role !== 'admin')) {
     return (
       <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F5F7", fontFamily: "var(--font-heebo)" }} dir="rtl">
         <div style={{ textAlign: "center" }}>
