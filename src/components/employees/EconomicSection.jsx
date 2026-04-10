@@ -1,24 +1,35 @@
 import React from "react";
 import { motion } from "framer-motion";
 
+// Helper: wrap number+₪ in ltr span to prevent bidi reordering in RTL context
+const Shekel = ({ val }) => <span dir="ltr">{val}₪</span>;
+
 const cards = [
   {
     dot: "#FF3B30",
-    title: "המודל הישן",
-    body: "מתנה פעמיים בשנה. תקציב שמתאדה תוך ימים. עובדים שיוצאים מאוכזבים ולא מרגישים ערך ביומיום.",
     accent: "#FF3B30",
+    title: "המודל הישן",
+    body: ["מתנה פעמיים בשנה. תקציב שמתאדה תוך ימים. עובדים שיוצאים מאוכזבים ולא מרגישים ערך ביומיום."],
   },
   {
     dot: "#FF9500",
-    title: "מה שהעובד באמת צריך",
-    body: "תמיכה בסופר, בחשמל ובחופשות. כל יום, לא רק בחג. חיסכון של 700₪ בחודש מסתכם ב-8,400₪ ריאליים בשנה.",
     accent: "#FF9500",
+    title: "מה שהעובד באמת צריך",
+    bodyJsx: (
+      <>
+        תמיכה בסופר, בחשמל ובחופשות. כל יום, לא רק בחג. חיסכון של <Shekel val="700" /> בחודש מסתכם ב-<Shekel val="8,400" /> ריאליים בשנה.
+      </>
+    ),
   },
   {
     dot: "#34C759",
-    title: "הבשורה",
-    body: "0₪ עלות למעסיק. 100% ערך לעובד. טכנולוגיית Nexus של בום ביי מייצרת את החיסכון מתוך נפח הקנייה הקבוצתי באופן אוטומטי.",
     accent: "#34C759",
+    title: "הבשורה",
+    bodyJsx: (
+      <>
+        <Shekel val="0" /> עלות למעסיק. 100% ערך לעובד. טכנולוגיית Nexus של בום ביי מייצרת את החיסכון מתוך נפח הקנייה הקבוצתי באופן אוטומטי.
+      </>
+    ),
   },
 ];
 
@@ -48,7 +59,7 @@ export default function EconomicSection() {
 
         {/* 3 Cards */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16, marginBottom: 40 }}>
-          {cards.map(({ dot, title, body, accent }, i) => (
+          {cards.map(({ dot, accent, title, body, bodyJsx }, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 20 }}
@@ -67,7 +78,9 @@ export default function EconomicSection() {
             >
               <div style={{ width: 10, height: 10, borderRadius: "50%", background: dot, marginBottom: 16 }} />
               <p style={{ fontSize: 13, fontWeight: 800, color: accent, marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.04em" }}>{title}</p>
-              <p style={{ fontSize: 14, color: "#444", lineHeight: 1.7 }}>{body}</p>
+              <p style={{ fontSize: 14, color: "#444", lineHeight: 1.7 }}>
+                {bodyJsx || (body && body[0])}
+              </p>
             </motion.div>
           ))}
         </div>
@@ -88,7 +101,9 @@ export default function EconomicSection() {
         >
           <p style={{ fontSize: "clamp(20px,3.5vw,28px)", fontWeight: 900, color: "#fff", marginBottom: 14, letterSpacing: "-0.02em", lineHeight: 1.2 }}>
             100% ערך לעובד.<br />
-            <span style={{ color: "#34C759", fontWeight: 900 }}>עלות נוספת למעסיק: 0₪</span>
+            <span style={{ color: "#34C759", fontWeight: 900 }}>
+              עלות נוספת למעסיק: <Shekel val="0" />
+            </span>
           </p>
           <p style={{ fontSize: 15, color: "rgba(255,255,255,0.6)", maxWidth: 480, margin: "0 auto", lineHeight: 1.65 }}>
             טכנולוגיית ה-<strong style={{ color: "#fff" }}>Nexus</strong> של בום ביי מייצרת{" "}
@@ -97,7 +112,7 @@ export default function EconomicSection() {
           </p>
         </motion.div>
 
-        {/* Glassmorphism CTA */}
+        {/* CTA */}
         <div style={{ display: "flex", justifyContent: "center" }}>
           <div style={{ position: "relative" }}>
             <motion.div

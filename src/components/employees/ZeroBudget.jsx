@@ -55,7 +55,7 @@ export default function ZeroBudget() {
                 fontFamily: "var(--font-heebo)",
               }}
             >
-              0₪
+              <span dir="ltr">0₪</span>
             </span>
             <span
               style={{
@@ -98,7 +98,7 @@ export default function ZeroBudget() {
                 color: "#1D1D1F",
               }}
             >
-              0₪ תוספת תקציב לארגון שלך.
+              <span dir="ltr">0₪</span> תוספת תקציב לארגון שלך.
             </h2>
             <p
               style={{
