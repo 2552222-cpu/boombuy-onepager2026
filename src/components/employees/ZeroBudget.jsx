@@ -38,7 +38,7 @@ export default function ZeroBudget() {
             <span style={{
               display: "inline-block",
               direction: "ltr",
-              unicodeBidi: "isolate",
+              unicodeBidi: "bidi-override",
               fontSize: "clamp(48px, 6vw, 64px)",
               fontWeight: 900,
               color: "#0066CC",
@@ -74,7 +74,7 @@ export default function ZeroBudget() {
               fontFamily: "var(--font-heebo)",
               color: "#1D1D1F",
             }}>
-              <span style={{ display: "inline-block", direction: "ltr", unicodeBidi: "isolate" }}>0₪</span> תוספת תקציב לארגון שלך.
+              <span style={{ display: "inline-block", direction: "ltr", unicodeBidi: "bidi-override" }}>0₪</span> תוספת תקציב לארגון שלך.
             </h2>
             <p style={{
               fontSize: "clamp(16px, 1.4vw, 19px)",

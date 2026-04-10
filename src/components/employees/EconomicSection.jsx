@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 // Helper: force LTR rendering so ₪ stays after the number in RTL context
 const Shekel = ({ val }) => (
-  <span style={{ display: "inline-block", direction: "ltr", unicodeBidi: "isolate" }}>
+  <span style={{ display: "inline-block", direction: "ltr", unicodeBidi: "bidi-override" }}>
     {val}₪
   </span>
 );

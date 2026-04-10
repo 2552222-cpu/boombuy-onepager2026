@@ -61,12 +61,12 @@ export default function Hero() {
               {/* Cube 1 - Market Price */}
               <div style={{ flex: 1, background: "rgba(255,255,255,0.7)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.9)", borderRadius: "20px", padding: "14px 8px", textAlign: "center", boxShadow: "0 4px 20px rgba(0,0,0,0.07)" }}>
                 <p style={{ fontSize: "11px", fontWeight: 700, color: "#86868B", marginBottom: "4px" }}>מחיר שוק</p>
-                <p style={{ fontSize: "18px", fontWeight: 900, color: "#86868B", textDecoration: "line-through", direction: "ltr", unicodeBidi: "isolate" }}>4,590₪</p>
+                <p style={{ fontSize: "18px", fontWeight: 900, color: "#86868B", textDecoration: "line-through", direction: "ltr", unicodeBidi: "bidi-override" }}>4,590₪</p>
               </div>
               {/* Cube 2 - Employee Price */}
               <div style={{ flex: 1, background: "rgba(255,255,255,0.7)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.9)", borderRadius: "20px", padding: "14px 8px", textAlign: "center", boxShadow: "0 4px 20px rgba(0,0,0,0.07)" }}>
                 <p style={{ fontSize: "11px", fontWeight: 700, color: "#0055CC", marginBottom: "4px" }}>מחיר לעובד</p>
-                <p style={{ fontSize: "22px", fontWeight: 900, color: "#0055CC", direction: "ltr", unicodeBidi: "isolate" }}>3,890₪</p>
+                <p style={{ fontSize: "22px", fontWeight: 900, color: "#0055CC", direction: "ltr", unicodeBidi: "bidi-override" }}>3,890₪</p>
               </div>
               {/* Cube 3 - Savings */}
               <motion.div
@@ -76,7 +76,7 @@ export default function Hero() {
               >
                 <p style={{ fontSize: "11px", fontWeight: 700, color: "#86868B", marginBottom: "4px" }}>החיסכון שלך</p>
                 <div style={{ background: "rgba(52,199,89,0.15)", borderRadius: "12px", padding: "2px 6px", display: "inline-block" }}>
-                  <p style={{ fontSize: "18px", fontWeight: 900, color: "#1A7A43", direction: "ltr", unicodeBidi: "isolate" }}>700₪</p>
+                  <p style={{ fontSize: "18px", fontWeight: 900, color: "#1A7A43", direction: "ltr", unicodeBidi: "bidi-override" }}>700₪</p>
                 </div>
                 </motion.div>
             </div>
