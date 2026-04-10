@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { base44 } from "@/api/base44Client";
+import { useAuth } from "@/lib/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ExternalLink, Users } from "lucide-react";
 
@@ -111,7 +112,7 @@ function MembersDrawer({ req, onClose }) {
                 <div key={m.id} style={{ background: "#F5F5F7", borderRadius: "10px", padding: "10px 12px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <div>
                     <p style={{ fontSize: "13px", fontWeight: 700, color: "#1D1D1F" }}>{m.memberName}</p>
-                    {m.memberEmail && <p style={{ fontSize: "11px", color: "#86868B" }}>{m.memberEmail}</p>}
+                    {m.memberPhone && <p style={{ fontSize: "11px", color: "#86868B" }}>{m.memberPhone}</p>}
                   </div>
                   <p style={{ fontSize: "10px", color: "#C7C7CC" }}>
                     {new Date(m.created_date).toLocaleDateString("he-IL")}
@@ -183,6 +184,7 @@ function DemoModal({ req, onClose }) {
 
 // ── Dashboard ────────────────────────────────────────────────────────────────
 export default function AdminDashboard() {
+  const { user } = useAuth();
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [demoReq, setDemoReq] = useState(null);
@@ -208,6 +210,19 @@ export default function AdminDashboard() {
     });
     return () => unsub();
   }, []);
+
+  // Admin-only guard
+  if (!loading && user && user.role !== 'admin') {
+    return (
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F5F7", fontFamily: "var(--font-heebo)" }} dir="rtl">
+        <div style={{ textAlign: "center" }}>
+          <p style={{ fontSize: "20px", fontWeight: 700, marginBottom: "8px" }}>גישה אסורה</p>
+          <p style={{ fontSize: "14px", color: "#86868B" }}>עמוד זה מיועד למנהלי מערכת בלבד.</p>
+          <a href="/" style={{ color: "#0066CC", fontSize: "14px", marginTop: "12px", display: "block" }}>חזרה לעמוד הראשי</a>
+        </div>
+      </div>
+    );
+  }
 
   if (loading) {
     return (

@@ -146,9 +146,8 @@ export default function Survey() {
           groupRequestId: newGroup.id,
           orgKey,
           orgName: orgName.trim(),
-          memberName: "פותח הבקשה",
-          memberPhone: "",
-          browserToken,
+          memberName: hrName.trim() || "עובד מייסד",
+          memberPhone: hrPhone.trim() || "לא צוין",
           source: "employees",
         });
         await base44.entities.GroupRequest.update(newGroup.id, {
