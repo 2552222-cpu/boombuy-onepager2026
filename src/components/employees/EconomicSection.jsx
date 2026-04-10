@@ -1,22 +1,21 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { TrendingDown, Lightbulb, Zap } from "lucide-react";
 
 const cards = [
   {
-    Icon: TrendingDown,
+    dot: "#FF3B30",
     title: "המודל הישן",
     body: "מתנה פעמיים בשנה. תקציב שמתאדה תוך ימים. עובדים שיוצאים מאוכזבים ולא מרגישים ערך ביומיום.",
     accent: "#FF3B30",
   },
   {
-    Icon: Lightbulb,
+    dot: "#FF9500",
     title: "מה שהעובד באמת צריך",
-    body: "תמיכה בסופר, בחשמל ובחופשות — כל יום, לא רק בחג. 700₪ חיסכון חודשי שמסתכם ב-8,400₪ ריאליים בשנה.",
+    body: "תמיכה בסופר, בחשמל ובחופשות. כל יום, לא רק בחג. חיסכון של 700₪ בחודש מסתכם ב-8,400₪ ריאליים בשנה.",
     accent: "#FF9500",
   },
   {
-    Icon: Zap,
+    dot: "#34C759",
     title: "הבשורה",
     body: "0₪ עלות למעסיק. 100% ערך לעובד. טכנולוגיית Nexus של בום ביי מייצרת את החיסכון מתוך נפח הקנייה הקבוצתי באופן אוטומטי.",
     accent: "#34C759",
@@ -49,7 +48,7 @@ export default function EconomicSection() {
 
         {/* 3 Cards */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16, marginBottom: 40 }}>
-          {cards.map(({ Icon, title, body, accent }, i) => (
+          {cards.map(({ dot, title, body, accent }, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 20 }}
@@ -66,9 +65,7 @@ export default function EconomicSection() {
                 boxShadow: "0 8px 32px rgba(0,0,0,0.07)",
               }}
             >
-              <div style={{ width: 40, height: 40, borderRadius: 12, background: `${accent}15`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 14 }}>
-                <Icon size={20} color={accent} strokeWidth={1.5} />
-              </div>
+              <div style={{ width: 10, height: 10, borderRadius: "50%", background: dot, marginBottom: 16 }} />
               <p style={{ fontSize: 13, fontWeight: 800, color: accent, marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.04em" }}>{title}</p>
               <p style={{ fontSize: 14, color: "#444", lineHeight: 1.7 }}>{body}</p>
             </motion.div>
@@ -95,7 +92,7 @@ export default function EconomicSection() {
           </p>
           <p style={{ fontSize: 15, color: "rgba(255,255,255,0.6)", maxWidth: 480, margin: "0 auto", lineHeight: 1.65 }}>
             טכנולוגיית ה-<strong style={{ color: "#fff" }}>Nexus</strong> של בום ביי מייצרת{" "}
-            <strong style={{ color: "#fff" }}>חיסכון</strong> אוטומטי מנפח הקנייה הקבוצתי
+            <strong style={{ color: "#fff" }}>חיסכון</strong> אוטומטי מנפח הקנייה הקבוצתי.
             ללא צורך בתקציב ארגוני נוסף.
           </p>
         </motion.div>
