@@ -1,17 +1,18 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import ILS from "../ILS";
 
 const OFFERS = [
-  { id: "apple", cat: "מובייל", brand: "Apple", title: "Apple iPhone 16 Pro · יבואן", priceOld: "4,590₪", priceNew: "3,890₪", saving: "700₪", labelOld: "מחיר שוק", desc: "הטבות בלעדיות על אייפון, סמסונג ומוצרי מובייל.", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/66514fe66_-2026-02-18T150849922.png" },
-  { id: "vacation", cat: "נופש וחופשות", brand: "מלונות בראון", title: "מלונות בראון · פרימיום", priceOld: "1,790₪", priceNew: "899₪", saving: "891₪", labelOld: "מחיר שוק", desc: "חופשות בארץ ובחו\"ל במחירים בלעדיים · עד 50% הנחה.", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7cc501b0f_-2026-03-22T133529822.png" },
-  { id: "super", cat: "יוקר המחיה", brand: "TNX", title: "סופר ובית · TNX", priceOld: "350₪", priceNew: "149₪", saving: "201₪", labelOld: "מחיר שוק", desc: "הוזלה אמיתית על מוצרי צריכה ובנוסף עד 8% הנחה קבועה בסופרים.", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e8b8ed0b8_-2026-02-18T145540109.png" },
-  { id: "samba", cat: "כל בוקר הטבה חדשה", brand: "Adidas Samba", title: "Adidas Samba · הדגם המבוקש", priceOld: "499₪", priceNew: "299₪", saving: "200₪", labelOld: "מחיר באדידס", desc: "הדגם המבוקש בעולם במחיר בלעדי לעובדים לבוקר זה בלבד.", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/b7485969d_-2026-02-18T150744909.png" },
-  { id: "fashion", cat: "אופנה ומותגים", brand: "Alo Yoga", title: "Alo Yoga · פרימיום", priceOld: "499₪", priceNew: "224₪", saving: "275₪", labelOld: "מחיר שוק", desc: "אלו יוגה, אדידס, נייק ומותגי פרימיום במחירים סיטונאיים.", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/359030b5f_87.png" },
-  { id: "culture", cat: "תרבות ופנאי", brand: "קזבלן", title: "קזבלן · הצגת השנה", priceOld: "350₪", priceNew: "77₪", saving: "273₪", labelOld: "מחיר שוק", desc: "תערוכות, הופעות והצגות בארץ ובחו\"ל במחירים נגישים.", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3c42d518b_-2026-03-22T140039783.png" },
-  { id: "nespresso", cat: "חשמל ואלקטרוניקה", brand: "Nespresso", title: "Nespresso · אלקטרוניקה", priceOld: "833₪", priceNew: "589₪", saving: "244₪", labelOld: "מחיר שוק", desc: "מוצרי חשמל ואלקטרוניקה במחירי יבואן ובהנחות חריגות.", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/39fcbe2f7_-2026-02-18T150129609.png" },
-  { id: "dior", cat: "בישום", brand: "Dior Sauvage", title: "Dior Sauvage · יבואן", priceOld: "600₪", priceNew: "430₪", saving: "170₪", labelOld: "מחיר שוק", desc: "מותגי בישום פרימיום במחירי יבואן.", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/823674aab_-2026-02-18T150114784.png" },
-  { id: "luggage", cat: "נסיעות", brand: "Kate Hill", title: "Kate Hill · סט מזוודות", priceOld: "1,999₪", priceNew: "249₪", saving: "1,750₪", labelOld: "מחיר שוק", desc: "סט 3 מזוודות קשיחות, יבואן רשמי. ההטבה המבוקשת של השנה.", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28598db7e_-2026-03-15T180501791.png" },
+  { id: "apple", cat: "מובייל", brand: "Apple", title: "Apple iPhone 16 Pro · יבואן", priceOld: "4,590", priceNew: "3,890", saving: "700", labelOld: "מחיר שוק", desc: "הטבות בלעדיות על אייפון, סמסונג ומוצרי מובייל.", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/66514fe66_-2026-02-18T150849922.png" },
+  { id: "vacation", cat: "נופש וחופשות", brand: "מלונות בראון", title: "מלונות בראון · פרימיום", priceOld: "1,790", priceNew: "899", saving: "891", labelOld: "מחיר שוק", desc: "חופשות בארץ ובחו\"ל במחירים בלעדיים · עד 50% הנחה.", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7cc501b0f_-2026-03-22T133529822.png" },
+  { id: "super", cat: "יוקר המחיה", brand: "TNX", title: "סופר ובית · TNX", priceOld: "350", priceNew: "149", saving: "201", labelOld: "מחיר שוק", desc: "הוזלה אמיתית על מוצרי צריכה ובנוסף עד 8% הנחה קבועה בסופרים.", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e8b8ed0b8_-2026-02-18T145540109.png" },
+  { id: "samba", cat: "כל בוקר הטבה חדשה", brand: "Adidas Samba", title: "Adidas Samba · הדגם המבוקש", priceOld: "499", priceNew: "299", saving: "200", labelOld: "מחיר באדידס", desc: "הדגם המבוקש בעולם במחיר בלעדי לעובדים לבוקר זה בלבד.", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/b7485969d_-2026-02-18T150744909.png" },
+  { id: "fashion", cat: "אופנה ומותגים", brand: "Alo Yoga", title: "Alo Yoga · פרימיום", priceOld: "499", priceNew: "224", saving: "275", labelOld: "מחיר שוק", desc: "אלו יוגה, אדידס, נייק ומותגי פרימיום במחירים סיטונאיים.", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/359030b5f_87.png" },
+  { id: "culture", cat: "תרבות ופנאי", brand: "קזבלן", title: "קזבלן · הצגת השנה", priceOld: "350", priceNew: "77", saving: "273", labelOld: "מחיר שוק", desc: "תערוכות, הופעות והצגות בארץ ובחו\"ל במחירים נגישים.", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3c42d518b_-2026-03-22T140039783.png" },
+  { id: "nespresso", cat: "חשמל ואלקטרוניקה", brand: "Nespresso", title: "Nespresso · אלקטרוניקה", priceOld: "833", priceNew: "589", saving: "244", labelOld: "מחיר שוק", desc: "מוצרי חשמל ואלקטרוניקה במחירי יבואן ובהנחות חריגות.", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/39fcbe2f7_-2026-02-18T150129609.png" },
+  { id: "dior", cat: "בישום", brand: "Dior Sauvage", title: "Dior Sauvage · יבואן", priceOld: "600", priceNew: "430", saving: "170", labelOld: "מחיר שוק", desc: "מותגי בישום פרימיום במחירי יבואן.", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/823674aab_-2026-02-18T150114784.png" },
+  { id: "luggage", cat: "נסיעות", brand: "Kate Hill", title: "Kate Hill · סט מזוודות", priceOld: "1,999", priceNew: "249", saving: "1,750", labelOld: "מחיר שוק", desc: "סט 3 מזוודות קשיחות, יבואן רשמי. ההטבה המבוקשת של השנה.", img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28598db7e_-2026-03-15T180501791.png" },
 ];
 
 export default function FeaturedOffersSlider() {
@@ -161,7 +162,7 @@ export default function FeaturedOffersSlider() {
                     ].map((c, i) => (
                       <div key={i} style={{ flex: 1, background: c.bg || "#F5F5F7", borderRadius: "20px", padding: isMobile ? "12px 6px" : "16px 10px", textAlign: "center" }}>
                         <p style={{ fontSize: "11px", fontWeight: 700, color: "#86868B", marginBottom: "4px" }}>{c.lbl}</p>
-                        <p style={{ fontSize: isMobile ? "17px" : "24px", fontWeight: 900, color: c.color, textDecoration: c.strike ? "line-through" : "none" }}><bdi dir="ltr" style={{ whiteSpace: "nowrap", unicodeBidi: "isolate" }}>{c.val}</bdi></p>
+                        <ILS value={c.val} style={{ fontSize: isMobile ? "17px" : "24px", fontWeight: 900, color: c.color, textDecoration: c.strike ? "line-through" : "none" }} />
                       </div>
                     ))}
                   </div>

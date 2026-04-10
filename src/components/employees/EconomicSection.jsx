@@ -1,10 +1,8 @@
 import React from "react";
 import { motion } from "framer-motion";
+import ILS from "./ILS";
 
-// Helper: force LTR rendering so ₪ stays after the number in RTL context
-const Shekel = ({ val }) => (
-  <bdi dir="ltr" style={{ display: "inline" }}>{val}₪</bdi>
-);
+
 
 const cards = [
   {
@@ -19,7 +17,7 @@ const cards = [
     title: "מה שהעובד באמת צריך",
     bodyJsx: (
       <>
-        תמיכה בסופר, בחשמל ובחופשות. כל יום, לא רק בחג. חיסכון של <Shekel val="700" /> בחודש מסתכם ב-<Shekel val="8,400" /> ריאליים בשנה.
+        תמיכה בסופר, בחשמל ובחופשות. כל יום, לא רק בחג. חיסכון של <ILS value="700" /> בחודש מסתכם ב-<ILS value="8,400" /> ריאליים בשנה.
       </>
     ),
   },
@@ -29,7 +27,7 @@ const cards = [
     title: "הבשורה",
     bodyJsx: (
       <>
-        <Shekel val="0" /> עלות למעסיק. 100% ערך לעובד. טכנולוגיית Nexus של בום ביי מייצרת את החיסכון מתוך נפח הקנייה הקבוצתי באופן אוטומטי.
+        <ILS value="0" /> עלות למעסיק. 100% ערך לעובד. טכנולוגיית Nexus של בום ביי מייצרת את החיסכון מתוך נפח הקנייה הקבוצתי באופן אוטומטי.
       </>
     ),
   },
@@ -104,7 +102,7 @@ export default function EconomicSection() {
           <p style={{ fontSize: "clamp(20px,3.5vw,28px)", fontWeight: 900, color: "#fff", marginBottom: 14, letterSpacing: "-0.02em", lineHeight: 1.2 }}>
             100% ערך לעובד.<br />
             <span style={{ color: "#34C759", fontWeight: 900 }}>
-              עלות נוספת למעסיק: <Shekel val="0" />
+              עלות נוספת למעסיק: <ILS value="0" />
             </span>
           </p>
           <p style={{ fontSize: 15, color: "rgba(255,255,255,0.6)", maxWidth: 480, margin: "0 auto", lineHeight: 1.65 }}>

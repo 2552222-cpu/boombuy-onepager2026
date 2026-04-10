@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import ILS from "./ILS";
 
 export default function ZeroBudget() {
   return (
@@ -34,20 +35,14 @@ export default function ZeroBudget() {
             flexShrink: 0,
             textAlign: "center",
           }}>
-            {/* Force LTR so ₪ appears after 0 */}
-            <span style={{
-              display: "inline-block",
-              direction: "ltr",
-              unicodeBidi: "bidi-override",
+            <ILS value="0" style={{
               fontSize: "clamp(48px, 6vw, 64px)",
               fontWeight: 900,
               color: "#0066CC",
               letterSpacing: "-0.04em",
               lineHeight: 1,
               fontFamily: "var(--font-heebo)",
-            }}>
-              0₪
-            </span>
+            }} />
             <span style={{
               fontSize: "13px",
               fontWeight: 500,
@@ -74,7 +69,7 @@ export default function ZeroBudget() {
               fontFamily: "var(--font-heebo)",
               color: "#1D1D1F",
             }}>
-              <span style={{ display: "inline-block", direction: "ltr", unicodeBidi: "bidi-override" }}>0₪</span> תוספת תקציב לארגון שלך.
+              <ILS value="0" /> תוספת תקציב לארגון שלך.
             </h2>
             <p style={{
               fontSize: "clamp(16px, 1.4vw, 19px)",

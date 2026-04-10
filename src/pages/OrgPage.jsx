@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { base44 } from "@/api/base44Client";
 import { buildWaMessage, buildLetterMessage } from "@/utils/messages";
+import ILS from "../components/employees/ILS";
 
 const TARGET_1 = 10;
 const TARGET_2 = 20;
@@ -275,7 +276,7 @@ export default function OrgPage() {
             בואו נכניס את בום ביי ל-{group.orgName}
           </h1>
           <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.8)", lineHeight: 1.6 }}>
-            הטבות אמיתיות לעובדים · <bdi dir="ltr">0₪</bdi> עלות לארגון · טכנולוגיית Nexus
+            הטבות אמיתיות לעובדים · <ILS value="0" /> עלות לארגון · טכנולוגיית Nexus
           </p>
         </motion.div>
 

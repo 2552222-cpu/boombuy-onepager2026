@@ -1,10 +1,11 @@
 import React from "react";
 import { motion } from "framer-motion";
+import ILS from "./ILS";
 
 const PROOF_CARDS = [
-  { label: "מחיר לעובדים", value: <bdi dir="ltr">249₪</bdi>, highlight: false },
-  { label: "מחיר נמוך בזאפ", value: <bdi dir="ltr">1,999₪</bdi>, highlight: false },
-  { label: "החיסכון שלך", value: <bdi dir="ltr">1,750₪</bdi>, highlight: true },
+  { label: "מחיר לעובדים", value: "249", highlight: false },
+  { label: "מחיר נמוך בזאפ", value: "1,999", highlight: false },
+  { label: "החיסכון שלך", value: "1,750", highlight: true },
 ];
 
 export default function ProofImage({ imageUrl }) {
@@ -116,9 +117,7 @@ export default function ProofImage({ imageUrl }) {
                   <span style={{ fontSize: "13px", fontWeight: 500, color: "#86868B", fontFamily: "var(--font-heebo)", lineHeight: 1.3 }}>
                     {card.label}
                   </span>
-                  <span style={{ fontSize: "28px", fontWeight: 900, color: card.highlight ? "#0066CC" : "#1D1D1F", fontFamily: "var(--font-heebo)", letterSpacing: "-0.025em", lineHeight: 1.1 }}>
-                    {card.value}
-                  </span>
+                  <ILS value={card.value} style={{ fontSize: "28px", fontWeight: 900, color: card.highlight ? "#0066CC" : "#1D1D1F", fontFamily: "var(--font-heebo)", letterSpacing: "-0.025em", lineHeight: 1.1 }} />
                 </div>
               ))}
             </div>
@@ -207,7 +206,7 @@ export default function ProofImage({ imageUrl }) {
                   }}
                 >
                   <span style={{ fontSize: "11px", fontWeight: 500, color: "#86868B", fontFamily: "var(--font-heebo)" }}>{card.label}</span>
-                  <span style={{ fontSize: "19px", fontWeight: 900, color: "#1D1D1F", fontFamily: "var(--font-heebo)", letterSpacing: "-0.02em", lineHeight: 1.1 }}>{card.value}</span>
+                  <ILS value={card.value} style={{ fontSize: "19px", fontWeight: 900, color: "#1D1D1F", fontFamily: "var(--font-heebo)", letterSpacing: "-0.02em", lineHeight: 1.1 }} />
                 </div>
               ))}
             </div>
@@ -225,7 +224,7 @@ export default function ProofImage({ imageUrl }) {
               }}
             >
               <span style={{ fontSize: "11px", fontWeight: 500, color: "#86868B", fontFamily: "var(--font-heebo)" }}>{cards[2].label}</span>
-              <span style={{ fontSize: "22px", fontWeight: 900, color: "#0066CC", fontFamily: "var(--font-heebo)", letterSpacing: "-0.02em", lineHeight: 1.1 }}>{cards[2].value}</span>
+              <ILS value={cards[2].value} style={{ fontSize: "22px", fontWeight: 900, color: "#0066CC", fontFamily: "var(--font-heebo)", letterSpacing: "-0.02em", lineHeight: 1.1 }} />
             </div>
           </motion.div>
 

@@ -1,12 +1,13 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
+import ILS from "./ILS";
 
 const testimonials = [
   {
     name: "תהילה מליחי",
     org: "מקס",
-    text: "ההטבות שלכם הכי שוות! תודה. קניתי אלו יוגה וחסכתי בקנייה אחת 1,000₪!",
+    text: <>ההטבות שלכם הכי שוות! תודה. קניתי אלו יוגה וחסכתי בקנייה אחת <ILS value="1,000" />!</>,
   },
   {
     name: "רועי לוי",

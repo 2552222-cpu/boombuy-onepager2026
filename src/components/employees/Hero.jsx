@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import ILS from "./ILS";
 
 const HERO_DATA = {
   trustBadge: "מעל 250,000 עובדים כבר מקבלים יותר",
@@ -68,11 +69,11 @@ export default function Hero() {
             <div style={{ display: "flex", gap: "10px", marginTop: "28px", width: "100%", maxWidth: "380px" }}>
               <div style={{ flex: 1, background: "rgba(255,255,255,0.7)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.9)", borderRadius: "20px", padding: "14px 8px", textAlign: "center", boxShadow: "0 4px 20px rgba(0,0,0,0.07)" }}>
                 <p style={{ fontSize: "11px", fontWeight: 700, color: "#86868B", marginBottom: "4px" }}>מחיר שוק</p>
-                <p style={{ fontSize: "18px", fontWeight: 900, color: "#86868B", textDecoration: "line-through" }}><bdi dir="ltr">4,590₪</bdi></p>
+                <p style={{ fontSize: "18px", fontWeight: 900, color: "#86868B", textDecoration: "line-through" }}><ILS value="4,590" /></p>
               </div>
               <div style={{ flex: 1, background: "rgba(255,255,255,0.7)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.9)", borderRadius: "20px", padding: "14px 8px", textAlign: "center", boxShadow: "0 4px 20px rgba(0,0,0,0.07)" }}>
                 <p style={{ fontSize: "11px", fontWeight: 700, color: "#0055CC", marginBottom: "4px" }}>מחיר לעובד</p>
-                <p style={{ fontSize: "22px", fontWeight: 900, color: "#0055CC" }}><bdi dir="ltr">3,890₪</bdi></p>
+                <p style={{ fontSize: "22px", fontWeight: 900, color: "#0055CC" }}><ILS value="3,890" /></p>
               </div>
               <motion.div
                 animate={{ boxShadow: ["0 4px 20px rgba(52,199,89,0)", "0 4px 24px rgba(52,199,89,0.35)", "0 4px 20px rgba(52,199,89,0)"] }}
@@ -81,7 +82,7 @@ export default function Hero() {
               >
                 <p style={{ fontSize: "11px", fontWeight: 700, color: "#86868B", marginBottom: "4px" }}>החיסכון שלך</p>
                 <div style={{ background: "rgba(52,199,89,0.15)", borderRadius: "12px", padding: "2px 6px", display: "inline-block" }}>
-                  <p style={{ fontSize: "18px", fontWeight: 900, color: "#1A7A43" }}><bdi dir="ltr">700₪</bdi></p>
+                  <p style={{ fontSize: "18px", fontWeight: 900, color: "#1A7A43" }}><ILS value="700" /></p>
                 </div>
               </motion.div>
             </div>
