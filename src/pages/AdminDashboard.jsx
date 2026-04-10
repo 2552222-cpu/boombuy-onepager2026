@@ -281,7 +281,7 @@ export default function AdminDashboard() {
             <table style={{ width: "100%", borderCollapse: "collapse" }}>
               <thead>
                 <tr style={{ background: "#F5F5F7", borderBottom: "1px solid rgba(0,0,0,0.06)" }}>
-                  {["ארגון", "Normalized", "גודל", "תקציב חג", "פעילויות", "עובדים", "WA", "מכתב", "Score", "סטטוס", "עדכון אחרון", "עמוד", "פעולות"].map((h) => (
+                  {["ארגון", "גודל", "תקציב חג", "פעילויות", "עובדים", "WA", "מכתב", "Score", "סטטוס", "עדכון אחרון", "עמוד", "פעולות"].map((h) => (
                     <th key={h} style={{ padding: "11px 12px", textAlign: "right", fontSize: "11px", fontWeight: 600, color: "#86868B", whiteSpace: "nowrap" }}>{h}</th>
                   ))}
                 </tr>
@@ -297,7 +297,6 @@ export default function AdminDashboard() {
                         {req.orgName}
                         {req.initiatorName && <div style={{ fontSize: "11px", color: "#86868B", fontWeight: 400 }}>{req.initiatorName}{req.initiatorPhone && ` · ${req.initiatorPhone}`}</div>}
                       </td>
-                      <td style={{ padding: "12px 12px", fontSize: "11px", color: "#86868B", whiteSpace: "nowrap" }}>{req.orgKey}</td>
                       <td style={{ padding: "12px 12px", fontSize: "12px", whiteSpace: "nowrap" }}>{req.orgSize || "—"}</td>
                       <td style={{ padding: "12px 12px", fontSize: "12px", whiteSpace: "nowrap" }}>{req.holidayBudget || "—"}</td>
                       <td style={{ padding: "12px 12px", fontSize: "12px", maxWidth: "120px" }}>{req.activities?.length ? req.activities.join(", ") : <span style={{ color: "#C7C7CC" }}>—</span>}</td>
