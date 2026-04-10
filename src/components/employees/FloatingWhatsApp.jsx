@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 
-const WA_NUMBER = "972528004313";
-const WA_MESSAGE = encodeURIComponent("היי, אני רוצה להתייעץ לגבי ניהול המהלך — הדרכה און-ליין בניהול הכנסת BoomBuy לארגון שלי.");
+const WA_NUMBER = "972542552222";
+const WA_MESSAGE = encodeURIComponent("היי, אני רוצה להתייעץ לגבי ניהול המהלך ולקבל הדרכה לניהול הכנסת בום ביי לארגון שלי.");
 
 export default function FloatingWhatsApp() {
   const [open, setOpen] = useState(false);
@@ -39,7 +39,7 @@ export default function FloatingWhatsApp() {
               הדרכה און-ליין לניהול המהלך 🤝
             </p>
             <p style={{ fontSize: 12, color: "#86868B", marginBottom: 14, lineHeight: 1.5 }}>
-              דברו איתנו להדרכה און-ליין בניהול המהלך והכנסת BoomBuy לארגון שלכם.
+              דברו איתנו להדרכה לניהול הכנסת בום ביי לארגון שלכם.
             </p>
             <a
               href={`https://wa.me/${WA_NUMBER}?text=${WA_MESSAGE}`}

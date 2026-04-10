@@ -29,27 +29,27 @@ function markJoined(orgKey) {
 function waMsg(orgName, count, orgSlug) {
   const link = `${BASE_URL}/join/${orgSlug}`;
   if (count >= TARGET_2) {
-    return `חבר׳ה, פתחנו בקשה לצרף את ${orgName} ל-BoomBuy. זה יכול לתת לנו מחירי יבואן על Apple, הנחות קבועות בסופר, אופנה, חופשות והטבות נוספות - בלי תוספת תקציב לארגון. כבר עברנו את ה-20, וכל הצטרפות נוספת מחזקת עוד יותר את הפנייה. הצטרפו כאן: ${link}`;
+    return `חבר׳ה, פתחנו בקשה לצרף את ${orgName} ל-בום ביי. זה יכול לתת לנו מחירי יבואן על Apple, הנחות קבועות בסופר, אופנה, חופשות והטבות נוספות - בלי תוספת תקציב לארגון. כבר עברנו את ה-20, וכל הצטרפות נוספת מחזקת עוד יותר את הפנייה. הצטרפו כאן: ${link}`;
   }
   if (count >= TARGET_1) {
     const remaining = TARGET_2 - count;
-    return `חבר׳ה, פתחנו בקשה לצרף את ${orgName} ל-BoomBuy. זה יכול לתת לנו מחירי יבואן על Apple, הנחות קבועות בסופר, אופנה, חופשות והטבות נוספות - בלי תוספת תקציב לארגון. כבר ${count} עובדים הצטרפו. חסרים לנו עוד ${remaining} כדי להגיע ל-20. הצטרפו כאן: ${link}`;
+    return `חבר׳ה, פתחנו בקשה לצרף את ${orgName} ל-בום ביי. זה יכול לתת לנו מחירי יבואן על Apple, הנחות קבועות בסופר, אופנה, חופשות והטבות נוספות - בלי תוספת תקציב לארגון. כבר ${count} עובדים הצטרפו. חסרים לנו עוד ${remaining} כדי להגיע ל-20. הצטרפו כאן: ${link}`;
   }
   const remaining = TARGET_1 - count;
-  return `חבר׳ה, פתחנו בקשה לצרף את ${orgName} ל-BoomBuy. זה יכול לתת לנו מחירי יבואן על Apple, הנחות קבועות בסופר, אופנה, חופשות והטבות נוספות - בלי תוספת תקציב לארגון. כבר ${count} עובדים הצטרפו. חסרים לנו עוד ${remaining} כדי להגיע ל-10. הצטרפו כאן: ${link}`;
+  return `חבר׳ה, פתחנו בקשה לצרף את ${orgName} ל-בום ביי. זה יכול לתת לנו מחירי יבואן על Apple, הנחות קבועות בסופר, אופנה, חופשות והטבות נוספות - בלי תוספת תקציב לארגון. כבר ${count} עובדים הצטרפו. חסרים לנו עוד ${remaining} כדי להגיע ל-10. הצטרפו כאן: ${link}`;
 }
 
 function letterMsg(orgName, count, orgKey) {
   const orgLink = orgKey ? `${BASE_URL}/join/${orgKey}` : BASE_URL;
   return `שלום,
 
-קבוצת עובדים מתוך ${orgName} ביקשה לבחון את ההצטרפות למועדון BoomBuy.
+קבוצת עובדים מתוך ${orgName} ביקשה לבחון את ההצטרפות למועדון בום ביי.
 
 עד כה הצטרפו לבקשה ${count} עובדים מתוך הארגון.
 
 המהלך מאפשר לעובדים לקבל מחירי סיטונאות על מוצרי פרימיום, הנחות קבועות בסופר ובפארם, מתנות חג גמישות והטבות נוספות - והכול ב-0 ש"ח תוספת תקציב לארגון.
 
-נשמח אם תבדקו תיאום פגישת דמו קצרה מול צוות BoomBuy.
+נשמח אם תבדקו תיאום פגישת דמו קצרה מול צוות בום ביי.
 
 קישור לעמוד הבקשה:
 ${orgLink}
@@ -259,7 +259,7 @@ export default function OrgPage() {
       {/* Header */}
       <div style={{ background: "#fff", borderBottom: "1px solid rgba(0,0,0,0.06)", padding: "14px 20px" }}>
         <a href="/" style={{ textDecoration: "none" }}>
-          <span style={{ fontSize: "20px", fontWeight: 900, color: "#0066CC", letterSpacing: "-0.02em" }}>BoomBuy</span>
+          <span style={{ fontSize: "20px", fontWeight: 900, color: "#0066CC", letterSpacing: "-0.02em" }}>בום ביי</span>
         </a>
       </div>
 
@@ -272,7 +272,7 @@ export default function OrgPage() {
             עמיתים מ-{group.orgName} מזמינים אותך
           </p>
           <h1 style={{ fontSize: "clamp(22px, 5vw, 30px)", fontWeight: 900, letterSpacing: "-0.03em", color: "#fff", lineHeight: 1.2, marginBottom: "10px" }}>
-            בואו נכניס את BoomBuy ל-{group.orgName}
+            בואו נכניס את בום ביי ל-{group.orgName}
           </h1>
           <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.8)", lineHeight: 1.6 }}>
             הטבות אמיתיות לעובדים · 0₪ עלות לארגון · טכנולוגיית Nexus
@@ -288,7 +288,7 @@ export default function OrgPage() {
 
 אנחנו קבוצת עובדים מ-${group.orgName} שמאמינה שמגיע לנו יותר.
 
-BoomBuy מאפשרת לנו לקבל:
+בום ביי מאפשרת לנו לקבל:
 • 8% הנחה קבועה בסופרמרקטים
 • מחירי יבואן על Apple, Samsung ועוד
 • חופשות, תרבות ומותגי פרימיום במחירים בלעדיים
@@ -296,7 +296,8 @@ BoomBuy מאפשרת לנו לקבל:
 
 הכול בלי שהארגון מוציא שקל נוסף.
 
-${count} עובדים כבר חתמו על הבקשה. הצטרפות שלך מחזקת אותנו.`}
+${count} עובדים כבר חתמו על הבקשה. הצטרפות שלך מחזקת אותנו.
+בום ביי מאפשרת לנו לקבל:`}
           </p>
         </motion.div>
 

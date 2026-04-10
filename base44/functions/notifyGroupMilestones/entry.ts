@@ -41,9 +41,11 @@ Deno.serve(async (req) => {
       `ארגון: ${orgName}
 orgKey: ${orgKey}
 עובדים: ${newCount}
-גודל ארגון: ${group.orgSize || "—"}
-תקציב חג: ${group.holidayBudget || "—"}
-פעילויות: ${(group.activities || []).join(", ") || "—"}
+גודל ארגון: ${group.orgSize || "לא צוין"}
+תקציב חג: ${group.holidayBudget || "לא צוין"}
+פעילויות: ${(group.activities || []).join(", ") || "לא צוין"}
+מנהל/ת רווחה HR: ${group.initiatorName || "לא צוין"}
+טלפון איש קשר: ${group.initiatorPhone || "לא צוין"}
 
 לינק לעמוד: ${orgLink}
 ${extra}`;
