@@ -8,19 +8,19 @@ const MILESTONES = [
   {
     threshold: 10,
     flag: "notified10",
-    teamSubject: (orgName, count) => `🔥 BoomBuy: ${orgName} הגיע ל-10 עובדים!`,
+    teamSubject: (orgName, count) => `🔥 בום ביי: ${orgName} הגיע ל-10 עובדים!`,
     initiatorMsg: (orgName) => `הגעתם ל-10 עובדים ב-${orgName}. יש כאן כבר מסה ראשונית.`,
   },
   {
     threshold: 20,
     flag: "notified20",
-    teamSubject: (orgName, count) => `🔥🔥 BoomBuy: ${orgName} הגיע ל-20 עובדים!`,
+    teamSubject: (orgName, count) => `🔥🔥 בום ביי: ${orgName} הגיע ל-20 עובדים!`,
     initiatorMsg: (orgName) => `הגעתם ל-20 עובדים ב-${orgName}. זה כבר כוח שאי אפשר להתעלם ממנו.`,
   },
   {
     threshold: 50,
     flag: "notified50",
-    teamSubject: (orgName, count) => `🚀 BoomBuy: ${orgName} הגיע ל-50 עובדים!`,
+    teamSubject: (orgName, count) => `🚀 בום ביי: ${orgName} הגיע ל-50 עובדים!`,
     initiatorMsg: (orgName) => `הגעתם ל-50 עובדים ב-${orgName}. זה כבר מהלך ארגוני משמעותי מאוד.`,
   },
 ];
@@ -56,7 +56,7 @@ ${extra}`;
       for (const email of allEmails) {
         await base44.asServiceRole.integrations.Core.SendEmail({
           to: email,
-          subject: `✅ ארגון חדש ב-BoomBuy: ${orgName}`,
+          subject: `✅ ארגון חדש ב-בום ביי: ${orgName}`,
           body: teamBody(""),
         }).catch(() => {});
       }
@@ -94,7 +94,7 @@ ${extra}`;
         for (const email of postMilestoneEmails) {
           await base44.asServiceRole.integrations.Core.SendEmail({
             to: email,
-            subject: `עובד נוסף הצטרף ל-${orgName} (${newCount} סה"כ)`,
+            subject: `עובד נוסף הצטרף ל-${orgName} (${newCount} סה"כ) - בום ביי`,
             body: teamBody(""),
           }).catch(() => {});
         }

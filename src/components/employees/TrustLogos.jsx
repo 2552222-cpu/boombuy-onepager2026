@@ -203,11 +203,25 @@ export default function TrustLogos() {
           .jci-head{ margin:0 auto 32px; }
           .jci-title{ font-size:clamp(22px, 4.5vw, 28px); }
           .jci-subtitle{ font-size:12px; }
-          .jci-rows{ gap:2px; }
-          .jci-track{ gap:1px; }
-          .jci-logoCard{ width:120px; height:80px; padding:0; }
+          .jci-rows{ display:none; }
+          .jci-mobile-grid{ display:grid !important; }
           .jci-trust{ font-size:11px; margin-top:24px; padding:0 16px; }
-          .jci-row{ height:72px; }
+        }
+        .jci-mobile-grid{
+          display:none;
+          grid-template-columns:repeat(5,1fr);
+          grid-template-rows:repeat(2,1fr);
+          gap:8px;
+          padding:0 12px;
+          margin:0 auto;
+          max-width:480px;
+        }
+        .jci-mobile-grid img{
+          width:100%;
+          height:56px;
+          object-fit:contain;
+          padding:6px;
+          box-sizing:border-box;
         }
       `}</style>
 
@@ -219,6 +233,13 @@ export default function TrustLogos() {
       <div className="jci-rows">
         <Row items={rowA} dir="left" duration={60} />
         <Row items={rowB} dir="right" duration={65} />
+      </div>
+      {/* Mobile static grid — 10 logos, 2 rows of 5 */}
+      <div className="jci-mobile-grid">
+        {[...rowA.slice(0,5), ...rowB.slice(0,5)].map((src, i) => {
+          const logoObj = logoList.find(l => l.url === src);
+          return <img key={i} src={src} alt={logoObj?.name || "לוגו לקוח"} loading="lazy" />;
+        })}
       </div>
 
       <p className="jci-trust">
