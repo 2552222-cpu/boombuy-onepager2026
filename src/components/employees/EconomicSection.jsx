@@ -3,9 +3,7 @@ import { motion } from "framer-motion";
 
 // Helper: force LTR rendering so ₪ stays after the number in RTL context
 const Shekel = ({ val }) => (
-  <span dir="ltr" style={{ display: "inline-block" }}>
-    {val}₪
-  </span>
+  <bdi dir="ltr" style={{ display: "inline" }}>{val}₪</bdi>
 );
 
 const cards = [

@@ -37,15 +37,16 @@ Deno.serve(async (req) => {
     const orgName = group.orgName;
     const orgLink = `${APP_URL}/join/${orgKey}`;
 
-    const teamBody = (subject, extra = "") =>
+    const teamBody = (extra = "") =>
       `ארגון: ${orgName}
 orgKey: ${orgKey}
 עובדים: ${newCount}
 גודל ארגון: ${group.orgSize || "לא צוין"}
 תקציב חג: ${group.holidayBudget || "לא צוין"}
-פעילויות: ${(group.activities || []).join(", ") || "לא צוין"}
-מנהל/ת רווחה HR: ${group.initiatorName || "לא צוין"}
-טלפון איש קשר: ${group.initiatorPhone || "לא צוין"}
+פעילויות / כאב יוקר המחיה: ${(group.activities || []).join(", ") || "לא צוין"}
+שם HR / מנהל רווחה: ${group.initiatorName || "לא צוין"}
+טלפון HR: ${group.initiatorPhone || "לא צוין"}
+מייל HR: ${group.initiatorEmail || "לא צוין"}
 
 לינק לעמוד: ${orgLink}
 ${extra}`;
