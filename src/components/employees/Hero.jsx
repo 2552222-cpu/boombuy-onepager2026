@@ -117,7 +117,7 @@ export default function Hero() {
                 </button>
               ) : (
                 <motion.button
-                  onClick={scrollToSurvey}
+                  onClick={scrollToOffers}
                   animate={{ boxShadow: ["0 15px 35px rgba(45,99,208,0.25)", "0 15px 45px rgba(45,99,208,0.5)", "0 15px 35px rgba(45,99,208,0.25)"] }}
                   transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
                   style={{ background: "#2D63D0", color: "#fff", border: "none", padding: "20px 40px", borderRadius: "18px", fontSize: "18px", fontWeight: 800, cursor: "pointer" }}

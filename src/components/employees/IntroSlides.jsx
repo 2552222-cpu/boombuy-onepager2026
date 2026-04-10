@@ -82,7 +82,12 @@ export default function IntroSlides({ onDone }) {
 
   const finish = () => {
     if (onDone) onDone();
-    document.getElementById("offers-slider")?.scrollIntoView({ behavior: "smooth" });
+    requestAnimationFrame(() => {
+      document.getElementById("hero-section")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
   };
 
   const goNext = () => {

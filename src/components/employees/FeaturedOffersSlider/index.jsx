@@ -161,7 +161,7 @@ export default function FeaturedOffersSlider() {
                     ].map((c, i) => (
                       <div key={i} style={{ flex: 1, background: c.bg || "#F5F5F7", borderRadius: "20px", padding: isMobile ? "12px 6px" : "16px 10px", textAlign: "center" }}>
                         <p style={{ fontSize: "11px", fontWeight: 700, color: "#86868B", marginBottom: "4px" }}>{c.lbl}</p>
-                        <p style={{ fontSize: isMobile ? "17px" : "24px", fontWeight: 900, color: c.color, textDecoration: c.strike ? "line-through" : "none" }}>{c.val}</p>
+                        <p style={{ fontSize: isMobile ? "17px" : "24px", fontWeight: 900, color: c.color, textDecoration: c.strike ? "line-through" : "none" }}><bdi dir="ltr" style={{ whiteSpace: "nowrap", unicodeBidi: "isolate" }}>{c.val}</bdi></p>
                       </div>
                     ))}
                   </div>
