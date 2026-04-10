@@ -5,10 +5,8 @@ export default function GlobalHeader() {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    // בדוק אם יש ?admin=true או אם המשתמש הוא admin
-    const params = new URLSearchParams(window.location.search);
-    const adminParam = params.get("admin") === "true";
-    setIsAdmin(adminParam);
+    // Admin link removed from public header. Access /admin/dashboard directly.
+    setIsAdmin(false);
   }, []);
 
   const scrollToSection = (sectionId) => {

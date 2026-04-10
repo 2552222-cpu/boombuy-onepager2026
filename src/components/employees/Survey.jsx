@@ -116,7 +116,8 @@ export default function Survey() {
 
   const handleFinish = async () => {
     setLoading(true);
-    const finalActivities = [];
+    // BUG FIX: finalActivities was hardcoded [] — now uses actual collected answers
+    const finalActivities = [painPoint, currentClub, welfareBudget].filter(Boolean);
     const orgKey = normalizeOrgKey(orgName);
     try {
       const existing = await base44.entities.GroupRequest.filter({ orgKey });
@@ -137,7 +138,7 @@ export default function Survey() {
           lastJoinedAt: new Date().toISOString(),
           orgSize,
           holidayBudget,
-          activities: [painPoint, currentClub, welfareBudget].filter(Boolean),
+          activities: finalActivities,
           initiatorName: hrName.trim() || undefined,
           initiatorPhone: hrPhone.trim() || undefined,
         });
@@ -154,6 +155,10 @@ export default function Survey() {
           initiatorMemberId: firstMember.id,
         });
         localStorage.setItem(`groupmember_${orgKey}`, browserToken);
+        // TASK 03 FIX: also mark in boomBuyJoinedOrgs so OrgPage recognizes the ambassador
+        const joinedOrgs = JSON.parse(localStorage.getItem("boomBuyJoinedOrgs") || "{}");
+        joinedOrgs[orgKey] = true;
+        localStorage.setItem("boomBuyJoinedOrgs", JSON.stringify(joinedOrgs));
         base44.functions.invoke("notifyGroupMilestones", { event: "org_created", orgKey, prevCount: 0, newCount: 1 }).catch(() => {});
       }
       const framing = getResultFraming(holidayBudget, finalActivities);
@@ -456,23 +461,23 @@ export default function Survey() {
           ) : step === 6 ? (
             <motion.div key="step6" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -14 }} transition={{ duration: 0.28 }}>
               <h3 style={{ fontSize: "20px", fontWeight: 700, marginBottom: "6px", textAlign: "center", fontFamily: "var(--font-heebo)" }}>
-                מידע מודיעיני (אופציונלי)
+                ספרו לנו קצת עליכם
               </h3>
               <p style={{ fontSize: "13px", color: "#86868B", textAlign: "center", marginBottom: "18px", fontFamily: "var(--font-heebo)" }}>
-                שם וטלפון של מנהלת רווחה / HR או איש קשר בוועד העובדים — יעזור לנו להגיע לאנשים הנכונים.
+                השם והטלפון שלכם עוזרים לנו להתאים את ההצעה ולחזור אליכם בצורה האישית ביותר.
               </p>
               <input
                 type="text"
                 value={hrName}
                 onChange={(e) => setHrName(e.target.value)}
-                placeholder="שם מנהלת הרווחה / HR"
+                placeholder="השם שלך (שם + משפחה)"
                 style={{ width: "100%", padding: "13px 15px", fontSize: "15px", borderRadius: "11px", border: "1px solid rgba(0,0,0,0.12)", background: "#fff", fontFamily: "var(--font-heebo)", marginBottom: "10px", textAlign: "right", boxSizing: "border-box" }}
               />
               <input
                 type="tel"
                 value={hrPhone}
                 onChange={(e) => setHrPhone(e.target.value)}
-                placeholder="טלפון נייד / משרד"
+                placeholder="מספר הטלפון שלך"
                 style={{ width: "100%", padding: "13px 15px", fontSize: "15px", borderRadius: "11px", border: "1px solid rgba(0,0,0,0.12)", background: "#fff", fontFamily: "var(--font-heebo)", marginBottom: "14px", textAlign: "right", boxSizing: "border-box" }}
               />
               <button

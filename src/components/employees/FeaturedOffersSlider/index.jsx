@@ -166,7 +166,17 @@ export default function FeaturedOffersSlider() {
                     ))}
                   </div>
 
-                  <button style={{ width: "100%", background: "#0055CC", color: "#fff", border: "none", padding: "22px", borderRadius: "24px", fontSize: "19px", fontWeight: 900, cursor: "pointer", boxShadow: "0 15px 40px rgba(0,85,204,0.35)" }}>
+                  <button
+                    onClick={() => {
+                      setSelectedId(null);
+                      setTimeout(() => {
+                        const el = document.getElementById("survey-section");
+                        if (el) el.scrollIntoView({ behavior: "smooth" });
+                        else window.location.href = "/#survey-section";
+                      }, 120);
+                    }}
+                    style={{ width: "100%", background: "#0055CC", color: "#fff", border: "none", padding: "22px", borderRadius: "24px", fontSize: "19px", fontWeight: 900, cursor: "pointer", boxShadow: "0 15px 40px rgba(0,85,204,0.35)" }}
+                  >
                     אני רוצה את זה בארגון שלי ←
                   </button>
                 </div>

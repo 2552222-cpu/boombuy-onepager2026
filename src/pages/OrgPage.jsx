@@ -161,11 +161,10 @@ export default function OrgPage() {
         if (results.length > 0) {
           setGroup(results[0]);
 
-          // Check join status: both joined-orgs map AND per-org browserToken
+          // Check join status: joined-orgs map OR any token for this org key
           const joinedOrgs = getJoinedOrgs();
           const perOrgToken = localStorage.getItem(`groupmember_${orgSlug}`);
-          const browserToken = getBrowserToken();
-          if (joinedOrgs[orgSlug] || perOrgToken === browserToken) {
+          if (joinedOrgs[orgSlug] || !!perOrgToken) {
             setAlreadyJoined(true);
           }
 

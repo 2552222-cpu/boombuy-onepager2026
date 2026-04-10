@@ -58,7 +58,8 @@ export default function ResultsPage() {
 
   // Calculate stats
   const answer1Counts = {};
-  const answer2Count = responses.filter(r => r.answer2?.includes("משנה לי את החודש")).length;
+  // FIX: actual answer2 options are "מאוד חשוב לי" / "דיי חשוב" / "לא ממש"
+  const answer2Count = responses.filter(r => r.answer2 === "מאוד חשוב לי").length;
   
   responses.forEach(r => {
     answer1Counts[r.answer1] = (answer1Counts[r.answer1] || 0) + 1;
@@ -129,7 +130,7 @@ export default function ResultsPage() {
                     {answer2Percentage}% מהעובדים אמרו:
                   </h2>
                   <p className="text-center text-3xl md:text-4xl font-black text-primary mb-4">
-                    "זה היה משנה לי את החודש"
+                    "חשוב לי מאוד שהארגון יאמץ הטבות"
                   </p>
                   <p className="text-center text-muted-foreground">
                     עובדים שמרגישים שהחברה דואגת להם מדווחים על 34% יותר שביעות רצון
@@ -158,7 +159,7 @@ export default function ResultsPage() {
               </p>
               <div className="flex flex-col md:flex-row gap-3">
                 <a
-                  href="https://calendly.com"
+                  href="https://wa.me/972542552222?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%A7%D7%91%D7%95%D7%A2%20%D7%93%D7%9E%D7%95%20%D7%A7%D7%A6%D7%A8%20%D7%A2%D7%9D%20%D7%91%D7%95%D7%9D%20%D7%91%D7%99%D7%99"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-4 rounded-lg transition-all text-center"

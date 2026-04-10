@@ -222,6 +222,8 @@ export default function TrustLogos() {
           height:80px;
           object-fit:contain;
           padding:8px;
+          /* Neutralize per-logo scale in mobile columns */
+          transform:none !important;
         }
 
         .jci-trust{
