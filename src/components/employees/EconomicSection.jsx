@@ -88,7 +88,7 @@ export default function EconomicSection() {
         >
           <p style={{ fontSize: "clamp(20px,3.5vw,28px)", fontWeight: 900, color: "#fff", marginBottom: 14, letterSpacing: "-0.02em", lineHeight: 1.2 }}>
             100% ערך לעובד.<br />
-            <span style={{ color: "#34C759", fontWeight: 900 }}>0₪ עלות נוספת למעסיק.</span>
+            <span style={{ color: "#34C759", fontWeight: 900 }}>עלות נוספת למעסיק: 0₪</span>
           </p>
           <p style={{ fontSize: 15, color: "rgba(255,255,255,0.6)", maxWidth: 480, margin: "0 auto", lineHeight: 1.65 }}>
             טכנולוגיית ה-<strong style={{ color: "#fff" }}>Nexus</strong> של בום ביי מייצרת{" "}

@@ -55,7 +55,7 @@ export default function ZeroBudget() {
                 fontFamily: "var(--font-heebo)",
               }}
             >
-              0 ₪
+              0₪
             </span>
             <span
               style={{
@@ -98,7 +98,7 @@ export default function ZeroBudget() {
                 color: "#1D1D1F",
               }}
             >
-              0 ₪ תוספת תקציב לארגון שלך.
+              0₪ תוספת תקציב לארגון שלך.
             </h2>
             <p
               style={{
@@ -110,7 +110,7 @@ export default function ZeroBudget() {
                 fontFamily: "var(--font-heebo)",
               }}
             >
-              הפלטפורמה עובדת על מקסום התקציב הקיים שהארגון כבר ממילא מוציא — כדי לתת לעובדים הרבה יותר ערך.
+              הפלטפורמה עובדת על מקסום התקציב הקיים שהארגון כבר ממילא מוציא. כדי לתת לעובדים הרבה יותר ערך.
             </p>
           </div>
         </motion.div>
