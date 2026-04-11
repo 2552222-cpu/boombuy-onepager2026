@@ -202,7 +202,7 @@ export default function IntroSlides({ onDone }) {
           fontSize: "12px", fontWeight: 600, color: "#1D3A6B",
           fontFamily: "var(--font-heebo)", whiteSpace: "nowrap",
         }}>
-          250,000+ עובדים כבר נהנים מנטו גבוה יותר
+          ממאות ארגונים · הטבות שמורגשות ביומיום
         </span>
       </motion.div>
 

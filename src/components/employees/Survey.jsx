@@ -11,10 +11,10 @@ const ORG_SIZE_OPTIONS = [
 ];
 
 const HOLIDAY_BUDGET_OPTIONS = [
-  { label: "200-400₪" },
-  { label: "400-600₪" },
-  { label: "600+₪" },
-  { label: "לא מקבלים מתנות" },
+  { label: "200-400 ₪", display: <><bdi dir="ltr">200-400 ₪</bdi></> },
+  { label: "400-600 ₪", display: <><bdi dir="ltr">400-600 ₪</bdi></> },
+  { label: "600+ ₪", display: <><bdi dir="ltr">600+ ₪</bdi></> },
+  { label: "לא מקבלים מתנות", display: "לא מקבלים מתנות" },
 ];
 
 const CURRENT_CLUB_OPTIONS = [
@@ -395,28 +395,11 @@ export default function Survey() {
                   <button
                     key={opt.label}
                     onClick={() => handleBudget(opt.label)}
-                    style={{
-                      background: "#fff",
-                      border: "1px solid rgba(0,0,0,0.1)",
-                      borderRadius: "12px",
-                      padding: "14px 18px",
-                      fontSize: "15px",
-                      fontWeight: 500,
-                      fontFamily: "var(--font-heebo)",
-                      textAlign: "right",
-                      cursor: "pointer",
-                      transition: "border-color 0.15s, background 0.15s",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = "#0066CC";
-                      e.currentTarget.style.background = "#F0F6FF";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = "rgba(0,0,0,0.1)";
-                      e.currentTarget.style.background = "#fff";
-                    }}
+                    style={{ background: "#fff", border: "1px solid rgba(0,0,0,0.1)", borderRadius: "12px", padding: "14px 18px", fontSize: "15px", fontWeight: 500, fontFamily: "var(--font-heebo)", textAlign: "right", cursor: "pointer", transition: "border-color 0.15s, background 0.15s" }}
+                    onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#0066CC"; e.currentTarget.style.background = "#F0F6FF"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(0,0,0,0.1)"; e.currentTarget.style.background = "#fff"; }}
                   >
-                    {opt.label}
+                    {opt.display}
                   </button>
                 ))}
               </div>

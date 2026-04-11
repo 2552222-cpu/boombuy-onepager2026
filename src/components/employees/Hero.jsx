@@ -3,12 +3,12 @@ import { motion } from "framer-motion";
 import ILS from "./ILS";
 
 const HERO_DATA = {
-  trustBadge: "מעל 250,000 עובדים כבר מקבלים יותר",
-  headline: "איך להוציא יותר מהשכר בלי לבקש העלאה",
-  subheadline: "בום ביי עוזרת לעובדים להוציא יותר מהתקציב שכבר קיים בארגון - בלי לבקש תוספת שכר ובלי להכביד על המעסיק.",
-  primaryCTA: "אני רוצה לראות איך זה נראה ←",
-  mobileCTA: "גלו את ההטבות ↓",
-  iPhoneImg: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/66514fe66_-2026-02-18T150849922.png",
+trustBadge: "ממאות ארגונים מובילים בישראל",
+headline: "איך להוציא יותר מהשכר בלי לבקש העלאה",
+subheadline: "בום ביי עוזרת לעובדים להוציא יותר מהתקציב שכבר קיים בארגון - בלי לבקש תוספת שכר ובלי להכביד על המעסיק.",
+primaryCTA: "אני רוצה לראות איך זה נראה ←",
+mobileCTA: "גלו את ההטבות ↓",
+iPhoneImg: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/66514fe66_-2026-02-18T150849922.png",
 };
 
 export default function Hero() {

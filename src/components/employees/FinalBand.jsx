@@ -16,7 +16,7 @@ export default function FinalBand() {
           transition={{ duration: 0.5 }}
         >
           <h2 className="text-lg md:text-3xl font-bold mb-2 md:mb-3 leading-tight">
-            מעל 250,000 עובדים כבר מקבלים יותר.
+            הגיע הזמן שגם הארגון שלך יצטרף.
           </h2>
           <p className="text-white/80 mb-6 md:mb-8 text-sm md:text-base">
             הגיע הזמן שגם הארגון שלך יצטרף.
