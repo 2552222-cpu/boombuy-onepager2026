@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { base44 } from "@/api/base44Client";
-import { buildWaMessage, buildLetterMessage } from "@/utils/messages";
+import { buildWaMessage, buildLetterMessage, buildSurveyInsights } from "@/utils/messages";
 import ILS from "../components/employees/ILS";
 
 const TARGET_1 = 10;
@@ -40,12 +40,13 @@ function markSurveyDone(orgKey) {
 }
 
 // ─── Message generators — delegate to canonical source ───────────────────────
-function waMsg(orgName, count, orgSlug) {
-  return buildWaMessage(orgName, orgSlug, count);
+function waMsg(orgName, count, orgSlug, refId) {
+  return buildWaMessage(orgName, orgSlug, count, refId);
 }
 
-function letterMsg(orgName, count, orgKey) {
-  return buildLetterMessage(orgName, orgKey, count);
+function letterMsg(orgName, count, orgKey, group) {
+  const insights = buildSurveyInsights(group);
+  return buildLetterMessage(orgName, orgKey, count, insights);
 }
 
 // ─── Micro Survey ─────────────────────────────────────────────────────────────
@@ -131,6 +132,8 @@ export default function OrgPage() {
   const [surveyDone, setSurveyDone] = useState(false);
   const [waCopied, setWaCopied] = useState(false);
   const [letterCopied, setLetterCopied] = useState(false);
+  const [myMemberId, setMyMemberId] = useState("");
+  const refParam = new URLSearchParams(window.location.search).get("ref") || "";
 
   useEffect(() => {
     const load = async () => {
@@ -141,9 +144,10 @@ export default function OrgPage() {
 
           // Check join status: joined-orgs map OR any token for this org key
           const joinedOrgs = getJoinedOrgs();
-          const perOrgToken = localStorage.getItem(`groupmember_${orgSlug}`);
-          if (joinedOrgs[orgSlug] || !!perOrgToken) {
+          const storedMemberId = localStorage.getItem(`groupmember_${orgSlug}`);
+          if (joinedOrgs[orgSlug] || !!storedMemberId) {
             setAlreadyJoined(true);
+            if (storedMemberId) setMyMemberId(storedMemberId);
           }
 
           // Restore survey-done state
@@ -171,15 +175,20 @@ export default function OrgPage() {
     setJoining(true);
     const browserToken = getBrowserToken();
     try {
-      await base44.entities.GroupMember.create({
+      const newMember = await base44.entities.GroupMember.create({
         groupRequestId: group.id,
         orgKey: orgSlug,
         orgName: group.orgName,
         memberName: memberName.trim(),
-        memberPhone: memberPhone.trim() || "לא צוין",
+        memberPhone: memberPhone.trim() || undefined,
         browserToken,
         source: "employees",
+        referrerMemberId: refParam || undefined,
+        joinedVia: "org_page",
+        shareSource: refParam ? "referral_link" : "direct",
       });
+      localStorage.setItem(`groupmember_${orgSlug}`, newMember.id);
+      setMyMemberId(newMember.id);
       const prevCount = group.currentCount || 1;
       const newCount = prevCount + 1;
       await base44.entities.GroupRequest.update(group.id, {
@@ -215,14 +224,14 @@ export default function OrgPage() {
   };
 
   const handleWACopy = async () => {
-    await navigator.clipboard.writeText(waMsg(group.orgName, group.currentCount || 1, orgSlug));
+    await navigator.clipboard.writeText(waMsg(group.orgName, group.currentCount || 1, orgSlug, myMemberId));
     setWaCopied(true);
     setTimeout(() => setWaCopied(false), 2500);
     base44.entities.GroupRequest.update(group.id, { whatsappCopied: true }).catch(() => {});
   };
 
   const handleLetterCopy = async () => {
-    await navigator.clipboard.writeText(letterMsg(group.orgName, group.currentCount || 1, orgSlug));
+    await navigator.clipboard.writeText(letterMsg(group.orgName, group.currentCount || 1, orgSlug, group));
     setLetterCopied(true);
     setTimeout(() => setLetterCopied(false), 2500);
     base44.entities.GroupRequest.update(group.id, { letterCopied: true }).catch(() => {});
@@ -270,13 +279,16 @@ export default function OrgPage() {
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}
           style={{ background: "linear-gradient(135deg, #0055CC 0%, #1A7AFF 100%)", borderRadius: "24px", padding: "32px 26px", textAlign: "center" }}>
           <p style={{ fontSize: "13px", fontWeight: 700, color: "rgba(255,255,255,0.7)", marginBottom: "8px", letterSpacing: "0.04em" }}>
-            עמיתים מ-{group.orgName} מזמינים אותך
+            עובדים מ-{group.orgName} כבר התחילו מהלך
           </p>
           <h1 style={{ fontSize: "clamp(22px, 5vw, 30px)", fontWeight: 900, letterSpacing: "-0.03em", color: "#fff", lineHeight: 1.2, marginBottom: "10px" }}>
-            בואו נכניס את בום ביי ל-{group.orgName}
+            מצטרפים לבקשה להכניס את בום ביי ל-{group.orgName}
           </h1>
           <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.8)", lineHeight: 1.6 }}>
-            הטבות אמיתיות לעובדים · <ILS value="0" /> עלות לארגון · טכנולוגיית Nexus
+            מצטרפים, עונים על 2 שאלות קצרות, ורק אחר כך נפתחים כלי השיתוף והמכתב.
+          </p>
+          <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.55)", marginTop: "8px" }}>
+            זה לוקח פחות מדקה
           </p>
         </motion.div>
 
@@ -290,14 +302,16 @@ export default function OrgPage() {
 אנחנו קבוצת עובדים מ-${group.orgName} שמאמינה שמגיע לנו יותר.
 
 בום ביי מאפשרת לנו לקבל:
-• 8% הנחה קבועה בסופרמרקטים
-• מחירי יבואן על Apple, Samsung ועוד
-• חופשות, תרבות ומותגי פרימיום במחירים בלעדיים
-• מתנת חג עם בחירה חופשית
+- 8% הנחה קבועה בסופרמרקטים
+- מחירי יבואן על Apple, Samsung ועוד
+- חופשות, תרבות ומותגי פרימיום במחירים בלעדיים
+- מתנת חג עם בחירה חופשית
 
 הכול בלי שהארגון מוציא שקל נוסף.
 
-${count} עובדים כבר חתמו על הבקשה. הצטרפות שלך מחזקת אותנו.`}
+${count} עובדים כבר חתמו על הבקשה. הצטרפות שלך מחזקת אותנו.
+
+אם גם לכם זה רלוונטי, מצטרפים כאן לבקשה, עונים על 2 שאלות קצרות, ואז ממשיכים לשיתוף.`}
           </p>
         </motion.div>
 
@@ -417,7 +431,7 @@ ${count} עובדים כבר חתמו על הבקשה. הצטרפות שלך מ�
               <div style={{ background: "#fff", borderRadius: "16px", border: "1px solid rgba(0,0,0,0.07)", padding: "18px 20px" }}>
                 <p style={{ fontWeight: 700, fontSize: "14px", marginBottom: "8px" }}>הודעה מוכנה לקבוצת העובדים</p>
                 <div style={{ background: "#F5F5F7", borderRadius: "10px", padding: "11px 13px", fontSize: "12.5px", color: "#444", lineHeight: 1.65, marginBottom: "10px", whiteSpace: "pre-line", maxHeight: "120px", overflow: "hidden" }}>
-                  {waMsg(group.orgName, count, orgSlug).slice(0, 220)}...
+                  {waMsg(group.orgName, count, orgSlug, myMemberId).slice(0, 220)}...
                 </div>
                 <div style={{ display: "flex", gap: "8px" }}>
                   <button
@@ -427,7 +441,7 @@ ${count} עובדים כבר חתמו על הבקשה. הצטרפות שלך מ�
                     {waCopied ? "הועתק! ✓" : "העתק הודעה"}
                   </button>
                   <a
-                    href={`https://wa.me/?text=${encodeURIComponent(waMsg(group.orgName, count, orgSlug))}`}
+                    href={`https://wa.me/?text=${encodeURIComponent(waMsg(group.orgName, count, orgSlug, myMemberId))}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ flex: 1, background: "#25D366", color: "#fff", fontWeight: 700, fontSize: "13px", padding: "10px", borderRadius: "10px", textAlign: "center", textDecoration: "none", fontFamily: "var(--font-heebo)", display: "flex", alignItems: "center", justifyContent: "center" }}
@@ -441,7 +455,7 @@ ${count} עובדים כבר חתמו על הבקשה. הצטרפות שלך מ�
               <div style={{ background: "#fff", borderRadius: "16px", border: "1px solid rgba(0,0,0,0.07)", padding: "18px 20px" }}>
                 <p style={{ fontWeight: 700, fontSize: "14px", marginBottom: "8px" }}>מכתב מוכן להנהלה / ועד / רווחה</p>
                 <div style={{ background: "#F5F5F7", borderRadius: "10px", padding: "11px 13px", fontSize: "12.5px", color: "#444", lineHeight: 1.65, marginBottom: "10px", whiteSpace: "pre-line", maxHeight: "100px", overflow: "hidden" }}>
-                  {letterMsg(group.orgName, count, orgSlug).slice(0, 200)}...
+                  {letterMsg(group.orgName, count, orgSlug, group).slice(0, 200)}...
                 </div>
                 <button
                   onClick={handleLetterCopy}

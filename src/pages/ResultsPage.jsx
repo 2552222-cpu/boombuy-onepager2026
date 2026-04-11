@@ -3,10 +3,12 @@ import { base44 } from "@/api/base44Client";
 import { motion } from "framer-motion";
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie } from "recharts";
 import GlobalHeader from "../components/employees/GlobalHeader";
+import { useAuth } from "@/lib/AuthContext";
 import GlobalFooter from "../components/employees/GlobalFooter";
 import { Phone } from "lucide-react";
 
 export default function ResultsPage() {
+  const { user, isLoadingAuth } = useAuth();
   const [responses, setResponses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [orgName, setOrgName] = useState("");
@@ -48,10 +50,22 @@ export default function ResultsPage() {
     return () => unsubscribe();
   }, []);
 
-  if (loading) {
+  if (isLoadingAuth || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="w-10 h-10 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (!user || user.role !== "admin") {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-secondary/20" dir="rtl">
+        <div className="text-center">
+          <p className="text-xl font-bold mb-2">גישה אסורה</p>
+          <p className="text-muted-foreground text-sm mb-4">עמוד זה מיועד למנהלי מערכת בלבד.</p>
+          <a href="/" className="text-primary text-sm">חזרה לעמוד הראשי</a>
+        </div>
       </div>
     );
   }

@@ -7,15 +7,30 @@ const BASE_URL = "https://boom-perk-flow.base44.app";
 const TARGET_1 = 10;
 const TARGET_2 = 20;
 
-export function buildOrgLink(orgKey) {
-  return `${BASE_URL}/join/${encodeURIComponent(orgKey)}`;
+export function buildOrgLink(orgKey, refId) {
+  const base = `${BASE_URL}/join/${encodeURIComponent(orgKey)}`;
+  return refId ? `${base}?ref=${encodeURIComponent(refId)}` : base;
+}
+
+/**
+ * Build structured insights from GroupRequest data for use in letters.
+ */
+export function buildSurveyInsights(groupData) {
+  if (!groupData) return {};
+  return {
+    painPoint: groupData.painPoint || groupData.activities?.[0] || null,
+    currentClub: groupData.currentClub || groupData.activities?.[1] || null,
+    welfareBudget: groupData.welfareBudget || groupData.activities?.[2] || null,
+    holidayBudget: groupData.holidayBudget || null,
+    count: groupData.currentCount || 1,
+  };
 }
 
 /**
  * Employee WhatsApp share message — 3 stages based on count.
  */
-export function buildWaMessage(orgName, orgKey, count) {
-  const link = buildOrgLink(orgKey);
+export function buildWaMessage(orgName, orgKey, count, refId) {
+  const link = buildOrgLink(orgKey, refId);
 
   if (count >= TARGET_2) {
     return `היי, כבר ${count} עובדים מ-${orgName} בפנים.\n\nהבקשה כבר צוברת משקל, וזה בדיוק השלב להצטרף כדי שנוכל לקדם את זה בצורה רצינית מול הארגון.\n\nמי שעוד לא נכנס - זה הלינק:\n${link}`;
@@ -32,7 +47,23 @@ export function buildWaMessage(orgName, orgKey, count) {
 /**
  * Management / HR / union letter — formal, professional.
  */
-export function buildLetterMessage(orgName, orgKey, count) {
+export function buildLetterMessage(orgName, orgKey, count, insights = {}) {
   const link = buildOrgLink(orgKey);
-  return `שלום,\n\nאנחנו קבוצה של עובדים מ-${orgName} שמעוניינת לבחון צירוף של BoomBuy לארגון.\n\nכבר ${count} עובדים מתוך הארגון הצטרפו לבקשה.\n\nהערך המרכזי לעובדים:\n• הנחות קבועות על סופר ופארם\n• מחירים חזקים על מוצרי חשמל ומותגים\n• חופשות, תרבות ומתנות חג גמישות\n\nמבחינת הארגון, המהלך נשען על שימוש חכם יותר בתקציב הקיים, בלי צורך להוסיף תקציב חדש.\n\nנשמח לתאם דמו קצר של 15 דקות כדי להבין אם ואיך זה יכול להתאים גם לארגון שלנו.\n\nקישור לעמוד הבקשה:\n${link}\n\nלתיאום:\nארי - 054-255-2222\nוואטסאפ:\nhttps://wa.me/972542552222`;
+  const { painPoint, currentClub, holidayBudget, welfareBudget } = insights;
+
+  let insightsSection = "";
+  if (painPoint) {
+    insightsSection += `\nמהסקר שמילאו העובדים עולה כי הכאב המרכזי הוא: ${painPoint}.`;
+  }
+  if (currentClub === "אין כלום כרגע") {
+    insightsSection += "\nכרגע אין מועדון הטבות פעיל בארגון - כלומר, מדובר בשדרוג משמעותי מהמצב הקיים.";
+  }
+  if (welfareBudget === "לא ממש") {
+    insightsSection += "\nהמהלך מתאפשר ללא הגדלת תקציב רווחה, מה שהופך אותו לרלוונטי במיוחד.";
+  }
+  if (holidayBudget && holidayBudget !== "לא מקבלים מתנות") {
+    insightsSection += `\nתקציב מתנת החג הקיים: ${holidayBudget} לעובד.`;
+  }
+
+  return `שלום,\n\nאנחנו קבוצה של עובדים מ-${orgName} שמעוניינת לבחון צירוף של BoomBuy לארגון.\n\nכבר ${count} עובדים מתוך הארגון הצטרפו לבקשה.${insightsSection}\n\nהערך המרכזי לעובדים:\n- הנחות קבועות על סופר ופארם\n- מחירים חזקים על מוצרי חשמל ומותגים\n- חופשות, תרבות ומתנות חג גמישות\n\nמבחינת הארגון, המהלך נשען על שימוש חכם יותר בתקציב הקיים, בלי צורך להוסיף תקציב חדש.\n\nנשמח לתאם דמו קצר של 15 דקות כדי להבין אם ואיך זה יכול להתאים גם לארגון שלנו.\n\nקישור לעמוד הבקשה:\n${link}\n\nלתיאום:\nארי - 054-255-2222\nוואטסאפ:\nhttps://wa.me/972542552222`;
 }

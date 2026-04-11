@@ -8,15 +8,14 @@ import { X, ExternalLink, Users } from "lucide-react";
 function calcLeadScore(req) {
   let score = 0;
   const size = req.orgSize || "";
-  if (size.includes("מעל 250") || size.includes("500+")) score += 4;
-  else if (size.includes("201") || size.includes("250")) score += 3;
-  else if (size.includes("50–250") || size.includes("51")) score += 2;
+  if (size.includes("1000+") || size.includes("250-1000")) score += 4;
+  else if (size.includes("50-250")) score += 2;
   else if (size.includes("עד 50")) score += 1;
 
   const budget = req.holidayBudget || "";
-  if (budget.includes("מעל 500") || budget.includes("700")) score += 3;
-  else if (budget.includes("200–500") || budget.includes("400")) score += 2;
-  else if (budget.includes("עד 200")) score += 1;
+  if (budget.includes("600+")) score += 3;
+  else if (budget.includes("400-600")) score += 2;
+  else if (budget.includes("200-400")) score += 1;
 
   score += Math.min(req.activities?.length || 0, 4);
 

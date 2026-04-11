@@ -1,14 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 
 export default function GlobalHeader() {
-  const [isAdmin, setIsAdmin] = useState(false);
-
-  useEffect(() => {
-    // Admin link removed from public header. Access /admin/dashboard directly.
-    setIsAdmin(false);
-  }, []);
-
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -49,14 +41,7 @@ export default function GlobalHeader() {
             לארגונים
           </a>
 
-          {isAdmin && (
-            <Link
-              to="/admin/dashboard"
-              className="text-xs md:text-sm font-medium text-primary hover:text-primary/80 transition-colors"
-            >
-              דשבורד
-            </Link>
-          )}
+
         </nav>
       </div>
     </header>

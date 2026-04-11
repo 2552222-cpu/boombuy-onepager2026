@@ -30,7 +30,7 @@ const PAIN_POINTS_OPTIONS = [
   { label: "חופשות" },
 ];
 
-const ACTIVITIES_OPTIONS = ["ימי גיבוש", "מתנות חג", "ימי הולדת", "יום המשפחה"];
+
 
 const WELFARE_BUDGET_OPTIONS = [
   { label: "כן, יש תקציבים (ימי הולדת, משפחה וכו׳)" },
@@ -47,6 +47,15 @@ const normalizeOrgKey = (name) =>
     .trim()
     .replace(/\s+/g, "_");
 
+function getBrowserToken() {
+  let token = localStorage.getItem("boomBuyBrowserToken");
+  if (!token) {
+    token = Math.random().toString(36).slice(2) + Date.now().toString(36);
+    localStorage.setItem("boomBuyBrowserToken", token);
+  }
+  return token;
+}
+
 export default function Survey() {
   const [step, setStep] = useState(0);
   const [orgName, setOrgName] = useState("");
@@ -54,12 +63,12 @@ export default function Survey() {
   const [holidayBudget, setHolidayBudget] = useState("");
   const [currentClub, setCurrentClub] = useState("");
   const [painPoint, setPainPoint] = useState("");
-  const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(false);
   const [resultText, setResultText] = useState("");
   const [welfareBudget, setWelfareBudget] = useState("");
-  const [hrName, setHrName] = useState("");
-  const [hrPhone, setHrPhone] = useState("");
+  const [initiatorName, setInitiatorName] = useState("");
+  const [initiatorPhone, setInitiatorPhone] = useState("");
+  const [myMemberId, setMyMemberId] = useState("");
   const navigate = useNavigate();
 
   const handleOrgNameNext = () => {
@@ -92,42 +101,38 @@ export default function Survey() {
     setStep(6);
   };
 
-  const toggleActivity = (a) => {
-    setActivities((prev) =>
-      prev.includes(a) ? prev.filter((x) => x !== a) : [...prev, a]
-    );
-  };
-
-  const getResultFraming = (budget, acts) => {
-    if (acts.includes("מתנות חג")) {
-      return "נראה שמתנת חג גמישה עם בחירה חופשית תהיה ההטבה המשמעותית ביותר בארגון שלכם.";
-    }
-    if (budget === "200-400₪") {
-      return "נראה שהטבות יוקר המחיה — הנחות בסופר, פארם ומוצרי יומיום — יהיו המשמעותיות ביותר עבור העובדים בארגון שלכם.";
-    }
-    if (budget === "600+₪") {
-      return "נראה שהטבות על מוצרי פרימיום וחשמל יהיו מנוע העניין המרכזי בארגון שלכם.";
-    }
-    if (acts.includes("ימי גיבוש")) {
-      return "נראה שהטבות נופש, תרבות ופנאי יהיו הכי חזקות אצלכם.";
-    }
+  const getResultFraming = (painPoint, currentClub, welfareBudget) => {
+    if (painPoint === "סופר ופארם")
+      return "הנתונים מראים שיוקר המחיה היומיומי הוא הכאב המרכזי. הטבות הסופר והפארם של BoomBuy יהיו ההשפעה המיידית והמורגשת ביותר עבור העובדים שלכם.";
+    if (painPoint === "חופשות")
+      return "חופשות ונסיעות הן הכאב המרכזי. חבילות הנופש הבלעדיות של BoomBuy יהיו ההטבה הכי חזקה עבור הארגון שלכם.";
+    if (painPoint === "חשמל וטקסטיל")
+      return "מוצרי חשמל ומותגים הם הכאב המרכזי. מחירי היבואן של BoomBuy על Apple, Samsung ועוד יהיו ההבדל הכי גדול עבורכם.";
+    if (currentClub === "אין כלום כרגע")
+      return "ארגון שמתחיל מאפס יראה את השיפור המשמעותי ביותר. BoomBuy יכולה להפוך את הרווחה שלכם ממצב חלקי למערכת הטבות מלאה.";
+    if (welfareBudget === "לא ממש")
+      return "גם בלי תקציב נוסף, BoomBuy מייצרת ערך אמיתי לעובדים. זה בדיוק המודל שמתאים לכם.";
     return "נראה שהטבות יוקר המחיה — הנחות בסופר, פארם ומוצרי יומיום — יהיו המשמעותיות ביותר עבור העובדים בארגון שלכם.";
   };
 
   const handleFinish = async () => {
     setLoading(true);
-    // BUG FIX: finalActivities was hardcoded [] — now uses actual collected answers
     const finalActivities = [painPoint, currentClub, welfareBudget].filter(Boolean);
     const orgKey = normalizeOrgKey(orgName);
+    const browserToken = getBrowserToken();
     try {
       const existing = await base44.entities.GroupRequest.filter({ orgKey });
       if (existing.length > 0) {
         await base44.entities.GroupRequest.update(existing[0].id, {
           orgSize,
           holidayBudget,
+          painPoint,
           activities: finalActivities,
           lastJoinedAt: new Date().toISOString(),
         });
+        const joinedOrgs = JSON.parse(localStorage.getItem("boomBuyJoinedOrgs") || "{}");
+        joinedOrgs[orgKey] = true;
+        localStorage.setItem("boomBuyJoinedOrgs", JSON.stringify(joinedOrgs));
       } else {
         const newGroup = await base44.entities.GroupRequest.create({
           orgName: orgName.trim(),
@@ -138,30 +143,33 @@ export default function Survey() {
           lastJoinedAt: new Date().toISOString(),
           orgSize,
           holidayBudget,
+          painPoint,
           activities: finalActivities,
-          initiatorName: hrName.trim() || undefined,
-          initiatorPhone: hrPhone.trim() || undefined,
+          initiatorName: initiatorName.trim() || "לא ידוע",
+          initiatorPhone: initiatorPhone.trim() || undefined,
         });
-        const browserToken = `browser_${Date.now()}_${Math.random()}`;
         const firstMember = await base44.entities.GroupMember.create({
           groupRequestId: newGroup.id,
           orgKey,
           orgName: orgName.trim(),
-          memberName: hrName.trim() || "עובד מייסד",
-          memberPhone: hrPhone.trim() || "לא צוין",
-          source: "employees",
+          memberName: initiatorName.trim() || "לא ידוע",
+          memberPhone: initiatorPhone.trim() || undefined,
+          browserToken,
+          source: "initiator",
+          isInitiator: true,
         });
         await base44.entities.GroupRequest.update(newGroup.id, {
           initiatorMemberId: firstMember.id,
+          rewardEligibleMemberId: firstMember.id,
         });
-        localStorage.setItem(`groupmember_${orgKey}`, browserToken);
-        // TASK 03 FIX: also mark in boomBuyJoinedOrgs so OrgPage recognizes the ambassador
+        localStorage.setItem(`groupmember_${orgKey}`, firstMember.id);
         const joinedOrgs = JSON.parse(localStorage.getItem("boomBuyJoinedOrgs") || "{}");
         joinedOrgs[orgKey] = true;
         localStorage.setItem("boomBuyJoinedOrgs", JSON.stringify(joinedOrgs));
+        setMyMemberId(firstMember.id);
         base44.functions.invoke("notifyGroupMilestones", { event: "org_created", orgKey, prevCount: 0, newCount: 1 }).catch(() => {});
       }
-      const framing = getResultFraming(holidayBudget, finalActivities);
+      const framing = getResultFraming(painPoint, currentClub, welfareBudget);
       setResultText(framing);
       setStep(7);
     } catch (err) {
@@ -468,15 +476,15 @@ export default function Survey() {
               </p>
               <input
                 type="text"
-                value={hrName}
-                onChange={(e) => setHrName(e.target.value)}
+                value={initiatorName}
+                onChange={(e) => setInitiatorName(e.target.value)}
                 placeholder="השם שלך (שם + משפחה)"
                 style={{ width: "100%", padding: "13px 15px", fontSize: "15px", borderRadius: "11px", border: "1px solid rgba(0,0,0,0.12)", background: "#fff", fontFamily: "var(--font-heebo)", marginBottom: "10px", textAlign: "right", boxSizing: "border-box" }}
               />
               <input
                 type="tel"
-                value={hrPhone}
-                onChange={(e) => setHrPhone(e.target.value)}
+                value={initiatorPhone}
+                onChange={(e) => setInitiatorPhone(e.target.value)}
                 placeholder="מספר הטלפון שלך"
                 style={{ width: "100%", padding: "13px 15px", fontSize: "15px", borderRadius: "11px", border: "1px solid rgba(0,0,0,0.12)", background: "#fff", fontFamily: "var(--font-heebo)", marginBottom: "14px", textAlign: "right", boxSizing: "border-box" }}
               />
@@ -527,7 +535,7 @@ export default function Survey() {
                   אם עוד 20 עמיתים יצטרפו — נגדיל ב-80% את הסיכוי להכניס את בום ביי לארגון!
                 </p>
                 <a
-                  href={`https://wa.me/?text=${encodeURIComponent("היי! הצטרפתי לבקשה קבוצתית להכנסת הטבות בום ביי לארגון שלנו. שווה לכם גם — " + window.location.origin + "/join/" + normalizeOrgKey(orgName))}`}
+                  href={`https://wa.me/?text=${encodeURIComponent("היי! הצטרפתי לבקשה קבוצתית להכנסת הטבות בום ביי לארגון שלנו. שווה לכם גם: " + window.location.origin + "/join/" + normalizeOrgKey(orgName) + (myMemberId ? "?ref=" + myMemberId : ""))}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ display: "block", background: "#25D366", color: "#fff", textDecoration: "none", padding: "11px", borderRadius: 14, fontSize: 14, fontWeight: 700, fontFamily: "var(--font-heebo)", marginTop: 10 }}
