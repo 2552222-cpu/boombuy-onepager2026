@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import ILS from "./ILS";
 
 export default function SavingsInfographic() {
   return (
@@ -12,10 +13,10 @@ export default function SavingsInfographic() {
             החיסכון האמיתי
           </p>
           <h2 style={{ fontSize: "clamp(28px,5vw,46px)", fontWeight: 900, color: "#1D1D1F", letterSpacing: "-0.03em", lineHeight: 1.1, marginBottom: 12 }}>
-            כ־<bdi dir="ltr">700₪</bdi> בחודש = <span style={{ color: "#0066CC" }}>כ־<bdi dir="ltr">8,400₪</bdi> נטו בשנה</span>
+            כ-<ILS value="700" /> בחודש = <span style={{ color: "#0066CC" }}>כ-<ILS value="8,400" /> נטו בשנה</span>
           </h2>
           <p style={{ fontSize: 17, color: "#6E6E73", maxWidth: 560, margin: "0 auto", lineHeight: 1.55 }}>
-            חיסכון ממוצע לעובד על קניות יומיומיות — בלי לשנות הרגלים, בלי מאמץ.
+            חיסכון ממוצע לעובד על קניות יומיומיות - בלי לשנות הרגלים, בלי מאמץ.
           </p>
         </div>
 
@@ -54,10 +55,10 @@ export default function SavingsInfographic() {
           style={{ background: "#1D1D1F", borderRadius: 28, padding: "36px 32px", textAlign: "center" }}
         >
           <p style={{ fontSize: "clamp(22px,4vw,32px)", fontWeight: 900, color: "#fff", marginBottom: 12, letterSpacing: "-0.02em" }}>
-            100% ערך לעובד.<br /><span style={{ color: "#34C759" }}><bdi dir="ltr">0₪</bdi> עלות נוספת למעסיק.</span>
+            100% ערך לעובד.<br /><span style={{ color: "#34C759" }}><ILS value="0" /> עלות נוספת למעסיק.</span>
           </p>
           <p style={{ fontSize: 15, color: "rgba(255,255,255,0.6)", maxWidth: 500, margin: "0 auto", lineHeight: 1.6 }}>
-            טכנולוגיית ה-<strong style={{ color: "#fff" }}>Nexus</strong> של בום ביי מייצרת סבסוד אוטומטי מתוך נפח הקנייה הקבוצתי — ללא צורך בתקציב ארגוני נוסף.
+            טכנולוגיית ה-<strong style={{ color: "#fff" }}>Nexus</strong> של בום ביי מייצרת סבסוד אוטומטי מתוך נפח הקנייה הקבוצתי - ללא צורך בתקציב ארגוני נוסף.
           </p>
         </motion.div>
 
