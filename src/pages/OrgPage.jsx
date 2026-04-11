@@ -282,13 +282,10 @@ export default function OrgPage() {
             עובדים מ-{group.orgName} כבר התחילו מהלך
           </p>
           <h1 style={{ fontSize: "clamp(22px, 5vw, 30px)", fontWeight: 900, letterSpacing: "-0.03em", color: "#fff", lineHeight: 1.2, marginBottom: "10px" }}>
-            מצטרפים לבקשה להכניס את בום ביי ל-{group.orgName}
+            איך להוציא יותר מהשכר בלי לבקש העלאה
           </h1>
           <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.8)", lineHeight: 1.6 }}>
-            מצטרפים, עונים על 2 שאלות קצרות, ורק אחר כך נפתחים כלי השיתוף והמכתב.
-          </p>
-          <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.55)", marginTop: "8px" }}>
-            זה לוקח פחות מדקה
+            אם גם אתם רוצים לקדם את זה ב-{group.orgName}, מצטרפים לבקשה, עונים על 2 שאלות קצרות, ואז נפתחים כלי השיתוף והמכתב להנהלה.
           </p>
         </motion.div>
 

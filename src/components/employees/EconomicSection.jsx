@@ -49,11 +49,11 @@ export default function EconomicSection() {
           style={{ textAlign: "center", marginBottom: 52 }}
         >
           <h2 style={{ fontSize: "clamp(24px,4.5vw,42px)", fontWeight: 900, color: "#1D1D1F", letterSpacing: "-0.035em", lineHeight: 1.15, marginBottom: 14 }}>
-            השכר נשחק. יוקר המחיה לוחץ.<br />
-            <span style={{ color: "#0066CC" }}>הגיע הזמן שהרווחה תעבוד חכם יותר.</span>
+            לא בכל ארגון מכירים עדיין את הסטנדרט החדש של רווחת עובדים.<br />
+            <span style={{ color: "#0066CC" }}>זה מה שעובדים באמת צריכים היום.</span>
           </h2>
           <p style={{ fontSize: 17, color: "#6E6E73", maxWidth: 520, margin: "0 auto", lineHeight: 1.6 }}>
-            3 עובדות שכל מנהל רווחה צריך לדעת
+            3 דברים ששווה לך לראות - ואז להעביר הלאה למי שמחליט אצלכם
           </p>
         </motion.div>
 

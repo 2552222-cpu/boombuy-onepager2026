@@ -4,8 +4,8 @@ import ILS from "./ILS";
 
 const HERO_DATA = {
   trustBadge: "מעל 250,000 עובדים כבר מקבלים יותר",
-  headline: "הנטו שלך שווה יותר ממה שאתה חושב",
-  subheadline: "אייפון במחיר יבואן · תרבות · חופשות והטבות יומיומיות. הכל כבר כלול בתקציב שהארגון ממילא משלם. פשוט מקבלים יותר.",
+  headline: "איך להוציא יותר מהשכר בלי לבקש העלאה",
+  subheadline: "בום ביי עוזרת לעובדים להוציא יותר מהתקציב שכבר קיים בארגון - בלי לבקש תוספת שכר ובלי להכביד על המעסיק.",
   primaryCTA: "אני רוצה לראות איך זה נראה ←",
   mobileCTA: "גלו את ההטבות ↓",
   iPhoneImg: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/66514fe66_-2026-02-18T150849922.png",
@@ -21,11 +21,6 @@ export default function Hero() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  const scrollToSurvey = () => {
-    document.getElementById("survey-section")?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  // Mobile: scroll to proof first (offers), not to survey directly
   const scrollToOffers = () => {
     document.getElementById("offers-slider")?.scrollIntoView({ behavior: "smooth" });
   };
@@ -41,14 +36,9 @@ export default function Hero() {
           </div>
         </div>
 
-        {/*
-          Mobile: column-reverse → iPhone is first in DOM → appears at BOTTOM visually.
-          Text section is second in DOM → appears at TOP visually.
-          Desktop: row-reverse → normal side-by-side.
-        */}
         <div style={{ display: "flex", flexDirection: isMobile ? "column-reverse" : "row-reverse", alignItems: "center", gap: isMobile ? "40px" : "60px", flexWrap: "wrap" }}>
 
-          {/* iPhone Section — first in DOM, shows BELOW text on mobile (column-reverse) */}
+          {/* iPhone Section */}
           <div style={{ flex: "1", display: "flex", flexDirection: "column", alignItems: "center", minWidth: "300px" }}>
             <div style={{ position: "relative", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
               <motion.div
@@ -88,7 +78,7 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Text Section — second in DOM, shows at TOP on mobile (column-reverse) */}
+          {/* Text Section */}
           <div style={{ flex: "1.2", minWidth: "320px", textAlign: isMobile ? "center" : "right" }}>
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
@@ -109,7 +99,6 @@ export default function Hero() {
 
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} style={{ marginTop: "44px" }}>
               {isMobile ? (
-                /* Mobile: soft secondary CTA — scroll to offers first, not survey */
                 <button
                   onClick={scrollToOffers}
                   style={{ background: "#F5F5F7", color: "#1D1D1F", border: "1px solid rgba(0,0,0,0.12)", padding: "16px 32px", borderRadius: "18px", fontSize: "16px", fontWeight: 700, cursor: "pointer", width: "100%" }}
