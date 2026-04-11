@@ -3,12 +3,20 @@ import { motion } from "framer-motion";
 import ILS from "./ILS";
 
 const HERO_DATA = {
-headline: "איך להגדיל שכר?",
-subheadline: "בום ביי עוזרת לעובדים להוציא יותר מהתקציב שכבר קיים בארגון - בלי לבקש תוספת שכר ובלי להכביד על המעסיק.",
-primaryCTA: "אני רוצה לראות איך זה נראה ←",
-mobileCTA: "גלו את ההטבות ↓",
-iPhoneImg: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/66514fe66_-2026-02-18T150849922.png",
+  intro: "איך להוציא יותר מהשכר בלי לבקש העלאה",
+  headline: "השכר שלכם שווה הרבה יותר",
+  subheadline: "גלו איך לקבל יותר מהתקציב הקיים של מקום העבודה שלכם, בלי שהמעסיק יצטרך לשלם יותר.",
+  primaryCTA: "אני רוצה לראות איך זה נראה ←",
+  mobileCTA: "גלו את ההטבות ↓",
+  iPhoneImg: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/66514fe66_-2026-02-18T150849922.png",
 };
+
+const BENEFIT_CARDS = [
+  { title: "חשמל ואלקטרוניקה", text: "מחירים חזקים על מוצרי חשמל, גאדג׳טים ומותגים מובילים." },
+  { title: "8% הנחה קבועה בסופר", text: "ערך אמיתי בהוצאה שחוזרת כמעט כל שבוע ומורגשת בנטו." },
+  { title: "חופשות והופעות", text: "יותר ערך גם בפנאי, בבילויים ובחופשות לאורך השנה." },
+  { title: "כל בוקר הטבה חדשה", text: "דיל יומי מתחלף שיוצר עניין, שימוש קבוע ותחושה חיה לעובדים." },
+];
 
 export default function Hero() {
   const [isMobile, setIsMobile] = useState(false);
@@ -32,49 +40,45 @@ export default function Hero() {
 
           {/* iPhone Section */}
           <div style={{ flex: "1", display: "flex", flexDirection: "column", alignItems: "center", minWidth: "300px" }}>
-            <div style={{ position: "relative", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
-              <motion.div
-                animate={{ opacity: [0.5, 1, 0.5], scale: [0.9, 1.05, 0.9] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                style={{ position: "absolute", width: "100%", height: "100%", borderRadius: "50%", background: "radial-gradient(ellipse at center, rgba(120,80,255,0.25) 0%, rgba(37,99,235,0.2) 40%, transparent 70%)", filter: "blur(32px)", zIndex: 0 }}
-              />
-              <motion.img
-                src={HERO_DATA.iPhoneImg}
-                alt="iPhone 16 Pro"
-                animate={{ y: [0, -14, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                style={{ width: "100%", maxWidth: "416px", height: "auto", objectFit: "contain", display: "block", position: "relative", zIndex: 1 }}
-              />
-            </div>
+          <div style={{ position: "relative", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+            <motion.div
+              animate={{ opacity: [0.5, 1, 0.5], scale: [0.9, 1.05, 0.9] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              style={{ position: "absolute", width: "100%", height: "100%", borderRadius: "50%", background: "radial-gradient(ellipse at center, rgba(120,80,255,0.25) 0%, rgba(37,99,235,0.2) 40%, transparent 70%)", filter: "blur(32px)", zIndex: 0 }}
+            />
+            <motion.img
+              src={HERO_DATA.iPhoneImg}
+              alt="iPhone 16 Pro"
+              animate={{ y: [0, -14, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              style={{ width: "100%", maxWidth: "416px", height: "auto", objectFit: "contain", display: "block", position: "relative", zIndex: 1 }}
+            />
+          </div>
 
-            {/* Price Cubes */}
-            <div style={{ display: "flex", gap: "10px", marginTop: "28px", width: "100%", maxWidth: "380px" }}>
-              <div style={{ flex: 1, background: "rgba(255,255,255,0.7)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.9)", borderRadius: "20px", padding: "14px 8px", textAlign: "center", boxShadow: "0 4px 20px rgba(0,0,0,0.07)" }}>
-                <p style={{ fontSize: "11px", fontWeight: 700, color: "#86868B", marginBottom: "4px" }}>מחיר שוק</p>
-                <p style={{ fontSize: "18px", fontWeight: 900, color: "#86868B", textDecoration: "line-through" }}><ILS value="4,590" /></p>
+          {/* Benefit Cards */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginTop: "28px", width: "100%", maxWidth: "420px" }}>
+            {BENEFIT_CARDS.map((card, i) => (
+              <div key={i} style={{ background: "rgba(255,255,255,0.75)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: "1px solid rgba(0,102,204,0.12)", borderRadius: "18px", padding: "14px 12px", boxShadow: "0 4px 16px rgba(0,0,0,0.06)" }}>
+                <p style={{ fontSize: "12px", fontWeight: 800, color: "#0055CC", marginBottom: "4px", lineHeight: 1.3 }}>{card.title}</p>
+                <p style={{ fontSize: "11px", color: "#555", lineHeight: 1.55, margin: 0 }}>{card.text}</p>
               </div>
-              <div style={{ flex: 1, background: "rgba(255,255,255,0.7)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.9)", borderRadius: "20px", padding: "14px 8px", textAlign: "center", boxShadow: "0 4px 20px rgba(0,0,0,0.07)" }}>
-                <p style={{ fontSize: "11px", fontWeight: 700, color: "#0055CC", marginBottom: "4px" }}>מחיר לעובד</p>
-                <p style={{ fontSize: "22px", fontWeight: 900, color: "#0055CC" }}><ILS value="3,890" /></p>
-              </div>
-              <motion.div
-                animate={{ boxShadow: ["0 4px 20px rgba(52,199,89,0)", "0 4px 24px rgba(52,199,89,0.35)", "0 4px 20px rgba(52,199,89,0)"] }}
-                transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-                style={{ flex: 1, background: "rgba(255,255,255,0.7)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.9)", borderRadius: "20px", padding: "14px 8px", textAlign: "center" }}
-              >
-                <p style={{ fontSize: "11px", fontWeight: 700, color: "#86868B", marginBottom: "4px" }}>החיסכון שלך</p>
-                <div style={{ background: "rgba(52,199,89,0.15)", borderRadius: "12px", padding: "2px 6px", display: "inline-block" }}>
-                  <p style={{ fontSize: "18px", fontWeight: 900, color: "#1A7A43" }}><ILS value="700" /></p>
-                </div>
-              </motion.div>
-            </div>
+            ))}
+          </div>
           </div>
 
           {/* Text Section */}
           <div style={{ flex: "1.2", minWidth: "320px", textAlign: isMobile ? "center" : "right" }}>
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              style={{ fontSize: "clamp(14px, 1.5vw, 16px)", fontWeight: 600, color: "#0066CC", margin: "0 0 12px", letterSpacing: "-0.01em" }}
+            >
+              {HERO_DATA.intro} <span style={{ color: "#86868B", fontWeight: 500 }}>עם BoomBuy</span>
+            </motion.p>
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.05 }}
               style={{ fontSize: "clamp(38px, 6vw, 76px)", fontWeight: 900, lineHeight: 1.05, color: "#1D1D1F", margin: 0, letterSpacing: "-0.04em", fontFamily: "var(--font-heebo)" }}
             >
               {HERO_DATA.headline}
