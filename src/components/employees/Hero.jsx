@@ -3,8 +3,7 @@ import { motion } from "framer-motion";
 import ILS from "./ILS";
 
 const HERO_DATA = {
-trustBadge: "ממאות ארגונים מובילים בישראל",
-headline: "איך להוציא יותר מהשכר בלי לבקש העלאה",
+headline: "איך להגדיל שכר?",
 subheadline: "בום ביי עוזרת לעובדים להוציא יותר מהתקציב שכבר קיים בארגון - בלי לבקש תוספת שכר ובלי להכביד על המעסיק.",
 primaryCTA: "אני רוצה לראות איך זה נראה ←",
 mobileCTA: "גלו את ההטבות ↓",
@@ -28,13 +27,6 @@ export default function Hero() {
   return (
     <section id="hero-section" style={{ background: "#fff", direction: "rtl", overflow: "visible", padding: "0", borderBottom: "1px solid rgba(0,0,0,0.06)" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: isMobile ? "20px 20px 80px" : "80px 20px 100px" }}>
-
-        {/* Trust Badge */}
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: isMobile ? "40px" : "60px" }}>
-          <div style={{ background: "#F5F5F7", padding: "10px 20px", borderRadius: "100px", fontSize: "14px", fontWeight: 700, color: "#1D1D1F", boxShadow: "0 4px 12px rgba(0,0,0,0.03)" }}>
-            👥 {HERO_DATA.trustBadge}
-          </div>
-        </div>
 
         <div style={{ display: "flex", flexDirection: isMobile ? "column-reverse" : "row-reverse", alignItems: "center", gap: isMobile ? "40px" : "60px", flexWrap: "wrap" }}>
 

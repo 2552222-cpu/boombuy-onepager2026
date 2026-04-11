@@ -40,11 +40,13 @@ export default function EconomicSection() {
           viewport={{ once: true }}
           style={{ textAlign: "center", marginBottom: 52 }}
         >
-          <h2 style={{ fontSize: "clamp(24px,4.5vw,42px)", fontWeight: 900, color: "#1D1D1F", letterSpacing: "-0.035em", lineHeight: 1.15, marginBottom: 14 }}>
-            השכר נשחק. יוקר המחיה לוחץ. הגיע הזמן להוסיף לעובדים ערך כלכלי מתמשך לאורך השנה.<br />
-            <span style={{ color: "#0066CC" }}>שכבה נוספת של הטבות שיכולה לעזור לעובדים להגדיל את הנטו, בנוסף למה שכבר קיים בארגון.</span>
+          <h2 style={{ fontSize: "clamp(24px,4.5vw,42px)", fontWeight: 900, color: "#1D1D1F", letterSpacing: "-0.035em", lineHeight: 1.15, marginBottom: 12 }}>
+            השכר נשחק. יוקר המחיה לוחץ. הגיע הזמן להוסיף לעובדים ערך כלכלי מתמשך לאורך השנה.
           </h2>
-          <p style={{ fontSize: 17, color: "#6E6E73", maxWidth: 520, margin: "0 auto", lineHeight: 1.6 }}>
+          <p style={{ fontSize: "clamp(17px,2vw,21px)", fontWeight: 600, color: "#0066CC", maxWidth: 560, margin: "0 auto 10px", lineHeight: 1.5 }}>
+            שכבה נוספת של הטבות שיכולה לעזור לעובדים להגדיל את הנטו, בנוסף למה שכבר קיים בארגון.
+          </p>
+          <p style={{ fontSize: 15, color: "#6E6E73", maxWidth: 520, margin: "0 auto", lineHeight: 1.6 }}>
             3 דברים ששווה להבין לפני שמעבירים את זה לרווחה, לוועד או להנהלה.
           </p>
         </motion.div>
