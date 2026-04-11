@@ -181,11 +181,12 @@ export default function ResultsPage() {
                   קבע דמו — 15 דקות
                 </a>
                 <a
-                  href="tel:0542552222"
+                  href="https://wa.me/972542552222"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex-1 bg-white border border-primary text-primary hover:bg-primary/5 font-bold py-4 rounded-lg transition-all text-center flex items-center justify-center gap-2"
                 >
-                  <Phone className="w-4 h-4" />
-                  חייג עכשיו — ארי
+                  דברו איתנו בוואטסאפ
                 </a>
               </div>
             </div>

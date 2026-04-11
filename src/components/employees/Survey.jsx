@@ -11,10 +11,10 @@ const ORG_SIZE_OPTIONS = [
 ];
 
 const HOLIDAY_BUDGET_OPTIONS = [
-  { label: "200-400 ₪", display: <><bdi dir="ltr">200-400 ₪</bdi></> },
-  { label: "400-600 ₪", display: <><bdi dir="ltr">400-600 ₪</bdi></> },
-  { label: "600+ ₪", display: <><bdi dir="ltr">600+ ₪</bdi></> },
-  { label: "לא מקבלים מתנות", display: "לא מקבלים מתנות" },
+  { label: "200-400 ₪" },
+  { label: "400-600 ₪" },
+  { label: "600+ ₪" },
+  { label: "לא מקבלים מתנות" },
 ];
 
 const CURRENT_CLUB_OPTIONS = [
@@ -399,7 +399,7 @@ export default function Survey() {
                     onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#0066CC"; e.currentTarget.style.background = "#F0F6FF"; }}
                     onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(0,0,0,0.1)"; e.currentTarget.style.background = "#fff"; }}
                   >
-                    {opt.display}
+                    <bdi dir="ltr">{opt.label}</bdi>
                   </button>
                 ))}
               </div>

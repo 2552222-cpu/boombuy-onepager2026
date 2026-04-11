@@ -163,49 +163,6 @@ export default function IntroSlides({ onDone }) {
         ))}
       </div>
 
-      {/* Badge */}
-      <motion.div
-        initial={{ opacity: 0, y: -6 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        style={{
-          position: "absolute",
-          top: "52px",
-          display: "inline-flex",
-          alignItems: "center",
-          gap: "7px",
-          background: "rgba(240,246,255,0.92)",
-          border: "1px solid rgba(0,102,204,0.18)",
-          borderRadius: "999px",
-          padding: "6px 16px",
-          backdropFilter: "blur(10px)",
-          WebkitBackdropFilter: "blur(10px)",
-          boxShadow: "0 2px 14px rgba(0,102,204,0.09)",
-          zIndex: 10,
-        }}
-      >
-        <span style={{ position: "relative", width: 8, height: 8, flexShrink: 0, display: "inline-flex" }}>
-          <motion.span
-            animate={{ scale: [1, 1.7, 1], opacity: [1, 0.2, 1] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            style={{
-              position: "absolute", inset: 0,
-              borderRadius: "50%", background: "#34C759", display: "block",
-            }}
-          />
-          <span style={{
-            position: "absolute", inset: "1.5px",
-            borderRadius: "50%", background: "#34C759", display: "block",
-          }} />
-        </span>
-        <span style={{
-          fontSize: "12px", fontWeight: 600, color: "#1D3A6B",
-          fontFamily: "var(--font-heebo)", whiteSpace: "nowrap",
-        }}>
-          ממאות ארגונים · הטבות שמורגשות ביומיום
-        </span>
-      </motion.div>
-
       {/* Slide content */}
       <div style={{
         flex: 1,
