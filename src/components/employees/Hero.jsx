@@ -12,10 +12,10 @@ const HERO_DATA = {
 };
 
 const BENEFIT_CARDS = [
-  { title: "אייפון וחשמל", text: "הטבות בלעדיות על אייפון, סמסונג ומוצרי מוביל." },
+  { title: "אייפון במחיר יבואן", text: "הטבות בלעדיות על אייפון, סמסונג ומוצרי מוביל." },
   { title: "8% הנחה קבועה בסופר", text: "עד 8% הנחה קבועה בסופרים ומוצרי צריכה יומיומיים." },
   { title: "חופשות והופעות", text: "חופשות בארץ ובחו׳ל ובילויים במחירים בלעדיים." },
-  { title: "כל בוקר הטבה חדשה", text: "דיל יומי מתחלף על מותגים מובילים במחיר בלעדי." },
+  { title: "הטבה חדשה כל בוקר", text: "הטבות מתחלפת על מותגים מובילים במחיר בלעדי." },
 ];
 
 export default function Hero() {
@@ -73,7 +73,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               style={{ fontSize: "clamp(14px, 1.5vw, 16px)", fontWeight: 600, color: "#0066CC", margin: "0 0 12px", letterSpacing: "-0.01em" }}
             >
-              {HERO_DATA.intro} <span style={{ color: "#86868B", fontWeight: 500 }}>עם BoomBuy</span>
+              {HERO_DATA.intro} <span style={{ color: "#86868B", fontWeight: 500 }}>עם בום ביי</span>
             </motion.p>
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
