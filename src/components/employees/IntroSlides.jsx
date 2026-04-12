@@ -1,131 +1,85 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const SLIDES = [
   {
     id: 1,
-    duration: 2600,
     size: "clamp(32px, 8.5vw, 54px)",
     weight: 900,
     lines: [
-      { text: "מה אם העבודה שלך", color: "#1D1D1F", emphasis: false },
-      { text: "הייתה נותנת לך יותר?", color: "#1D1D1F", emphasis: false },
+      { text: "מה אם העבודה שלך", color: "#1D1D1F" },
+      { text: "הייתה נותנת לך יותר?", color: "#1D1D1F" },
     ],
   },
   {
     id: 2,
-    duration: 2600,
     size: "clamp(26px, 7vw, 44px)",
     weight: 800,
     lines: [
-      { text: "לא רק מתנה בחג", color: "#1D1D1F", emphasis: false },
-      { text: "משהו שמרגישים ביומיום", color: "#1D1D1F", emphasis: false },
-      { text: "בכל יום מחדש", color: "#0066CC", emphasis: true },
+      { text: "לא רק מתנה בחג", color: "#1D1D1F" },
+      { text: "משהו שמרגישים ביומיום", color: "#1D1D1F" },
+      { text: "בכל יום מחדש", color: "#0066CC" },
     ],
   },
   {
     id: 3,
-    duration: 2800,
     size: "clamp(22px, 6vw, 36px)",
     weight: 700,
     lines: [
-      { text: "8% הנחה קבועה בסופר", color: "#0066CC", emphasis: true },
-      { text: "אייפון במחיר יבואן", color: "#1D1D1F", emphasis: false },
-      { text: "חופשות והופעות לאורך השנה", color: "#1D1D1F", emphasis: false },
+      { text: "8% הנחה קבועה בסופר", color: "#0066CC" },
+      { text: "אייפון במחיר יבואן", color: "#1D1D1F" },
+      { text: "חופשות והופעות לאורך השנה", color: "#1D1D1F" },
     ],
   },
   {
     id: 4,
-    duration: 2800,
     size: "clamp(22px, 6vw, 36px)",
     weight: 700,
     lines: [
-      { text: "וכל זה בלי שהמעסיק שלך", color: "#1D1D1F", emphasis: false },
-      { text: "יוסיף עוד שקל אחד לתקציב", color: "#1D1D1F", emphasis: false },
-      { text: "שהוא ממילא מוציא", color: "#1D1D1F", emphasis: false, highlight: "ממילא" },
+      { text: "וכל זה בלי שהמעסיק שלך", color: "#1D1D1F" },
+      { text: "יוסיף עוד שקל אחד לתקציב", color: "#1D1D1F" },
+      { text: "שהוא ממילא מוציא", color: "#1D1D1F", highlight: "ממילא" },
     ],
   },
   {
     id: 5,
-    duration: null, // no auto-advance
     size: "clamp(32px, 8.5vw, 54px)",
     weight: 900,
     lines: [
-      { text: "עכשיו תראו", color: "#0066CC", emphasis: true },
-      { text: "איך זה נראה", color: "#0066CC", emphasis: true },
+      { text: "עכשיו תראו", color: "#007AFF" },
+      { text: "איך זה נראה", color: "#007AFF" },
     ],
   },
 ];
 
 export default function IntroSlides({ onDone }) {
   const [index, setIndex] = useState(0);
-  const [progress, setProgress] = useState(0);
   const touchStartX = useRef(0);
-  const timerRef = useRef(null);
-  const startRef = useRef(null);
-  const rafRef = useRef(null);
 
-  const slide = SLIDES[index];
   const isLast = index === SLIDES.length - 1;
+  const slide = SLIDES[index];
 
-  const finish = useCallback(() => {
+  const finish = () => {
     if (onDone) onDone();
     requestAnimationFrame(() => {
       document.getElementById("hero-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
-  }, [onDone]);
-
-  const goNext = useCallback(() => {
-    if (index < SLIDES.length - 1) {
-      setIndex(p => p + 1);
-    } else {
-      finish();
-    }
-  }, [index, finish]);
-
-  const goPrev = useCallback(() => {
-    if (index > 0) setIndex(p => p - 1);
-  }, [index]);
-
-  // Auto-advance with animated progress bar
-  useEffect(() => {
-    setProgress(0);
-    if (!slide.duration) return;
-
-    cancelAnimationFrame(rafRef.current);
-    startRef.current = performance.now();
-
-    const tick = (now) => {
-      const elapsed = now - startRef.current;
-      const pct = Math.min((elapsed / slide.duration) * 100, 100);
-      setProgress(pct);
-      if (pct < 100) {
-        rafRef.current = requestAnimationFrame(tick);
-      } else {
-        goNext();
-      }
-    };
-    rafRef.current = requestAnimationFrame(tick);
-
-    return () => cancelAnimationFrame(rafRef.current);
-  }, [index, slide.duration, goNext]);
-
-  // Reset progress on manual navigation
-  const handleNext = () => {
-    cancelAnimationFrame(rafRef.current);
-    goNext();
   };
 
-  const handlePrev = () => {
-    cancelAnimationFrame(rafRef.current);
-    goPrev();
+  const goNext = () => {
+    if (index < SLIDES.length - 1) setIndex(p => p + 1);
+    else finish();
+  };
+
+  const goPrev = () => {
+    if (index > 0) setIndex(p => p - 1);
   };
 
   const handleTouchStart = (e) => { touchStartX.current = e.touches[0].clientX; };
   const handleTouchEnd = (e) => {
     const diff = touchStartX.current - e.changedTouches[0].clientX;
     if (Math.abs(diff) > 40) {
-      if (diff > 0) handleNext(); else handlePrev();
+      if (diff > 0) goNext(); else goPrev();
     }
   };
 
@@ -136,7 +90,7 @@ export default function IntroSlides({ onDone }) {
       content = (
         <>
           {parts[0]}
-          <span style={{ color: "#0066CC", fontWeight: 900 }}>{line.highlight}</span>
+          <span style={{ color: "#007AFF", fontWeight: 900 }}>{line.highlight}</span>
           {parts[1]}
         </>
       );
@@ -147,9 +101,9 @@ export default function IntroSlides({ onDone }) {
     return (
       <motion.div
         key={`${slide.id}-${li}`}
-        initial={{ opacity: 0, y: 16, filter: "blur(10px)" }}
+        initial={{ opacity: 0, y: 10, filter: "blur(6px)" }}
         animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        transition={{ duration: 0.5, delay: li * 0.14, ease: [0.23, 1, 0.32, 1] }}
+        transition={{ duration: 0.22, delay: li * 0.06, ease: [0.23, 1, 0.32, 1] }}
         style={{
           fontSize: slide.size,
           fontWeight: slide.weight,
@@ -182,7 +136,7 @@ export default function IntroSlides({ onDone }) {
         background: "#FFFFFF",
       }}
     >
-      {/* Progress bars */}
+      {/* Progress bars — static indicators, no auto timer */}
       <div style={{
         position: "absolute",
         top: "18px",
@@ -192,24 +146,14 @@ export default function IntroSlides({ onDone }) {
         maxWidth: "520px",
         zIndex: 20,
       }}>
-        {SLIDES.map((s, i) => (
+        {SLIDES.map((_, i) => (
           <div key={i} style={{
             height: "2.5px",
             flex: 1,
-            background: "rgba(0,0,0,0.08)",
+            background: i <= index ? "#007AFF" : "rgba(0,0,0,0.08)",
             borderRadius: "10px",
-            overflow: "hidden",
-          }}>
-            <motion.div
-              style={{
-                height: "100%",
-                background: "#007AFF",
-                borderRadius: "10px",
-                width: i < index ? "100%" : i === index ? `${progress}%` : "0%",
-              }}
-              transition={{ ease: "linear" }}
-            />
-          </div>
+            transition: "background 0.15s",
+          }} />
         ))}
       </div>
 
@@ -228,10 +172,10 @@ export default function IntroSlides({ onDone }) {
         <AnimatePresence mode="wait">
           <motion.div
             key={slide.id}
-            initial={{ opacity: 0, scale: 0.985 }}
+            initial={{ opacity: 0, scale: 0.992 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 1.01 }}
-            transition={{ duration: 0.32, ease: "easeOut" }}
+            exit={{ opacity: 0, scale: 1.006 }}
+            transition={{ duration: 0.18, ease: "easeOut" }}
             style={{ textAlign: "center", width: "100%", maxWidth: "600px" }}
           >
             {slide.lines.map((line, li) => renderLine(line, li))}
@@ -243,7 +187,7 @@ export default function IntroSlides({ onDone }) {
       <div style={{
         width: "100%",
         maxWidth: "280px",
-        paddingBottom: "44px",
+        paddingBottom: "40px",
         display: "flex",
         flexDirection: "column",
         gap: "10px",
@@ -252,7 +196,7 @@ export default function IntroSlides({ onDone }) {
       }}>
         <motion.button
           whileTap={{ scale: 0.97 }}
-          onClick={handleNext}
+          onClick={goNext}
           style={{
             width: "100%",
             background: isLast ? "#007AFF" : "#1D1D1F",
