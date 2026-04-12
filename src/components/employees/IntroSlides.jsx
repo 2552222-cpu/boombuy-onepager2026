@@ -54,7 +54,13 @@ const SLIDES = [
 
 export default function IntroSlides({ onDone }) {
   const [index, setIndex] = useState(0);
-  const touchStartX = useRef(0);
+
+  // Touch / swipe
+  const touchStartX = useRef(null);
+
+  // Mouse / pointer drag (for desktop + preview)
+  const pointerStartX = useRef(null);
+  const isDragging = useRef(false);
 
   const isLast = index === SLIDES.length - 1;
   const slide = SLIDES[index];
@@ -75,12 +81,45 @@ export default function IntroSlides({ onDone }) {
     if (index > 0) setIndex(p => p - 1);
   };
 
+  // Touch handlers (mobile swipe)
   const handleTouchStart = (e) => { touchStartX.current = e.touches[0].clientX; };
   const handleTouchEnd = (e) => {
+    if (touchStartX.current === null) return;
     const diff = touchStartX.current - e.changedTouches[0].clientX;
+    touchStartX.current = null;
     if (Math.abs(diff) > 40) {
       if (diff > 0) goNext(); else goPrev();
     }
+  };
+
+  // Pointer/mouse handlers (desktop + preview)
+  const handlePointerDown = (e) => {
+    if (e.button !== 0) return;
+    pointerStartX.current = e.clientX;
+    isDragging.current = false;
+  };
+  const handlePointerMove = (e) => {
+    if (pointerStartX.current === null) return;
+    if (Math.abs(e.clientX - pointerStartX.current) > 8) isDragging.current = true;
+  };
+  const handlePointerUp = (e) => {
+    if (pointerStartX.current === null) return;
+    const diff = pointerStartX.current - e.clientX;
+    const wasDrag = isDragging.current;
+    pointerStartX.current = null;
+    isDragging.current = false;
+    if (wasDrag) {
+      if (Math.abs(diff) > 40) {
+        if (diff > 0) goNext(); else goPrev();
+      }
+    }
+    // plain click on content area (not a drag) → go next
+    // buttons handle their own clicks and stop propagation
+  };
+
+  const handleContentClick = () => {
+    // only fire if it was not a drag
+    if (!isDragging.current) goNext();
   };
 
   const renderLine = (line, li) => {
@@ -123,6 +162,9 @@ export default function IntroSlides({ onDone }) {
     <section
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
       style={{
         height: "100dvh",
         width: "100%",
@@ -134,9 +176,11 @@ export default function IntroSlides({ onDone }) {
         touchAction: "manipulation",
         fontFamily: "var(--font-heebo)",
         background: "#FFFFFF",
+        userSelect: "none",
+        cursor: "default",
       }}
     >
-      {/* Progress bars — static indicators, no auto timer */}
+      {/* Progress bars */}
       <div style={{
         position: "absolute",
         top: "18px",
@@ -157,18 +201,22 @@ export default function IntroSlides({ onDone }) {
         ))}
       </div>
 
-      {/* Slide content */}
-      <div style={{
-        flex: 1,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        width: "100%",
-        padding: "0 24px",
-        paddingTop: "88px",
-        boxSizing: "border-box",
-      }}>
+      {/* Clickable content area */}
+      <div
+        onClick={handleContentClick}
+        style={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+          padding: "0 24px",
+          paddingTop: "88px",
+          boxSizing: "border-box",
+          cursor: "pointer",
+        }}
+      >
         <AnimatePresence mode="wait">
           <motion.div
             key={slide.id}
@@ -183,20 +231,23 @@ export default function IntroSlides({ onDone }) {
         </AnimatePresence>
       </div>
 
-      {/* Bottom buttons */}
-      <div style={{
-        width: "100%",
-        maxWidth: "280px",
-        paddingBottom: "40px",
-        display: "flex",
-        flexDirection: "column",
-        gap: "10px",
-        zIndex: 10,
-        alignItems: "center",
-      }}>
+      {/* Bottom buttons — stop propagation so clicks don't trigger content click */}
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          width: "100%",
+          maxWidth: "280px",
+          paddingBottom: "40px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+          zIndex: 10,
+          alignItems: "center",
+        }}
+      >
         <motion.button
           whileTap={{ scale: 0.97 }}
-          onClick={goNext}
+          onClick={(e) => { e.stopPropagation(); goNext(); }}
           style={{
             width: "100%",
             background: isLast ? "#007AFF" : "#1D1D1F",
@@ -217,7 +268,7 @@ export default function IntroSlides({ onDone }) {
 
         {!isLast && (
           <button
-            onClick={finish}
+            onClick={(e) => { e.stopPropagation(); finish(); }}
             style={{
               background: "none",
               border: "none",
