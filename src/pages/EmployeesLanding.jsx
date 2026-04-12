@@ -13,6 +13,7 @@ import FinalBand from "../components/employees/FinalBand";
 import ZeroBudget from "../components/employees/ZeroBudget";
 import EconomicSection from "../components/employees/EconomicSection";
 import FloatingWhatsApp from "../components/employees/FloatingWhatsApp";
+import ValueCalculator from "../components/employees/ValueCalculator";
 
 
 
@@ -48,6 +49,7 @@ export default function EmployeesLanding() {
         <ZeroBudget />
 
         <Testimonials />
+        <ValueCalculator />
         <Survey />
         <FinalBand />
       </div>

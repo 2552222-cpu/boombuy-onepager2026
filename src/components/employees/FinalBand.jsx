@@ -2,31 +2,42 @@ import React from "react";
 import { motion } from "framer-motion";
 
 export default function FinalBand() {
+  const scrollToCalc = () => {
+    document.getElementById("value-calculator")?.scrollIntoView({ behavior: "smooth" });
+  };
   const scrollToSurvey = () => {
     document.getElementById("survey-section")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <section className="py-10 md:py-20 bg-primary text-primary-foreground" style={{ overflowX: 'hidden', maxWidth: '100vw', padding: '60px 16px' }}>
-      <div className="max-w-3xl mx-auto text-center">
+    <section className="bg-primary text-primary-foreground" style={{ overflowX: "hidden", maxWidth: "100vw", padding: "56px 16px" }}>
+      <div className="max-w-2xl mx-auto text-center">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.45 }}
         >
-          <h2 className="text-lg md:text-3xl font-bold mb-2 md:mb-3 leading-tight">
-            הגיע הזמן שגם הארגון שלך יצטרף.
-          </h2>
-          <p className="text-white/80 mb-6 md:mb-8 text-sm md:text-base">
-            הגיע הזמן שגם הארגון שלך יצטרף.
+          <p style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", marginBottom: 8, fontWeight: 600 }}>
+            רוצים לראות כמה זה יכול להיות שווה לכם אישית?
           </p>
-          <button
-            onClick={scrollToSurvey}
-            className="bg-white text-primary font-bold px-6 md:px-10 py-3 md:py-4 rounded-lg md:rounded-xl hover:bg-white/90 transition-all shadow-lg shadow-black/10 text-sm md:text-base w-full md:w-auto"
-          >
-            15 שניות לבדיקה
-          </button>
+          <h2 style={{ fontSize: "clamp(20px, 4vw, 28px)", fontWeight: 900, color: "#fff", marginBottom: 20, letterSpacing: "-0.02em", lineHeight: 1.3 }}>
+            בדקו עכשיו כמה זה יכול להיות שווה לכם
+          </h2>
+          <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+            <button
+              onClick={scrollToCalc}
+              style={{ background: "#fff", color: "#0055CC", border: "none", padding: "14px 28px", borderRadius: 16, fontSize: 15, fontWeight: 800, cursor: "pointer" }}
+            >
+              בדקו עכשיו
+            </button>
+            <button
+              onClick={scrollToSurvey}
+              style={{ background: "transparent", color: "rgba(255,255,255,0.85)", border: "1.5px solid rgba(255,255,255,0.35)", padding: "14px 28px", borderRadius: 16, fontSize: 15, fontWeight: 700, cursor: "pointer" }}
+            >
+              לבדוק התאמה לארגון שלי
+            </button>
+          </div>
         </motion.div>
       </div>
     </section>
