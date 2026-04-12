@@ -236,7 +236,7 @@ export default function JoinScreen({ orgKey, orgName, onContinue }) {
                   disabled={loading}
                   className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-3.5 md:py-4 rounded-lg md:rounded-xl transition-all disabled:opacity-50 text-base md:text-lg mt-2"
                 >
-                  {loading ? "הצטרפות..." : "אני בפנים 💪"}
+                  {loading ? "הצטרפות..." : "אני מצטרף לבקשה"}
                 </button>
               </form>
             </div>

@@ -1,7 +1,8 @@
 import { Toaster } from "@/components/ui/toaster"
+import { motion, AnimatePresence } from 'framer-motion'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
@@ -13,8 +14,8 @@ import OrgPage from './pages/OrgPage';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
+  const location = useLocation();
 
-  // Show loading spinner while checking app public settings or auth
   if (isLoadingPublicSettings || isLoadingAuth) {
     return (
       <div className="fixed inset-0 flex items-center justify-center">
@@ -23,32 +24,38 @@ const AuthenticatedApp = () => {
     );
   }
 
-  // Handle authentication errors
   if (authError) {
     if (authError.type === 'user_not_registered') {
       return <UserNotRegisteredError />;
     } else if (authError.type === 'auth_required') {
-      // Redirect to login automatically
       navigateToLogin();
       return null;
     }
   }
 
-  // Render the main app
   return (
-    <Routes>
-      <Route path="/" element={<EmployeesLanding />} />
-      <Route path="/admin/dashboard" element={<AdminDashboard />} />
-      <Route path="/results" element={<ResultsPage />} />
-      <Route path="/join/:orgSlug" element={<OrgPage />} />
-      <Route path="*" element={<PageNotFound />} />
-    </Routes>
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={location.pathname}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.22, ease: 'easeOut' }}
+        style={{ minHeight: '100vh' }}
+      >
+        <Routes location={location}>
+          <Route path="/" element={<EmployeesLanding />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/results" element={<ResultsPage />} />
+          <Route path="/join/:orgSlug" element={<OrgPage />} />
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      </motion.div>
+    </AnimatePresence>
   );
 };
 
-
 function App() {
-
   return (
     <AuthProvider>
       <QueryClientProvider client={queryClientInstance}>
