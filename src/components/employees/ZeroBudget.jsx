@@ -34,7 +34,7 @@ export default function ZeroBudget() {
             flexShrink: 0,
             textAlign: "center",
           }}>
-            <span dir="ltr" style={{
+            <ILS value="0" style={{
               fontSize: "clamp(40px, 5vw, 56px)",
               fontWeight: 900,
               color: "#0066CC",
@@ -42,7 +42,7 @@ export default function ZeroBudget() {
               lineHeight: 1,
               fontFamily: "var(--font-heebo)",
               display: "inline-block",
-            }}>0 ₪</span>
+            }} />
             <span style={{ fontSize: "13px", fontWeight: 500, color: "#86868B", marginTop: "6px", whiteSpace: "nowrap" }}>
               עלות למעסיק
             </span>
