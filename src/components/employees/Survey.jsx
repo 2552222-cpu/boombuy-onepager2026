@@ -532,6 +532,11 @@ export default function Survey() {
               >
                 המשך לפתוח בקשה לארגון
               </button>
+              <div style={{ textAlign: "center", marginTop: 12 }}>
+                <a href="/#offers-slider" target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: "#86868B", textDecoration: "underline", fontFamily: "var(--font-heebo)" }}>
+                  רוצים לראות דוגמאות מההטבות?
+                </a>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

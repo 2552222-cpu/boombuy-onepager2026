@@ -156,6 +156,11 @@ export default function JoinScreen({ orgKey, orgName, onContinue }) {
               >
                 חזור לדף ראשי
               </button>
+              <div style={{ textAlign: "center", marginTop: 12 }}>
+                <a href="/#offers-slider" target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: "#86868B", textDecoration: "underline" }}>
+                  רוצים לראות דוגמאות מההטבות?
+                </a>
+              </div>
             </div>
           </div>
         </motion.div>

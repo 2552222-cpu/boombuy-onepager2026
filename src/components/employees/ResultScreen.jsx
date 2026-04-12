@@ -408,6 +408,18 @@ export default function ResultScreen({ group, orgName, orgKey, orgSize, holidayB
           </div>
         </motion.div>
 
+        {/* soft link to benefits */}
+        <div style={{ textAlign: "center", paddingTop: 8 }}>
+          <a
+            href="/#offers-slider"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ fontSize: 13, color: "#86868B", textDecoration: "underline", fontFamily: "var(--font-heebo)" }}
+          >
+            רוצים לראות דוגמאות מההטבות?
+          </a>
+        </div>
+
       </div>
     </section>
   );

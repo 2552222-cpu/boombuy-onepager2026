@@ -84,9 +84,9 @@ const QUESTIONS = [
     sub: "אם תהיה הוזלה קבועה דרך הפלטפורמה",
     options: [
       { label: "אין", value: 0 },
-      { label: "ביטוח אחד", value: 100 },
-      { label: "שני ביטוחים", value: 180 },
-      { label: "שלושה ומעלה", value: 260 },
+      { label: "ביטוח אחד", value: 70 },
+      { label: "שני ביטוחים", value: 130 },
+      { label: "שלושה ומעלה", value: 190 },
     ],
   },
 ];
@@ -100,8 +100,8 @@ function calcResult(answers) {
   const q5 = answers[4] ?? 0;
   const q6 = answers[5] ?? 0;
 
-  const super_ = (q1 * 0.08 * q2) / 12;
-  const daily = (q3 * 55) / 12;
+  const super_ = q1 * 0.08 * q2;
+  const daily = (q3 * 45) / 12;
   const vacation = (q4 * 800) / 12;
   const tech = q5 / 12;
   const insurance = q6;
