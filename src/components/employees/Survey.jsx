@@ -30,8 +30,6 @@ const PAIN_POINTS_OPTIONS = [
   { label: "חופשות" },
 ];
 
-
-
 const WELFARE_BUDGET_OPTIONS = [
   { label: "כן, יש תקציבים (ימי הולדת, משפחה וכו׳)" },
   { label: "רק ימי גיבוש" },
@@ -193,7 +191,7 @@ export default function Survey() {
         {/* Ambassador nudge */}
         <div style={{ background: "rgba(0,102,204,0.06)", border: "1px solid rgba(0,102,204,0.15)", borderRadius: 16, padding: "14px 18px", marginBottom: 24, textAlign: "center" }}>
           <p style={{ fontSize: 14, fontWeight: 600, color: "#0066CC", lineHeight: 1.55, fontFamily: "var(--font-heebo)", margin: 0 }}>
-            💡 ידעת? תוכל להגדיל ב-80% את הסיכוי להכניס את בום ביי לארגון שלך אם עוד 20 עובדים יענו על השאלון הקצר.
+            💡 בואו נגדיל את הסיכוי להכנסת בום ביי לארגון: כל 20 עובדים נוספים שיענו על השאלון מגדילים את הפנייה בעוצמה ובאיתור.
           </p>
         </div>
 
@@ -212,7 +210,7 @@ export default function Survey() {
             אני רוצה שהארגון שלי יצטרף
           </h2>
           <p style={{ fontSize: "15px", color: "#86868B", fontFamily: "var(--font-heebo)" }}>
-            בואו נגדיל לכם את הנטו ב-15 שניות.
+            בואו נכין לכם התאמה אישית ב-2 דקות.
           </p>
           <div style={{ display: "inline-block", background: "rgba(0,102,204,0.08)", border: "1px solid rgba(0,102,204,0.15)", borderRadius: "999px", padding: "5px 16px", marginTop: "10px" }}>
             <span style={{ fontSize: "12.5px", fontWeight: 600, color: "#0066CC", fontFamily: "var(--font-heebo)" }}>מתאים בעיקר לארגונים עם 100 עובדים ומעלה</span>
@@ -259,7 +257,6 @@ export default function Survey() {
             <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center py-16 gap-4">
               <div style={{ width: 48, height: 48, border: "3px solid rgba(0,102,204,0.12)", borderTopColor: "#0066CC", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
               <p style={{ color: "#0066CC", fontSize: "15px", fontWeight: 700, fontFamily: "var(--font-heebo)" }}>מנתח נתוני ארגון...</p>
-
             </motion.div>
           ) : step === 0 ? (
             <motion.div
