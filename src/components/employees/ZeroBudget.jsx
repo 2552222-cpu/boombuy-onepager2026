@@ -27,30 +27,22 @@ export default function ZeroBudget() {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            minWidth: "140px",
-            padding: "28px 32px",
+            minWidth: "120px",
+            padding: "20px 28px",
             background: "#F5F5F7",
-            border: "1px solid rgba(0,0,0,0.07)",
             borderRadius: "18px",
             flexShrink: 0,
             textAlign: "center",
           }}>
             <ILS value="0" style={{
-              fontSize: "clamp(48px, 6vw, 64px)",
+              fontSize: "clamp(40px, 5vw, 56px)",
               fontWeight: 900,
               color: "#0066CC",
               letterSpacing: "-0.04em",
               lineHeight: 1,
               fontFamily: "var(--font-heebo)",
             }} />
-            <span style={{
-              fontSize: "13px",
-              fontWeight: 500,
-              color: "#86868B",
-              marginTop: "8px",
-              fontFamily: "var(--font-heebo)",
-              whiteSpace: "nowrap",
-            }}>
+            <span style={{ fontSize: "13px", fontWeight: 500, color: "#86868B", marginTop: "6px", whiteSpace: "nowrap" }}>
               עלות למעסיק
             </span>
           </div>
@@ -60,27 +52,12 @@ export default function ZeroBudget() {
 
           {/* Text */}
           <div className="flex flex-col justify-center text-right" style={{ flex: 1 }}>
-            <h2 style={{
-              fontSize: "clamp(26px, 2.8vw, 36px)",
-              fontWeight: 900,
-              letterSpacing: "-0.028em",
-              lineHeight: 1.15,
-              marginBottom: "14px",
-              fontFamily: "var(--font-heebo)",
-              color: "#1D1D1F",
-            }}>
-              <ILS value="0" /> תוספת תקציב לארגון שלך.
-            </h2>
-            <p style={{
-              fontSize: "clamp(16px, 1.4vw, 19px)",
-              lineHeight: 1.65,
-              color: "#86868B",
-              fontWeight: 400,
-              maxWidth: "560px",
-              fontFamily: "var(--font-heebo)",
-            }}>
-              הפלטפורמה עובדת על מקסום התקציב הקיים שהארגון כבר ממילא מוציא. כדי לתת לעובדים הרבה יותר ערך.
-            </p>
+            <h2 style={{ fontSize: "clamp(20px, 3.5vw, 32px)", fontWeight: 900, color: "#1D1D1F", letterSpacing: "-0.03em", lineHeight: 1.2, marginBottom: 10 }}>
+            0 עלות למעסיק. ערך כפול לעובד.
+          </h2>
+          <p style={{ fontSize: "clamp(14px, 1.8vw, 17px)", color: "#6E6E73", lineHeight: 1.6, maxWidth: 420, margin: 0 }}>
+            בום ביי עובדת על בסיס התקציב הקיים שהארגון כבר מקצה. בלי להוסיף עלות למעסיק, העובדים מקבלים יותר ערך לאורך כל השנה.
+          </p>
           </div>
         </motion.div>
       </div>
