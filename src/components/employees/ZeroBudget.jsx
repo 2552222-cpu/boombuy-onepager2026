@@ -34,15 +34,21 @@ export default function ZeroBudget() {
             flexShrink: 0,
             textAlign: "center",
           }}>
-            <ILS value="0" style={{
+            <div style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "baseline",
+              gap: "4px",
               fontSize: "clamp(40px, 5vw, 56px)",
               fontWeight: 900,
               color: "#0066CC",
               letterSpacing: "-0.04em",
               lineHeight: 1,
               fontFamily: "var(--font-heebo)",
-              display: "inline-block",
-            }} />
+            }}>
+              <span>0</span>
+              <span>₪</span>
+            </div>
             <span style={{ fontSize: "13px", fontWeight: 500, color: "#86868B", marginTop: "6px", whiteSpace: "nowrap" }}>
               עלות למעסיק
             </span>
