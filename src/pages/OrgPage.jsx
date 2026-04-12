@@ -469,8 +469,16 @@ ${count} עובדים כבר חתמו על הבקשה. הצטרפות שלך מ�
                 rel="noopener noreferrer"
                 style={{ display: "block", background: "#fff", borderRadius: "16px", border: "1px solid rgba(0,0,0,0.07)", padding: "16px 20px", textAlign: "center", textDecoration: "none", color: "#1D1D1F", fontWeight: 600, fontSize: "14px" }}
               >
-                💬 התייעצו איתנו
+                דברו איתנו בוואטסאפ
               </a>
+
+              {/* Preview link */}
+              <div style={{ textAlign: "center", paddingTop: 4 }}>
+                <a href="https://boom-perk-flow.base44.app/#offers-slider" target="_blank" rel="noopener noreferrer"
+                  style={{ fontSize: 13, color: "#86868B", textDecoration: "underline", fontFamily: "var(--font-heebo)" }}>
+                  רוצים לראות דוגמאות מההטבות?
+                </a>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
