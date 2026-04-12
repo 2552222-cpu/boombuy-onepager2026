@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { ArrowUpLeft } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import { buildWaMessage, buildLetterMessage, buildSurveyInsights } from "@/utils/messages";
 import ILS from "../components/employees/ILS";
@@ -75,34 +76,38 @@ function MiniLanding({ orgName }) {
         לפני שמצטרפים לבקשה, הנה כמה דוגמאות להטבות שיכולות לעזור להתמודד עם יוקר המחיה ולתת יותר ערך לאורך השנה
       </p>
       {/* Proof cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 14 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 18 }}>
         {PROOF_CARDS.map((c) => (
-          <div key={c.title} style={{ background: "#F5F5F7", borderRadius: 14, padding: "14px 14px" }}>
-            <div style={{ fontSize: 22, marginBottom: 6 }}>{c.icon}</div>
-            <p style={{ fontSize: 13, fontWeight: 800, color: "#1D1D1F", marginBottom: 3, lineHeight: 1.3 }}>{c.title}</p>
-            <p style={{ fontSize: 11.5, color: "#86868B", lineHeight: 1.45 }}>{c.sub}</p>
+          <div key={c.title} style={{ background: "#F5F5F7", borderRadius: 12, padding: "12px 12px" }}>
+            <div style={{ fontSize: 20, marginBottom: 5 }}>{c.icon}</div>
+            <p style={{ fontSize: 12.5, fontWeight: 800, color: "#1D1D1F", marginBottom: 2, lineHeight: 1.25 }}>{c.title}</p>
+            <p style={{ fontSize: 11, color: "#86868B", lineHeight: 1.4 }}>{c.sub}</p>
           </div>
         ))}
       </div>
       {/* Full-width secondary benefits preview tile */}
       <a href={BENEFITS_URL} target="_blank" rel="noopener noreferrer"
         style={{
-          display: "block", background: "#F0F4FF", border: "1.5px solid rgba(0, 102, 204, 0.25)", borderRadius: 14, padding: "16px 16px",
-          textDecoration: "none", cursor: "pointer", transition: "all 0.2s",
-          boxShadow: "0 0 12px rgba(0, 102, 204, 0.08)"
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          background: "#F0F4FF", border: "1.5px solid rgba(0, 102, 204, 0.3)", borderRadius: 14, padding: "16px 16px",
+          textDecoration: "none", cursor: "pointer", transition: "all 0.24",
+          boxShadow: "0 2px 16px rgba(0, 102, 204, 0.12)"
         }}
         onMouseEnter={(e) => {
-          e.currentTarget.style.borderColor = "rgba(0, 102, 204, 0.4)";
-          e.currentTarget.style.boxShadow = "0 0 16px rgba(0, 102, 204, 0.15)";
+          e.currentTarget.style.borderColor = "rgba(0, 102, 204, 0.45)";
+          e.currentTarget.style.boxShadow = "0 4px 24px rgba(0, 102, 204, 0.18)";
           e.currentTarget.style.background = "#E8F0FF";
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.borderColor = "rgba(0, 102, 204, 0.25)";
-          e.currentTarget.style.boxShadow = "0 0 12px rgba(0, 102, 204, 0.08)";
+          e.currentTarget.style.borderColor = "rgba(0, 102, 204, 0.3)";
+          e.currentTarget.style.boxShadow = "0 2px 16px rgba(0, 102, 204, 0.12)";
           e.currentTarget.style.background = "#F0F4FF";
         }}>
-        <p style={{ fontSize: 13, fontWeight: 700, color: "#0066CC", marginBottom: 4, margin: 0 }}>לצפייה בעמוד ההטבות המלא</p>
-        <p style={{ fontSize: 11.5, color: "#86868B", margin: 0, lineHeight: 1.4 }}>דוגמאות נוספות להטבות וההטבות הזמינות בחברתך</p>
+        <div style={{ flex: 1 }}>
+          <p style={{ fontSize: 13, fontWeight: 700, color: "#0066CC", marginBottom: 4, margin: 0 }}>לצפייה בעמוד ההטבות המלא</p>
+          <p style={{ fontSize: 11.5, color: "#86868B", margin: 0, lineHeight: 1.4 }}>דוגמאות נוספות להטבות וההטבות הזמינות בחברתך</p>
+        </div>
+        <ArrowUpLeft size={18} color="#0066CC" style={{ flexShrink: 0, marginRight: 12 }} strokeWidth={1.75} />
       </a>
     </motion.div>
   );
@@ -328,9 +333,10 @@ export default function OrgPage() {
   return (
     <div dir="rtl" style={{ minHeight: "100vh", background: "#F5F5F7", fontFamily: "var(--font-heebo)", padding: "0 0 60px" }}>
       {/* Header */}
-      <div style={{ background: "#fff", borderBottom: "1px solid rgba(0,0,0,0.06)", padding: "14px 20px" }}>
-        <a href="/" style={{ textDecoration: "none" }}>
-          <span style={{ fontSize: "20px", fontWeight: 900, color: "#0066CC", letterSpacing: "-0.02em" }}>בום ביי</span>
+      <div style={{ background: "#fff", borderBottom: "1px solid rgba(0,0,0,0.06)", padding: "16px 20px", display: "flex", justifyContent: "flex-end" }}>
+        <a href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center" }}>
+          {/* TODO: Replace with BoomBuy official logo asset */}
+          <span style={{ fontSize: "18px", fontWeight: 900, color: "#0066CC", letterSpacing: "-0.02em", fontFamily: "var(--font-heebo)" }}>BoomBuy</span>
         </a>
       </div>
 
