@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpLeft } from "lucide-react";
+import { ArrowUpLeft, ShoppingCart, Smartphone, Plane, Zap } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import { buildWaMessage, buildLetterMessage, buildSurveyInsights } from "@/utils/messages";
 import ILS from "../components/employees/ILS";
@@ -58,7 +58,7 @@ const PROOF_CARDS = [
   { icon: "⚡", title: "הטבה יומית", sub: "כל בוקר הטבה חדשה ישירות לוואטסאפ" },
 ];
 
-const BENEFITS_URL = "https://boom-perk-flow.base44.app";
+
 
 // ─── Mini Landing ─────────────────────────────────────────────────────────────
 function MiniLanding({ orgName }) {
@@ -77,19 +77,22 @@ function MiniLanding({ orgName }) {
       </p>
       {/* Proof cards */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 18 }}>
-        {PROOF_CARDS.map((c) => (
-          <div key={c.title} style={{ background: "#F5F5F7", borderRadius: 12, padding: "12px 12px" }}>
-            <div style={{ fontSize: 20, marginBottom: 5 }}>{c.icon}</div>
-            <p style={{ fontSize: 12.5, fontWeight: 800, color: "#1D1D1F", marginBottom: 2, lineHeight: 1.25 }}>{c.title}</p>
-            <p style={{ fontSize: 11, color: "#86868B", lineHeight: 1.4 }}>{c.sub}</p>
-          </div>
-        ))}
+        {PROOF_CARDS.map((c) => {
+          const IconComponent = c.icon;
+          return (
+            <div key={c.title} style={{ background: "#F5F5F7", borderRadius: 12, padding: "12px 12px" }}>
+              <IconComponent size={18} color="#0055CC" strokeWidth={1.75} style={{ marginBottom: 8 }} />
+              <p style={{ fontSize: 12.5, fontWeight: 800, color: "#1D1D1F", marginBottom: 2, lineHeight: 1.25 }}>{c.title}</p>
+              <p style={{ fontSize: 11, color: "#86868B", lineHeight: 1.4 }}>{c.sub}</p>
+            </div>
+          );
+        })}
       </div>
       {/* Full-width secondary benefits preview tile */}
-      <a href={BENEFITS_URL} target="_blank" rel="noopener noreferrer"
+      <a href="https://boom-perk-flow.base44.app/#offers-slider" target="_blank" rel="noopener noreferrer"
         style={{
           display: "flex", alignItems: "center", justifyContent: "space-between",
-          background: "#F0F4FF", border: "1.5px solid rgba(0, 102, 204, 0.3)", borderRadius: 14, padding: "16px 16px",
+          background: "#F0F4FF", border: "1.5px solid rgba(0, 102, 204, 0.3)", borderRadius: 14, padding: "18px 16px",
           textDecoration: "none", cursor: "pointer", transition: "all 0.24",
           boxShadow: "0 2px 16px rgba(0, 102, 204, 0.12)"
         }}
@@ -104,8 +107,8 @@ function MiniLanding({ orgName }) {
           e.currentTarget.style.background = "#F0F4FF";
         }}>
         <div style={{ flex: 1 }}>
-          <p style={{ fontSize: 13, fontWeight: 700, color: "#0066CC", marginBottom: 4, margin: 0 }}>לצפייה בעמוד ההטבות המלא</p>
-          <p style={{ fontSize: 11.5, color: "#86868B", margin: 0, lineHeight: 1.4 }}>דוגמאות נוספות להטבות וההטבות הזמינות בחברתך</p>
+          <p style={{ fontSize: 13, fontWeight: 700, color: "#0066CC", marginBottom: 4, margin: 0 }}>תראו לי את ההסבר המלא וההטבות</p>
+          <p style={{ fontSize: 11.5, color: "#86868B", margin: 0, lineHeight: 1.4 }}>דוגמאות נוספות למה שהעובדים יכולים לקבל לאורך השנה</p>
         </div>
         <ArrowUpLeft size={18} color="#0066CC" style={{ flexShrink: 0, marginRight: 12 }} strokeWidth={1.75} />
       </a>
@@ -335,8 +338,8 @@ export default function OrgPage() {
       {/* Header */}
       <div style={{ background: "#fff", borderBottom: "1px solid rgba(0,0,0,0.06)", padding: "16px 20px", display: "flex", justifyContent: "flex-end" }}>
         <a href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center" }}>
-          {/* TODO: Replace with BoomBuy official logo asset */}
-          <span style={{ fontSize: "18px", fontWeight: 900, color: "#0066CC", letterSpacing: "-0.02em", fontFamily: "var(--font-heebo)" }}>BoomBuy</span>
+          {/* BoomBuy Logo Placeholder - Replace with official asset */}
+          <div style={{ fontSize: "clamp(16px, 4vw, 18px)", fontWeight: 900, color: "#0066CC", letterSpacing: "-0.02em", fontFamily: "var(--font-heebo)" }}>🎯 BoomBuy</div>
         </a>
       </div>
 
