@@ -14,7 +14,7 @@ export default function ILS({ value, className = "", style = {} }) {
         ...style,
       }}
     >
-      {clean}₪
+      ₪{clean}
     </bdi>
   );
 }
