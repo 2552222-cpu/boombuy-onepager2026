@@ -13,7 +13,12 @@ const TECH_PREVIEW = "https://media.base44.com/images/public/69bc4105141d932b80b
 const TECH_EXTRA = ["https://media.base44.com/images/public/69bc4105141d932b80ba9f27/477510a11_-2026-02-18T150203869.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ca6b2de24_-2026-02-18T145345395.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/c7ef06ffc_-2026-02-18T141936848.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/96816d966_92.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/92d8c129a_-2026-02-18T150849922.png"];
 
 const GIFT_PREVIEW = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28d0b6e89_-2026-03-22T163901041.png";
-const GIFT_EXTRA = ["https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28d0b6e89_-2026-03-22T163901041.png"];
+const GIFT_EXTRA = [
+  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28d0b6e89_-2026-03-22T163901041.png",
+  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28d0b6e89_-2026-03-22T163901041.png",
+  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28d0b6e89_-2026-03-22T163901041.png",
+  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28d0b6e89_-2026-03-22T163901041.png",
+];
 
 const VACATION_PREVIEW = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/1b29c5bb8_-2026-03-22T162942110.png";
 const VACATION_EXTRA = ["https://media.base44.com/images/public/69bc4105141d932b80ba9f27/d11fc0b42_-2026-03-22T125322010.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/78ac452a3_-2026-03-22T130846774.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/cf3b11fa5_-2026-03-22T133529822.png"];
@@ -126,16 +131,25 @@ function CategoryModal({ category, onClose, onCTA }) {
                 )}
               </div>
 
-              {/* Thumbnails */}
+              {/* Thumbnails - scroll hint: not centered, last item slightly clipped */}
               {gallery.length > 1 && (
-                <div className="mt-6 w-full px-2">
-                  <p className="text-[11px] font-semibold text-slate-400 mb-3 text-center">עוד הטבות מהקטגוריה ששווה להכיר:</p>
-                  <div className="flex gap-2 overflow-x-auto" style={{ WebkitOverflowScrolling: "touch", scrollbarWidth: "none", msOverflowStyle: "none", paddingLeft: "12px" }}>
+                <div className="mt-5 w-full">
+                  <div
+                    className="flex gap-2 overflow-x-auto"
+                    style={{
+                      WebkitOverflowScrolling: "touch",
+                      scrollbarWidth: "none",
+                      msOverflowStyle: "none",
+                      paddingRight: "16px",
+                      paddingLeft: "48px",
+                      justifyContent: "flex-start",
+                    }}
+                  >
                     {gallery.map((url, i) => (
                       <button
                         key={i}
                         onClick={() => setActiveIdx(i)}
-                        className={`flex-shrink-0 w-20 h-20 rounded-2xl border-2 bg-white shadow-sm transition-all ${
+                        className={`flex-shrink-0 w-[72px] h-[72px] rounded-2xl border-2 bg-white shadow-sm transition-all ${
                           i === activeIdx ? "border-blue-500 scale-105 shadow-md" : "border-slate-100 hover:border-blue-300"
                         }`}
                       >
