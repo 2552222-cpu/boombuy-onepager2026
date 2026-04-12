@@ -13,6 +13,7 @@ const TECH_PREVIEW = "https://media.base44.com/images/public/69bc4105141d932b80b
 const TECH_EXTRA = ["https://media.base44.com/images/public/69bc4105141d932b80ba9f27/477510a11_-2026-02-18T150203869.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ca6b2de24_-2026-02-18T145345395.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/c7ef06ffc_-2026-02-18T141936848.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/96816d966_92.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/92d8c129a_-2026-02-18T150849922.png"];
 
 const GIFT_PREVIEW = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28d0b6e89_-2026-03-22T163901041.png";
+const GIFT_EXTRA = ["https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28d0b6e89_-2026-03-22T163901041.png"];
 
 const VACATION_PREVIEW = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/1b29c5bb8_-2026-03-22T162942110.png";
 const VACATION_EXTRA = ["https://media.base44.com/images/public/69bc4105141d932b80ba9f27/d11fc0b42_-2026-03-22T125322010.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/78ac452a3_-2026-03-22T130846774.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/cf3b11fa5_-2026-03-22T133529822.png"];
@@ -41,7 +42,7 @@ const categories = [
   { id: "daily", title: "כל בוקר הטבה חדשה", description: "כל יום מתחיל בהטבה חדשה שנשלחת לעובד בוואטסאפ, על מוצרי צריכה, מותגי פרימיום, חוויות ואטרקציות. תמיד במחיר הנמוך ביותר בישראל.", sub: "260 הטבות בשנה - ישירות לוואטסאפ שלך", tag: "המחיר הנמוך בישראל. תמיד.", tagBg: "bg-slate-700", previewImage: DAILY_PREVIEW, mainImage: DAILY_EXTRA[0], extraImages: DAILY_EXTRA.slice(1) },
   { id: "tech", title: "חשמל ואלקטרוניקה", description: "חנות קבועה של מוצרי חשמל, אלקטרוניקה, מחשבים וסלולר במחירי יבואן - מהמותגים שעובדים באמת רוצים.", sub: "Apple, Samsung, Dyson, Ninja ועוד", tag: "מחיר יבואן", tagBg: "bg-slate-600", previewImage: TECH_PREVIEW, mainImage: TECH_EXTRA[0], extraImages: TECH_EXTRA.slice(1) },
   { id: "super", title: "פארם, סופר ויוקר המחיה", description: "שוברי קניות לסופרמרקט והנחות קבועות על מוצרי יומיום - ערך מוחשי שמרגישים שוב ושוב בסל הקניות.", sub: "הנחה קבועה של עד 8% ברשתות הסופרים המוזלים", tag: "הנחה קבועה של 8% בסופר! (למטה ברשתות הדיסקאונט המוזלות)", tagBg: "bg-emerald-700", previewImage: SUPER_PREVIEW, mainImage: SUPER_EXTRA[0], extraImages: SUPER_EXTRA.slice(1) },
-  { id: "gift", title: "מתנת חג — עם בחירה", description: "המתנה נשארת - אבל עכשיו העובד בוחר מה הוא באמת רוצה. ארנק דיגיטלי גמיש עם מגוון רחב של אפשרויות.", sub: "ארנק ממותג · בחירה חופשית · ניהול מרכזי", tag: "בחירה חופשית", tagBg: "bg-violet-700", previewImage: GIFT_PREVIEW, mainImage: GIFT_PREVIEW, extraImages: [] },
+  { id: "gift", title: "מתנות לחגים", description: "הארגון בוחר איך להעניק את המתנה - תו לסופר, אתר בחירה למתנות או ארנק אלקטרוני.", sub: "מתנה אחת, כמה מתנות, או שילוב ביניהן - לפי מה שנכון לארגון ולעובדים.", detail: "הצטרפות לפלטפורמה תאפשר לעובדים ליהנות גם ממתנות חג משודרגות. הארגון יכול לבחור בין תו לסופר, אתר בחירה למתנות או ארנק אלקטרוני שיאפשר לעובדים לבחור כמה מתנות לחג ו/או לשלב גם תו לסופר.", tag: "בחירה חופשית", tagBg: "bg-violet-700", previewImage: GIFT_PREVIEW, mainImage: GIFT_PREVIEW, extraImages: GIFT_EXTRA }, — עם בחירה", description: "המתנה נשארת - אבל עכשיו העובד בוחר מה הוא באמת רוצה. ארנק דיגיטלי גמיש עם מגוון רחב של אפשרויות.", sub: "ארנק ממותג · בחירה חופשית · ניהול מרכזי", tag: "בחירה חופשית", tagBg: "bg-violet-700", previewImage: GIFT_PREVIEW, mainImage: GIFT_PREVIEW, extraImages: [] },
   { id: "vacation", title: "נופש וחופשות", description: "חבילות טיסה, מלון, הופעות ומשחקי ספורט בארץ ובחו\"ל - במחירים שסגורים רק לעובדי הארגון.", sub: "בארץ ובחו\"ל · מחירים בלעדיים", tag: "מחירים בלעדיים", tagBg: "bg-sky-700", previewImage: VACATION_PREVIEW, mainImage: VACATION_EXTRA[0], extraImages: VACATION_EXTRA.slice(1) },
   { id: "culture", title: "תרבות ופנאי", description: "הופעות, הצגות, פארקי שעשועים ואטרקציות - כי חוויית עובד טובה לא נגמרת בסוף יום העבודה.", sub: "כרטיסים · הנחות כניסה · אירועים", tag: "הנחת עובד", tagBg: "bg-rose-700", previewImage: CULTURE_PREVIEW, mainImage: CULTURE_EXTRA[0], extraImages: CULTURE_EXTRA.slice(1) },
   { id: "fashion", title: "אופנה, מותגים ולייף סטייל", description: "ביגוד, הנעלה, אקססוריז ומותגים מובילים - במחירים מיוחדים לעובדי הארגון, על דברים שעובדים באמת קונים.", sub: "מותגי פרימיום · מחירים בלעדיים · קנייה חכמה", tag: "מחירים בלעדיים", tagBg: "bg-stone-600", previewImage: FASHION_PREVIEW, mainImage: FASHION_EXTRA[0], extraImages: FASHION_EXTRA.slice(1) },
@@ -59,7 +60,11 @@ function CategoryModal({ category, onClose, onCTA }) {
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = "unset"; };
+    window.dispatchEvent(new CustomEvent("offersModalChange", { detail: { open: true } }));
+    return () => {
+      document.body.style.overflow = "unset";
+      window.dispatchEvent(new CustomEvent("offersModalChange", { detail: { open: false } }));
+    };
   }, []);
 
   return (
@@ -125,7 +130,7 @@ function CategoryModal({ category, onClose, onCTA }) {
               {gallery.length > 1 && (
                 <div className="mt-6 w-full px-2">
                   <p className="text-[11px] font-semibold text-slate-400 mb-3 text-center">עוד הטבות מהקטגוריה ששווה להכיר:</p>
-                  <div className="flex gap-2 overflow-x-auto justify-center" style={{ WebkitOverflowScrolling: "touch", scrollbarWidth: "none", msOverflowStyle: "none" }}>
+                  <div className="flex gap-2 overflow-x-auto" style={{ WebkitOverflowScrolling: "touch", scrollbarWidth: "none", msOverflowStyle: "none", paddingLeft: "12px" }} style={{ WebkitOverflowScrolling: "touch", scrollbarWidth: "none", msOverflowStyle: "none" }}>
                     {gallery.map((url, i) => (
                       <button
                         key={i}
@@ -162,10 +167,12 @@ function CategoryModal({ category, onClose, onCTA }) {
                 <p className="text-blue-700 font-bold text-sm">{category.sub}</p>
               </div>
 
-              {/* Nexus text */}
-              <p className="text-slate-500 text-xs leading-relaxed" style={{ borderRight: "3px solid #E5E7EB", paddingRight: "10px" }}>
-                הטבה זו וכלל ההטבות במערכת נוצרות ומסובסדות אוטומטית הודות לטכנולוגיית ה-<strong>Nexus</strong> של בום ביי. המערכת מייצרת את ערך החיסכון באופן עצמאי, ללא צורך בסבסוד נוסף מצד המעסיק.
-              </p>
+              {/* Detail text */}
+              {category.detail && (
+                <p className="text-slate-500 text-xs leading-relaxed" style={{ borderRight: "3px solid #E5E7EB", paddingRight: "10px" }}>
+                  {category.detail}
+                </p>
+              )}
 
               {/* Glassmorphism CTA */}
               <div className="relative mt-auto pt-4">
@@ -178,7 +185,7 @@ function CategoryModal({ category, onClose, onCTA }) {
                   onClick={onCTA}
                   className="relative w-full bg-[#0066CC] text-white font-bold py-4 rounded-[28px] shadow-lg hover:bg-blue-700 transition-all active:scale-[0.97] text-base"
                 >
-                  אני רוצה את זה בארגון שלי ←
+                  אני רוצה לבדוק התאמה לארגון שלי ←
                 </button>
               </div>
             </div>
@@ -198,7 +205,7 @@ export default function BenefitsShowcase() {
     <section className="py-16 md:py-24 px-4 bg-white" dir="rtl">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
-          <p className="text-blue-600 font-bold text-xs tracking-widest uppercase mb-3">לחצו כדי לגלות עוד</p>
+          <p className="text-blue-600 font-bold text-xs tracking-widest uppercase mb-3">דוגמאות נוספות להטבות שכדאי להכיר</p>
           <h2 className="text-2xl md:text-4xl font-black text-slate-900">מה עוד מחכה לך בפנים?</h2>
         </div>
 
@@ -219,7 +226,7 @@ export default function BenefitsShowcase() {
               {/* Title */}
               <div className="px-3 pt-1 pb-2 flex items-center gap-2">
                 {(() => { const Icon = CATEGORY_ICONS[cat.id]; return Icon ? <Icon className="w-4 h-4 text-blue-600 flex-shrink-0" strokeWidth={1} /> : null; })()}
-                <h3 className="text-xs md:text-sm font-bold text-slate-800 line-clamp-1">{cat.title}</h3>
+                <h3 className="text-xs md:text-sm font-bold text-slate-800 leading-tight line-clamp-2">{cat.title}</h3>
               </div>
 
               {/* Glassmorphism CTA */}
