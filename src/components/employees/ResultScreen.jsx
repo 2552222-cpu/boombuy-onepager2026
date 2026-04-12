@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { base44 } from "@/api/base44Client";
 import { buildWaMessage, buildLetterMessage } from "@/utils/messages";
 
-const TARGET = 5;
+const TARGET = 10;
 
 
 

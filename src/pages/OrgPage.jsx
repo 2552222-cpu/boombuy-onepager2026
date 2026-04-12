@@ -51,7 +51,7 @@ function letterMsg(orgName, count, orgKey, group) {
 
 // ─── Micro Survey ─────────────────────────────────────────────────────────────
 const MICRO_Q1 = ["סופר ופארם", "חשמל ואלקטרוניקה", "דלק ותחבורה", "חופשות ונסיעות"];
-const MICRO_Q2 = ["מאוד חשוב לי", "דיי חשוב", "לא ממש"];
+const MICRO_Q2 = ["זה בדיוק מה שהארגון שלנו צריך", "כן, זה יעזור לי להתמודד עם יוקר המחיה", "די חשוב", "לא ממש"];
 
 function MicroSurvey({ orgKey, orgName, onDone }) {
   const [q1, setQ1] = useState("");
