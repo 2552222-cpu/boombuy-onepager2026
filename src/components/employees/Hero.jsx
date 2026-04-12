@@ -5,7 +5,7 @@ import ILS from "./ILS";
 const HERO_DATA = {
   intro: "איך להוציא יותר מהשכר בלי לבקש העלאה",
   headline: "השכר שלכם שווה הרבה יותר",
-  subheadline: "גלו איך לקבל יותר מהתקציב הקיים של מקום העבודה שלכם, בלי שהמעסיק יצטרך לשלם יותר.",
+  subheadline: "אייפון במחיר יבואן, 8% הנחה קבועה בסופר, חופשות והופעות והטבות יומיומיות - הכל כבר כלול בתקציב שהארגון ממילא משלם. פשוט מקבלים יותר.",
   primaryCTA: "אני רוצה לראות איך זה נראה ←",
   mobileCTA: "גלו את ההטבות ↓",
   iPhoneImg: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/66514fe66_-2026-02-18T150849922.png",
@@ -73,7 +73,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               style={{ fontSize: "clamp(14px, 1.5vw, 16px)", fontWeight: 600, color: "#0066CC", margin: "0 0 12px", letterSpacing: "-0.01em" }}
             >
-              {HERO_DATA.intro} <span style={{ color: "#86868B", fontWeight: 500 }}>עם בום ביי</span>
+              {HERO_DATA.intro}
             </motion.p>
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
