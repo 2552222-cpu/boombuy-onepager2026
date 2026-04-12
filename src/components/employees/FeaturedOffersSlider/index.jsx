@@ -44,7 +44,7 @@ export default function FeaturedOffersSlider() {
     <section id="offers-slider" style={{ background: "#FFFFFF", padding: "80px 0", direction: "rtl", overflowX: "hidden" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto", textAlign: "center", padding: "0 16px" }}>
         <h2 style={{ fontSize: "clamp(28px, 5vw, 48px)", fontWeight: 900, marginBottom: "10px", color: "#15172A", letterSpacing: "-0.03em" }}>ככה אנחנו מגדילים לכם את הנטו</h2>
-        <p style={{ color: "#86868B", marginBottom: "52px", fontSize: "clamp(15px, 2vw, 18px)", fontWeight: 400 }}>דוגמאות להטבות עם חסכון חריג לעובד</p> fontSize: "clamp(15px, 2vw, 18px)", fontWeight: 400 }}>דוגמאות להטבות עם חסכון חריג לעובד</p>, fontSize: "clamp(15px, 2vw, 18px)", fontWeight: 400 }}>דוגמאות להטבות אמיתיות שמגדילות את הנטו</p>
+        <p style={{ color: "#86868B", marginBottom: "52px", fontSize: "clamp(15px, 2vw, 18px)", fontWeight: 400 }}>דוגמאות להטבות עם חסכון חריג לעובד</p>
 
         {/* Carousel */}
         <div
