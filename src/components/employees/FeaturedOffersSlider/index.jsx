@@ -44,7 +44,7 @@ export default function FeaturedOffersSlider() {
     <section id="offers-slider" style={{ background: "#FFFFFF", padding: "80px 0", direction: "rtl", overflowX: "hidden" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto", textAlign: "center", padding: "0 16px" }}>
         <h2 style={{ fontSize: "clamp(28px, 5vw, 48px)", fontWeight: 900, marginBottom: "10px", color: "#15172A", letterSpacing: "-0.03em" }}>ככה אנחנו מגדילים לכם את הנטו</h2>
-        <p style={{ color: "#86868B", marginBottom: "52px", fontSize: "clamp(15px, 2vw, 18px)", fontWeight: 400 }}>דוגמאות להטבות עם חסכון חריג לעובד</p>
+        <p style={{ color: "#86868B", marginBottom: "52px", fontSize: "clamp(15px, 2vw, 18px)", fontWeight: 400 }}>דוגמאות להטבות אמיתיות עם חיסכון חריג לעובדים</p>
 
         {/* Carousel */}
         <div
@@ -169,7 +169,7 @@ export default function FeaturedOffersSlider() {
                         else window.location.href = "/#survey-section";
                       }, 120);
                     }}
-                    style={{ width: "100%", background: "#0055CC", color: "#fff", border: "none", padding: "22px", borderRadius: "24px", fontSize: "19px", fontWeight: 900, cursor: "pointer", boxShadow: "0 15px 40px rgba(0,85,204,0.35)" }}
+                    style={{ width: "100%", background: "#0055CC", color: "#fff", border: "none", padding: "22px", borderRadius: "24px", fontSize: "17px", fontWeight: 900, cursor: "pointer", boxShadow: "0 15px 40px rgba(0,85,204,0.35)" }}
                   >
                     אני רוצה לבדוק התאמה לארגון שלי ←
                   </button>

@@ -259,7 +259,7 @@ export default function Survey() {
             <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center py-16 gap-4">
               <div style={{ width: 48, height: 48, border: "3px solid rgba(0,102,204,0.12)", borderTopColor: "#0066CC", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
               <p style={{ color: "#0066CC", fontSize: "15px", fontWeight: 700, fontFamily: "var(--font-heebo)" }}>מנתח נתוני ארגון...</p>
-              <p style={{ color: "#AEAEB2", fontSize: "12px", fontFamily: "var(--font-heebo)" }}>AI · Nexus Engine · 0₪ Optimization</p>
+
             </motion.div>
           ) : step === 0 ? (
             <motion.div

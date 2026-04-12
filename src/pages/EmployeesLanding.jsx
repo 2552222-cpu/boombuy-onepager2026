@@ -6,7 +6,6 @@ import Hero from "../components/employees/Hero";
 import FeaturedOffersSlider from "../components/employees/FeaturedOffersSlider";
 import BenefitsShowcase from "../components/employees/BenefitsShowcase";
 import TrustLogos from "../components/employees/TrustLogos";
-import DigitalWallet from "../components/employees/DigitalWallet";
 import Testimonials from "../components/employees/Testimonials";
 import Survey from "../components/employees/Survey";
 import FinalBand from "../components/employees/FinalBand";
@@ -42,12 +41,11 @@ export default function EmployeesLanding() {
         <Hero />
         <EconomicSection />
         <FeaturedOffersSlider />
-        <TrustLogos />
         <div id="benefits-showcase">
           <BenefitsShowcase />
         </div>
+        <TrustLogos />
         <ZeroBudget />
-
         <Testimonials />
         <ValueCalculator />
         <Survey />
