@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const POWER_WORDS = ["נטו", "חיסכון", "Nexus", "כסף"];
+const POWER_WORDS = ["נטו", "חיסכון", "כסף"];
 
 const SLIDES = [
   {
@@ -22,7 +22,7 @@ const SLIDES = [
   },
   {
     id: 3,
-    lines: ["8% הנחה קבועה בסופר", "ועוד מאות מוצרים והטבות", "על המותגים שאתם בכל מקרה צורכים"],
+    lines: ["8% הנחה קבועה בסופר", "אייפון במחיר יבואן", "חופשות והופעות לאורך השנה"],
     size: "clamp(22px, 6vw, 36px)",
     weight: 700,
     color: "#1D1D1F",
