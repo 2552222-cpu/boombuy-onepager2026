@@ -7,12 +7,16 @@ function ILS({ value, className = "", style = {} }) {
   const formatted = num.toLocaleString("he-IL");
   return (
     <span
-      dir="ltr"
       className={className}
-      style={{ display: "inline-flex", flexDirection: "row", alignItems: "baseline", gap: 2, whiteSpace: "nowrap", direction: "ltr", unicodeBidi: "bidi-override", ...style }}
+      style={{
+        display: "inline-block",
+        direction: "ltr",
+        unicodeBidi: "bidi-override",
+        whiteSpace: "nowrap",
+        ...style,
+      }}
     >
-      <span>{formatted}</span>
-      <span>₪</span>
+      {formatted} ₪
     </span>
   );
 }
@@ -115,7 +119,7 @@ function calcResult(answers) {
   return { monthly: Math.round(monthly), yearly: Math.round(monthly * 12), breakdown };
 }
 
-// ─── LIVE TOTAL (inline, during quiz) ────────────────────────────────────────
+// ─── LIVE TOTAL ───────────────────────────────────────────────────────────────
 function LiveTotal({ answers }) {
   const { monthly } = calcResult(answers);
   if (monthly === 0) return null;
@@ -123,17 +127,7 @@ function LiveTotal({ answers }) {
     <motion.div
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
-      style={{
-        marginTop: 20,
-        background: "#F0F4FF",
-        borderRadius: 14,
-        padding: "10px 20px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 8,
-        direction: "rtl",
-      }}
+      style={{ marginTop: 20, background: "#F0F4FF", borderRadius: 14, padding: "10px 20px", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, direction: "rtl" }}
     >
       <span style={{ fontSize: 13, color: "#555", fontWeight: 500 }}>חיסכון משוער עד כה:</span>
       <ILS value={monthly} style={{ fontSize: 15, fontWeight: 800, color: "#0055CC" }} />
@@ -142,19 +136,15 @@ function LiveTotal({ answers }) {
   );
 }
 
-// ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
+// ─── MAIN ─────────────────────────────────────────────────────────────────────
 const INTRO_CHIPS = ["סופר ופארם", "חופשות והופעות", "חשמל ואלקטרוניקה", "ביטוח רכב"];
 
 export default function ValueCalculator() {
-  const [stage, setStage] = useState("intro"); // intro | quiz | result
+  const [stage, setStage] = useState("intro");
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState([]);
 
-  const reset = () => {
-    setStage("intro");
-    setStep(0);
-    setAnswers([]);
-  };
+  const reset = () => { setStage("intro"); setStep(0); setAnswers([]); };
 
   const choose = (val) => {
     const next = [...answers];
@@ -177,15 +167,9 @@ export default function ValueCalculator() {
     <section
       id="value-calculator"
       dir="rtl"
-      style={{
-        background: "#F9F9FB",
-        padding: "72px 16px",
-        overflowX: "hidden",
-        maxWidth: "100vw",
-      }}
+      style={{ background: "#F9F9FB", padding: "72px 16px", overflowX: "hidden", maxWidth: "100vw" }}
     >
       <div style={{ maxWidth: 560, margin: "0 auto" }}>
-        {/* Eyebrow */}
         <p style={{ textAlign: "center", fontSize: 12, fontWeight: 700, color: "#0055CC", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 10 }}>
           בדיקה אישית ב-20 שניות
         </p>
@@ -196,11 +180,9 @@ export default function ValueCalculator() {
           6 שאלות קצרות · בלי הרשמה · תוצאה אישית לפי ההרגלים שלכם
         </p>
 
-        {/* Card */}
         <div style={{ background: "#fff", borderRadius: 28, boxShadow: "0 4px 32px rgba(0,0,0,0.07)", padding: "32px 28px", minHeight: 320 }}>
           <AnimatePresence mode="wait">
 
-            {/* ── INTRO ── */}
             {stage === "intro" && (
               <motion.div key="intro" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.3 }}>
                 <p style={{ fontSize: 15, fontWeight: 600, color: "#1D1D1F", marginBottom: 20, textAlign: "center" }}>
@@ -208,7 +190,7 @@ export default function ValueCalculator() {
                 </p>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center", marginBottom: 24 }}>
                   {INTRO_CHIPS.map((c) => (
-                    <span key={c} style={{ background: "#F5F5F7", border: "1px solid rgba(0,0,0,0.08)", borderRadius: 100, padding: "6px 16px", fontSize: 13, fontWeight: 600, color: "#444", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
+                    <span key={c} style={{ background: "#F5F5F7", border: "1px solid rgba(0,0,0,0.08)", borderRadius: 100, padding: "6px 16px", fontSize: 13, fontWeight: 600, color: "#444" }}>
                       {c}
                     </span>
                   ))}
@@ -218,25 +200,23 @@ export default function ValueCalculator() {
                 </p>
                 <button
                   onClick={() => setStage("quiz")}
-                  style={{ width: "100%", background: "#0055CC", color: "#fff", border: "none", padding: "16px 0", borderRadius: 18, fontSize: 16, fontWeight: 800, cursor: "pointer", letterSpacing: "-0.01em" }}
+                  style={{ width: "100%", background: "#0055CC", color: "#fff", border: "none", padding: "16px 0", borderRadius: 18, fontSize: 16, fontWeight: 800, cursor: "pointer" }}
                 >
                   בואו נבדוק
                 </button>
               </motion.div>
             )}
 
-            {/* ── QUIZ ── */}
             {stage === "quiz" && (
-              <motion.div key={`q-${step}`} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.28 }}>
-                {/* Progress */}
+              <motion.div key={"q-" + step} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.28 }}>
                 <div style={{ marginBottom: 24 }}>
                   <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
                     <span style={{ fontSize: 12, color: "#AEAEB2", fontWeight: 600 }}>שאלה {step + 1} מתוך {QUESTIONS.length}</span>
-                    <span style={{ fontSize: 12, color: "#AEAEB2" }}>{Math.round(((step) / QUESTIONS.length) * 100)}%</span>
+                    <span style={{ fontSize: 12, color: "#AEAEB2" }}>{Math.round((step / QUESTIONS.length) * 100)}%</span>
                   </div>
                   <div style={{ background: "#F0F0F0", borderRadius: 100, height: 4, overflow: "hidden" }}>
                     <motion.div
-                      animate={{ width: `${((step) / QUESTIONS.length) * 100}%` }}
+                      animate={{ width: ((step / QUESTIONS.length) * 100) + "%" }}
                       transition={{ duration: 0.35 }}
                       style={{ height: "100%", background: "#0055CC", borderRadius: 100 }}
                     />
@@ -255,18 +235,7 @@ export default function ValueCalculator() {
                     <button
                       key={opt.label}
                       onClick={() => choose(opt.value)}
-                      style={{
-                        background: "#F5F5F7",
-                        border: "1.5px solid transparent",
-                        borderRadius: 14,
-                        padding: "14px 18px",
-                        textAlign: "right",
-                        fontSize: 15,
-                        fontWeight: 600,
-                        color: "#1D1D1F",
-                        cursor: "pointer",
-                        transition: "all 0.15s ease",
-                      }}
+                      style={{ background: "#F5F5F7", border: "1.5px solid transparent", borderRadius: 14, padding: "14px 18px", textAlign: "right", fontSize: 15, fontWeight: 600, color: "#1D1D1F", cursor: "pointer", transition: "all 0.15s ease" }}
                       onMouseEnter={(e) => { e.currentTarget.style.background = "#EEF3FF"; e.currentTarget.style.borderColor = "#0055CC"; }}
                       onMouseLeave={(e) => { e.currentTarget.style.background = "#F5F5F7"; e.currentTarget.style.borderColor = "transparent"; }}
                     >
@@ -278,38 +247,26 @@ export default function ValueCalculator() {
                 <LiveTotal answers={answers} />
 
                 {step > 0 && (
-                  <button
-                    onClick={() => setStep(step - 1)}
-                    style={{ marginTop: 18, background: "none", border: "none", color: "#AEAEB2", fontSize: 13, cursor: "pointer", padding: 0 }}
-                  >
+                  <button onClick={() => setStep(step - 1)} style={{ marginTop: 18, background: "none", border: "none", color: "#AEAEB2", fontSize: 13, cursor: "pointer", padding: 0 }}>
                     חזרה
                   </button>
                 )}
               </motion.div>
             )}
 
-            {/* ── RESULT ── */}
             {stage === "result" && (
               <motion.div key="result" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
                 <p style={{ textAlign: "center", fontSize: 14, color: "#86868B", marginBottom: 8 }}>
                   לפי התשובות שלך, זה יכול להיות שווה לך
                 </p>
-
-                {/* Big number */}
                 <div style={{ textAlign: "center", marginBottom: 4 }}>
-                  <ILS
-                    value={result.monthly}
-                    style={{ fontSize: "clamp(52px, 12vw, 80px)", fontWeight: 900, color: "#0055CC", letterSpacing: "-0.04em", lineHeight: 1 }}
-                  />
+                  <ILS value={result.monthly} style={{ fontSize: "clamp(52px, 12vw, 80px)", fontWeight: 900, color: "#0055CC", letterSpacing: "-0.04em", lineHeight: 1 }} />
                 </div>
                 <p style={{ textAlign: "center", fontSize: 14, color: "#AEAEB2", marginBottom: 6 }}>בחודש</p>
                 <p style={{ textAlign: "center", fontSize: 16, fontWeight: 700, color: "#1D1D1F", marginBottom: 28 }}>
-                  וזה בערך{" "}
-                  <ILS value={result.yearly} style={{ fontSize: 16, fontWeight: 900, color: "#0055CC" }} />
-                  {" "}בשנה
+                  וזה בערך <ILS value={result.yearly} style={{ fontSize: 16, fontWeight: 900, color: "#0055CC" }} /> בשנה
                 </p>
 
-                {/* Breakdown */}
                 {result.breakdown.length > 0 && (
                   <div style={{ background: "#F5F5F7", borderRadius: 18, padding: "18px 20px", marginBottom: 24, display: "flex", flexDirection: "column", gap: 10 }}>
                     {result.breakdown.map((b) => (
@@ -321,21 +278,13 @@ export default function ValueCalculator() {
                   </div>
                 )}
 
-                {/* CTA */}
-                <button
-                  onClick={scrollToSurvey}
-                  style={{ width: "100%", background: "#0055CC", color: "#fff", border: "none", padding: "16px 0", borderRadius: 18, fontSize: 16, fontWeight: 800, cursor: "pointer", marginBottom: 12 }}
-                >
-                  אני רוצה לבדוק התאמה לארגון שלי ←
+                <button onClick={scrollToSurvey} style={{ width: "100%", background: "#0055CC", color: "#fff", border: "none", padding: "16px 0", borderRadius: 18, fontSize: 16, fontWeight: 800, cursor: "pointer", marginBottom: 12 }}>
+                  אני רוצה לבדוק התאמה לארגון שלי &larr;
                 </button>
-                <button
-                  onClick={reset}
-                  style={{ width: "100%", background: "none", border: "1.5px solid #E0E0E0", borderRadius: 18, padding: "12px 0", fontSize: 14, fontWeight: 700, color: "#555", cursor: "pointer" }}
-                >
+                <button onClick={reset} style={{ width: "100%", background: "none", border: "1.5px solid #E0E0E0", borderRadius: 18, padding: "12px 0", fontSize: 14, fontWeight: 700, color: "#555", cursor: "pointer" }}>
                   חשב שוב
                 </button>
 
-                {/* Disclaimer */}
                 <p style={{ marginTop: 20, fontSize: 11, color: "#C0C0C0", textAlign: "center", lineHeight: 1.6 }}>
                   * החישוב מבוסס על ממוצעי שימוש והערכות שמרניות. הערך בפועל תלוי בהרגלי השימוש ובהטבות שייפתחו בארגון.
                 </p>
