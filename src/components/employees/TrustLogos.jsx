@@ -251,6 +251,7 @@ export default function TrustLogos() {
           .jci-rows{ display:none !important; }
           .jci-vcols{ display:flex !important; }
           .jci-trust{ display:none; }
+          .jci-vcol-wrap{ height:300px; }
         }
       `}</style>
 
@@ -261,18 +262,18 @@ export default function TrustLogos() {
 
       {/* Desktop: horizontal marquee */}
       <div className="jci-rows">
-        <HRow items={rowA} dir="left" duration={90} />
-        <HRow items={rowB} dir="right" duration={100} />
+        <HRow items={rowA} dir="left" duration={120} />
+        <HRow items={rowB} dir="right" duration={140} />
       </div>
 
       {/* Mobile: 2 vertical marquee columns */}
       <div className="jci-vcols">
-        <VCol items={colA} dir="up" duration={44} />
-        <VCol items={colB} dir="down" duration={50} />
+        <VCol items={colA} dir="up" duration={60} />
+        <VCol items={colB} dir="down" duration={68} />
       </div>
 
       <p className="jci-trust">
-        לאומי, מזרחי, בנק ישראל, בזן, צים ורשות המיסים - דרך ועדים והתאגדויות עובדים
+        לאומי, מזרחי, בנק ישראל, בזן, צים ורשות המיסים
       </p>
     </section>
   );
