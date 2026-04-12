@@ -4,17 +4,18 @@ export default function ILS({ value, className = "", style = {} }) {
   const clean = String(value ?? "").replace(/[^\d.,-]/g, "");
 
   return (
-    <bdi
+    <span
       dir="ltr"
       className={className}
       style={{
         display: "inline-block",
         whiteSpace: "nowrap",
-        unicodeBidi: "isolate",
+        direction: "ltr",
+        unicodeBidi: "bidi-override",
         ...style,
       }}
     >
       {clean}₪
-    </bdi>
+    </span>
   );
 }
