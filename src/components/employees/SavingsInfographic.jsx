@@ -59,7 +59,7 @@ export default function SavingsInfographic() {
           </p>
           <p style={{ fontSize: "clamp(22px,4vw,32px)", fontWeight: 900, letterSpacing: "-0.025em", lineHeight: 1.2, marginBottom: 14 }}>
             <span style={{ color: "#fff" }}>עלות נוספת למעסיק: </span>
-            <bdi dir="ltr" style={{ display: "inline-block", whiteSpace: "nowrap", color: "#34C759" }}>0 ₪</bdi>
+            <ILS value={0} style={{ color: "#34C759", fontSize: "clamp(22px,4vw,32px)", fontWeight: 900 }} />
             <span style={{ color: "#34C759" }}>.</span>
           </p>
           <p style={{ fontSize: 15, color: "rgba(255,255,255,0.6)", maxWidth: 480, margin: "0 auto", lineHeight: 1.6 }}>

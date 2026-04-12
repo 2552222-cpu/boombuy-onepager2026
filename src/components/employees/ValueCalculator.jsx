@@ -31,7 +31,7 @@ const QUESTIONS = [
       { label: "עד 1,500 ₪", value: 1500 },
       { label: "1,500–2,500 ₪", value: 2000 },
       { label: "2,500–4,000 ₪", value: 3200 },
-      { label: "מעל 4,000 ₪", value: 4500 },
+      { label: "4,000+ ₪", value: 4500 },
     ],
   },
   {
@@ -64,7 +64,7 @@ const QUESTIONS = [
       { label: "לא בדרך כלל", value: 0 },
       { label: "חופשה אחת", value: 1 },
       { label: "2 חופשות", value: 2 },
-      { label: "3 חופשות או יותר", value: 3 },
+      { label: "3 חופשות או יותר", value: 4 },
     ],
   },
   {
@@ -85,25 +85,34 @@ const QUESTIONS = [
     options: [
       { label: "אין", value: 0 },
       { label: "ביטוח אחד", value: 70 },
-      { label: "שני ביטוחים", value: 130 },
-      { label: "שלושה ומעלה", value: 190 },
+      { label: "שני ביטוחים", value: 140 },
+      { label: "שלושה ומעלה", value: 210 },
     ],
   },
 ];
 
 // ─── CALCULATION ──────────────────────────────────────────────────────────────
 function calcResult(answers) {
-  const q1 = answers[0] ?? 0;
-  const q2 = answers[1] ?? 0;
-  const q3 = answers[2] ?? 0;
-  const q4 = answers[3] ?? 0;
-  const q5 = answers[4] ?? 0;
-  const q6 = answers[5] ?? 0;
+  const q1 = answers[0] ?? 0; // monthly supermarket spend
+  const q2 = answers[1] ?? 0; // frequency multiplier (1.0, 0.6, 0.3, 0.0)
+  const q3 = answers[2] ?? 0; // annual count of everyday benefits
+  const q4 = answers[3] ?? 0; // number of vacations per year
+  const q5 = answers[4] ?? 0; // yearly tech spend value
+  const q6 = answers[5] ?? 0; // monthly car insurance saving
 
+  // Supermarket: monthly spend × 8% × frequency. q1 is already monthly, so don't divide by 12
   const super_ = q1 * 0.08 * q2;
+  
+  // Daily benefits: annual count × 45 ₪ average, convert to monthly
   const daily = (q3 * 45) / 12;
+  
+  // Vacation: trips per year × 800 ₪ per trip, convert to monthly
   const vacation = (q4 * 800) / 12;
+  
+  // Tech: yearly spend converted to monthly
   const tech = q5 / 12;
+  
+  // Insurance: already monthly
   const insurance = q6;
 
   const monthly = super_ + daily + vacation + tech + insurance;

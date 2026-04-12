@@ -75,7 +75,7 @@ function MiniLanding({ orgName }) {
         לפני שמצטרפים לבקשה, הנה כמה דוגמאות להטבות שיכולות לעזור להתמודד עם יוקר המחיה ולתת יותר ערך לאורך השנה
       </p>
       {/* Proof cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 18 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 14 }}>
         {PROOF_CARDS.map((c) => (
           <div key={c.title} style={{ background: "#F5F5F7", borderRadius: 14, padding: "14px 14px" }}>
             <div style={{ fontSize: 22, marginBottom: 6 }}>{c.icon}</div>
@@ -84,13 +84,26 @@ function MiniLanding({ orgName }) {
           </div>
         ))}
       </div>
-      {/* Secondary link */}
-      <div style={{ textAlign: "center" }}>
-        <a href={BENEFITS_URL} target="_blank" rel="noopener noreferrer"
-          style={{ fontSize: 13, color: "#86868B", textDecoration: "underline", fontFamily: "var(--font-heebo)" }}>
-          לצפייה בכל ההטבות
-        </a>
-      </div>
+      {/* Full-width secondary benefits preview tile */}
+      <a href={BENEFITS_URL} target="_blank" rel="noopener noreferrer"
+        style={{
+          display: "block", background: "#F0F4FF", border: "1.5px solid rgba(0, 102, 204, 0.25)", borderRadius: 14, padding: "16px 16px",
+          textDecoration: "none", cursor: "pointer", transition: "all 0.2s",
+          boxShadow: "0 0 12px rgba(0, 102, 204, 0.08)"
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.borderColor = "rgba(0, 102, 204, 0.4)";
+          e.currentTarget.style.boxShadow = "0 0 16px rgba(0, 102, 204, 0.15)";
+          e.currentTarget.style.background = "#E8F0FF";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.borderColor = "rgba(0, 102, 204, 0.25)";
+          e.currentTarget.style.boxShadow = "0 0 12px rgba(0, 102, 204, 0.08)";
+          e.currentTarget.style.background = "#F0F4FF";
+        }}>
+        <p style={{ fontSize: 13, fontWeight: 700, color: "#0066CC", marginBottom: 4, margin: 0 }}>לצפייה בעמוד ההטבות המלא</p>
+        <p style={{ fontSize: 11.5, color: "#86868B", margin: 0, lineHeight: 1.4 }}>דוגמאות נוספות להטבות וההטבות הזמינות בחברתך</p>
+      </a>
     </motion.div>
   );
 }
