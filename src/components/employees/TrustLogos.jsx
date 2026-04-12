@@ -183,7 +183,7 @@ export default function TrustLogos() {
         .jci-vcol-wrap{
           flex:1;
           max-width:50%;
-          height:500px;
+          height:380px;
           overflow:hidden;
           position:relative;
           border-radius:16px;
@@ -250,7 +250,7 @@ export default function TrustLogos() {
           .jci-subtitle{ font-size:12px; }
           .jci-rows{ display:none !important; }
           .jci-vcols{ display:flex !important; }
-          .jci-trust{ font-size:11px; margin-top:24px; padding:0 16px; }
+          .jci-trust{ display:none; }
         }
       `}</style>
 
@@ -261,18 +261,18 @@ export default function TrustLogos() {
 
       {/* Desktop: horizontal marquee */}
       <div className="jci-rows">
-        <HRow items={rowA} dir="left" duration={60} />
-        <HRow items={rowB} dir="right" duration={65} />
+        <HRow items={rowA} dir="left" duration={90} />
+        <HRow items={rowB} dir="right" duration={100} />
       </div>
 
       {/* Mobile: 2 vertical marquee columns */}
       <div className="jci-vcols">
-        <VCol items={colA} dir="up" duration={28} />
-        <VCol items={colB} dir="down" duration={32} />
+        <VCol items={colA} dir="up" duration={44} />
+        <VCol items={colB} dir="down" duration={50} />
       </div>
 
       <p className="jci-trust">
-        מקס, בנק לאומי, בנק מזרחי, בנק ישראל, בנק דיסקונט, קבוצת בזן, צים ורשות המיסים - מיוצגים ע"י התאגדות / ועד עובדים
+        לאומי, מזרחי, בנק ישראל, בזן, צים ורשות המיסים - דרך ועדים והתאגדויות עובדים
       </p>
     </section>
   );

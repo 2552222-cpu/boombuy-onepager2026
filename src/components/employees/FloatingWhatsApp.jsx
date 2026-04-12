@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 
@@ -7,6 +7,27 @@ const WA_MESSAGE = encodeURIComponent("היי, אני רוצה להתייעץ ל
 
 export default function FloatingWhatsApp() {
   const [open, setOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+
+  useEffect(() => {
+    const handler = (e) => setHidden(e.detail.open);
+    window.addEventListener("offersModalChange", handler);
+
+    // hide when user is in the offers slider section
+    const section = document.getElementById("offers-slider");
+    if (!section) return () => window.removeEventListener("offersModalChange", handler);
+    const obs = new IntersectionObserver(
+      ([entry]) => setHidden(h => entry.isIntersecting ? true : (h === true ? false : h)),
+      { threshold: 0.3 }
+    );
+    obs.observe(section);
+    return () => {
+      window.removeEventListener("offersModalChange", handler);
+      obs.disconnect();
+    };
+  }, []);
+
+  if (hidden) return null;
 
   return (
     <div style={{ position: "fixed", bottom: 24, left: 24, zIndex: 9999, direction: "rtl" }}>
