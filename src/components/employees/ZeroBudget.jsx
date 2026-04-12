@@ -43,7 +43,7 @@ export default function ZeroBudget() {
               fontFamily: "var(--font-heebo)",
               direction: "ltr",
               display: "inline-block",
-              unicodeBidi: "isolate",
+              unicodeBidi: "embed",
             }}>0 &#x20AA;</span>
             <span style={{ fontSize: "13px", fontWeight: 500, color: "#86868B", marginTop: "6px", whiteSpace: "nowrap" }}>
               עלות למעסיק
