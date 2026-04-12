@@ -1,121 +1,169 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
-const POWER_WORDS = ["נטו", "חיסכון", "כסף"];
 
 const SLIDES = [
   {
     id: 1,
-    lines: ["מה אם העבודה שלך", "הייתה נותנת לך יותר?"],
+    duration: 2600,
     size: "clamp(32px, 8.5vw, 54px)",
     weight: 900,
-    color: "#1D1D1F",
-    highlight: null,
+    lines: [
+      { text: "מה אם העבודה שלך", color: "#1D1D1F", emphasis: false },
+      { text: "הייתה נותנת לך יותר?", color: "#1D1D1F", emphasis: false },
+    ],
   },
   {
     id: 2,
-    lines: ["לא רק מתנה בחג", "משהו שמרגישים ביומיום", "בכל יום מחדש"],
+    duration: 2600,
     size: "clamp(26px, 7vw, 44px)",
     weight: 800,
-    color: "#1D1D1F",
-    highlight: null,
+    lines: [
+      { text: "לא רק מתנה בחג", color: "#1D1D1F", emphasis: false },
+      { text: "משהו שמרגישים ביומיום", color: "#1D1D1F", emphasis: false },
+      { text: "בכל יום מחדש", color: "#0066CC", emphasis: true },
+    ],
   },
   {
     id: 3,
-    lines: ["8% הנחה קבועה בסופר", "אייפון במחיר יבואן", "חופשות והופעות לאורך השנה"],
+    duration: 2800,
     size: "clamp(22px, 6vw, 36px)",
     weight: 700,
-    color: "#1D1D1F",
-    highlight: null,
+    lines: [
+      { text: "8% הנחה קבועה בסופר", color: "#0066CC", emphasis: true },
+      { text: "אייפון במחיר יבואן", color: "#1D1D1F", emphasis: false },
+      { text: "חופשות והופעות לאורך השנה", color: "#1D1D1F", emphasis: false },
+    ],
   },
   {
     id: 4,
-    lines: ["וכל זה בלי שהמעסיק שלך", "יוסיף עוד שקל אחד לתקציב", "שהוא ממילא מוציא"],
+    duration: 2800,
     size: "clamp(22px, 6vw, 36px)",
     weight: 700,
-    color: "#1D1D1F",
-    highlight: "ממילא",
-    highlightColor: "#007AFF",
+    lines: [
+      { text: "וכל זה בלי שהמעסיק שלך", color: "#1D1D1F", emphasis: false },
+      { text: "יוסיף עוד שקל אחד לתקציב", color: "#1D1D1F", emphasis: false },
+      { text: "שהוא ממילא מוציא", color: "#1D1D1F", emphasis: false, highlight: "ממילא" },
+    ],
   },
   {
     id: 5,
-    lines: ["עכשיו תראו", "איך זה נראה"],
+    duration: null, // no auto-advance
     size: "clamp(32px, 8.5vw, 54px)",
     weight: 900,
-    color: "#007AFF",
-    highlight: null,
+    lines: [
+      { text: "עכשיו תראו", color: "#0066CC", emphasis: true },
+      { text: "איך זה נראה", color: "#0066CC", emphasis: true },
+    ],
   },
 ];
-
-function highlightPowerWords(text) {
-  const regex = new RegExp(`(${POWER_WORDS.join("|")})`, "g");
-  const parts = text.split(regex);
-  return parts.map((part, i) =>
-    POWER_WORDS.includes(part)
-      ? <span key={i} style={{ color: "#0066CC", fontWeight: 900 }}>{part}</span>
-      : part
-  );
-}
-
-function LineText({ line, highlight, highlightColor, color, size, weight }) {
-  if (highlight && line.includes(highlight)) {
-    const parts = line.split(highlight);
-    return (
-      <>
-        {parts[0]}
-        <span style={{ color: highlightColor, fontWeight: weight }}>{highlight}</span>
-        {parts[1]}
-      </>
-    );
-  }
-  return <span>{highlightPowerWords(line)}</span>;
-}
 
 export default function IntroSlides({ onDone }) {
   const [index, setIndex] = useState(0);
   const [progress, setProgress] = useState(0);
-  const intervalRef = useRef(null);
-  const startTimeRef = useRef(Date.now());
   const touchStartX = useRef(0);
+  const timerRef = useRef(null);
+  const startRef = useRef(null);
+  const rafRef = useRef(null);
 
+  const slide = SLIDES[index];
   const isLast = index === SLIDES.length - 1;
 
-  const finish = () => {
+  const finish = useCallback(() => {
     if (onDone) onDone();
     requestAnimationFrame(() => {
-      document.getElementById("hero-section")?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
+      document.getElementById("hero-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
-  };
+  }, [onDone]);
 
-  const goNext = () => {
+  const goNext = useCallback(() => {
     if (index < SLIDES.length - 1) {
-      setIndex((p) => p + 1);
+      setIndex(p => p + 1);
     } else {
       finish();
     }
-  };
+  }, [index, finish]);
 
-  const goPrev = () => {
-    if (index > 0) setIndex((p) => p - 1);
-  };
+  const goPrev = useCallback(() => {
+    if (index > 0) setIndex(p => p - 1);
+  }, [index]);
 
+  // Auto-advance with animated progress bar
   useEffect(() => {
     setProgress(0);
-    return () => {};
-  }, [index]);
+    if (!slide.duration) return;
+
+    cancelAnimationFrame(rafRef.current);
+    startRef.current = performance.now();
+
+    const tick = (now) => {
+      const elapsed = now - startRef.current;
+      const pct = Math.min((elapsed / slide.duration) * 100, 100);
+      setProgress(pct);
+      if (pct < 100) {
+        rafRef.current = requestAnimationFrame(tick);
+      } else {
+        goNext();
+      }
+    };
+    rafRef.current = requestAnimationFrame(tick);
+
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [index, slide.duration, goNext]);
+
+  // Reset progress on manual navigation
+  const handleNext = () => {
+    cancelAnimationFrame(rafRef.current);
+    goNext();
+  };
+
+  const handlePrev = () => {
+    cancelAnimationFrame(rafRef.current);
+    goPrev();
+  };
 
   const handleTouchStart = (e) => { touchStartX.current = e.touches[0].clientX; };
   const handleTouchEnd = (e) => {
     const diff = touchStartX.current - e.changedTouches[0].clientX;
     if (Math.abs(diff) > 40) {
-      if (diff > 0) goNext(); else goPrev();
+      if (diff > 0) handleNext(); else handlePrev();
     }
   };
 
-  const slide = SLIDES[index];
+  const renderLine = (line, li) => {
+    let content;
+    if (line.highlight) {
+      const parts = line.text.split(line.highlight);
+      content = (
+        <>
+          {parts[0]}
+          <span style={{ color: "#0066CC", fontWeight: 900 }}>{line.highlight}</span>
+          {parts[1]}
+        </>
+      );
+    } else {
+      content = line.text;
+    }
+
+    return (
+      <motion.div
+        key={`${slide.id}-${li}`}
+        initial={{ opacity: 0, y: 16, filter: "blur(10px)" }}
+        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        transition={{ duration: 0.5, delay: li * 0.14, ease: [0.23, 1, 0.32, 1] }}
+        style={{
+          fontSize: slide.size,
+          fontWeight: slide.weight,
+          color: line.color,
+          lineHeight: 1.18,
+          letterSpacing: "-0.025em",
+          fontFamily: "var(--font-heebo)",
+          display: "block",
+        }}
+      >
+        {content}
+      </motion.div>
+    );
+  };
 
   return (
     <section
@@ -137,14 +185,14 @@ export default function IntroSlides({ onDone }) {
       {/* Progress bars */}
       <div style={{
         position: "absolute",
-        top: "22px",
+        top: "18px",
         display: "flex",
         gap: "5px",
         width: "92%",
         maxWidth: "520px",
         zIndex: 20,
       }}>
-        {SLIDES.map((_, i) => (
+        {SLIDES.map((s, i) => (
           <div key={i} style={{
             height: "2.5px",
             flex: 1,
@@ -152,13 +200,15 @@ export default function IntroSlides({ onDone }) {
             borderRadius: "10px",
             overflow: "hidden",
           }}>
-            <div style={{
-              height: "100%",
-              background: "#007AFF",
-              borderRadius: "10px",
-              width: i < index ? "100%" : i === index ? `${progress}%` : "0%",
-              transition: i === index ? "none" : "none",
-            }} />
+            <motion.div
+              style={{
+                height: "100%",
+                background: "#007AFF",
+                borderRadius: "10px",
+                width: i < index ? "100%" : i === index ? `${progress}%` : "0%",
+              }}
+              transition={{ ease: "linear" }}
+            />
           </div>
         ))}
       </div>
@@ -171,44 +221,20 @@ export default function IntroSlides({ onDone }) {
         alignItems: "center",
         justifyContent: "center",
         width: "100%",
-        padding: "0 28px",
-        paddingTop: "100px",
+        padding: "0 24px",
+        paddingTop: "88px",
+        boxSizing: "border-box",
       }}>
         <AnimatePresence mode="wait">
           <motion.div
             key={slide.id}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            style={{ textAlign: "center" }}
+            initial={{ opacity: 0, scale: 0.985 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.01 }}
+            transition={{ duration: 0.32, ease: "easeOut" }}
+            style={{ textAlign: "center", width: "100%", maxWidth: "600px" }}
           >
-            {slide.lines.map((line, li) => (
-              <motion.div
-                key={li}
-                initial={{ opacity: 0, y: 18, filter: "blur(10px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                transition={{ duration: 0.55, delay: li * 0.18, ease: [0.23, 1, 0.32, 1] }}
-                style={{
-                  fontSize: slide.size,
-                  fontWeight: slide.weight,
-                  color: slide.color,
-                  lineHeight: 1.18,
-                  fontFamily: "var(--font-heebo)",
-                  display: "block",
-                  letterSpacing: "-0.025em",
-                }}
-              >
-                <LineText
-                  line={line}
-                  highlight={slide.highlight}
-                  highlightColor={slide.highlightColor}
-                  color={slide.color}
-                  size={slide.size}
-                  weight={slide.weight}
-                />
-              </motion.div>
-            ))}
+            {slide.lines.map((line, li) => renderLine(line, li))}
           </motion.div>
         </AnimatePresence>
       </div>
@@ -217,7 +243,7 @@ export default function IntroSlides({ onDone }) {
       <div style={{
         width: "100%",
         maxWidth: "280px",
-        paddingBottom: "52px",
+        paddingBottom: "44px",
         display: "flex",
         flexDirection: "column",
         gap: "10px",
@@ -226,7 +252,7 @@ export default function IntroSlides({ onDone }) {
       }}>
         <motion.button
           whileTap={{ scale: 0.97 }}
-          onClick={goNext}
+          onClick={handleNext}
           style={{
             width: "100%",
             background: isLast ? "#007AFF" : "#1D1D1F",
