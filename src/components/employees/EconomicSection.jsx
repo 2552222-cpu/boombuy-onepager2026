@@ -75,26 +75,6 @@ export default function EconomicSection() {
           ))}
         </div>
 
-        {/* CTA */}
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <button
-            onClick={scrollToSurvey}
-            style={{
-              background: "#0066CC",
-              color: "#fff",
-              border: "none",
-              padding: "16px 36px",
-              borderRadius: 44,
-              fontSize: 16,
-              fontWeight: 800,
-              cursor: "pointer",
-              fontFamily: "var(--font-heebo)",
-              letterSpacing: "-0.01em",
-            }}
-          >
-            אני רוצה את זה בארגון שלי ←
-          </button>
-        </div>
 
       </div>
     </section>
