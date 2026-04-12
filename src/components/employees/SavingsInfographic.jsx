@@ -54,11 +54,16 @@ export default function SavingsInfographic() {
           viewport={{ once: true }}
           style={{ background: "#1D1D1F", borderRadius: 28, padding: "36px 32px", textAlign: "center" }}
         >
-          <p style={{ fontSize: "clamp(22px,4vw,32px)", fontWeight: 900, color: "#fff", marginBottom: 12, letterSpacing: "-0.02em" }}>
-            100% ערך לעובד.<br /><span style={{ color: "#34C759" }}><ILS value="0" /> עלות נוספת למעסיק.</span>
+          <p style={{ fontSize: "clamp(22px,4vw,32px)", fontWeight: 900, color: "#fff", marginBottom: 10, letterSpacing: "-0.025em", lineHeight: 1.2 }}>
+            100% ערך לעובד.
           </p>
-          <p style={{ fontSize: 15, color: "rgba(255,255,255,0.6)", maxWidth: 500, margin: "0 auto", lineHeight: 1.6 }}>
-            טכנולוגיית ה-<strong style={{ color: "#fff" }}>Nexus</strong> של בום ביי מייצרת סבסוד אוטומטי מתוך נפח הקנייה הקבוצתי - ללא צורך בתקציב ארגוני נוסף.
+          <p style={{ fontSize: "clamp(22px,4vw,32px)", fontWeight: 900, letterSpacing: "-0.025em", lineHeight: 1.2, marginBottom: 14 }}>
+            <span style={{ color: "#fff" }}>עלות נוספת למעסיק: </span>
+            <bdi dir="ltr" style={{ display: "inline-block", whiteSpace: "nowrap", color: "#34C759" }}>0 ₪</bdi>
+            <span style={{ color: "#34C759" }}>.</span>
+          </p>
+          <p style={{ fontSize: 15, color: "rgba(255,255,255,0.6)", maxWidth: 480, margin: "0 auto", lineHeight: 1.6 }}>
+            בום ביי מוסיפה לעובדים שכבה נוספת של הטבות וערך כלכלי מתמשך, בנוסף למה שכבר קיים בארגון - בלי להגדיל את התקציב הקיים.
           </p>
         </motion.div>
 
