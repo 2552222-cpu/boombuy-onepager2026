@@ -52,10 +52,10 @@ function letterMsg(orgName, count, orgKey, group) {
 
 // ─── Mini Landing Proof Cards ─────────────────────────────────────────────────
 const PROOF_CARDS = [
-  { icon: "🛒", title: "סופר ופארם", sub: "8% הנחה קבועה ברשתות הדיסקאונט המוזלות" },
-  { icon: "📱", title: "חשמל ואלקטרוניקה", sub: "מחירי יבואן על Apple, Samsung ועוד" },
-  { icon: "✈️", title: "חופשות והופעות", sub: "חבילות בלעדיות בארץ ובחו\"ל" },
-  { icon: "⚡", title: "הטבה יומית", sub: "כל בוקר הטבה חדשה ישירות לוואטסאפ" },
+  { Icon: ShoppingCart, title: "סופר ופארם", sub: "8% הנחה קבועה ברשתות הדיסקאונט המוזלות" },
+  { Icon: Smartphone, title: "חשמל ואלקטרוניקה", sub: "מחירי יבואן על Apple, Samsung ועוד" },
+  { Icon: Plane, title: "חופשות והופעות", sub: "חבילות בלעדיות בארץ ובחו\"ל" },
+  { Icon: Zap, title: "הטבה יומית", sub: "כל בוקר הטבה חדשה ישירות לוואטסאפ" },
 ];
 
 
@@ -77,16 +77,13 @@ function MiniLanding({ orgName }) {
       </p>
       {/* Proof cards */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 18 }}>
-        {PROOF_CARDS.map((c) => {
-          const IconComponent = c.icon;
-          return (
-            <div key={c.title} style={{ background: "#F5F5F7", borderRadius: 12, padding: "12px 12px" }}>
-              <IconComponent size={18} color="#0055CC" strokeWidth={1.75} style={{ marginBottom: 8 }} />
-              <p style={{ fontSize: 12.5, fontWeight: 800, color: "#1D1D1F", marginBottom: 2, lineHeight: 1.25 }}>{c.title}</p>
-              <p style={{ fontSize: 11, color: "#86868B", lineHeight: 1.4 }}>{c.sub}</p>
-            </div>
-          );
-        })}
+        {PROOF_CARDS.map((c) => (
+          <div key={c.title} style={{ background: "#F5F5F7", borderRadius: 12, padding: "12px 12px" }}>
+            <c.Icon size={18} color="#0055CC" strokeWidth={1.75} style={{ marginBottom: 8 }} />
+            <p style={{ fontSize: 12.5, fontWeight: 800, color: "#1D1D1F", marginBottom: 2, lineHeight: 1.25 }}>{c.title}</p>
+            <p style={{ fontSize: 11, color: "#86868B", lineHeight: 1.4 }}>{c.sub}</p>
+          </div>
+        ))}
       </div>
       {/* Full-width secondary benefits preview tile */}
       <a href="https://boom-perk-flow.base44.app/#offers-slider" target="_blank" rel="noopener noreferrer"
@@ -354,7 +351,7 @@ export default function OrgPage() {
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
             <span style={{ fontWeight: 700, fontSize: "15px", color: "#1D1D1F" }}>{count} / {currentTarget} עובדים</span>
             {count < currentTarget && <span style={{ fontSize: "12px", color: "#86868B" }}>עוד {currentTarget - count} להשלמת היעד</span>}
-            {count >= TARGET_2 && <span style={{ fontSize: "12px", color: "#34C759", fontWeight: 700 }}>✓ עברתם 20!</span>}
+            {count >= currentTarget && <span style={{ fontSize: "12px", color: "#34C759", fontWeight: 700 }}>✓ עברתם {currentTarget}!</span>}
           </div>
           <div style={{ height: "8px", background: "rgba(0,0,0,0.07)", borderRadius: "9999px", overflow: "hidden" }}>
             <motion.div

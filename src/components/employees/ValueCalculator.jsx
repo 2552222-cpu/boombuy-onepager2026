@@ -171,7 +171,7 @@ export default function ValueCalculator() {
           חישוב אישי ב-10 שניות
         </p>
         <h2 style={{ textAlign: "center", fontSize: "clamp(22px, 4.5vw, 34px)", fontWeight: 900, color: "#1D1D1F", letterSpacing: "-0.03em", lineHeight: 1.2, marginBottom: 8 }}>
-          כמה איפשר הטבות אלו ייתנו לכם בשנה
+          כמה ההטבות האלה יכולות להיות שוות לכם בשנה?
         </h2>
         <p style={{ textAlign: "center", fontSize: "clamp(13px, 2vw, 15px)", color: "#86868B", marginBottom: 32, lineHeight: 1.6 }}>
           6 שאלות קצרות · בלי הרשמה · תוצאה אישית לפי ההרגלים שלכם
