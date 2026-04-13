@@ -8,6 +8,7 @@ import ILS from "../components/employees/ILS";
 
 const TARGET_1 = 10;
 const TARGET_2 = 20;
+const TARGET_LARGE = 50;
 
 
 // ─── Local storage helpers ─────────────────────────────────────────────────────
@@ -327,7 +328,7 @@ export default function OrgPage() {
 
   const count = group.currentCount || 1;
   const isLargeOrg = group?.orgSize === "1000+ עובדים";
-  const currentTarget = isLargeOrg ? 50 : (count < TARGET_1 ? TARGET_1 : TARGET_2);
+  const currentTarget = isLargeOrg ? TARGET_LARGE : (count < TARGET_1 ? TARGET_1 : TARGET_2);
   const progress = Math.min((count / currentTarget) * 100, 100);
 
   return (
@@ -336,7 +337,7 @@ export default function OrgPage() {
       <div style={{ background: "#fff", borderBottom: "1px solid rgba(0,0,0,0.06)", padding: "16px 20px", display: "flex", justifyContent: "flex-end" }}>
         <a href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center" }}>
           {/* BoomBuy Logo Placeholder - Replace with official asset */}
-          <div style={{ fontSize: "clamp(16px, 4vw, 18px)", fontWeight: 900, color: "#0066CC", letterSpacing: "-0.02em", fontFamily: "var(--font-heebo)" }}>🎯 BoomBuy</div>
+          <div style={{ fontSize: "clamp(16px, 4vw, 18px)", fontWeight: 900, color: "#0066CC", letterSpacing: "-0.03em", fontFamily: "var(--font-heebo)" }}>BoomBuy</div>
         </a>
       </div>
 

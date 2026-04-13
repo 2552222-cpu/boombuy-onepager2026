@@ -67,37 +67,31 @@ export default function Survey() {
   const [initiatorName, setInitiatorName] = useState("");
   const [initiatorPhone, setInitiatorPhone] = useState("");
   const [myMemberId, setMyMemberId] = useState("");
+  const [stepHistory, setStepHistory] = useState([]);
   const navigate = useNavigate();
+
+  const goBack = () => {
+    if (stepHistory.length === 0) return;
+    const prev = stepHistory[stepHistory.length - 1];
+    setStepHistory(stepHistory.slice(0, -1));
+    setStep(prev);
+  };
+
+  const advance = (nextStep) => {
+    setStepHistory((h) => [...h, step]);
+    setStep(nextStep);
+  };
 
   const handleOrgNameNext = () => {
     if (!orgName.trim()) return;
-    setStep(1);
+    advance(1);
   };
 
-  const handleOrgSize = (label) => {
-    setOrgSize(label);
-    setStep(2);
-  };
-
-  const handleBudget = (label) => {
-    setHolidayBudget(label);
-    setStep(3);
-  };
-
-  const handleClub = (label) => {
-    setCurrentClub(label);
-    setStep(4);
-  };
-
-  const handleWelfareBudget = (label) => {
-    setWelfareBudget(label);
-    setStep(5);
-  };
-
-  const handlePainPoint = (label) => {
-    setPainPoint(label);
-    setStep(6);
-  };
+  const handleOrgSize = (label) => { setOrgSize(label); advance(2); };
+  const handleBudget = (label) => { setHolidayBudget(label); advance(3); };
+  const handleClub = (label) => { setCurrentClub(label); advance(4); };
+  const handleWelfareBudget = (label) => { setWelfareBudget(label); advance(5); };
+  const handlePainPoint = (label) => { setPainPoint(label); advance(6); };
 
   const getResultFraming = (painPoint, currentClub, welfareBudget) => {
     if (painPoint === "סופר ופארם")
@@ -202,13 +196,18 @@ export default function Survey() {
               fontFamily: "var(--font-heebo)",
             }}
           >
-            אני רוצה שהארגון שלי יצטרף
+            אני רוצה שהארגון שלי יצטרף ל-BoomBuy
           </h2>
           <p style={{ fontSize: "15px", color: "#86868B", fontFamily: "var(--font-heebo)" }}>
             כמה שאלות קצרות לפני שנפתח בקשה לארגון
           </p>
+          {step > 0 && step < 7 && (
+            <button onClick={goBack} style={{ marginTop: 8, background: "none", border: "none", color: "#AEAEB2", fontSize: 13, cursor: "pointer", fontFamily: "var(--font-heebo)" }}>
+              ← חזרה
+            </button>
+          )}
           <div style={{ display: "inline-block", background: "rgba(0,102,204,0.08)", border: "1px solid rgba(0,102,204,0.15)", borderRadius: "999px", padding: "5px 16px", marginTop: "10px" }}>
-            <span style={{ fontSize: "12.5px", fontWeight: 600, color: "#0066CC", fontFamily: "var(--font-heebo)" }}>מתאים בעיקר לארגונים עם 100 עובדים ומעלה</span>
+            <span style={{ fontSize: "12.5px", fontWeight: 600, color: "#0066CC", fontFamily: "var(--font-heebo)" }}>מתאים בעיקר לארגונים עם 100+ עובדים</span>
           </div>
         </div>
 
@@ -510,7 +509,7 @@ export default function Survey() {
                   אם עוד 20 עמיתים יצטרפו — נגדיל ב-80% את הסיכוי להכניס את בום ביי לארגון!
                 </p>
                 <a
-                  href={`https://wa.me/?text=${encodeURIComponent("היי! הצטרפתי לבקשה קבוצתית להכנסת הטבות בום ביי לארגון שלנו. שווה לכם גם: " + window.location.origin + "/join/" + normalizeOrgKey(orgName) + (myMemberId ? "?ref=" + myMemberId : ""))}`}
+                  href={`https://wa.me/?text=${encodeURIComponent("היי! הצטרפתי לבקשה קבוצתית להכנסת BoomBuy לארגון שלנו. שווה לכם גם: " + window.location.origin + "/join/" + normalizeOrgKey(orgName) + (myMemberId ? "?ref=" + myMemberId : ""))}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ display: "block", background: "#25D366", color: "#fff", textDecoration: "none", padding: "11px", borderRadius: 14, fontSize: 14, fontWeight: 700, fontFamily: "var(--font-heebo)", marginTop: 10 }}
