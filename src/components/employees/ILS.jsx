@@ -8,14 +8,17 @@ export default function ILS({ value, className = "", style = {} }) {
       dir="ltr"
       className={className}
       style={{
-        display: "inline-block",
+        display: "inline-flex",
+        flexDirection: "row",
+        alignItems: "baseline",
         whiteSpace: "nowrap",
         direction: "ltr",
-        unicodeBidi: "bidi-override",
+        unicodeBidi: "isolate-override",
         ...style,
       }}
     >
-      {clean} ₪
+      <span style={{ direction: "ltr", unicodeBidi: "embed" }}>{clean}</span>
+      <span style={{ marginInlineStart: "0.18em" }}>₪</span>
     </span>
   );
 }
