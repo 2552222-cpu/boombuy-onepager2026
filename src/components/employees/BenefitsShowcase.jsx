@@ -3,66 +3,155 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Zap, Smartphone, ShoppingCart, Gift, Plane, Music, Shirt, Store, ChevronLeft, ChevronRight } from "lucide-react";
 import ILS from "./ILS";
 
-// ─── DATA ───────────────────────────────────────────────────────────────────
-const DAILY_PREVIEW = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7e52326a0_-2026-03-22T160414836.png";
-const DAILY_EXTRA = ["https://media.base44.com/images/public/69bc4105141d932b80ba9f27/9ddb536b7_-2026-03-22T123739070.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/46e419525_-2026-02-18T150744909.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ccb0d029b_-2026-02-18T145838528.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3f27a30a4_.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3211ae300_100.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a4b03713f_-2026-03-22T142532392.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/096d0c835_70.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8fb586f26_-2026-03-15T180501791.png"];
-
-const SUPER_PREVIEW = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/d53a51271_-2026-03-22T163009970.png";
-const SUPER_EXTRA = ["https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3784ac419_-2026-03-22T130058307.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/52e06185a_-2026-03-22T115442800.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6e4f9f168_-2026-03-22T130017988.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6b98c8aed_72.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ea0c9f5da_-2026-02-18T145540109.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/1681bed30_-2026-03-22T143417632.png"];
-
-const TECH_PREVIEW = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/db8e935e8_-2026-03-22T162955489.png";
-const TECH_EXTRA = ["https://media.base44.com/images/public/69bc4105141d932b80ba9f27/477510a11_-2026-02-18T150203869.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ca6b2de24_-2026-02-18T145345395.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/c7ef06ffc_-2026-02-18T141936848.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/96816d966_92.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/92d8c129a_-2026-02-18T150849922.png"];
-
-const GIFT_PREVIEW = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28d0b6e89_-2026-03-22T163901041.png";
-const GIFT_EXTRA = [
-  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28d0b6e89_-2026-03-22T163901041.png",
-  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28d0b6e89_-2026-03-22T163901041.png",
-  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28d0b6e89_-2026-03-22T163901041.png",
-  "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28d0b6e89_-2026-03-22T163901041.png",
+// ─── DATA — each offer has its own image + pricing ───────────────────────────
+const categories = [
+  {
+    id: "daily",
+    title: "כל בוקר הטבה חדשה",
+    description: "כל יום מתחיל בהטבה חדשה שנשלחת לעובד בוואטסאפ, על מוצרי צריכה, מותגי פרימיום, חוויות ואטרקציות. תמיד במחיר הנמוך ביותר בישראל.",
+    sub: "260 הטבות בשנה - ישירות לוואטסאפ שלך",
+    tag: "המחיר הנמוך בישראל. תמיד.",
+    previewImage: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7e52326a0_-2026-03-22T160414836.png",
+    offers: [
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/9ddb536b7_-2026-03-22T123739070.png", productName: "Adidas Samba", priceOld: "499", priceNew: "299", saving: "200", labelOld: "מחיר באדידס" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/46e419525_-2026-02-18T150744909.png", productName: "נעלי ריצה Nike", priceOld: "450", priceNew: "249", saving: "201", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ccb0d029b_-2026-02-18T145838528.png", productName: "טי-שירט Tommy", priceOld: "280", priceNew: "129", saving: "151", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3f27a30a4_.png", productName: "אוזניות JBL", priceOld: "399", priceNew: "199", saving: "200", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a4b03713f_-2026-03-22T142532392.png", productName: "כרטיס הופעה", priceOld: "290", priceNew: "99", saving: "191", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8fb586f26_-2026-03-15T180501791.png", productName: "סט מזוודות", priceOld: "1,999", priceNew: "249", saving: "1,750", labelOld: "מחיר שוק" },
+    ],
+  },
+  {
+    id: "tech",
+    title: "חשמל ואלקטרוניקה",
+    description: "חנות קבועה של מוצרי חשמל, אלקטרוניקה, מחשבים וסלולר במחירי יבואן - מהמותגים שעובדים באמת רוצים.",
+    sub: "Apple, Samsung, Dyson, Ninja ועוד",
+    tag: "מחיר יבואן",
+    previewImage: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/db8e935e8_-2026-03-22T162955489.png",
+    offers: [
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/92d8c129a_-2026-02-18T150849922.png", productName: "iPhone 16 Pro", priceOld: "4,590", priceNew: "3,890", saving: "700", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/477510a11_-2026-02-18T150203869.png", productName: "Nespresso", priceOld: "833", priceNew: "589", saving: "244", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ca6b2de24_-2026-02-18T145345395.png", productName: "Dyson V15", priceOld: "2,499", priceNew: "1,699", saving: "800", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/c7ef06ffc_-2026-02-18T141936848.png", productName: "Samsung Galaxy", priceOld: "3,999", priceNew: "3,199", saving: "800", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/96816d966_92.png", productName: "Ninja Blender", priceOld: "649", priceNew: "399", saving: "250", labelOld: "מחיר שוק" },
+    ],
+  },
+  {
+    id: "super",
+    title: "פארם, סופר ויוקר המחיה",
+    description: "שוברי קניות לסופרמרקט והנחות קבועות על מוצרי יומיום - ערך מוחשי שמרגישים שוב ושוב בסל הקניות.",
+    sub: "הנחה קבועה של עד 8% ברשתות הסופרים המוזלים",
+    tag: "הנחה קבועה של 8% בסופר!",
+    previewImage: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/d53a51271_-2026-03-22T163009970.png",
+    offers: [
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ea0c9f5da_-2026-02-18T145540109.png", productName: "TNX · שובר סופר", priceOld: "350", priceNew: "149", saving: "201", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3784ac419_-2026-03-22T130058307.png", productName: "שמפו Kerastase", priceOld: "189", priceNew: "99", saving: "90", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/52e06185a_-2026-03-22T115442800.png", productName: "פרפום לבית", priceOld: "240", priceNew: "129", saving: "111", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6e4f9f168_-2026-03-22T130017988.png", productName: "מוצרי ניקיון", priceOld: "160", priceNew: "89", saving: "71", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6b98c8aed_72.png", productName: "קפסולות קפה", priceOld: "120", priceNew: "69", saving: "51", labelOld: "מחיר שוק" },
+    ],
+  },
+  {
+    id: "gift",
+    title: "מתנות לחגים",
+    description: "הצטרפות לפלטפורמה תאפשר לעובדים ליהנות גם ממתנות חג משודרגות.",
+    sub: "מתנה אחת, כמה מתנות, או שילוב ביניהן - לפי מה שנכון לארגון ולעובדים.",
+    detail: "הארגון יכול לבחור בין תו לסופר, אתר בחירה למתנות או ארנק אלקטרוני שיאפשר לעובדים לבחור כמה מתנות לחג.",
+    tag: "בחירה חופשית",
+    previewImage: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28d0b6e89_-2026-03-22T163901041.png",
+    offers: [
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28d0b6e89_-2026-03-22T163901041.png", productName: "מתנות לחג", priceOld: null, priceNew: null, saving: null, labelOld: null },
+    ],
+  },
+  {
+    id: "vacation",
+    title: "נופש וחופשות",
+    description: "חבילות טיסה, מלון, הופעות ומשחקי ספורט בארץ ובחו\"ל - במחירים שסגורים רק לעובדי הארגון.",
+    sub: "בארץ ובחו\"ל · מחירים בלעדיים",
+    tag: "מחירים בלעדיים",
+    previewImage: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/1b29c5bb8_-2026-03-22T162942110.png",
+    offers: [
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/cf3b11fa5_-2026-03-22T133529822.png", productName: "מלונות בראון", priceOld: "1,790", priceNew: "899", saving: "891", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/d11fc0b42_-2026-03-22T125322010.png", productName: "חופשה בחו\"ל", priceOld: "3,200", priceNew: "1,800", saving: "1,400", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/78ac452a3_-2026-03-22T130846774.png", productName: "חופשה בארץ", priceOld: "980", priceNew: "549", saving: "431", labelOld: "מחיר שוק" },
+    ],
+  },
+  {
+    id: "culture",
+    title: "תרבות ופנאי",
+    description: "הופעות, הצגות, פארקי שעשועים ואטרקציות - כי חוויית עובד טובה לא נגמרת בסוף יום העבודה.",
+    sub: "כרטיסים · הנחות כניסה · אירועים",
+    tag: "הנחת עובד",
+    previewImage: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3d11c2184_-2026-03-22T165538542.png",
+    offers: [
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/bb4b910ed_-2026-03-22T140039783.png", productName: "קזבלן", priceOld: "350", priceNew: "77", saving: "273", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7271e7a2c_-2026-01-21T190449103.png", productName: "הופעה חיה", priceOld: "290", priceNew: "120", saving: "170", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/af45cadc7_3.jpg", productName: "פארק שעשועים", priceOld: "180", priceNew: "79", saving: "101", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3c918e2dd_-2026-03-22T124329449.png", productName: "תערוכה", priceOld: "120", priceNew: "45", saving: "75", labelOld: "מחיר שוק" },
+    ],
+  },
+  {
+    id: "fashion",
+    title: "אופנה, מותגים ולייף סטייל",
+    description: "ביגוד, הנעלה, אקססוריז ומותגים מובילים - במחירים מיוחדים לעובדי הארגון, על דברים שעובדים באמת קונים.",
+    sub: "מותגי פרימיום · מחירים בלעדיים · קנייה חכמה",
+    tag: "מחירים בלעדיים",
+    previewImage: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/9349388b9_-2026-03-22T163505767.png",
+    offers: [
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/82cf01fcc_87.png", productName: "Alo Yoga", priceOld: "499", priceNew: "224", saving: "275", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6a4f8399a_90.png", productName: "Dior Sauvage", priceOld: "600", priceNew: "430", saving: "170", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/69b6386a9_-2026-03-22T132245384.png", productName: "נעלי אדידס", priceOld: "550", priceNew: "299", saving: "251", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3715ded54_-2026-03-22T131700657.png", productName: "מותג פרימיום", priceOld: "380", priceNew: "189", saving: "191", labelOld: "מחיר שוק" },
+    ],
+  },
+  {
+    id: "fairs",
+    title: "ירידים ואירועי פופ-אפ",
+    description: "ירידי צרכנות, רכב, דירות, חזרה לבית הספר ואירועי מכירה מיוחדים - חוויות קנייה מרוכזות עם ערך אמיתי.",
+    sub: "אירועים תקופתיים · מחירים מיוחדים · חוויית קנייה",
+    tag: "אירועים מיוחדים",
+    previewImage: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a551368ec_-2026-03-22T163623874.png",
+    offers: [
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/695e0f051_-2026-02-18T142715149.png", productName: "יריד צרכנות", priceOld: "150", priceNew: "49", saving: "101", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/53f2308b8_-2026-02-18T142941224.png", productName: "יריד חזרה לספר", priceOld: "200", priceNew: "89", saving: "111", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8cd871928_-2026-02-18T142743437.png", productName: "פופ-אפ מותג", priceOld: "350", priceNew: "149", saving: "201", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/252939dda_-2026-01-21T194558315.png", productName: "יריד רכב", priceOld: "500", priceNew: "220", saving: "280", labelOld: "מחיר שוק" },
+    ],
+  },
 ];
-
-const VACATION_PREVIEW = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/1b29c5bb8_-2026-03-22T162942110.png";
-const VACATION_EXTRA = ["https://media.base44.com/images/public/69bc4105141d932b80ba9f27/d11fc0b42_-2026-03-22T125322010.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/78ac452a3_-2026-03-22T130846774.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/cf3b11fa5_-2026-03-22T133529822.png"];
-
-const CULTURE_PREVIEW = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3d11c2184_-2026-03-22T165538542.png";
-const CULTURE_EXTRA = ["https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7271e7a2c_-2026-01-21T190449103.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/af45cadc7_3.jpg","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3c918e2dd_-2026-03-22T124329449.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/bb4b910ed_-2026-03-22T140039783.png"];
-
-const FASHION_PREVIEW = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/9349388b9_-2026-03-22T163505767.png";
-const FASHION_EXTRA = ["https://media.base44.com/images/public/69bc4105141d932b80ba9f27/82cf01fcc_87.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6a4f8399a_90.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/69b6386a9_-2026-03-22T132245384.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3715ded54_-2026-03-22T131700657.png"];
-
-const FAIRS_PREVIEW = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a551368ec_-2026-03-22T163623874.png";
-const FAIRS_EXTRA = ["https://media.base44.com/images/public/69bc4105141d932b80ba9f27/695e0f051_-2026-02-18T142715149.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/53f2308b8_-2026-02-18T142941224.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8cd871928_-2026-02-18T142743437.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/252939dda_-2026-01-21T194558315.png","https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7036516f5_76.png"];
 
 const CATEGORY_ICONS = {
-  daily: Zap,
-  tech: Smartphone,
-  super: ShoppingCart,
-  gift: Gift,
-  vacation: Plane,
-  culture: Music,
-  fashion: Shirt,
-  fairs: Store,
+  daily: Zap, tech: Smartphone, super: ShoppingCart, gift: Gift,
+  vacation: Plane, culture: Music, fashion: Shirt, fairs: Store,
 };
 
-const categories = [
-  { id: "daily", title: "כל בוקר הטבה חדשה", priceOld: "499", priceNew: "299", saving: "200", labelOld: "מחיר שוק", description: "כל יום מתחיל בהטבה חדשה שנשלחת לעובד בוואטסאפ, על מוצרי צריכה, מותגי פרימיום, חוויות ואטרקציות. תמיד במחיר הנמוך ביותר בישראל.", sub: "260 הטבות בשנה - ישירות לוואטסאפ שלך", tag: "המחיר הנמוך בישראל. תמיד.", tagBg: "bg-slate-700", previewImage: DAILY_PREVIEW, mainImage: DAILY_EXTRA[0], extraImages: DAILY_EXTRA.slice(1) },
-  { id: "tech", title: "חשמל ואלקטרוניקה", priceOld: "833", priceNew: "589", saving: "244", labelOld: "מחיר שוק", description: "חנות קבועה של מוצרי חשמל, אלקטרוניקה, מחשבים וסלולר במחירי יבואן - מהמותגים שעובדים באמת רוצים.", sub: "Apple, Samsung, Dyson, Ninja ועוד", tag: "מחיר יבואן", tagBg: "bg-slate-600", previewImage: TECH_PREVIEW, mainImage: TECH_EXTRA[0], extraImages: TECH_EXTRA.slice(1) },
-  { id: "super", title: "פארם, סופר ויוקר המחיה", priceOld: "350", priceNew: "149", saving: "201", labelOld: "מחיר שוק", description: "שוברי קניות לסופרמרקט והנחות קבועות על מוצרי יומיום - ערך מוחשי שמרגישים שוב ושוב בסל הקניות.", sub: "הנחה קבועה של עד 8% ברשתות הסופרים המוזלים", tag: "הנחה קבועה של 8% בסופר! (למטה ברשתות הדיסקאונט המוזלות)", tagBg: "bg-emerald-700", previewImage: SUPER_PREVIEW, mainImage: SUPER_EXTRA[0], extraImages: SUPER_EXTRA.slice(1) },
-  { id: "gift", title: "מתנות לחגים", priceOld: null, priceNew: null, saving: null, labelOld: null, description: "הצטרפות לפלטפורמה תאפשר לעובדים ליהנות גם ממתנות חג משודרגות.", sub: "מתנה אחת, כמה מתנות, או שילוב ביניהן - לפי מה שנכון לארגון ולעובדים.", detail: "הארגון יכול לבחור בין תו לסופר, אתר בחירה למתנות או ארנק אלקטרוני שיאפשר לעובדים לבחור כמה מתנות לחג.", tag: "בחירה חופשית", tagBg: "bg-violet-700", previewImage: GIFT_PREVIEW, mainImage: GIFT_PREVIEW, extraImages: GIFT_EXTRA },
-  { id: "vacation", title: "נופש וחופשות", priceOld: "1,790", priceNew: "899", saving: "891", labelOld: "מחיר שוק", description: "חבילות טיסה, מלון, הופעות ומשחקי ספורט בארץ ובחו\"ל - במחירים שסגורים רק לעובדי הארגון.", sub: "בארץ ובחו\"ל · מחירים בלעדיים", tag: "מחירים בלעדיים", tagBg: "bg-sky-700", previewImage: VACATION_PREVIEW, mainImage: VACATION_EXTRA[0], extraImages: VACATION_EXTRA.slice(1) },
-  { id: "culture", title: "תרבות ופנאי", priceOld: "350", priceNew: "77", saving: "273", labelOld: "מחיר שוק", description: "הופעות, הצגות, פארקי שעשועים ואטרקציות - כי חוויית עובד טובה לא נגמרת בסוף יום העבודה.", sub: "כרטיסים · הנחות כניסה · אירועים", tag: "הנחת עובד", tagBg: "bg-rose-700", previewImage: CULTURE_PREVIEW, mainImage: CULTURE_EXTRA[0], extraImages: CULTURE_EXTRA.slice(1) },
-  { id: "fashion", title: "אופנה, מותגים ולייף סטייל", priceOld: "499", priceNew: "224", saving: "275", labelOld: "מחיר שוק", description: "ביגוד, הנעלה, אקססוריז ומותגים מובילים - במחירים מיוחדים לעובדי הארגון, על דברים שעובדים באמת קונים.", sub: "מותגי פרימיום · מחירים בלעדיים · קנייה חכמה", tag: "מחירים בלעדיים", tagBg: "bg-stone-600", previewImage: FASHION_PREVIEW, mainImage: FASHION_EXTRA[0], extraImages: FASHION_EXTRA.slice(1) },
-  { id: "fairs", title: "ירידים ואירועי פופ-אפ", priceOld: "150", priceNew: "49", saving: "101", labelOld: "מחיר שוק", description: "ירידי צרכנות, רכב, דירות, חזרה לבית הספר ואירועי מכירה מיוחדים - חוויות קנייה מרוכזות עם ערך אמיתי.", sub: "אירועים תקופתיים · מחירים מיוחדים · חוויית קנייה", tag: "אירועים מיוחדים", tagBg: "bg-teal-700", previewImage: FAIRS_PREVIEW, mainImage: FAIRS_EXTRA[0], extraImages: FAIRS_EXTRA.slice(1) },
-];
+// ─── PRICE CARDS ──────────────────────────────────────────────────────────────
+function PriceCards({ offer, mobile }) {
+  if (!offer?.priceOld) return null;
+  return (
+    <div style={{ display: "flex", gap: "8px", marginBottom: mobile ? "16px" : "20px" }}>
+      {[
+        { lbl: offer.labelOld, val: offer.priceOld, strike: true, color: "#86868B", bg: "#F5F5F7" },
+        { lbl: "מחיר לעובד", val: offer.priceNew, color: "#0055CC", bg: "#F0F4FF" },
+        { lbl: "החיסכון שלך", val: offer.saving, color: "#1A7A43", bg: "rgba(52,199,89,0.1)" },
+      ].map((c, i) => (
+        <div key={i} style={{ flex: 1, background: c.bg, borderRadius: "16px", padding: mobile ? "10px 6px" : "14px 8px", textAlign: "center" }}>
+          <p style={{ fontSize: "10px", fontWeight: 700, color: "#86868B", marginBottom: "4px" }}>{c.lbl}</p>
+          <ILS value={c.val} style={{ fontSize: mobile ? "16px" : "22px", fontWeight: 900, color: c.color, textDecoration: c.strike ? "line-through" : "none" }} />
+        </div>
+      ))}
+    </div>
+  );
+}
 
 // ─── MODAL ────────────────────────────────────────────────────────────────────
 function CategoryModal({ category, onClose, onCTA }) {
-  const gallery = [category.mainImage, ...(category.extraImages || [])].filter(Boolean);
   const [activeIdx, setActiveIdx] = useState(0);
-  const activeImage = gallery[activeIdx];
+  const offers = category.offers || [];
+  const currentOffer = offers[activeIdx];
 
-  const goPrev = (e) => { e.stopPropagation(); setActiveIdx((i) => (i - 1 + gallery.length) % gallery.length); };
-  const goNext = (e) => { e.stopPropagation(); setActiveIdx((i) => (i + 1) % gallery.length); };
+  const goPrev = (e) => { e.stopPropagation(); setActiveIdx((i) => (i - 1 + offers.length) % offers.length); };
+  const goNext = (e) => { e.stopPropagation(); setActiveIdx((i) => (i + 1) % offers.length); };
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -90,71 +179,47 @@ function CategoryModal({ category, onClose, onCTA }) {
         className="relative w-full max-w-5xl h-[92vh] md:h-auto md:max-h-[88vh] bg-white rounded-t-[40px] md:rounded-[40px] overflow-hidden flex flex-col"
         dir="rtl"
       >
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 left-4 z-[1010] w-10 h-10 rounded-full bg-black/10 hover:bg-black/20 flex items-center justify-center transition-colors"
-        >
+        <button onClick={onClose} className="absolute top-4 left-4 z-[1010] w-10 h-10 rounded-full bg-black/10 hover:bg-black/20 flex items-center justify-center transition-colors">
           <X className="w-5 h-5 text-slate-700" />
         </button>
 
-        {/* Single scroll container */}
         <div className="flex-1 overflow-y-auto">
           <div className="flex flex-col lg:flex-row-reverse">
 
             {/* Image side */}
-            <div className="w-full lg:w-3/5 bg-[#F5F7FA] p-6 flex flex-col items-center justify-center min-h-[300px] lg:min-h-[480px]">
+            <div className="w-full lg:w-3/5 bg-[#F5F7FA] p-6 flex flex-col items-center justify-center min-h-[280px] lg:min-h-[480px]">
               <div className="relative w-full flex items-center justify-center">
-                {/* Prev arrow */}
-                {gallery.length > 1 && (
+                {offers.length > 1 && (
                   <button onClick={goPrev} className="absolute right-0 z-10 w-9 h-9 rounded-full bg-white/80 shadow-md flex items-center justify-center hover:bg-white transition-all">
                     <ChevronRight className="w-5 h-5 text-slate-600" />
                   </button>
                 )}
-
                 <AnimatePresence mode="wait">
                   <motion.img
-                    key={activeImage}
-                    src={activeImage}
+                    key={currentOffer?.img}
+                    src={currentOffer?.img}
                     initial={{ opacity: 0, scale: 0.92 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.92 }}
                     transition={{ type: "spring", stiffness: 300, damping: 28 }}
-                    className="max-w-[80%] max-h-[40vh] lg:max-h-[50vh] object-contain drop-shadow-2xl"
+                    className="max-w-[80%] max-h-[38vh] lg:max-h-[46vh] object-contain drop-shadow-2xl"
                   />
                 </AnimatePresence>
-
-                {/* Next arrow */}
-                {gallery.length > 1 && (
+                {offers.length > 1 && (
                   <button onClick={goNext} className="absolute left-0 z-10 w-9 h-9 rounded-full bg-white/80 shadow-md flex items-center justify-center hover:bg-white transition-all">
                     <ChevronLeft className="w-5 h-5 text-slate-600" />
                   </button>
                 )}
               </div>
 
-              {/* Thumbnails - scroll hint: not centered, last item slightly clipped */}
-              {gallery.length > 1 && (
-                <div className="mt-5 w-full">
-                  <div
-                    className="flex gap-2 overflow-x-auto"
-                    style={{
-                      WebkitOverflowScrolling: "touch",
-                      scrollbarWidth: "none",
-                      msOverflowStyle: "none",
-                      paddingRight: "16px",
-                      paddingLeft: "48px",
-                      justifyContent: "flex-start",
-                    }}
-                  >
-                    {gallery.map((url, i) => (
-                      <button
-                        key={i}
-                        onClick={() => setActiveIdx(i)}
-                        className={`flex-shrink-0 w-[72px] h-[72px] rounded-2xl border-2 bg-white shadow-sm transition-all ${
-                          i === activeIdx ? "border-blue-500 scale-105 shadow-md" : "border-slate-100 hover:border-blue-300"
-                        }`}
-                      >
-                        <img src={url} className="w-full h-full object-contain p-2 rounded-2xl" alt="" />
+              {/* Thumbnails */}
+              {offers.length > 1 && (
+                <div className="mt-4 w-full">
+                  <div className="flex gap-2 overflow-x-auto" style={{ WebkitOverflowScrolling: "touch", scrollbarWidth: "none", paddingRight: "16px", paddingLeft: "48px" }}>
+                    {offers.map((o, i) => (
+                      <button key={i} onClick={() => setActiveIdx(i)}
+                        className={`flex-shrink-0 w-[64px] h-[64px] rounded-2xl border-2 bg-white shadow-sm transition-all ${i === activeIdx ? "border-blue-500 scale-105 shadow-md" : "border-slate-100 hover:border-blue-300"}`}>
+                        <img src={o.img} className="w-full h-full object-contain p-2 rounded-2xl" alt="" />
                       </button>
                     ))}
                   </div>
@@ -163,59 +228,64 @@ function CategoryModal({ category, onClose, onCTA }) {
             </div>
 
             {/* Content side */}
-            <div className="w-full lg:w-2/5 p-8 md:p-10 flex flex-col gap-5">
+            <div className="w-full lg:w-2/5 p-8 md:p-10 flex flex-col gap-4">
               <div>
-                <span className="bg-blue-50 text-blue-600 text-[11px] font-bold px-3 py-1.5 rounded-full inline-block mb-4 border border-blue-100">
+                <span className="bg-blue-50 text-blue-600 text-[11px] font-bold px-3 py-1.5 rounded-full inline-block mb-3 border border-blue-100">
                   {category.tag}
                 </span>
-                <h2 className="text-2xl md:text-3xl font-black text-slate-900 mb-3 leading-tight">
+                <h2 className="text-2xl md:text-3xl font-black text-slate-900 mb-2 leading-tight">
                   {category.title}
                 </h2>
+                {/* Product name updates with navigation */}
+                <AnimatePresence mode="wait">
+                  <motion.p
+                    key={currentOffer?.productName}
+                    initial={{ opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -4 }}
+                    transition={{ duration: 0.2 }}
+                    className="text-blue-600 font-bold text-sm mb-3"
+                  >
+                    {currentOffer?.productName}
+                  </motion.p>
+                </AnimatePresence>
                 <p className="text-slate-600 text-base leading-relaxed font-medium">
                   {category.description}
                 </p>
               </div>
 
-              {/* Price cards — like FeaturedOffersSlider */}
-              {category.priceOld && (
-                <div style={{ display: "flex", gap: "8px", marginTop: "4px" }}>
-                  {[
-                    { lbl: category.labelOld, val: category.priceOld, strike: true, color: "#86868B", bg: "#F5F5F7" },
-                    { lbl: "מחיר לעובד", val: category.priceNew, color: "#0055CC", bg: "#F0F4FF" },
-                    { lbl: "החיסכון שלך", val: category.saving, color: "#1A7A43", bg: "rgba(52,199,89,0.1)" },
-                  ].map((c, i) => (
-                    <div key={i} style={{ flex: 1, background: c.bg, borderRadius: "16px", padding: "10px 6px", textAlign: "center" }}>
-                      <p style={{ fontSize: "10px", fontWeight: 700, color: "#86868B", marginBottom: "4px" }}>{c.lbl}</p>
-                      <ILS value={c.val} style={{ fontSize: "18px", fontWeight: 900, color: c.color, textDecoration: c.strike ? "line-through" : "none" }} />
-                    </div>
-                  ))}
-                </div>
-              )}
+              {/* Price cards — update per image */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeIdx}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.22 }}
+                >
+                  <PriceCards offer={currentOffer} mobile={false} />
+                </motion.div>
+              </AnimatePresence>
 
               {/* Sub info */}
-              <div className="flex items-center gap-2 py-1">
+              <div className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-blue-400 flex-shrink-0" />
                 <p className="text-blue-700 font-bold text-sm">{category.sub}</p>
               </div>
 
-              {/* Detail text */}
               {category.detail && (
                 <p className="text-slate-500 text-xs leading-relaxed" style={{ borderRight: "3px solid #E5E7EB", paddingRight: "10px" }}>
                   {category.detail}
                 </p>
               )}
 
-              {/* Glassmorphism CTA */}
-              <div className="relative mt-auto pt-4">
+              <div className="relative mt-auto pt-2">
                 <motion.div
                   animate={{ boxShadow: ["0 0 0px rgba(37,99,235,0)", "0 0 16px rgba(37,99,235,0.4)", "0 0 0px rgba(37,99,235,0)"] }}
                   transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
                   className="absolute inset-0 rounded-[28px]"
                 />
-                <button
-                  onClick={onCTA}
-                  className="relative w-full bg-[#0066CC] text-white font-bold py-4 rounded-[28px] shadow-lg hover:bg-blue-700 transition-all active:scale-[0.97] text-base"
-                >
+                <button onClick={onCTA} className="relative w-full bg-[#0066CC] text-white font-bold py-4 rounded-[28px] shadow-lg hover:bg-blue-700 transition-all active:scale-[0.97] text-base">
                   אני רוצה לבדוק התאמה לארגון שלי ←
                 </button>
               </div>
@@ -249,18 +319,13 @@ export default function BenefitsShowcase() {
               transition={{ type: "spring", stiffness: 300, damping: 22 }}
               className="cursor-pointer bg-white rounded-[40px] border border-slate-100 shadow-sm flex flex-col overflow-hidden"
             >
-              {/* Image area */}
               <div className="aspect-square bg-white flex items-center justify-center overflow-hidden rounded-t-[40px]">
                 <img src={cat.previewImage} alt={cat.title} className="max-w-full max-h-full object-contain p-3" />
               </div>
-
-              {/* Title */}
               <div className="px-3 pt-1 pb-2 flex items-center gap-2">
                 {(() => { const Icon = CATEGORY_ICONS[cat.id]; return Icon ? <Icon className="w-4 h-4 text-blue-600 flex-shrink-0" strokeWidth={1} /> : null; })()}
                 <h3 className="text-xs md:text-sm font-bold text-slate-800 leading-tight line-clamp-2">{cat.title}</h3>
               </div>
-
-              {/* Glassmorphism CTA */}
               <div className="px-2 pb-3 mt-auto">
                 <div className="relative">
                   <motion.div
