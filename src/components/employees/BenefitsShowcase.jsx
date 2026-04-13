@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Zap, Smartphone, ShoppingCart, Gift, Plane, Music, Shirt, Store, ChevronLeft, ChevronRight } from "lucide-react";
+import ILS from "./ILS";
 
 // ─── DATA ───────────────────────────────────────────────────────────────────
 const DAILY_PREVIEW = "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7e52326a0_-2026-03-22T160414836.png";
@@ -44,14 +45,14 @@ const CATEGORY_ICONS = {
 };
 
 const categories = [
-  { id: "daily", title: "כל בוקר הטבה חדשה", description: "כל יום מתחיל בהטבה חדשה שנשלחת לעובד בוואטסאפ, על מוצרי צריכה, מותגי פרימיום, חוויות ואטרקציות. תמיד במחיר הנמוך ביותר בישראל.", sub: "260 הטבות בשנה - ישירות לוואטסאפ שלך", tag: "המחיר הנמוך בישראל. תמיד.", tagBg: "bg-slate-700", previewImage: DAILY_PREVIEW, mainImage: DAILY_EXTRA[0], extraImages: DAILY_EXTRA.slice(1) },
-  { id: "tech", title: "חשמל ואלקטרוניקה", description: "חנות קבועה של מוצרי חשמל, אלקטרוניקה, מחשבים וסלולר במחירי יבואן - מהמותגים שעובדים באמת רוצים.", sub: "Apple, Samsung, Dyson, Ninja ועוד", tag: "מחיר יבואן", tagBg: "bg-slate-600", previewImage: TECH_PREVIEW, mainImage: TECH_EXTRA[0], extraImages: TECH_EXTRA.slice(1) },
-  { id: "super", title: "פארם, סופר ויוקר המחיה", description: "שוברי קניות לסופרמרקט והנחות קבועות על מוצרי יומיום - ערך מוחשי שמרגישים שוב ושוב בסל הקניות.", sub: "הנחה קבועה של עד 8% ברשתות הסופרים המוזלים", tag: "הנחה קבועה של 8% בסופר! (למטה ברשתות הדיסקאונט המוזלות)", tagBg: "bg-emerald-700", previewImage: SUPER_PREVIEW, mainImage: SUPER_EXTRA[0], extraImages: SUPER_EXTRA.slice(1) },
-  { id: "gift", title: "מתנות לחגים", description: "הצטרפות לפלטפורמה תאפשר לעובדים ליהנות גם ממתנות חג משודרגות.", sub: "מתנה אחת, כמה מתנות, או שילוב ביניהן - לפי מה שנכון לארגון ולעובדים.", detail: "הארגון יכול לבחור בין תו לסופר, אתר בחירה למתנות או ארנק אלקטרוני שיאפשר לעובדים לבחור כמה מתנות לחג.", tag: "בחירה חופשית", tagBg: "bg-violet-700", previewImage: GIFT_PREVIEW, mainImage: GIFT_PREVIEW, extraImages: GIFT_EXTRA },
-  { id: "vacation", title: "נופש וחופשות", description: "חבילות טיסה, מלון, הופעות ומשחקי ספורט בארץ ובחו\"ל - במחירים שסגורים רק לעובדי הארגון.", sub: "בארץ ובחו\"ל · מחירים בלעדיים", tag: "מחירים בלעדיים", tagBg: "bg-sky-700", previewImage: VACATION_PREVIEW, mainImage: VACATION_EXTRA[0], extraImages: VACATION_EXTRA.slice(1) },
-  { id: "culture", title: "תרבות ופנאי", description: "הופעות, הצגות, פארקי שעשועים ואטרקציות - כי חוויית עובד טובה לא נגמרת בסוף יום העבודה.", sub: "כרטיסים · הנחות כניסה · אירועים", tag: "הנחת עובד", tagBg: "bg-rose-700", previewImage: CULTURE_PREVIEW, mainImage: CULTURE_EXTRA[0], extraImages: CULTURE_EXTRA.slice(1) },
-  { id: "fashion", title: "אופנה, מותגים ולייף סטייל", description: "ביגוד, הנעלה, אקססוריז ומותגים מובילים - במחירים מיוחדים לעובדי הארגון, על דברים שעובדים באמת קונים.", sub: "מותגי פרימיום · מחירים בלעדיים · קנייה חכמה", tag: "מחירים בלעדיים", tagBg: "bg-stone-600", previewImage: FASHION_PREVIEW, mainImage: FASHION_EXTRA[0], extraImages: FASHION_EXTRA.slice(1) },
-  { id: "fairs", title: "ירידים ואירועי פופ-אפ", description: "ירידי צרכנות, רכב, דירות, חזרה לבית הספר ואירועי מכירה מיוחדים - חוויות קנייה מרוכזות עם ערך אמיתי.", sub: "אירועים תקופתיים · מחירים מיוחדים · חוויית קנייה", tag: "אירועים מיוחדים", tagBg: "bg-teal-700", previewImage: FAIRS_PREVIEW, mainImage: FAIRS_EXTRA[0], extraImages: FAIRS_EXTRA.slice(1) },
+  { id: "daily", title: "כל בוקר הטבה חדשה", priceOld: "499", priceNew: "299", saving: "200", labelOld: "מחיר שוק", description: "כל יום מתחיל בהטבה חדשה שנשלחת לעובד בוואטסאפ, על מוצרי צריכה, מותגי פרימיום, חוויות ואטרקציות. תמיד במחיר הנמוך ביותר בישראל.", sub: "260 הטבות בשנה - ישירות לוואטסאפ שלך", tag: "המחיר הנמוך בישראל. תמיד.", tagBg: "bg-slate-700", previewImage: DAILY_PREVIEW, mainImage: DAILY_EXTRA[0], extraImages: DAILY_EXTRA.slice(1) },
+  { id: "tech", title: "חשמל ואלקטרוניקה", priceOld: "833", priceNew: "589", saving: "244", labelOld: "מחיר שוק", description: "חנות קבועה של מוצרי חשמל, אלקטרוניקה, מחשבים וסלולר במחירי יבואן - מהמותגים שעובדים באמת רוצים.", sub: "Apple, Samsung, Dyson, Ninja ועוד", tag: "מחיר יבואן", tagBg: "bg-slate-600", previewImage: TECH_PREVIEW, mainImage: TECH_EXTRA[0], extraImages: TECH_EXTRA.slice(1) },
+  { id: "super", title: "פארם, סופר ויוקר המחיה", priceOld: "350", priceNew: "149", saving: "201", labelOld: "מחיר שוק", description: "שוברי קניות לסופרמרקט והנחות קבועות על מוצרי יומיום - ערך מוחשי שמרגישים שוב ושוב בסל הקניות.", sub: "הנחה קבועה של עד 8% ברשתות הסופרים המוזלים", tag: "הנחה קבועה של 8% בסופר! (למטה ברשתות הדיסקאונט המוזלות)", tagBg: "bg-emerald-700", previewImage: SUPER_PREVIEW, mainImage: SUPER_EXTRA[0], extraImages: SUPER_EXTRA.slice(1) },
+  { id: "gift", title: "מתנות לחגים", priceOld: null, priceNew: null, saving: null, labelOld: null, description: "הצטרפות לפלטפורמה תאפשר לעובדים ליהנות גם ממתנות חג משודרגות.", sub: "מתנה אחת, כמה מתנות, או שילוב ביניהן - לפי מה שנכון לארגון ולעובדים.", detail: "הארגון יכול לבחור בין תו לסופר, אתר בחירה למתנות או ארנק אלקטרוני שיאפשר לעובדים לבחור כמה מתנות לחג.", tag: "בחירה חופשית", tagBg: "bg-violet-700", previewImage: GIFT_PREVIEW, mainImage: GIFT_PREVIEW, extraImages: GIFT_EXTRA },
+  { id: "vacation", title: "נופש וחופשות", priceOld: "1,790", priceNew: "899", saving: "891", labelOld: "מחיר שוק", description: "חבילות טיסה, מלון, הופעות ומשחקי ספורט בארץ ובחו\"ל - במחירים שסגורים רק לעובדי הארגון.", sub: "בארץ ובחו\"ל · מחירים בלעדיים", tag: "מחירים בלעדיים", tagBg: "bg-sky-700", previewImage: VACATION_PREVIEW, mainImage: VACATION_EXTRA[0], extraImages: VACATION_EXTRA.slice(1) },
+  { id: "culture", title: "תרבות ופנאי", priceOld: "350", priceNew: "77", saving: "273", labelOld: "מחיר שוק", description: "הופעות, הצגות, פארקי שעשועים ואטרקציות - כי חוויית עובד טובה לא נגמרת בסוף יום העבודה.", sub: "כרטיסים · הנחות כניסה · אירועים", tag: "הנחת עובד", tagBg: "bg-rose-700", previewImage: CULTURE_PREVIEW, mainImage: CULTURE_EXTRA[0], extraImages: CULTURE_EXTRA.slice(1) },
+  { id: "fashion", title: "אופנה, מותגים ולייף סטייל", priceOld: "499", priceNew: "224", saving: "275", labelOld: "מחיר שוק", description: "ביגוד, הנעלה, אקססוריז ומותגים מובילים - במחירים מיוחדים לעובדי הארגון, על דברים שעובדים באמת קונים.", sub: "מותגי פרימיום · מחירים בלעדיים · קנייה חכמה", tag: "מחירים בלעדיים", tagBg: "bg-stone-600", previewImage: FASHION_PREVIEW, mainImage: FASHION_EXTRA[0], extraImages: FASHION_EXTRA.slice(1) },
+  { id: "fairs", title: "ירידים ואירועי פופ-אפ", priceOld: "150", priceNew: "49", saving: "101", labelOld: "מחיר שוק", description: "ירידי צרכנות, רכב, דירות, חזרה לבית הספר ואירועי מכירה מיוחדים - חוויות קנייה מרוכזות עם ערך אמיתי.", sub: "אירועים תקופתיים · מחירים מיוחדים · חוויית קנייה", tag: "אירועים מיוחדים", tagBg: "bg-teal-700", previewImage: FAIRS_PREVIEW, mainImage: FAIRS_EXTRA[0], extraImages: FAIRS_EXTRA.slice(1) },
 ];
 
 // ─── MODAL ────────────────────────────────────────────────────────────────────
@@ -174,6 +175,22 @@ function CategoryModal({ category, onClose, onCTA }) {
                   {category.description}
                 </p>
               </div>
+
+              {/* Price cards — like FeaturedOffersSlider */}
+              {category.priceOld && (
+                <div style={{ display: "flex", gap: "8px", marginTop: "4px" }}>
+                  {[
+                    { lbl: category.labelOld, val: category.priceOld, strike: true, color: "#86868B", bg: "#F5F5F7" },
+                    { lbl: "מחיר לעובד", val: category.priceNew, color: "#0055CC", bg: "#F0F4FF" },
+                    { lbl: "החיסכון שלך", val: category.saving, color: "#1A7A43", bg: "rgba(52,199,89,0.1)" },
+                  ].map((c, i) => (
+                    <div key={i} style={{ flex: 1, background: c.bg, borderRadius: "16px", padding: "10px 6px", textAlign: "center" }}>
+                      <p style={{ fontSize: "10px", fontWeight: 700, color: "#86868B", marginBottom: "4px" }}>{c.lbl}</p>
+                      <ILS value={c.val} style={{ fontSize: "18px", fontWeight: 900, color: c.color, textDecoration: c.strike ? "line-through" : "none" }} />
+                    </div>
+                  ))}
+                </div>
+              )}
 
               {/* Sub info */}
               <div className="flex items-center gap-2 py-1">
