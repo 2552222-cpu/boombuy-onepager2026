@@ -522,7 +522,7 @@ export default function Survey() {
                 onClick={() => navigate("/join/" + normalizeOrgKey(orgName))}
                 style={{ width: "100%", background: "#0066CC", color: "#fff", fontWeight: 700, fontSize: "15px", padding: "14px", borderRadius: "12px", border: "none", cursor: "pointer", fontFamily: "var(--font-heebo)", boxShadow: "0 6px 20px rgba(0,102,204,0.24)" }}
               >
-                המשך לפתוח בקשה לארגון
+                ראו את לינק הבקשה ושתפו עמיתים ←
               </button>
               <div style={{ textAlign: "center", marginTop: 12 }}>
                 <a href="/#offers-slider" target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: "#86868B", textDecoration: "underline", fontFamily: "var(--font-heebo)" }}>

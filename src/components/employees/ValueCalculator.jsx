@@ -52,7 +52,7 @@ const QUESTIONS = [
       { label: "לא בדרך כלל", value: 0 },
       { label: "חופשה אחת", value: 1 },
       { label: "2 חופשות", value: 2 },
-      { label: "3 חופשות או יותר", value: 4 },
+      { label: "3 חופשות או יותר", value: 3 },
     ],
   },
   {
@@ -236,7 +236,7 @@ export default function ValueCalculator() {
                       onMouseEnter={(e) => { e.currentTarget.style.background = "#EEF3FF"; e.currentTarget.style.borderColor = "#0055CC"; }}
                       onMouseLeave={(e) => { e.currentTarget.style.background = "#F5F5F7"; e.currentTarget.style.borderColor = "transparent"; }}
                     >
-                      {opt.label}
+                      <bdi dir="ltr">{opt.label}</bdi>
                     </button>
                   ))}
                 </div>
