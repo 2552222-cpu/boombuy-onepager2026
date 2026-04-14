@@ -34,18 +34,22 @@ export default function ZeroBudget() {
             flexShrink: 0,
             textAlign: "center",
           }}>
-            <bdi dir="ltr" style={{
-              display: "block",
+            <span style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "baseline",
+              gap: 4,
               fontSize: "clamp(40px, 5vw, 56px)",
               fontWeight: 900,
               color: "#0066CC",
               letterSpacing: "-0.04em",
               lineHeight: 1,
               fontFamily: "var(--font-heebo)",
-              direction: "ltr",
-              unicodeBidi: "isolate",
               whiteSpace: "nowrap",
-            }}>0 ₪</bdi>
+            }}>
+              <span>0</span>
+              <span style={{ fontSize: "0.6em" }}>₪</span>
+            </span>
             <span style={{ fontSize: "13px", fontWeight: 500, color: "#86868B", marginTop: "6px", whiteSpace: "nowrap" }}>
               עלות למעסיק
             </span>
