@@ -1,103 +1,84 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+// ─── LOOKUP TABLES ────────────────────────────────────────────────────────────
+const SUPER_ANNUAL    = { 1: 600,  2: 1200, 3: 2400, 4: 3600 };
+const ELECTRONICS_ANNUAL = { 1: 200, 2: 600, 3: 1200, 4: 2000 };
+const VACATION_ANNUAL = { 1: 1200, 2: 2400, 3: 3600, 4: 4800 };
+const DAILY_ANNUAL    = { 1: 300,  2: 900,  3: 1800, 4: 3600 };
+
 // ─── QUESTIONS ───────────────────────────────────────────────────────────────
 const QUESTIONS = [
   {
     id: "q1",
-    title: "כמה אתם מוציאים בחודש על סופר?",
-    sub: "ממוצע משפחתי - כולל סופרמרקט, פארם ומוצרי ניקיון",
+    title: "באיזו תדירות אתם קונים בסופר?",
+    sub: "סופרמרקט, פארם, מוצרי ניקיון ומוצרי יומיום",
     options: [
-      { label: "עד 1,500 ₪", value: 1500 },
-      { label: "1,500–2,500 ₪", value: 2000 },
-      { label: "2,500–4,000 ₪", value: 3200 },
-      { label: "4,000+ ₪", value: 4500 },
+      { label: "1–5 פעמים בשנה", value: 1 },
+      { label: "פעם בחודש", value: 2 },
+      { label: "2–3 פעמים בחודש", value: 3 },
+      { label: "שבועי ומעלה", value: 4 },
     ],
   },
   {
     id: "q2",
-    title: "אם תהיה לכם 8% הנחה קבועה ברשתות הסופר המוזלות, האם תשתמשו בה?",
-    sub: "למשל ויקטורי, יוחננוף, מחסני השוק ורשתות דיסקאונט דומות",
+    title: "באיזו תדירות תממשו הטבות יומיומיות?",
+    sub: "אופנה, כלי בית, קפסולות קפה, טבליות למדיח, בגדים והטבות שחוזרות לאורך השנה",
     options: [
-      { label: "כן, כמעט כל שבוע", value: 1.0 },
-      { label: "כן, לפעמים", value: 0.6 },
-      { label: "רק מדי פעם", value: 0.3 },
-      { label: "כנראה שלא", value: 0.0 },
+      { label: "1–5 פעמים בשנה", value: 1 },
+      { label: "פעם בחודש", value: 2 },
+      { label: "2–3 פעמים בחודש", value: 3 },
+      { label: "1–2 פעמים בשבוע", value: 4 },
     ],
   },
   {
     id: "q3",
-    title: "באיזו תדירות סביר שתממשו הטבות שוטפות?",
-    sub: "אופנה, כלי בית, קפסולות קפה, טבליות למדיח, בגדים והטבות יומיות שחוזרות לאורך השנה",
-    options: [
-      { label: "1–5 פעמים בשנה", value: 3 },
-      { label: "פעם בחודש", value: 12 },
-      { label: "2–3 פעמים בחודש", value: 30 },
-      { label: "1–2 פעמים בשבוע", value: 78 },
-    ],
-  },
-  {
-    id: "q4",
-    title: "כמה חופשות או נופש סביר שתנצלו בשנה?",
-    sub: 'בארץ או בחו"ל',
+    title: "כמה חופשות או נופש תנצלו בשנה?",
+    sub: 'בארץ או בחו"ל — דרך ההטבות',
     options: [
       { label: "לא בדרך כלל", value: 0 },
       { label: "חופשה אחת", value: 1 },
       { label: "2 חופשות", value: 2 },
-      { label: "3 חופשות או יותר", value: 3 },
+      { label: "3 חופשות ומעלה", value: 3 },
     ],
   },
   {
-    id: "q5",
-    title: "כמה מוצרי חשמל או אלקטרוניקה סביר שתקנו השנה דרך ההטבות?",
-    sub: "אפל, דייסון, נינג'ה, טלפון, מחשב או מכשירי בית",
+    id: "q4",
+    title: "כמה מוצרי חשמל או אלקטרוניקה תקנו השנה?",
+    sub: "אפל, דייסון, נינג'ה, טלפון, מחשב או מכשירי בית — דרך ההטבות",
     options: [
       { label: "לא מתכנן כרגע", value: 0 },
       { label: "מוצר אחד", value: 1 },
       { label: "2 מוצרים", value: 2 },
       { label: "3 מוצרים", value: 3 },
-      { label: "4 מוצרים או יותר", value: 4 },
-    ],
-  },
-  {
-    id: "q6",
-    title: "כמה ביטוחי רכב יש בבית?",
-    sub: "אם תהיה הוזלה קבועה דרך הפלטפורמה",
-    options: [
-      { label: "אין", value: 0 },
-      { label: "ביטוח אחד", value: 70 },
-      { label: "שני ביטוחים", value: 130 },
-      { label: "שלושה ומעלה", value: 190 },
+      { label: "4 מוצרים ומעלה", value: 4 },
     ],
   },
 ];
 
 // ─── CALCULATION ──────────────────────────────────────────────────────────────
 function calcResult(answers) {
-  const q1 = answers[0] ?? 0; // monthly supermarket spend
-  const q2 = answers[1] ?? 0; // frequency multiplier
-  const q3 = answers[2] ?? 0; // annual everyday benefit count
-  const q4 = answers[3] ?? 0; // number of vacations per year
-  const q5 = answers[4] ?? 0; // number of electronics products
-  const q6 = answers[5] ?? 0; // monthly car insurance saving
+  const q1 = answers[0] ?? 0; // supermarket tier 1-4
+  const q2 = answers[1] ?? 0; // daily benefits tier 1-4
+  const q3 = answers[2] ?? 0; // vacations 0-3
+  const q4 = answers[3] ?? 0; // electronics 0-4
 
-  const super_   = q1 * 0.08 * q2;              // monthly
-  const daily    = (q3 * 45) / 12;              // monthly
-  const vacation = (q4 * 1200) / 12;            // monthly (1200 ₪ per trip)
-  const tech     = (q5 * 200) / 12;             // monthly (200 ₪ per product)
-  const insurance = q6;                         // already monthly
+  const superAnnual    = SUPER_ANNUAL[q1] ?? 0;
+  const dailyAnnual    = DAILY_ANNUAL[q2] ?? 0;
+  const vacationAnnual = q3 > 0 ? (VACATION_ANNUAL[q3] ?? 0) : 0;
+  const techAnnual     = q4 > 0 ? (ELECTRONICS_ANNUAL[q4] ?? 0) : 0;
 
-  const monthly = super_ + daily + vacation + tech + insurance;
+  const annualTotal = superAnnual + dailyAnnual + vacationAnnual + techAnnual;
+  const monthly = Math.round(annualTotal / 12);
 
   const breakdown = [
-    { label: "סופר ופארם", monthly: super_ },
-    { label: "הטבות שוטפות ביומיום", monthly: daily },
-    { label: "חופשות ונופש", monthly: vacation },
-    { label: "חשמל ואלקטרוניקה", monthly: tech },
-    { label: "ביטוח רכב", monthly: insurance },
+    { label: "סופר ופארם", monthly: Math.round(superAnnual / 12) },
+    { label: "הטבות שוטפות ביומיום", monthly: Math.round(dailyAnnual / 12) },
+    { label: "חופשות ונופש", monthly: Math.round(vacationAnnual / 12) },
+    { label: "חשמל ואלקטרוניקה", monthly: Math.round(techAnnual / 12) },
   ].filter((b) => b.monthly > 0);
 
-  return { monthly: Math.round(monthly), yearly: Math.round(monthly * 12), breakdown };
+  return { monthly, yearly: annualTotal, breakdown };
 }
 
 // ─── SHEKEL DISPLAY (approved flexbox pattern) ─────────────────────────────
@@ -193,7 +174,7 @@ export default function ValueCalculator() {
           כמה ההטבות האלה יכולות להיות שוות לכם בשנה?
         </h2>
         <p style={{ textAlign: "center", fontSize: "clamp(13px, 2vw, 15px)", color: "#86868B", marginBottom: 32, lineHeight: 1.6 }}>
-          6 שאלות קצרות · בלי הרשמה · תוצאה אישית לפי ההרגלים שלכם
+          4 שאלות קצרות · בלי הרשמה · תוצאה אישית לפי ההרגלים שלכם
         </p>
 
         <div style={{ background: "#fff", borderRadius: 28, boxShadow: "0 4px 32px rgba(0,0,0,0.07)", padding: "32px 28px", minHeight: 320 }}>
