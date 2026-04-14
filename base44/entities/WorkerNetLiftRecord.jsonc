@@ -1,0 +1,41 @@
+{
+  "name": "WorkerNetLiftRecord",
+  "type": "object",
+  "properties": {
+    "workerId": {
+      "type": "string",
+      "description": "Anonymous/hashed worker ID"
+    },
+    "groupId": {
+      "type": "string",
+      "description": "Group/org key if available"
+    },
+    "surveyAnswers": {
+      "type": "object",
+      "description": "Raw survey answers"
+    },
+    "monthlySavingsEstimate": {
+      "type": "number",
+      "description": "Monthly savings estimate in ILS"
+    },
+    "annualSavingsEstimate": {
+      "type": "number",
+      "description": "Annual savings estimate in ILS"
+    },
+    "categoryUsage": {
+      "type": "object",
+      "description": "Breakdown by category"
+    },
+    "isComplete": {
+      "type": "boolean",
+      "default": true,
+      "description": "Only true when all questions answered"
+    }
+  },
+  "required": [
+    "workerId",
+    "monthlySavingsEstimate",
+    "annualSavingsEstimate",
+    "isComplete"
+  ]
+}
