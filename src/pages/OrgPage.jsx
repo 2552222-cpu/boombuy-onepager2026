@@ -328,7 +328,7 @@ export default function OrgPage() {
 
   const count = group.currentCount || 1;
   const isLargeOrg = group?.orgSize === "1000+ עובדים";
-  const currentTarget = isLargeOrg ? TARGET_LARGE : (count < TARGET_1 ? TARGET_1 : TARGET_2);
+  const currentTarget = isLargeOrg ? TARGET_LARGE : TARGET_2;
   const progress = Math.min((count / currentTarget) * 100, 100);
 
   return (
@@ -336,7 +336,6 @@ export default function OrgPage() {
       {/* Header */}
       <div style={{ background: "#fff", borderBottom: "1px solid rgba(0,0,0,0.06)", padding: "16px 20px", display: "flex", justifyContent: "flex-end" }}>
         <a href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center" }}>
-          {/* BoomBuy Logo Placeholder - Replace with official asset */}
           <div style={{ fontSize: "clamp(16px, 4vw, 18px)", fontWeight: 900, color: "#0066CC", letterSpacing: "-0.03em", fontFamily: "var(--font-heebo)" }}>BoomBuy</div>
         </a>
       </div>
@@ -356,7 +355,7 @@ export default function OrgPage() {
           </div>
           <div style={{ height: "8px", background: "rgba(0,0,0,0.07)", borderRadius: "9999px", overflow: "hidden" }}>
             <motion.div
-              style={{ height: "100%", background: count >= TARGET_2 ? "#34C759" : "#0066CC", borderRadius: "9999px" }}
+              style={{ height: "100%", background: count >= currentTarget ? "#34C759" : "#0066CC", borderRadius: "9999px" }}
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
               transition={{ duration: 0.7, ease: "easeOut" }}
@@ -396,7 +395,7 @@ export default function OrgPage() {
                   style={{ width: "100%", padding: "12px 14px", borderRadius: "10px", border: "1px solid rgba(0,0,0,0.12)", background: "#F5F5F7", fontFamily: "var(--font-heebo)", fontSize: "15px", marginBottom: "10px", boxSizing: "border-box", textAlign: "right" }}
                   autoFocus />
                 <input type="tel" value={memberPhone} onChange={(e) => setMemberPhone(e.target.value)}
-                  placeholder="מספר טלפון נייד (אופציונלי)"
+                  placeholder="מספר טלפון נייד"
                   style={{ width: "100%", padding: "12px 14px", borderRadius: "10px", border: "1px solid rgba(0,0,0,0.12)", background: "#F5F5F7", fontFamily: "var(--font-heebo)", fontSize: "15px", marginBottom: "12px", boxSizing: "border-box", textAlign: "right" }} />
                 <div style={{ display: "flex", gap: "10px" }}>
                   <button onClick={handleJoin} disabled={!memberName.trim() || joining}

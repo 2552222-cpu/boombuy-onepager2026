@@ -484,7 +484,7 @@ export default function Survey() {
               transition={{ duration: 0.28 }}
             >
               <div style={{ textAlign: "center", marginBottom: "24px" }}>
-                <div style={{ fontSize: "40px", marginBottom: "12px" }}>✅</div>
+                <div style={{ fontSize: "40px", marginBottom: "12px" }}>✓</div>
                 <h3 style={{ fontSize: "22px", fontWeight: 900, marginBottom: "14px", fontFamily: "var(--font-heebo)", letterSpacing: "-0.02em" }}>
                   תוצאה מותאמת לארגון שלכם
                 </h3>
@@ -506,7 +506,7 @@ export default function Survey() {
               <div style={{ background: "rgba(0,102,204,0.06)", border: "1px solid rgba(0,102,204,0.18)", borderRadius: 20, padding: "18px 20px", marginBottom: 20, textAlign: "center" }}>
                 <p style={{ fontSize: 28, fontWeight: 900, color: "#0066CC", marginBottom: 4, fontFamily: "var(--font-heebo)" }}>80%</p>
                 <p style={{ fontSize: 14, fontWeight: 600, color: "#1D1D1F", marginBottom: 6, lineHeight: 1.45, fontFamily: "var(--font-heebo)" }}>
-                  אם עוד 20 עמיתים יצטרפו — נגדיל ב-80% את הסיכוי להכניס את בום ביי לארגון!
+                  ככל שיותר עמיתים יצטרפו לבקשה — כך גדל הסיכוי שBoomBuy תגיע לארגון שלכם
                 </p>
                 <a
                   href={`https://wa.me/?text=${encodeURIComponent("היי! הצטרפתי לבקשה קבוצתית להכנסת BoomBuy לארגון שלנו. שווה לכם גם: " + window.location.origin + "/join/" + normalizeOrgKey(orgName) + (myMemberId ? "?ref=" + myMemberId : ""))}`}
