@@ -464,15 +464,10 @@ export default function Survey() {
               />
               <button
                 onClick={handleFinish}
+                disabled={loading}
                 style={{ width: "100%", background: "#0066CC", color: "#fff", fontWeight: 700, fontSize: "15px", padding: "14px", borderRadius: "12px", border: "none", cursor: "pointer", fontFamily: "var(--font-heebo)", marginBottom: "10px" }}
               >
                 סיימו וקבלו לינק לשיתוף ←
-              </button>
-              <button
-                onClick={handleFinish}
-                style={{ width: "100%", background: "none", border: "none", color: "#AEAEB2", fontSize: "13px", cursor: "pointer", fontFamily: "var(--font-heebo)" }}
-              >
-                דלג
               </button>
             </motion.div>
           ) : (
