@@ -56,6 +56,22 @@ function getBrowserToken() {
 }
 
 export default function Survey() {
+  // ALL hooks must come before any conditional return
+  const [step, setStep] = useState(0);
+  const [orgName, setOrgName] = useState("");
+  const [orgSize, setOrgSize] = useState("");
+  const [holidayBudget, setHolidayBudget] = useState("");
+  const [currentClub, setCurrentClub] = useState("");
+  const [painPoint, setPainPoint] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [resultText, setResultText] = useState("");
+  const [welfareBudget, setWelfareBudget] = useState("");
+  const [initiatorName, setInitiatorName] = useState("");
+  const [initiatorPhone, setInitiatorPhone] = useState("");
+  const [myMemberId, setMyMemberId] = useState("");
+  const [stepHistory, setStepHistory] = useState([]);
+  const navigate = useNavigate();
+
   // ── GUARDRAIL: block direct access without passing the gate ──────────────
   const { passedGate } = getFlowState();
   if (!passedGate) {
@@ -73,21 +89,6 @@ export default function Survey() {
       </section>
     );
   }
-
-  const [step, setStep] = useState(0);
-  const [orgName, setOrgName] = useState("");
-  const [orgSize, setOrgSize] = useState("");
-  const [holidayBudget, setHolidayBudget] = useState("");
-  const [currentClub, setCurrentClub] = useState("");
-  const [painPoint, setPainPoint] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [resultText, setResultText] = useState("");
-  const [welfareBudget, setWelfareBudget] = useState("");
-  const [initiatorName, setInitiatorName] = useState("");
-  const [initiatorPhone, setInitiatorPhone] = useState("");
-  const [myMemberId, setMyMemberId] = useState("");
-  const [stepHistory, setStepHistory] = useState([]);
-  const navigate = useNavigate();
 
   const goBack = () => {
     if (stepHistory.length === 0) return;
