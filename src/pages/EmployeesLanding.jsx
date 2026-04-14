@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from "react";
+import GlobalHeader from "../components/employees/GlobalHeader";
+import GlobalFooter from "../components/employees/GlobalFooter";
+import IntroSlides from "../components/employees/IntroSlides";
+import Hero from "../components/employees/Hero";
+import FeaturedOffersSlider from "../components/employees/FeaturedOffersSlider";
+import BenefitsShowcase from "../components/employees/BenefitsShowcase";
+import TrustLogos from "../components/employees/TrustLogos";
+import Testimonials from "../components/employees/Testimonials";
+import FinalBand from "../components/employees/FinalBand";
+import ZeroBudget from "../components/employees/ZeroBudget";
+import EconomicSection from "../components/employees/EconomicSection";
+import FloatingWhatsApp from "../components/employees/FloatingWhatsApp";
+import ValueCalculator from "../components/employees/ValueCalculator.jsx";
+import SurveyGate from "../components/employees/SurveyGate";
+import Survey from "../components/employees/Survey";
 import NetLiftIntro from "../components/netlift/NetLiftIntro";
-import NetLiftBenefits from "../components/netlift/NetLiftBenefits";
-import NetLiftSurveyGate from "../components/netlift/NetLiftSurveyGate";
-import NetLiftSurvey from "../components/netlift/NetLiftSurvey";
-import NetLiftResult from "../components/netlift/NetLiftResult";
-
-// FLOW: intro → benefits → gate → survey → result
-const STEPS = ["intro", "benefits", "gate", "survey", "result"];
 
 export default function EmployeesLanding() {
-  const [step, setStep] = useState("intro");
-  const [surveyResult, setSurveyResult] = useState(null);
-  const [surveyAnswers, setSurveyAnswers] = useState(null);
-
   useEffect(() => {
     window.scrollTo(0, 0);
     if (history.scrollRestoration) history.scrollRestoration = "manual";
@@ -24,38 +28,35 @@ export default function EmployeesLanding() {
     if (orgKey) window.location.replace(`/join/${orgKey}`);
   }, []);
 
-  // Scroll to top on every step change
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [step]);
-
-  const handleSurveyComplete = (result, answers) => {
-    setSurveyResult(result);
-    setSurveyAnswers(answers);
-    setStep("result");
-  };
-
   return (
-    <div dir="rtl" style={{ fontFamily: "var(--font-heebo)", overflowX: "hidden", maxWidth: "100vw" }}>
-      {step === "intro" && (
-        <NetLiftIntro onStart={() => setStep("benefits")} />
-      )}
-      {step === "benefits" && (
-        <NetLiftBenefits onContinue={() => setStep("gate")} />
-      )}
-      {step === "gate" && (
-        <NetLiftSurveyGate onContinue={() => setStep("survey")} />
-      )}
-      {step === "survey" && (
-        <NetLiftSurvey onComplete={handleSurveyComplete} />
-      )}
-      {step === "result" && (
-        <NetLiftResult
-          result={surveyResult}
-          answers={surveyAnswers}
-          onRestart={() => setStep("intro")}
-        />
-      )}
+    <div className="min-h-screen font-heebo flex flex-col" dir="rtl" style={{ overflowX: 'hidden', maxWidth: '100vw', paddingBottom: '72px' }}>
+      <GlobalHeader />
+      <div className="flex-1">
+        <IntroSlides onDone={() => {}} />
+        <Hero />
+        <EconomicSection />
+
+        {/* NetLift Intro Card — embedded in page, not a flow override */}
+        <div id="netlift-intro" style={{ background: "#F5F5F7", padding: "0 0 0" }}>
+          <NetLiftIntro onStart={() => {
+            document.getElementById("survey-gate")?.scrollIntoView({ behavior: "smooth" });
+          }} />
+        </div>
+
+        <FeaturedOffersSlider />
+        <div id="benefits-showcase">
+          <BenefitsShowcase />
+        </div>
+        <TrustLogos />
+        <ZeroBudget />
+        <Testimonials />
+        <ValueCalculator />
+        <SurveyGate />
+        <Survey />
+        <FinalBand />
+      </div>
+      <GlobalFooter />
+      <FloatingWhatsApp />
     </div>
   );
 }

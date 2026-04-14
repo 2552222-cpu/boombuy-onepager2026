@@ -6,7 +6,6 @@ export default function NetLiftIntro({ onStart }) {
     <div
       dir="rtl"
       style={{
-        minHeight: "100vh",
         background: "linear-gradient(160deg, #0a0e1a 0%, #0d1829 50%, #0a1220 100%)",
         display: "flex",
         flexDirection: "column",
