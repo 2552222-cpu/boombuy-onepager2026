@@ -202,11 +202,7 @@ export default function Survey() {
           <p style={{ fontSize: "15px", color: "#86868B", fontFamily: "var(--font-heebo)" }}>
             כמה שאלות קצרות לפני שנפתח בקשה לארגון
           </p>
-          {step > 0 && step < 7 && (
-            <button onClick={goBack} style={{ marginTop: 8, background: "none", border: "none", color: "#AEAEB2", fontSize: 13, cursor: "pointer", fontFamily: "var(--font-heebo)" }}>
-              ← חזרה
-            </button>
-          )}
+
           <div style={{ display: "inline-block", background: "rgba(0,102,204,0.08)", border: "1px solid rgba(0,102,204,0.15)", borderRadius: "999px", padding: "5px 16px", marginTop: "10px" }}>
             <span style={{ fontSize: "12.5px", fontWeight: 600, color: "#0066CC", fontFamily: "var(--font-heebo)" }}>מתאים בעיקר לארגונים עם 100+ עובדים</span>
           </div>
