@@ -10,20 +10,27 @@ export default function FloatingWhatsApp() {
   const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
+    // Hide when a modal opens
     const handler = (e) => setHidden(e.detail.open);
     window.addEventListener("offersModalChange", handler);
 
-    // hide when user is in the offers slider section
-    const section = document.getElementById("offers-slider");
-    if (!section) return () => window.removeEventListener("offersModalChange", handler);
-    const obs = new IntersectionObserver(
-      ([entry]) => setHidden(h => entry.isIntersecting ? true : (h === true ? false : h)),
-      { threshold: 0.3 }
-    );
-    obs.observe(section);
+    // Hide when user scrolls into calculator, survey-gate, or survey-section
+    const hiddenSections = ["value-calculator", "survey-gate", "survey-section"];
+    const observers = [];
+    hiddenSections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const obs = new IntersectionObserver(
+        ([entry]) => { if (entry.isIntersecting) setHidden(true); else setHidden(false); },
+        { threshold: 0.1 }
+      );
+      obs.observe(el);
+      observers.push(obs);
+    });
+
     return () => {
       window.removeEventListener("offersModalChange", handler);
-      obs.disconnect();
+      observers.forEach((o) => o.disconnect());
     };
   }, []);
 

@@ -478,50 +478,20 @@ export default function Survey() {
               exit={{ opacity: 0, y: -14 }}
               transition={{ duration: 0.28 }}
             >
-              <div style={{ textAlign: "center", marginBottom: "24px" }}>
-                <div style={{ fontSize: "40px", marginBottom: "12px" }}>✓</div>
-                <h3 style={{ fontSize: "22px", fontWeight: 900, marginBottom: "14px", fontFamily: "var(--font-heebo)", letterSpacing: "-0.02em" }}>
-                  תוצאה מותאמת לארגון שלכם
+              <div style={{ textAlign: "center", padding: "8px 0 24px" }}>
+                <div style={{ fontSize: "48px", marginBottom: "16px" }}>✓</div>
+                <h3 style={{ fontSize: "22px", fontWeight: 900, marginBottom: "14px", fontFamily: "var(--font-heebo)", letterSpacing: "-0.02em", color: "#1D1D1F" }}>
+                  הבקשה נשלחה בהצלחה
                 </h3>
-                <div
-                  style={{
-                    background: "rgba(0,102,204,0.06)",
-                    border: "1px solid rgba(0,102,204,0.18)",
-                    borderRadius: "14px",
-                    padding: "18px 20px",
-                    marginBottom: "20px",
-                  }}
-                >
-                  <p style={{ fontSize: "16px", fontWeight: 600, color: "#0066CC", lineHeight: 1.55, fontFamily: "var(--font-heebo)", margin: 0 }}>
-                    {resultText}
-                  </p>
-                </div>
-              </div>
-              {/* 80% Ambassador bubble */}
-              <div style={{ background: "rgba(0,102,204,0.06)", border: "1px solid rgba(0,102,204,0.18)", borderRadius: 20, padding: "18px 20px", marginBottom: 20, textAlign: "center" }}>
-                <p style={{ fontSize: 28, fontWeight: 900, color: "#0066CC", marginBottom: 4, fontFamily: "var(--font-heebo)" }}>80%</p>
-                <p style={{ fontSize: 14, fontWeight: 600, color: "#1D1D1F", marginBottom: 6, lineHeight: 1.45, fontFamily: "var(--font-heebo)" }}>
-                  ככל שיותר עמיתים יצטרפו לבקשה — כך גדל הסיכוי שBoomBuy תגיע לארגון שלכם
+                <p style={{ fontSize: "15px", color: "#6E6E73", lineHeight: 1.6, marginBottom: "28px", fontFamily: "var(--font-heebo)" }}>
+                  {resultText}
                 </p>
-                <a
-                  href={`https://wa.me/?text=${encodeURIComponent("היי! הצטרפתי לבקשה קבוצתית להכנסת BoomBuy לארגון שלנו. שווה לכם גם: " + window.location.origin + "/join/" + normalizeOrgKey(orgName) + (myMemberId ? "?ref=" + myMemberId : ""))}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ display: "block", background: "#25D366", color: "#fff", textDecoration: "none", padding: "11px", borderRadius: 14, fontSize: 14, fontWeight: 700, fontFamily: "var(--font-heebo)", marginTop: 10 }}
+                <button
+                  onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                  style={{ width: "100%", background: "#0066CC", color: "#fff", fontWeight: 700, fontSize: "15px", padding: "15px", borderRadius: "12px", border: "none", cursor: "pointer", fontFamily: "var(--font-heebo)", boxShadow: "0 6px 20px rgba(0,102,204,0.24)" }}
                 >
-                  שתפו עמיתים בוואטסאפ ←
-                </a>
-              </div>
-              <button
-                onClick={() => navigate("/join/" + normalizeOrgKey(orgName))}
-                style={{ width: "100%", background: "#0066CC", color: "#fff", fontWeight: 700, fontSize: "15px", padding: "14px", borderRadius: "12px", border: "none", cursor: "pointer", fontFamily: "var(--font-heebo)", boxShadow: "0 6px 20px rgba(0,102,204,0.24)" }}
-              >
-                ראו את לינק הבקשה ושתפו עמיתים ←
-              </button>
-              <div style={{ textAlign: "center", marginTop: 12 }}>
-                <a href="/#offers-slider" target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: "#86868B", textDecoration: "underline", fontFamily: "var(--font-heebo)" }}>
-                  רוצים לראות דוגמאות מההטבות?
-                </a>
+                  חזרה לעמוד ההטבות
+                </button>
               </div>
             </motion.div>
           )}
