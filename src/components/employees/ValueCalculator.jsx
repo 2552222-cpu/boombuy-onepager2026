@@ -72,35 +72,46 @@ const DAILY_ANNUAL    = { 1: 300, 2: 900, 3: 1800, 4: 3600 };
 const ELECTRONICS_MIN = 200; // per product
 
 function calcResult(answers) {
-  const superIdx   = answers[0] ?? 0;
-  const dailyTier  = answers[1] ?? 0;
-  const vacations  = answers[2] ?? 0;
-  const techCount  = answers[3] ?? 0;
+  // Only include categories where the user explicitly answered
+  const breakdown = [];
+  let rawAnnual = 0;
 
-  // Supermarket: 8% of monthly spend × 12
-  const superMonthly = Math.round((SUPER_OPTIONS[superIdx]?.monthlySpend ?? 1000) * 0.08);
-  const superAnnual  = superMonthly * 12;
+  // Q0: Supermarket — only if answered
+  if (answers[0] !== undefined) {
+    const superMonthly = Math.round((SUPER_OPTIONS[answers[0]]?.monthlySpend || 0) * 0.08);
+    const superAnnual  = superMonthly * 12;
+    rawAnnual += superAnnual;
+    if (superMonthly > 0) breakdown.push({ label: "סופר ופארם", monthly: superMonthly });
+  }
 
-  // Daily perks
-  const dailyAnnual = DAILY_ANNUAL[dailyTier] ?? 0;
+  // Q1: Daily perks — only if answered
+  if (answers[1] !== undefined) {
+    const dailyAnnual = DAILY_ANNUAL[answers[1]] || 0;
+    rawAnnual += dailyAnnual;
+    const dailyMonthly = Math.round(dailyAnnual / 12);
+    if (dailyMonthly > 0) breakdown.push({ label: "הטבות שוטפות ביומיום", monthly: dailyMonthly });
+  }
 
-  // Vacations: 1200 per trip
-  const vacationAnnual = vacations * 1200;
+  // Q2: Vacations — only if answered
+  if (answers[2] !== undefined) {
+    const vacationAnnual = answers[2] * 1200;
+    rawAnnual += vacationAnnual;
+    const vacationMonthly = Math.round(vacationAnnual / 12);
+    if (vacationMonthly > 0) breakdown.push({ label: "חופשות ונופש", monthly: vacationMonthly });
+  }
 
-  // Electronics: 200 minimum per product
-  const techAnnual = techCount * ELECTRONICS_MIN;
+  // Q3: Electronics — only if answered
+  if (answers[3] !== undefined) {
+    const techAnnual = answers[3] * ELECTRONICS_MIN;
+    rawAnnual += techAnnual;
+    const techMonthly = Math.round(techAnnual / 12);
+    if (techMonthly > 0) breakdown.push({ label: "חשמל ואלקטרוניקה", monthly: techMonthly });
+  }
 
-  const rawAnnual = superAnnual + dailyAnnual + vacationAnnual + techAnnual;
-  // FLOOR: minimum 7200/year, 600/month
-  const annualTotal = Math.max(rawAnnual, 7200);
-  const monthly = Math.max(Math.round(annualTotal / 12), 600);
+  if (rawAnnual === 0) return { monthly: 0, yearly: 0, breakdown: [] };
 
-  const breakdown = [
-    { label: "סופר ופארם",               monthly: superMonthly },
-    { label: "הטבות שוטפות ביומיום",    monthly: Math.round((DAILY_ANNUAL[dailyTier] ?? 0) / 12) },
-    { label: "חופשות ונופש",             monthly: Math.round(vacationAnnual / 12) },
-    { label: "חשמל ואלקטרוניקה",         monthly: Math.round(techAnnual / 12) },
-  ].filter((b) => b.monthly > 0);
+  const annualTotal = rawAnnual;
+  const monthly = Math.round(annualTotal / 12);
 
   return { monthly, yearly: annualTotal, breakdown };
 }
@@ -119,7 +130,7 @@ function GlassCard({ title, helper, value, accent, bg, border }) {
 // ─── LIVE TOTAL ───────────────────────────────────────────────────────────────
 function LiveTotal({ answers }) {
   const { monthly } = calcResult(answers);
-  if (monthly === 0) return null;
+  if (!monthly || monthly === 0) return null;
   return (
     <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
       style={{ marginTop: 20, background: "#F0F4FF", borderRadius: 14, padding: "10px 20px", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, direction: "rtl" }}>

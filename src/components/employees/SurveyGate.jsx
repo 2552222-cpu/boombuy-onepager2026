@@ -7,16 +7,8 @@ import { motion, AnimatePresence } from "framer-motion";
  * After they've seen the benefits (state persisted in sessionStorage),
  * a second CTA "אני מוכן להמשיך לסקר" scrolls them to the survey.
  */
-// ─── GLOBAL FLOW STATE — used by Survey to guard direct access ────────────────
-export function getFlowState() {
-  return {
-    viewedOffers: sessionStorage.getItem("boomBuyViewedOffers") === "1",
-    passedGate:   sessionStorage.getItem("boomBuyPassedGate") === "1",
-  };
-}
-
 export default function SurveyGate() {
-  // `seen` only ever goes true → never resets back to false
+  // One-way state: false → true only, never resets
   const [seen, setSeen] = useState(false);
 
   const handleSeeBenefits = () => {
@@ -25,7 +17,6 @@ export default function SurveyGate() {
   };
 
   const handleGoSurvey = () => {
-    sessionStorage.setItem("boomBuyPassedGate", "1");
     document.getElementById("survey-section")?.scrollIntoView({ behavior: "smooth" });
   };
 
