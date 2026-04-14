@@ -93,6 +93,37 @@ export default function Hero() {
               {HERO_DATA.subheadline}
             </motion.p>
 
+            {/* NetLift Teaser — inline in Hero */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15 }}
+              style={{
+                marginTop: "28px",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "10px",
+                background: "linear-gradient(135deg, rgba(0,30,70,0.9) 0%, rgba(0,60,140,0.85) 100%)",
+                border: "1px solid rgba(74,158,255,0.3)",
+                borderRadius: "16px",
+                padding: "12px 20px",
+                boxShadow: "0 0 20px rgba(0,102,204,0.2)",
+              }}
+            >
+              <span style={{ fontSize: "13px", fontWeight: 700, color: "rgba(255,255,255,0.7)" }}>
+                עוד רגע נבדוק יחד
+              </span>
+              <span style={{
+                fontSize: "14px",
+                fontWeight: 900,
+                color: "#4A9EFF",
+                letterSpacing: "-0.01em",
+                textShadow: "0 0 12px rgba(74,158,255,0.5)",
+              }}>
+                כמה הנטו שלך יכול לגדול ↓
+              </span>
+            </motion.div>
+
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} style={{ marginTop: "44px" }}>
               {isMobile ? (
                 <button

@@ -14,7 +14,6 @@ import FloatingWhatsApp from "../components/employees/FloatingWhatsApp";
 import ValueCalculator from "../components/employees/ValueCalculator.jsx";
 import SurveyGate from "../components/employees/SurveyGate";
 import Survey from "../components/employees/Survey";
-import NetLiftIntro from "../components/netlift/NetLiftIntro";
 
 export default function EmployeesLanding() {
   useEffect(() => {
@@ -35,14 +34,6 @@ export default function EmployeesLanding() {
         <IntroSlides onDone={() => {}} />
         <Hero />
         <EconomicSection />
-
-        {/* NetLift Intro Card — embedded in page, not a flow override */}
-        <div id="netlift-intro" style={{ background: "#F5F5F7", padding: "0 0 0" }}>
-          <NetLiftIntro onStart={() => {
-            document.getElementById("survey-gate")?.scrollIntoView({ behavior: "smooth" });
-          }} />
-        </div>
-
         <FeaturedOffersSlider />
         <div id="benefits-showcase">
           <BenefitsShowcase />
