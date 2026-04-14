@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-route
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
-import EmployeesLanding from './pages/EmployeesLanding';
+import EmployeesLanding from './pages/EmployeesLanding.jsx';
 import AdminDashboard from './pages/AdminDashboard';
 import ResultsPage from './pages/ResultsPage';
 import OrgPage from './pages/OrgPage';
