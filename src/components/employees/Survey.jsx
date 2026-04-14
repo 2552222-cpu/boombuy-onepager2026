@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { base44 } from "@/api/base44Client";
 import { useNavigate } from "react-router-dom";
+import { getFlowState } from "./SurveyGate";
 
 const ORG_SIZE_OPTIONS = [
   { label: "עד 50 עובדים" },
@@ -55,6 +56,24 @@ function getBrowserToken() {
 }
 
 export default function Survey() {
+  // ── GUARDRAIL: block direct access without passing the gate ──────────────
+  const { passedGate } = getFlowState();
+  if (!passedGate) {
+    return (
+      <section id="survey-section" style={{ background: "#F5F5F7", padding: "60px 16px", textAlign: "center" }}>
+        <p style={{ fontSize: 16, fontWeight: 700, color: "#0066CC", fontFamily: "var(--font-heebo)", marginBottom: 12 }}>
+          כדי להגיע לשאלון יש לעבור דרך שלב ההטבות תחילה
+        </p>
+        <button
+          onClick={() => document.getElementById("survey-gate")?.scrollIntoView({ behavior: "smooth" })}
+          style={{ background: "#0066CC", color: "#fff", border: "none", padding: "14px 28px", borderRadius: 12, fontWeight: 700, fontSize: 15, cursor: "pointer", fontFamily: "var(--font-heebo)" }}
+        >
+          חזרה לשלב ההטבות ←
+        </button>
+      </section>
+    );
+  }
+
   const [step, setStep] = useState(0);
   const [orgName, setOrgName] = useState("");
   const [orgSize, setOrgSize] = useState("");

@@ -14,11 +14,12 @@ function ILS({ value, color = "#0055CC", size = 15 }) {
 }
 
 // ─── SUPERMARKET SPEND OPTIONS → 8% saving ───────────────────────────────────
+// Fixed mapping per spec: 1000 / 2000 / 3000 / 4000
 const SUPER_OPTIONS = [
   { label: "עד 1,000 ₪ בחודש",      monthlySpend: 1000 },
   { label: "1,500–2,500 ₪ בחודש",   monthlySpend: 2000 },
   { label: "2,500–3,500 ₪ בחודש",   monthlySpend: 3000 },
-  { label: "3,500 ₪ ומעלה",         monthlySpend: 3500 },
+  { label: "3,500 ₪ ומעלה",         monthlySpend: 4000 },
 ];
 
 // ─── QUESTIONS ───────────────────────────────────────────────────────────────
@@ -92,8 +93,10 @@ function calcResult(answers) {
   // Car insurance: 80 ₪/month default = 960/year
   const carAnnual = 960;
 
-  const annualTotal = superAnnual + dailyAnnual + vacationAnnual + techAnnual + carAnnual;
-  const monthly = Math.round(annualTotal / 12);
+  const rawAnnual = superAnnual + dailyAnnual + vacationAnnual + techAnnual + carAnnual;
+  // FLOOR: minimum 7200/year, 600/month
+  const annualTotal = Math.max(rawAnnual, 7200);
+  const monthly = Math.max(Math.round(annualTotal / 12), 600);
 
   const breakdown = [
     { label: "סופר ופארם",               monthly: superMonthly },
