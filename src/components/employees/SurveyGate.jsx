@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-/**
- * SurveyGate — mandatory interstitial before the survey.
- * User must tap "תראו לי את ההטבות" first, which scrolls to benefits.
- * After they've seen the benefits (state persisted in sessionStorage),
- * a second CTA "אני מוכן להמשיך לסקר" scrolls them to the survey.
- */
 export default function SurveyGate() {
   // One-way state: false → true only, never resets
   const [seen, setSeen] = useState(false);
