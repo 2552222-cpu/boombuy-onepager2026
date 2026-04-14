@@ -90,10 +90,7 @@ function calcResult(answers) {
   // Electronics: 200 minimum per product
   const techAnnual = techCount * ELECTRONICS_MIN;
 
-  // Car insurance: 80 ₪/month default = 960/year
-  const carAnnual = 960;
-
-  const rawAnnual = superAnnual + dailyAnnual + vacationAnnual + techAnnual + carAnnual;
+  const rawAnnual = superAnnual + dailyAnnual + vacationAnnual + techAnnual;
   // FLOOR: minimum 7200/year, 600/month
   const annualTotal = Math.max(rawAnnual, 7200);
   const monthly = Math.max(Math.round(annualTotal / 12), 600);
@@ -103,7 +100,6 @@ function calcResult(answers) {
     { label: "הטבות שוטפות ביומיום",    monthly: Math.round((DAILY_ANNUAL[dailyTier] ?? 0) / 12) },
     { label: "חופשות ונופש",             monthly: Math.round(vacationAnnual / 12) },
     { label: "חשמל ואלקטרוניקה",         monthly: Math.round(techAnnual / 12) },
-    { label: "ביטוח רכב",               monthly: 80 },
   ].filter((b) => b.monthly > 0);
 
   return { monthly, yearly: annualTotal, breakdown };
@@ -182,7 +178,7 @@ export default function ValueCalculator() {
                   נחשב כמה ההטבות שוות לכם לפי ההרגלים שלכם
                 </p>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center", marginBottom: 32 }}>
-                  {["סופר ופארם", "חופשות והופעות", "חשמל ואלקטרוניקה", "ביטוח רכב"].map((c) => (
+                  {["סופר ופארם", "חופשות והופעות", "חשמל ואלקטרוניקה", "הטבות יומיומיות"].map((c) => (
                     <span key={c} style={{ background: "#F5F5F7", border: "1px solid rgba(0,0,0,0.08)", borderRadius: 100, padding: "6px 16px", fontSize: 13, fontWeight: 600, color: "#444" }}>{c}</span>
                   ))}
                 </div>

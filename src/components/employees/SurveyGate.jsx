@@ -16,10 +16,10 @@ export function getFlowState() {
 }
 
 export default function SurveyGate() {
-  const [seen, setSeen] = useState(() => sessionStorage.getItem("boomBuyViewedOffers") === "1");
+  // `seen` only ever goes true → never resets back to false
+  const [seen, setSeen] = useState(false);
 
   const handleSeeBenefits = () => {
-    sessionStorage.setItem("boomBuyViewedOffers", "1");
     setSeen(true);
     document.getElementById("benefits-showcase")?.scrollIntoView({ behavior: "smooth" });
   };
