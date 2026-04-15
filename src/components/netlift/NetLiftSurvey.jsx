@@ -38,7 +38,6 @@ const QUESTIONS = [
       { label: "חשמל ואלקטרוניקה", value: "tech" },
       { label: "תרבות והופעות", value: "culture" },
       { label: "אופנה ומותגים", value: "fashion" },
-      { label: "ביטוח רכב", value: "car" },
     ],
   },
   {
@@ -56,17 +55,17 @@ const QUESTIONS = [
 
 function calcNetLift(answers) {
   const superIdx = answers.q2 ?? null;
-  if (superIdx === null) return null;
-  const categories = answers.q3 || [];
+  // Require BOTH q2 (super spend) and q3 (categories) to be explicitly set by user
+  if (superIdx === null || !Array.isArray(answers.q3)) return null;
+  const categories = answers.q3;
 
   const superMonthly = Math.round((SUPER_OPTIONS[superIdx]?.monthlySpend ?? 1000) * 0.08);
   const vacationMonthly = categories.includes("vacation") ? Math.round(1200 / 12) : 0;
   const cultureMonthly = categories.includes("culture") ? Math.round(100 * 2 / 12) : 0;
   const techMonthly = categories.includes("tech") ? Math.round(500 / 12) : 0;
   const fashionMonthly = categories.includes("fashion") ? Math.round(250 / 12) : 0;
-  const carMonthly = categories.includes("car") ? 80 : 0;
 
-  const monthly = superMonthly + vacationMonthly + cultureMonthly + techMonthly + fashionMonthly + carMonthly;
+  const monthly = superMonthly + vacationMonthly + cultureMonthly + techMonthly + fashionMonthly;
   const annual = monthly * 12;
 
   return {
@@ -78,7 +77,6 @@ function calcNetLift(answers) {
       culture: cultureMonthly,
       tech: techMonthly,
       fashion: fashionMonthly,
-      car: carMonthly,
     },
   };
 }
