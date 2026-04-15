@@ -46,6 +46,7 @@ export default function NetLiftResult({ result, answers, onRestart }) {
     super: "סופר ומזון", vacation: "חופשות", culture: "הופעות", tech: "חשמל", fashion: "אופנה", car: "ביטוח רכב",
   };
 
+
   return (
     <div dir="rtl" style={{ minHeight: "100vh", background: "#F5F5F7", fontFamily: "var(--font-heebo)", padding: "32px 20px 80px" }}>
       <div style={{ maxWidth: "480px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "16px" }}>

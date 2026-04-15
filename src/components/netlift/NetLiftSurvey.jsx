@@ -51,11 +51,20 @@ const QUESTIONS = [
       { label: "לא בטוח שמתאים עכשיו", value: "notnow" },
     ],
   },
+  {
+    id: "q5",
+    title: "האם יש לך ביטוח רכב?",
+    sub: "BoomBuy מציעה הנחות על ביטוח רכב דרך הארגון",
+    options: [
+      { label: "כן, אחדש בקרוב", value: "renew_soon" },
+      { label: "כן, עוד שנה+", value: "renew_later" },
+      { label: "אין לי רכב", value: "no_car" },
+    ],
+  },
 ];
 
 function calcNetLift(answers) {
   const superIdx = answers.q2 ?? null;
-  // Require BOTH q2 (super spend) and q3 (categories) to be explicitly set by user
   if (superIdx === null || !Array.isArray(answers.q3)) return null;
   const categories = answers.q3;
 
@@ -64,8 +73,10 @@ function calcNetLift(answers) {
   const cultureMonthly = categories.includes("culture") ? Math.round(100 * 2 / 12) : 0;
   const techMonthly = categories.includes("tech") ? Math.round(500 / 12) : 0;
   const fashionMonthly = categories.includes("fashion") ? Math.round(250 / 12) : 0;
+  // ביטוח רכב — רק אם המשתמש ענה במפורש ויש לו רכב
+  const carInsuranceMonthly = (answers.q5 === "renew_soon" || answers.q5 === "renew_later") ? Math.round(600 / 12) : 0;
 
-  const monthly = superMonthly + vacationMonthly + cultureMonthly + techMonthly + fashionMonthly;
+  const monthly = superMonthly + vacationMonthly + cultureMonthly + techMonthly + fashionMonthly + carInsuranceMonthly;
   const annual = monthly * 12;
 
   return {
@@ -77,6 +88,7 @@ function calcNetLift(answers) {
       culture: cultureMonthly,
       tech: techMonthly,
       fashion: fashionMonthly,
+      car: carInsuranceMonthly,
     },
   };
 }
