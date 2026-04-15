@@ -144,15 +144,13 @@ function PriceTag({ label, amount, color = "#1D1D1F", bg = "#F5F5F7", strike = f
 }
 
 // ─── DOT INDICATOR ────────────────────────────────────────────────────────────
-function Dots({ total, active, onSelect }) {
-  const count = Number(total) || 0;
-  const indices = [];
-  for (let i = 0; i < count; i++) indices.push(i);
+function Dots({ items, active, onSelect }) {
+  if (!items || items.length === 0) return null;
   return (
     <div style={{ display: "flex", justifyContent: "center", gap: 6, marginTop: 20 }}>
-      {indices.map((i) => (
+      {items.map((item, i) => (
         <button
-          key={i}
+          key={item.id}
           onClick={() => onSelect(i)}
           style={{
             width: i === active ? 20 : 7,
@@ -271,7 +269,7 @@ export default function FeaturedOffersSlider() {
         </div>
 
         {/* Dot indicators */}
-        <Dots total={CLEAN_OFFERS.length} active={index} onSelect={setIndex} />
+        <Dots items={CLEAN_OFFERS} active={index} onSelect={setIndex} />
 
         {/* Current offer name hint */}
         <AnimatePresence mode="wait">
