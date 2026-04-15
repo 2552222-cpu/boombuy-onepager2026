@@ -176,19 +176,19 @@ export default function NetLiftBenefits({ onContinue, onNext }) {
             transition={{ duration: 2.4, repeat: Infinity }}
             style={{
               width: "100%",
-              background: hasScrolled ? "#0066CC" : "#AEAEB2",
+              background: "#0066CC",
               color: "#fff",
               fontWeight: 800,
               fontSize: "16px",
               padding: "17px",
               borderRadius: "16px",
               border: "none",
-              cursor: hasScrolled ? "pointer" : "default",
+              cursor: "pointer",
               fontFamily: "var(--font-heebo)",
               transition: "background 0.3s",
             }}
           >
-            {hasScrolled ? "אני רוצה לבדוק את פוטנציאל הנטו שלי ←" : "גללו למטה לצפות בכל ההטבות"}
+            אני רוצה לבדוק את פוטנציאל הנטו שלי ←
           </motion.button>
         </div>
       </div>

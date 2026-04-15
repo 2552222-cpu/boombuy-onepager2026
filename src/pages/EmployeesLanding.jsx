@@ -9,29 +9,29 @@ const FLOW_STEPS = ["intro", "benefits", "gate", "survey", "result"];
 
 export default function EmployeesLanding() {
   const [step, setStep] = useState("intro");
-  const [result, setResult] = useState(null);
-  const [answers, setAnswers] = useState(null);
+  const [surveyResult, setSurveyResult] = useState(null);
+  const [surveyAnswers, setSurveyAnswers] = useState(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [step]);
 
   const goNext = () => {
-    const index = FLOW_STEPS.indexOf(step);
-    const next = FLOW_STEPS[index + 1];
+    const idx = FLOW_STEPS.indexOf(step);
+    const next = FLOW_STEPS[idx + 1];
     if (next) setStep(next);
   };
 
-  const reset = () => {
-    setResult(null);
-    setAnswers(null);
-    setStep("intro");
+  const handleSurveyFinish = (result, answers) => {
+    setSurveyResult(result);
+    setSurveyAnswers(answers);
+    setStep("result");
   };
 
-  const handleSurveyFinish = (res, ans) => {
-    setResult(res);
-    setAnswers(ans);
-    goNext();
+  const reset = () => {
+    setSurveyResult(null);
+    setSurveyAnswers(null);
+    setStep("intro");
   };
 
   switch (step) {
@@ -44,7 +44,7 @@ export default function EmployeesLanding() {
     case "survey":
       return <NetLiftSurvey onFinish={handleSurveyFinish} />;
     case "result":
-      return <NetLiftResult result={result} answers={answers} onRestart={reset} />;
+      return <NetLiftResult result={surveyResult} answers={surveyAnswers} onRestart={reset} />;
     default:
       return <NetLiftIntro onNext={goNext} />;
   }
