@@ -6,117 +6,73 @@ import ILS from "../ILS";
 // ─── OFFERS DATA ──────────────────────────────────────────────────────────────
 const OFFERS = [
   {
-    id: "samba",
-    cat: "כל בוקר הטבה חדשה",
-    brand: "Adidas",
-    productName: "Adidas Samba",
-    labelOld: "מחיר אדידס",
-    priceOld: "499",
-    priceNew: "299",
-    saving: "200",
-    desc: "הדגם המבוקש בעולם במחיר בלעדי לעובדים.",
-    img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/b7485969d_-2026-02-18T150744909.png",
-  },
-  {
     id: "kitan",
+    num: 1,
     cat: "כל בוקר הטבה חדשה",
     brand: "Kitan",
-    productName: "Kitan — שמיכת מזגן קיצית מפנקת",
+    productName: "שמיכת מזגן קיצית מפנקת",
     labelOld: "מחיר כיתן",
     priceOld: "449",
     priceNew: "139",
     saving: "310",
-    desc: "שמיכת מזגן קיצית איכותית של כיתן במחיר בלעדי לעובדים.",
+    desc: "שמיכת מזגן קיצית מפנקת של כיתן במחיר בלעדי לעובדים.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8fb586f26_-2026-03-15T180501791.png",
   },
   {
-    id: "luggage3",
+    id: "samba",
+    num: 2,
     cat: "כל בוקר הטבה חדשה",
-    brand: "מזוודות",
+    brand: "Adidas",
+    productName: "נעלי SAMBA (אדידס דגם samba og)",
+    labelOld: "מחיר אדידס",
+    priceOld: "519",
+    priceNew: "299",
+    saving: "220",
+    desc: "נעלי סמבה אדידס — הדגם המבוקש בעולם במחיר בלעדי לעובדים.",
+    img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/b7485969d_-2026-02-18T150744909.png",
+  },
+  {
+    id: "swiss",
+    num: 3,
+    cat: "כל בוקר הטבה חדשה",
+    brand: "Swiss",
     productName: "סט 3 מזוודות קשיחות",
     labelOld: "מחיר שוק",
     priceOld: "699",
     priceNew: "199",
     saving: "500",
-    desc: "סט 3 מזוודות קשיחות איכותיות, ישירות מהיבואן.",
+    desc: "סט 3 מזוודות קשיחות Swiss — ישירות מהיבואן.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28598db7e_-2026-03-15T180501791.png",
   },
   {
     id: "gaming",
+    num: 4,
     cat: "כל בוקר הטבה חדשה",
-    brand: "גיימינג",
-    productName: "כיסא גיימינג",
+    brand: "Yoko",
+    productName: "כסא גיימינג מקצועי יוקו",
     labelOld: "מחיר שוק",
     priceOld: "1,090",
     priceNew: "120",
     saving: "970",
-    desc: "כיסא גיימינג מקצועי בהנחה חריגה לעובדים.",
+    desc: "כסא גיימינג מקצועי יוקו בהנחה חריגה לעובדים.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3f27a30a4_.png",
   },
   {
     id: "bedding",
+    num: 5,
     cat: "כל בוקר הטבה חדשה",
     brand: "Golf & Co",
-    productName: "סט מצעי ג'רסי — Golf & Co",
+    productName: "סט מצעי ג'רסי 100% כותנה סרוקה",
     labelOld: "מחיר ברשת",
     priceOld: "749",
     priceNew: "269",
     saving: "480",
-    desc: "סט מצעי ג'רסי גולף אנד קו במחיר מיוחד לעובדים.",
+    desc: "סט מצעי ג'רסי 100% כותנה סרוקה Golf & Co במחיר מיוחד לעובדים.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ccb0d029b_-2026-02-18T145838528.png",
-  },
-  {
-    id: "concert",
-    cat: "כל בוקר הטבה חדשה",
-    brand: "כרטיס הופעה",
-    productName: "כרטיס הופעה",
-    labelOld: "מחיר שוק",
-    priceOld: "290",
-    priceNew: "99",
-    saving: "191",
-    desc: "הופעות חיות, מופעים ואירועי תרבות — במחיר בלעדי לעובדים.",
-    img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a4b03713f_-2026-03-22T142532392.png",
-  },
-  {
-    id: "apple",
-    cat: "מובייל",
-    brand: "Apple",
-    productName: "iPhone 16 Pro",
-    labelOld: "מחיר שוק",
-    priceOld: "4,590",
-    priceNew: "3,890",
-    saving: "700",
-    desc: "הטבות בלעדיות על אייפון, סמסונג ומוצרי מובייל.",
-    img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/92d8c129a_-2026-02-18T150849922.png",
-  },
-  {
-    id: "culture",
-    cat: "תרבות ופנאי",
-    brand: "קזבלן",
-    productName: "קזבלן — הצגת השנה",
-    labelOld: "מחיר שוק",
-    priceOld: "350",
-    priceNew: "77",
-    saving: "273",
-    desc: "תערוכות, הופעות והצגות בארץ ובחו״ל במחירים נגישים.",
-    img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3c42d518b_-2026-03-22T140039783.png",
-  },
-  {
-    id: "vacation",
-    cat: "נופש וחופשות",
-    brand: "מלונות בראון",
-    productName: "מלונות בראון — לילה זוגי",
-    labelOld: "מחיר שוק",
-    priceOld: "1,790",
-    priceNew: "899",
-    saving: "891",
-    desc: "חופשות בארץ ובחו״ל במחירים בלעדיים.",
-    img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7cc501b0f_-2026-03-22T133529822.png",
   },
 ];
 
-// Deduplicate by id
-const CLEAN_OFFERS = Array.from(new Map(OFFERS.map(o => [o.id, o])).values());
+const CLEAN_OFFERS = OFFERS;
 const DEFAULT_INDEX = 0;
 
 // ─── PRICE TAG ────────────────────────────────────────────────────────────────
@@ -249,7 +205,10 @@ export default function FeaturedOffersSlider() {
                 style={{ position: "absolute", width: 260, cursor: "pointer", zIndex: 10 - circAbs, display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}
               >
                 {/* Card image */}
-                <div style={{ width: "100%", height: 340, background: "#F5F5F7", borderRadius: 28, overflow: "hidden", boxShadow: isCenter ? "0 28px 70px rgba(0,0,0,0.14)" : "0 6px 20px rgba(0,0,0,0.06)" }}>
+                <div style={{ width: "100%", height: 340, background: "#F5F5F7", borderRadius: 28, overflow: "hidden", boxShadow: isCenter ? "0 28px 70px rgba(0,0,0,0.14)" : "0 6px 20px rgba(0,0,0,0.06)", position: "relative" }}>
+                  <div style={{ position: "absolute", top: 12, right: 12, zIndex: 5, background: "#0055CC", color: "#fff", fontWeight: 900, fontSize: 14, width: 28, height: 28, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    {offer.num}
+                  </div>
                   <img src={offer.img} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} alt={offer.productName} />
                 </div>
 
