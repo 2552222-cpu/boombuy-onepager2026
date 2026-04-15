@@ -87,7 +87,7 @@ const OFFERS = [
     priceNew: "3,890",
     saving: "700",
     desc: "הטבות בלעדיות על אייפון, סמסונג ומוצרי מובייל.",
-    img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/66514fe66_-2026-02-18T150849922.png",
+    img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/92d8c129a_-2026-02-18T150849922.png",
   },
   {
     id: "culture",
