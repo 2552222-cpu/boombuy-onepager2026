@@ -311,7 +311,7 @@ export default function BenefitsShowcase() {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
-          {categories.map((cat) => (
+          {categories.map((cat, idx) => (
             <motion.div
               key={cat.id}
               onClick={() => setSelectedCategory(cat)}
@@ -319,7 +319,10 @@ export default function BenefitsShowcase() {
               transition={{ type: "spring", stiffness: 300, damping: 22 }}
               className="cursor-pointer bg-white rounded-[40px] border border-slate-100 shadow-sm flex flex-col overflow-hidden"
             >
-              <div className="aspect-square bg-white flex items-center justify-center overflow-hidden rounded-t-[40px]">
+              <div className="aspect-square bg-white flex items-center justify-center overflow-hidden rounded-t-[40px] relative">
+                <div style={{ position: "absolute", top: 10, right: 10, zIndex: 5, background: "#0055CC", color: "#fff", fontWeight: 900, fontSize: 13, width: 26, height: 26, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  {idx + 1}
+                </div>
                 <img src={cat.previewImage} alt={cat.title} className="max-w-full max-h-full object-contain p-3" />
               </div>
               <div className="px-3 pt-1 pb-2 flex items-center gap-2">
