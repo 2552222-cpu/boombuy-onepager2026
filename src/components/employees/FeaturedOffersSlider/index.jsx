@@ -75,7 +75,7 @@ const OFFERS = [
     priceNew: "249",
     saving: "1,750",
     desc: "סט מזוודות קשיחות קייט היל — יבואן רשמי. ההטבה המבוקשת של השנה.",
-    img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28598db7e_-2026-03-15T180501791.png",
+    img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/66514fe66_-2026-02-18T150849922.png",
   },
   {
     id: "apple",
