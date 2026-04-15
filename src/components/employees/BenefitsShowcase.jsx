@@ -218,7 +218,10 @@ function CategoryModal({ category, onClose, onCTA }) {
                   <div className="flex gap-2 overflow-x-auto" style={{ WebkitOverflowScrolling: "touch", scrollbarWidth: "none", paddingRight: "16px", paddingLeft: "48px" }}>
                     {offers.map((o, i) => (
                       <button key={i} onClick={() => setActiveIdx(i)}
-                        className={`flex-shrink-0 w-[64px] h-[64px] rounded-2xl border-2 bg-white shadow-sm transition-all ${i === activeIdx ? "border-blue-500 scale-105 shadow-md" : "border-slate-100 hover:border-blue-300"}`}>
+                        className={`flex-shrink-0 w-[64px] h-[64px] rounded-2xl border-2 bg-white shadow-sm transition-all relative ${i === activeIdx ? "border-blue-500 scale-105 shadow-md" : "border-slate-100 hover:border-blue-300"}`}>
+                        <div className="absolute top-1 right-1 z-10 bg-blue-600 text-white font-bold text-[9px] w-4 h-4 rounded-full flex items-center justify-center">
+                          {i + 1}
+                        </div>
                         <img src={o.img} className="w-full h-full object-contain p-2 rounded-2xl" alt="" />
                       </button>
                     ))}
