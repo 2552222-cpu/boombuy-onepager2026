@@ -30,7 +30,7 @@ const OFFERS = [
     priceNew: "399",
     saving: "400",
     desc: "מזוודות קייט היל בחיסכון משמעותי.",
-    img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8fb586f26_-2026-03-15T180501791.png",
+    img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/b7485969d_-2026-02-18T150744909.png",
   },
   {
     id: "gaming",
@@ -56,7 +56,7 @@ const OFFERS = [
     priceNew: "449",
     saving: "450",
     desc: "מזוודות סוויס בעיצוב מודרני.",
-    img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ccb0d029b_-2026-02-18T145838528.png",
+    img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8fb586f26_-2026-03-15T180501791.png",
   },
   {
     id: "kitan",
@@ -82,7 +82,7 @@ const OFFERS = [
     priceNew: "269",
     saving: "480",
     desc: "סט מצעי גרסי 100% כותנה.",
-    img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a4b03713f_-2026-03-22T142532392.png",
+    img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ccb0d029b_-2026-02-18T145838528.png",
   },
 ];
 
