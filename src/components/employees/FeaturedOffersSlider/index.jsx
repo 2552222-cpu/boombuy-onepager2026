@@ -16,7 +16,7 @@ const OFFERS = [
     priceNew: "139",
     saving: "310",
     desc: "שמיכת מזגן קיצית מפנקת של כיתן במחיר בלעדי לעובדים.",
-    img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8fb586f26_-2026-03-15T180501791.png",
+    img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6186b6abc_-2026-03-22T123739070.png",
   },
   {
     id: "samba",
