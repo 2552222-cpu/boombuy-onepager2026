@@ -146,9 +146,11 @@ function PriceTag({ label, amount, color = "#1D1D1F", bg = "#F5F5F7", strike = f
 // ─── DOT INDICATOR ────────────────────────────────────────────────────────────
 function Dots({ total, active, onSelect }) {
   const count = Number(total) || 0;
+  const indices = [];
+  for (let i = 0; i < count; i++) indices.push(i);
   return (
     <div style={{ display: "flex", justifyContent: "center", gap: 6, marginTop: 20 }}>
-      {Array.from({ length: count }).map((_, i) => (
+      {indices.map((i) => (
         <button
           key={i}
           onClick={() => onSelect(i)}
