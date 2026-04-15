@@ -1,7 +1,8 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-export default function NetLiftIntro({ onStart }) {
+export default function NetLiftIntro({ onStart, onNext }) {
+  const handleStart = onNext || onStart;
   return (
     <div
       dir="rtl"
@@ -103,7 +104,7 @@ export default function NetLiftIntro({ onStart }) {
         {/* CTA */}
         <motion.button
           whileTap={{ scale: 0.97 }}
-          onClick={onStart}
+          onClick={handleStart}
           style={{
             width: "100%",
             background: "#0066CC",

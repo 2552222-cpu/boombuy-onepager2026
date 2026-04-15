@@ -115,7 +115,8 @@ const OFFERS = [
   },
 ];
 
-// samba is index 0 — that's the default
+// Deduplicate by id
+const CLEAN_OFFERS = Array.from(new Map(OFFERS.map(o => [o.id, o])).values());
 const DEFAULT_INDEX = 0;
 
 // ─── PRICE TAG ────────────────────────────────────────────────────────────────
@@ -180,8 +181,8 @@ export default function FeaturedOffersSlider() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  const selectedOffer = OFFERS.find((o) => o.id === selectedId);
-  const go = (dir) => setIndex((p) => (p + dir + OFFERS.length) % OFFERS.length);
+  const selectedOffer = CLEAN_OFFERS.find((o) => o.id === selectedId);
+  const go = (dir) => setIndex((p) => (p + dir + CLEAN_OFFERS.length) % CLEAN_OFFERS.length);
 
   const openModal = (id) => {
     setSelectedId(id);
@@ -225,9 +226,9 @@ export default function FeaturedOffersSlider() {
             <ChevronLeft size={22} color="#1D1D1F" />
           </button>
 
-          {OFFERS.map((offer, i) => {
+          {CLEAN_OFFERS.map((offer, i) => {
             const offset = i - index;
-            const circOffset = offset > OFFERS.length / 2 ? offset - OFFERS.length : offset < -OFFERS.length / 2 ? offset + OFFERS.length : offset;
+            const circOffset = offset > CLEAN_OFFERS.length / 2 ? offset - CLEAN_OFFERS.length : offset < -CLEAN_OFFERS.length / 2 ? offset + CLEAN_OFFERS.length : offset;
             const circAbs = Math.abs(circOffset);
             if (circAbs > 4) return null;
             const isCenter = circOffset === 0;
@@ -267,7 +268,7 @@ export default function FeaturedOffersSlider() {
         </div>
 
         {/* Dot indicators */}
-        <Dots total={OFFERS.length} active={index} onSelect={setIndex} />
+        <Dots total={CLEAN_OFFERS.length} active={index} onSelect={setIndex} />
 
         {/* Current offer name hint */}
         <AnimatePresence mode="wait">
@@ -279,7 +280,7 @@ export default function FeaturedOffersSlider() {
             transition={{ duration: 0.2 }}
             style={{ marginTop: 14, fontSize: 14, fontWeight: 700, color: "#1D1D1F" }}
           >
-            {OFFERS[index].productName}
+            {CLEAN_OFFERS[index].productName}
           </motion.p>
         </AnimatePresence>
         <p style={{ fontSize: 12, color: "#AEAEB2", marginTop: 4 }}>החליקו ימינה/שמאלה או לחצו על החיצים</p>
@@ -323,13 +324,13 @@ export default function FeaturedOffersSlider() {
               {/* IMAGE AREA */}
               <div style={{ flex: isMobile ? "0 0 44%" : "1.2", background: "#F5F5F7", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", minHeight: isMobile ? 240 : "auto" }}>
                 <button
-                  onClick={(e) => { e.stopPropagation(); const prevIdx = (OFFERS.findIndex(o=>o.id===selectedId) - 1 + OFFERS.length) % OFFERS.length; go(-1); setSelectedId(OFFERS[prevIdx].id); }}
+                  onClick={(e) => { e.stopPropagation(); const prevIdx = (CLEAN_OFFERS.findIndex(o=>o.id===selectedId) - 1 + CLEAN_OFFERS.length) % CLEAN_OFFERS.length; go(-1); setSelectedId(CLEAN_OFFERS[prevIdx].id); }}
                   style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.9)", border: "none", width: 34, height: 34, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", zIndex: 5, boxShadow: "0 2px 10px rgba(0,0,0,0.12)" }}
                 >
                   <ChevronRight size={18} color="#1D1D1F" />
                 </button>
                 <button
-                  onClick={(e) => { e.stopPropagation(); const nextIdx = (OFFERS.findIndex(o=>o.id===selectedId) + 1) % OFFERS.length; go(1); setSelectedId(OFFERS[nextIdx].id); }}
+                  onClick={(e) => { e.stopPropagation(); const nextIdx = (CLEAN_OFFERS.findIndex(o=>o.id===selectedId) + 1) % CLEAN_OFFERS.length; go(1); setSelectedId(CLEAN_OFFERS[nextIdx].id); }}
                   style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.9)", border: "none", width: 34, height: 34, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", zIndex: 5, boxShadow: "0 2px 10px rgba(0,0,0,0.12)" }}
                 >
                   <ChevronLeft size={18} color="#1D1D1F" />

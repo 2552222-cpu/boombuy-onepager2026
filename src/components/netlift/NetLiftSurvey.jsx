@@ -81,7 +81,8 @@ function calcNetLift(answers) {
   };
 }
 
-export default function NetLiftSurvey({ onComplete }) {
+export default function NetLiftSurvey({ onComplete, onFinish }) {
+  const handleDone = onFinish || onComplete;
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({});
   const [multiSelected, setMultiSelected] = useState([]);
@@ -117,11 +118,7 @@ export default function NetLiftSurvey({ onComplete }) {
 
   const finish = (finalAnswers) => {
     const result = calcNetLift(finalAnswers);
-    if (!result) {
-      onComplete(null, finalAnswers);
-      return;
-    }
-    onComplete(result, finalAnswers);
+    handleDone(result, finalAnswers);
   };
 
   const progress = ((step) / QUESTIONS.length) * 100;

@@ -1,7 +1,8 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-export default function NetLiftSurveyGate({ onContinue }) {
+export default function NetLiftSurveyGate({ onContinue, onNext }) {
+  const handleContinue = onNext || onContinue;
   return (
     <div
       dir="rtl"
@@ -77,7 +78,7 @@ export default function NetLiftSurveyGate({ onContinue }) {
 
         <motion.button
           whileTap={{ scale: 0.97 }}
-          onClick={onContinue}
+          onClick={handleContinue}
           style={{
             width: "100%",
             background: "#0066CC",

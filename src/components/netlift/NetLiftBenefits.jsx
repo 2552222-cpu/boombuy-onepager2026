@@ -59,7 +59,8 @@ const BENEFITS = [
   },
 ];
 
-export default function NetLiftBenefits({ onContinue }) {
+export default function NetLiftBenefits({ onContinue, onNext }) {
+  const handleContinue = onNext || onContinue;
   const bottomRef = useRef(null);
   const [hasScrolled, setHasScrolled] = useState(false);
 
@@ -170,7 +171,7 @@ export default function NetLiftBenefits({ onContinue }) {
       }}>
         <div style={{ maxWidth: "520px", margin: "0 auto" }}>
           <motion.button
-            onClick={onContinue}
+            onClick={handleContinue}
             animate={hasScrolled ? { boxShadow: ["0 0 0px rgba(0,102,204,0)", "0 0 24px rgba(0,102,204,0.5)", "0 0 0px rgba(0,102,204,0)"] } : {}}
             transition={{ duration: 2.4, repeat: Infinity }}
             style={{
