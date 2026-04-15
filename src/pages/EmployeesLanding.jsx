@@ -11,7 +11,7 @@ import FinalBand from "../components/employees/FinalBand";
 import ZeroBudget from "../components/employees/ZeroBudget";
 import EconomicSection from "../components/employees/EconomicSection";
 import FloatingWhatsApp from "../components/employees/FloatingWhatsApp";
-import NetLiftCalculator from "../components/employees/NetLiftCalculator";
+import NetLiftCalculator from "../components/employees/NetLiftCalculator.jsx";
 import SurveyGate from "../components/employees/SurveyGate";
 import Survey from "../components/employees/Survey";
 
