@@ -70,8 +70,8 @@ function calcNetLift(answers) {
   const annual = monthly * 12;
 
   return {
-    monthly: Math.max(monthly, 400),
-    annual: Math.max(annual, 4800),
+    monthly,
+    annual,
     breakdown: {
       super: superMonthly,
       vacation: vacationMonthly,
