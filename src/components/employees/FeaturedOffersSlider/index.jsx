@@ -70,6 +70,19 @@ const OFFERS = [
     desc: "סט מצעי ג'רסי 100% כותנה סרוקה Golf & Co במחיר מיוחד לעובדים.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ccb0d029b_-2026-02-18T145838528.png",
   },
+  {
+    id: "concert",
+    num: 6,
+    cat: "כל בוקר הטבה חדשה",
+    brand: "כרטיס הופעה",
+    productName: "כרטיס הופעה",
+    labelOld: "מחיר שוק",
+    priceOld: "290",
+    priceNew: "99",
+    saving: "191",
+    desc: "הופעות חיות, מופעים ואירועי תרבות — במחיר בלעדי לעובדים.",
+    img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a4b03713f_-2026-03-22T142532392.png",
+  },
 ];
 
 const CLEAN_OFFERS = OFFERS;
