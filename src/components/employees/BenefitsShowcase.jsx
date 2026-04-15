@@ -13,12 +13,11 @@ const categories = [
     tag: "המחיר הנמוך בישראל. תמיד.",
     previewImage: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7e52326a0_-2026-03-22T160414836.png",
     offers: [
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/9ddb536b7_-2026-03-22T123739070.png", productName: "Adidas Samba", priceOld: "499", priceNew: "299", saving: "200", labelOld: "מחיר באדידס" },
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/46e419525_-2026-02-18T150744909.png", productName: "נעלי ריצה Nike", priceOld: "450", priceNew: "249", saving: "201", labelOld: "מחיר שוק" },
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ccb0d029b_-2026-02-18T145838528.png", productName: "טי-שירט Tommy", priceOld: "280", priceNew: "129", saving: "151", labelOld: "מחיר שוק" },
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3f27a30a4_.png", productName: "אוזניות JBL", priceOld: "399", priceNew: "199", saving: "200", labelOld: "מחיר שוק" },
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a4b03713f_-2026-03-22T142532392.png", productName: "כרטיס הופעה", priceOld: "290", priceNew: "99", saving: "191", labelOld: "מחיר שוק" },
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8fb586f26_-2026-03-15T180501791.png", productName: "סט מזוודות", priceOld: "1,999", priceNew: "249", saving: "1,750", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8fb586f26_-2026-03-15T180501791.png", productName: "שמיכת מזגן קיצית מפנקת", priceOld: "449", priceNew: "139", saving: "310", labelOld: "מחיר כיתן" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/9ddb536b7_-2026-03-22T123739070.png", productName: "נעלי SAMBA (אדידס דגם samba og)", priceOld: "519", priceNew: "299", saving: "220", labelOld: "מחיר אדידס" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/28598db7e_-2026-03-15T180501791.png", productName: "סט 3 מזוודות קשיחות", priceOld: "699", priceNew: "199", saving: "500", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3f27a30a4_.png", productName: "כסא גיימינג מקצועי יוקו", priceOld: "1090", priceNew: "120", saving: "970", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ccb0d029b_-2026-02-18T145838528.png", productName: "סט מצעי ג'רסי 100% כותנה סרוקה", priceOld: "749", priceNew: "269", saving: "480", labelOld: "מחיר ברשת" },
     ],
   },
   {
