@@ -16,13 +16,12 @@ const CATEGORY_LABELS = {
   insurance: "ביטוח רכב ודירה",
 };
 
-// ₪ בצד שמאל
 function ILS({ amount, size = 32, color = "#0055CC" }) {
   return (
-    <span style={{ display: "inline-flex", flexDirection: "row-reverse", alignItems: "baseline", gap: 3, direction: "ltr" }}>
+    <bdi dir="ltr" style={{ display: "inline-block", whiteSpace: "nowrap", unicodeBidi: "isolate" }}>
       <span style={{ fontSize: size, fontWeight: 900, color, lineHeight: 1 }}>{Number(amount).toLocaleString("he-IL")}</span>
-      <span style={{ fontSize: size * 0.62, fontWeight: 700, color }}>₪</span>
-    </span>
+      <span style={{ fontSize: size * 0.62, fontWeight: 700, color }}> ₪</span>
+    </bdi>
   );
 }
 

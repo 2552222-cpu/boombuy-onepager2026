@@ -141,13 +141,12 @@ export function calcNetLift(answers) {
   return { monthly, annual: monthly * 12, breakdown };
 }
 
-// ─── ILS — ₪ בצד שמאל ────────────────────────────────────────────────────────
 function ILS({ amount, size = 20 }) {
   return (
-    <span style={{ display: "inline-flex", flexDirection: "row-reverse", alignItems: "baseline", gap: 2, direction: "ltr" }}>
+    <bdi dir="ltr" style={{ display: "inline-block", whiteSpace: "nowrap", unicodeBidi: "isolate" }}>
       <span style={{ fontSize: size, fontWeight: 900, lineHeight: 1 }}>{Number(amount).toLocaleString("he-IL")}</span>
-      <span style={{ fontSize: size * 0.7, fontWeight: 700 }}>₪</span>
-    </span>
+      <span style={{ fontSize: size * 0.7, fontWeight: 700 }}> ₪</span>
+    </bdi>
   );
 }
 
