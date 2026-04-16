@@ -84,10 +84,10 @@ const categories = [
     tag: "הנחת עובד",
     previewImage: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3d11c2184_-2026-03-22T165538542.png",
     offers: [
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/bb4b910ed_-2026-03-22T140039783.png", productName: "קזבלן", priceOld: "350", priceNew: "77", saving: "273", labelOld: "מחיר שוק" },
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7271e7a2c_-2026-01-21T190449103.png", productName: "הופעה חיה", priceOld: "290", priceNew: "120", saving: "170", labelOld: "מחיר שוק" },
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/af45cadc7_3.jpg", productName: "פארק שעשועים", priceOld: "180", priceNew: "79", saving: "101", labelOld: "מחיר שוק" },
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3c918e2dd_-2026-03-22T124329449.png", productName: "תערוכה", priceOld: "120", priceNew: "45", saving: "75", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/bb4b910ed_-2026-03-22T140039783.png", productName: "המחזמר קזבלן בכיכובו של איתי לוי — הבימה", priceOld: "350", priceNew: "77", saving: "273", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7271e7a2c_-2026-01-21T190449103.png", productName: "כרטיס גולדן להופעה של ביונסה באמסטרדם — כולל טיסות ומלון", priceOld: "6,900", priceNew: "4,599", saving: "2,301", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/af45cadc7_3.jpg", productName: "מופע HAIR (שיער) — בית האופרה", priceOld: "199", priceNew: "89", saving: "110", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3c918e2dd_-2026-03-22T124329449.png", productName: "כרטיס למיומנה — מופע DNA", priceOld: "159", priceNew: "59", saving: "100", labelOld: "מחיר שוק" },
     ],
   },
   {
