@@ -46,7 +46,7 @@ const categories = [
     offers: [
       { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ea0c9f5da_-2026-02-18T145540109.png", productName: "מארז מיני הכל כלול מבית ליאור קוקה — TNX", priceOld: "349", priceNew: "149", saving: "200", labelOld: "מחיר שוק" },
       { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3784ac419_-2026-03-22T130058307.png", productName: "200 קפסולות קפה פרמיום ג'ייקובס — Jacobs", priceOld: "338", priceNew: "129", saving: "209", labelOld: "מחיר KSP" },
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/52e06185a_-2026-03-22T115442800.png", productName: "3 מארזים - מוצרי חלבון ALLIN (סה\"כ 54 יח')", priceOld: "653", priceNew: "158", saving: "495", labelOld: "מחיר KSP" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/52e06185a_-2026-03-22T115442800.png", productName: "3 מארזים - מוצרי חלבון ALLIN (סה\"כ 54 יח') — חיסכון של 9.17 ₪ למארז", priceOld: "653", priceNew: "158", saving: "495", labelOld: "מחיר KSP" },
       { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6e4f9f168_-2026-03-22T130017988.png", productName: "מארז 90 קפסולות לכביסה Ariel All-in-1", priceOld: "149", priceNew: "99", saving: "50", labelOld: "מחיר שוק" },
       { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6b98c8aed_72.png", productName: "מארז ענק למטבח — Finish", priceOld: "199", priceNew: "129.90", saving: "69.10", labelOld: "מחיר מחירון" },
     ],
@@ -71,9 +71,9 @@ const categories = [
     tag: "מחירים בלעדיים",
     previewImage: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/1b29c5bb8_-2026-03-22T162942110.png",
     offers: [
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/cf3b11fa5_-2026-03-22T133529822.png", productName: "מלונות בראון", priceOld: "1,790", priceNew: "899", saving: "891", labelOld: "מחיר שוק" },
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/d11fc0b42_-2026-03-22T125322010.png", productName: "חופשה בחו\"ל", priceOld: "3,200", priceNew: "1,800", saving: "1,400", labelOld: "מחיר שוק" },
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/78ac452a3_-2026-03-22T130846774.png", productName: "חופשה בארץ", priceOld: "980", priceNew: "549", saving: "431", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/cf3b11fa5_-2026-03-22T133529822.png", productName: "לילה מפנק ב-BoBo תל אביב — כולל לינה, עיסוי זוגי וארוחת בוקר זוגית", priceOld: "1,790", priceNew: "899", saving: "891", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/78ac452a3_-2026-03-22T130846774.png", productName: "חופשה זוגית באילת — כולל ארוחת בוקר, חדר עם מרפסת, שני לילות (מאי-יוני)", priceOld: "2,490", priceNew: "899", saving: "1,591", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/d11fc0b42_-2026-03-22T125322010.png", productName: "חופשה משפחתית בגאורגיה — 3 לילות מלון 5★, חצי פנסיון, פארק מים, העברות וכבודה", priceOld: "10,050", priceNew: "6,600", saving: "3,450", labelOld: "מחיר שוק לזוג+ילד" },
     ],
   },
   {
