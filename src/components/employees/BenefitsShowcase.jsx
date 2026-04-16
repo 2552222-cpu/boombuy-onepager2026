@@ -128,9 +128,9 @@ const CATEGORY_ICONS = {
 // ─── PRICE CARDS ──────────────────────────────────────────────────────────────
 function PriceCards({ offer, mobile }) {
   if (!offer?.priceOld) return null;
-  // RTL: rightmost card first in array = מחיר שוק on right, חיסכון on left
+  // סדר: מחיר שוק | מחיר לעובד | חיסכון — זהה לסליידר
   return (
-    <div style={{ display: "flex", gap: "8px", marginBottom: mobile ? "16px" : "20px", direction: "rtl" }}>
+    <div style={{ display: "flex", gap: "8px", marginBottom: mobile ? "16px" : "20px" }}>
       <div style={{ flex: 1, background: "#F5F5F7", borderRadius: "16px", padding: mobile ? "10px 6px" : "14px 8px", textAlign: "center" }}>
         <p style={{ fontSize: "10px", fontWeight: 700, color: "#86868B", marginBottom: "4px" }}>{offer.labelOld}</p>
         <ILS value={offer.priceOld} style={{ fontSize: mobile ? "16px" : "22px", fontWeight: 900, color: "#86868B", textDecoration: "line-through" }} />
