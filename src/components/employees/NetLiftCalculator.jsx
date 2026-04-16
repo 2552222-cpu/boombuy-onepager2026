@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import NetLiftIntro from "../netlift/NetLiftIntro";
 import NetLiftSurvey from "../netlift/NetLiftSurvey";
 import NetLiftResult from "../netlift/NetLiftResult";
 
-// Flow: intro → survey → result (terminal, no external navigation)
+// Flow: survey → result (direct, no extra intro screen)
 export default function NetLiftCalculator() {
-  const [step, setStep] = useState("intro");
+  const [step, setStep] = useState("survey");
   const [result, setResult] = useState(null);
   const [answers, setAnswers] = useState(null);
 
@@ -15,8 +14,7 @@ export default function NetLiftCalculator() {
     setStep("result");
   };
 
-  if (step === "intro") return <NetLiftIntro onNext={() => setStep("survey")} />;
   if (step === "survey") return <NetLiftSurvey onFinish={handleComplete} />;
-  if (step === "result") return <NetLiftResult result={result} answers={answers} onRestart={() => setStep("intro")} />;
+  if (step === "result") return <NetLiftResult result={result} answers={answers} onRestart={() => setStep("survey")} />;
   return null;
 }
