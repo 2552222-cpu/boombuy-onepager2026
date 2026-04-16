@@ -445,14 +445,13 @@ export default function AdminDashboard() {
             )}
           </div>
         </div>
-      </div>
-
         </>}
 
-      <AnimatePresence>
-        {demoReq && <DemoModal req={demoReq} onClose={() => setDemoReq(null)} />}
-        {drawerReq && <MembersDrawer req={drawerReq} onClose={() => setDrawerReq(null)} />}
-      </AnimatePresence>
+        <AnimatePresence>
+          {demoReq && <DemoModal req={demoReq} onClose={() => setDemoReq(null)} />}
+          {drawerReq && <MembersDrawer req={drawerReq} onClose={() => setDrawerReq(null)} />}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }
