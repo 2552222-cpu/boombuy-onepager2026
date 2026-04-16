@@ -18,6 +18,6 @@ export default function NetLiftCalculator({ onAdvance }) {
 
   if (step === "intro") return <NetLiftIntro onNext={() => setStep("survey")} />;
   if (step === "survey") return <NetLiftSurvey onFinish={handleComplete} />;
-  if (step === "result") return <NetLiftResult result={result} answers={answers} onRestart={() => setStep("intro")} />;
+  if (step === "result") return <NetLiftResult result={result} answers={answers} onRestart={() => setStep("intro")} onNext={onAdvance} />;
   return null;
 }
