@@ -70,7 +70,23 @@ export default function NetLiftResult({ result, answers, onRestart }) {
           <div style={{ display: "inline-block", background: "rgba(0,102,204,0.08)", border: "1px solid rgba(0,102,204,0.2)", borderRadius: "999px", padding: "5px 16px", marginBottom: "14px" }}>
             <span style={{ fontSize: "12px", fontWeight: 700, color: "#0066CC" }}>NetLift Index Summary</span>
           </div>
-          <div style={{ fontSize: "40px", marginBottom: "12px" }}>🎯</div>
+          <div style={{ marginBottom: "16px", display: "flex", justifyContent: "center" }}>
+            <div style={{
+              width: 64, height: 64,
+              background: "linear-gradient(145deg, #0A84FF, #0055CC)",
+              borderRadius: "18px",
+              boxShadow: "0 8px 24px rgba(0,102,204,0.35), inset 0 1px 0 rgba(255,255,255,0.2)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+            }}>
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                <path d="M16 4C9.373 4 4 9.373 4 16C4 22.627 9.373 28 16 28C22.627 28 28 22.627 28 16C28 9.373 22.627 4 16 4Z" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" fill="none"/>
+                <path d="M16 9C12.134 9 9 12.134 9 16C9 19.866 12.134 23 16 23C19.866 23 23 19.866 23 16C23 12.134 19.866 9 16 9Z" stroke="rgba(255,255,255,0.5)" strokeWidth="1.5" fill="none"/>
+                <circle cx="16" cy="16" r="3.5" fill="white"/>
+                <path d="M16 16L24 8" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+                <circle cx="24.5" cy="7.5" r="2" fill="rgba(255,255,255,0.85)"/>
+              </svg>
+            </div>
+          </div>
           <h2 style={{ fontSize: "clamp(20px, 5vw, 28px)", fontWeight: 900, color: "#1D1D1F", letterSpacing: "-0.03em", lineHeight: 1.2, marginBottom: "8px" }}>
             הנטו האפקטיבי שלך עשוי לגדול
           </h2>
