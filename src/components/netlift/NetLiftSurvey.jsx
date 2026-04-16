@@ -1,70 +1,109 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const USAGE_OPTIONS = [
-  { label: "משתמש באופן קבוע", value: 1.0 },
-  { label: "משתמש לעיתים", value: 0.5 },
-  { label: "משתמש לעיתים רחוקות", value: 0.2 },
-  { label: "לא משתמש בכלל", value: 0 },
-];
-
+// ── Fixed question schema ────────────────────────────────────────────────────
 const QUESTIONS = [
   {
-    id: "super",
-    title: "האם אתה קונה בסופרמרקט או בפארם?",
-    sub: "מזון, מוצרי ניקיון, פארם",
-    options: USAGE_OPTIONS,
+    id: "super_spend",
+    title: "כמה אתה מוציא על סופר בחודש?",
+    sub: null,
+    options: [
+      { label: "2,000–3,000 ₪", value: 160 },
+      { label: "3,000–5,000 ₪", value: 280 },
+      { label: "5,000–8,000 ₪", value: 440 },
+      { label: "8,000+ ₪", value: 620 },
+    ],
+  },
+  {
+    id: "super_discount",
+    title: "אם הייתה הנחה קבועה של 8% ברשתות דיסקאונט מוזלות, היית משתמש בה?",
+    sub: null,
+    options: [
+      { label: "כן כל שבוע", value: 1.0 },
+      { label: "פעם בשבועיים", value: 0.6 },
+      { label: "פעם בחודש", value: 0.3 },
+      { label: "לא רלוונטי לי", value: 0 },
+    ],
   },
   {
     id: "tech",
-    title: "האם אתה רוכש מוצרי חשמל ואלקטרוניקה?",
-    sub: "טלפונים, מחשבים, מכשירי חשמל",
-    options: USAGE_OPTIONS,
+    title: "כמה רכישות גדולות של חשמל ואלקטרוניקה בשנה?",
+    sub: null,
+    options: [
+      { label: "0", value: 0 },
+      { label: "1", value: 1 },
+      { label: "2–3", value: 2.5 },
+      { label: "4+", value: 4 },
+    ],
   },
   {
     id: "general",
-    title: "האם אתה קונה ביגוד, הנעלה או מוצרים לבית?",
-    sub: "אופנה, כלי בית, צעצועים",
-    options: USAGE_OPTIONS,
+    title: "באיזו תדירות היית משתמש בהטבות כלליות (אופנה, בית, צעצועים וכו׳)?",
+    sub: null,
+    options: [
+      { label: "כל שבוע", value: 1.0 },
+      { label: "2–3 פעמים בחודש", value: 0.65 },
+      { label: "פעם בחודש", value: 0.3 },
+      { label: "כמעט לא", value: 0.05 },
+    ],
   },
   {
-    id: "leisure",
-    title: "האם אתה יוצא לחופשות או בילויים?",
-    sub: "טיסות, מלונות, הצגות, קונצרטים",
-    options: USAGE_OPTIONS,
+    id: "insurance_count",
+    title: "כמה ביטוחים יש בבית (רכב + דירה)?",
+    sub: null,
+    options: [
+      { label: "0", value: 0 },
+      { label: "1", value: 1 },
+      { label: "2", value: 2 },
+      { label: "3+", value: 3 },
+    ],
   },
   {
-    id: "insurance",
-    title: "האם יש לך ביטוח רכב או דירה?",
-    sub: "ביטוחים שניתן לקבל עליהם הנחה ארגונית",
-    options: USAGE_OPTIONS,
+    id: "insurance_use",
+    title: "אם הייתה הנחה קבועה על ביטוח רכב ודירה - היית משתמש?",
+    sub: null,
+    options: [
+      { label: "כן", value: 1.0 },
+      { label: "אולי", value: 0.5 },
+      { label: "לא", value: 0 },
+    ],
   },
 ];
 
-const CATEGORY_SAVINGS = {
-  super: { base: 280, label: "סופר ומזון" },
-  tech: { base: 420, label: "חשמל ואלקטרוניקה" },
-  general: { base: 180, label: "אופנה וכלי בית" },
-  leisure: { base: 350, label: "חופשות ובילויים" },
-  insurance: { base: 200, label: "ביטוח" },
-};
-
+// ── Scoring: fixed numeric weights per answer ────────────────────────────────
 export function calcNetLift(answers) {
-  let monthly = 0;
-  const breakdown = {};
+  // Super: spend * discount multiplier * 8%
+  const spendBase = answers.super_spend ?? 0;
+  const discountMult = answers.super_discount ?? 0;
+  const superSaving = Math.round(spendBase * discountMult * 0.08);
 
-  Object.entries(answers).forEach(([key, value]) => {
-    if (value > 0 && CATEGORY_SAVINGS[key]) {
-      const saving = Math.round(CATEGORY_SAVINGS[key].base * value);
-      breakdown[key] = saving;
-      monthly += saving;
-    }
-  });
+  // Tech: count * avg saving per purchase (350 ₪ avg)
+  const techCount = answers.tech ?? 0;
+  const techSaving = Math.round((techCount * 350) / 12);
 
-  if (monthly === 0) return null;
+  // General benefits: base 180 * usage multiplier
+  const generalMult = answers.general ?? 0;
+  const generalSaving = Math.round(180 * generalMult);
+
+  // Insurance: count * usage * 80 ₪/month avg saving per policy
+  const insCount = answers.insurance_count ?? 0;
+  const insUse = answers.insurance_use ?? 0;
+  const insuranceSaving = Math.round(insCount * insUse * 80);
+
+  const breakdown = {
+    super: superSaving,
+    tech: techSaving,
+    general: generalSaving,
+    insurance: insuranceSaving,
+  };
+
+  const monthly = superSaving + techSaving + generalSaving + insuranceSaving;
+
+  // Always return a result - show all categories even if zero
   return { monthly, annual: monthly * 12, breakdown };
 }
 
+// ── Survey component ─────────────────────────────────────────────────────────
 export default function NetLiftSurvey({ onFinish }) {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({});
@@ -78,7 +117,7 @@ export default function NetLiftSurvey({ onFinish }) {
       const result = calcNetLift(next);
       onFinish(result, next);
     } else {
-      setTimeout(() => setStep(step + 1), 150);
+      setTimeout(() => setStep(step + 1), 120);
     }
   };
 
@@ -90,15 +129,33 @@ export default function NetLiftSurvey({ onFinish }) {
   const progress = ((step + 1) / QUESTIONS.length) * 100;
 
   return (
-    <div dir="rtl" style={{ minHeight: "100vh", background: "#F5F5F7", fontFamily: "var(--font-heebo)", padding: "32px 20px 80px" }}>
+    <div
+      dir="rtl"
+      style={{
+        minHeight: "100vh",
+        background: "#F5F5F7",
+        fontFamily: "var(--font-heebo)",
+        padding: "32px 20px 80px",
+      }}
+    >
       <div style={{ maxWidth: "480px", margin: "0 auto" }}>
 
+        {/* Header + progress */}
         <div style={{ marginBottom: "28px" }}>
-          <div style={{ display: "inline-block", background: "rgba(0,102,204,0.08)", border: "1px solid rgba(0,102,204,0.2)", borderRadius: "999px", padding: "4px 14px", marginBottom: "14px" }}>
+          <div style={{
+            display: "inline-block",
+            background: "rgba(0,102,204,0.08)",
+            border: "1px solid rgba(0,102,204,0.2)",
+            borderRadius: "999px",
+            padding: "4px 14px",
+            marginBottom: "14px",
+          }}>
             <span style={{ fontSize: "12px", fontWeight: 700, color: "#0066CC" }}>NetLift Index</span>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
-            <span style={{ fontSize: "12px", color: "#86868B", fontWeight: 600 }}>שאלה {step + 1} מתוך {QUESTIONS.length}</span>
+            <span style={{ fontSize: "12px", color: "#86868B", fontWeight: 600 }}>
+              שאלה {step + 1} מתוך {QUESTIONS.length}
+            </span>
             <span style={{ fontSize: "12px", color: "#86868B" }}>{Math.round(progress)}%</span>
           </div>
           <div style={{ height: "4px", background: "rgba(0,0,0,0.08)", borderRadius: "999px", overflow: "hidden" }}>
@@ -110,21 +167,36 @@ export default function NetLiftSurvey({ onFinish }) {
           </div>
         </div>
 
+        {/* Question card */}
         <AnimatePresence mode="wait">
           <motion.div
             key={step}
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.25 }}
+            transition={{ duration: 0.22 }}
           >
-            <div style={{ background: "#fff", borderRadius: "24px", border: "1px solid rgba(0,0,0,0.07)", padding: "28px 24px", boxShadow: "0 4px 24px rgba(0,0,0,0.06)" }}>
-              <h3 style={{ fontSize: "clamp(17px, 4vw, 21px)", fontWeight: 800, color: "#1D1D1F", marginBottom: "6px", lineHeight: 1.3 }}>
+            <div style={{
+              background: "#fff",
+              borderRadius: "24px",
+              border: "1px solid rgba(0,0,0,0.07)",
+              padding: "28px 24px",
+              boxShadow: "0 4px 24px rgba(0,0,0,0.06)",
+            }}>
+              <h3 style={{
+                fontSize: "clamp(16px, 4vw, 20px)",
+                fontWeight: 800,
+                color: "#1D1D1F",
+                marginBottom: current.sub ? "6px" : "22px",
+                lineHeight: 1.35,
+              }}>
                 {current.title}
               </h3>
-              <p style={{ fontSize: "13px", color: "#86868B", marginBottom: "22px", lineHeight: 1.5 }}>
-                {current.sub}
-              </p>
+              {current.sub && (
+                <p style={{ fontSize: "13px", color: "#86868B", marginBottom: "20px", lineHeight: 1.5 }}>
+                  {current.sub}
+                </p>
+              )}
               <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                 {current.options.map((opt) => (
                   <button
@@ -143,8 +215,14 @@ export default function NetLiftSurvey({ onFinish }) {
                       fontFamily: "var(--font-heebo)",
                       transition: "all 0.15s",
                     }}
-                    onMouseEnter={(e) => { e.currentTarget.style.background = "#EEF3FF"; e.currentTarget.style.borderColor = "#0066CC"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.background = "#F5F5F7"; e.currentTarget.style.borderColor = "transparent"; }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = "#EEF3FF";
+                      e.currentTarget.style.borderColor = "#0066CC";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = "#F5F5F7";
+                      e.currentTarget.style.borderColor = "transparent";
+                    }}
                   >
                     {opt.label}
                   </button>
@@ -157,7 +235,15 @@ export default function NetLiftSurvey({ onFinish }) {
         {step > 0 && (
           <button
             onClick={goBack}
-            style={{ marginTop: "14px", background: "none", border: "none", color: "#AEAEB2", fontSize: "13px", cursor: "pointer", fontFamily: "var(--font-heebo)" }}
+            style={{
+              marginTop: "14px",
+              background: "none",
+              border: "none",
+              color: "#AEAEB2",
+              fontSize: "13px",
+              cursor: "pointer",
+              fontFamily: "var(--font-heebo)",
+            }}
           >
             חזרה
           </button>
