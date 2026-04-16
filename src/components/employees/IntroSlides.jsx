@@ -67,9 +67,6 @@ export default function IntroSlides({ onDone }) {
 
   const finish = () => {
     if (onDone) onDone();
-    requestAnimationFrame(() => {
-      document.getElementById("hero-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
   };
 
   const goNext = () => {

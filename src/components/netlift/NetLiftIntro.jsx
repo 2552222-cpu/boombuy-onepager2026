@@ -1,8 +1,8 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-export default function NetLiftIntro({ onStart, onNext }) {
-  const handleStart = onNext || onStart;
+export default function NetLiftIntro({ onNext }) {
+  const handleStart = onNext;
   return (
     <div
       dir="rtl"
