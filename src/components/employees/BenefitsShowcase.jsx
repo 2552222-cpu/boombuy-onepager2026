@@ -226,14 +226,8 @@ function CategoryModal({ category, onClose, onCTA }) {
           </div>
 
           {/* Content side */}
-          <div className="w-full lg:w-2/5 p-8 md:p-10 flex flex-col gap-4">
+          <div className="w-full lg:w-2/5 p-8 md:p-10 flex flex-col gap-4" dir="rtl">
             <div>
-              <span className="bg-blue-50 text-blue-600 text-[11px] font-bold px-3 py-1.5 rounded-full inline-block mb-3 border border-blue-100">
-                {category.tag}
-              </span>
-              <h2 className="text-2xl md:text-3xl font-black text-slate-900 mb-2 leading-tight">
-                {category.title}
-              </h2>
               <AnimatePresence mode="wait">
                 <motion.p
                   key={currentOffer?.productName}
@@ -241,7 +235,7 @@ function CategoryModal({ category, onClose, onCTA }) {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.2 }}
-                  className="text-blue-600 font-bold text-sm mb-3"
+                  className="text-blue-600 font-bold text-sm mb-2"
                 >
                   {currentOffer?.productName}
                 </motion.p>
@@ -302,10 +296,6 @@ export default function BenefitsShowcase() {
               <div className="aspect-square bg-white flex items-center justify-center overflow-hidden rounded-t-[40px] relative">
                 <img src={cat.previewImage} alt={cat.title} className="max-w-full max-h-full object-contain p-3" />
               </div>
-              <div className="px-3 pt-1 pb-2 flex items-center gap-2">
-                {(() => { const Icon = CATEGORY_ICONS[cat.id]; return Icon ? <Icon className="w-4 h-4 text-blue-600 flex-shrink-0" strokeWidth={1} /> : null; })()}
-                <h3 className="text-xs md:text-sm font-bold text-slate-800 leading-tight line-clamp-2">{cat.title}</h3>
-              </div>
               <div className="px-2 pb-3 mt-auto">
                 <div className="relative">
                   <motion.div
@@ -315,7 +305,7 @@ export default function BenefitsShowcase() {
                   />
                   <div className="relative bg-white/60 backdrop-blur-md border border-blue-200/70 rounded-2xl px-3 py-2 text-center">
                     <p className="text-[11px] md:text-[13px] font-bold text-blue-600 leading-tight">
-                      {cat.id === "fairs" ? "לחצו כאן לצפות בדוגמאות מירידים" : "לחצו כאן לצפות בהטבות"}
+                      {cat.id === "fairs" ? "לחצו לדוגמאות" : "לחצו לדוגמאות"}
                     </p>
                   </div>
                 </div>
