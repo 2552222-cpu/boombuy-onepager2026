@@ -277,14 +277,7 @@ function OfferModal({ offer, isMobile, onClose, onPrev, onNext }) {
                   position: "relative",
                 }}
               >
-                <div style={{
-                  position: "absolute", top: 2, right: 2,
-                  background: "#0055CC", color: "#fff",
-                  fontSize: 8, fontWeight: 900,
-                  width: 14, height: 14, borderRadius: "50%",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  zIndex: 2,
-                }}>{o.num}</div>
+
                 <img src={o.img} style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: 8 }} alt={o.productName} />
               </button>
             ))}
@@ -428,9 +421,7 @@ export default function FeaturedOffersSlider() {
                 style={{ position: "absolute", width: 260, cursor: "pointer", zIndex: 10 - circAbs, display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}
               >
                 <div style={{ width: "100%", height: 340, background: "#F5F5F7", borderRadius: 28, overflow: "hidden", boxShadow: isCenter ? "0 28px 70px rgba(0,0,0,0.14)" : "0 6px 20px rgba(0,0,0,0.06)", position: "relative" }}>
-                  <div style={{ position: "absolute", top: 12, right: 12, zIndex: 5, background: "#0055CC", color: "#fff", fontWeight: 900, fontSize: 14, width: 28, height: 28, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    {offer.num}
-                  </div>
+  
                   <img src={offer.img} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} alt={offer.productName} />
                 </div>
 
