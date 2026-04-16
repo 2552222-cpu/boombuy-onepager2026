@@ -8,10 +8,10 @@ const QUESTIONS = [
     title: "כמה אתה מוציא על סופר בחודש?",
     sub: null,
     options: [
-      { label: "2,000–3,000 ₪", value: 160 },
-      { label: "3,000–5,000 ₪", value: 280 },
-      { label: "5,000–8,000 ₪", value: 440 },
-      { label: "8,000+ ₪", value: 620 },
+      { label: "2,000–3,000 ₪", value: 2500 },
+      { label: "3,000–5,000 ₪", value: 4000 },
+      { label: "5,000–8,000 ₪", value: 6500 },
+      { label: "8,000+ ₪", value: 9000 },
     ],
   },
   {
@@ -81,9 +81,9 @@ export function calcNetLift(answers) {
   const techCount = answers.tech ?? 0;
   const techSaving = Math.round((techCount * 350) / 12);
 
-  // General benefits: base 180 * usage multiplier
+  // General benefits: avg monthly spend 800 ₪ * 20% avg saving * usage multiplier
   const generalMult = answers.general ?? 0;
-  const generalSaving = Math.round(180 * generalMult);
+  const generalSaving = Math.round(800 * 0.20 * generalMult);
 
   // Insurance: count * usage * 80 ₪/month avg saving per policy
   const insCount = answers.insurance_count ?? 0;
