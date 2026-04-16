@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import NetLiftIntro from "../netlift/NetLiftIntro";
-import NetLiftBenefits from "../netlift/NetLiftBenefits";
-import NetLiftSurveyGate from "../netlift/NetLiftSurveyGate";
 import NetLiftSurvey from "../netlift/NetLiftSurvey";
 import NetLiftResult from "../netlift/NetLiftResult";
 
-// step: "intro" | "benefits" | "gate" | "survey" | "result"
+// Flow: intro → survey → result (locked, no backwards reset)
 export default function NetLiftCalculator({ onAdvance }) {
   const [step, setStep] = useState("intro");
   const [result, setResult] = useState(null);
@@ -19,9 +17,7 @@ export default function NetLiftCalculator({ onAdvance }) {
     if (onAdvance) onAdvance();
   };
 
-  if (step === "intro") return <NetLiftIntro onNext={() => setStep("benefits")} />;
-  if (step === "benefits") return <NetLiftBenefits onNext={() => setStep("gate")} />;
-  if (step === "gate") return <NetLiftSurveyGate onNext={() => setStep("survey")} />;
+  if (step === "intro") return <NetLiftIntro onNext={() => setStep("survey")} />;
   if (step === "survey") return <NetLiftSurvey onFinish={handleComplete} />;
   if (step === "result") return <NetLiftResult result={result} answers={answers} onRestart={() => setStep("intro")} />;
   return null;
