@@ -171,131 +171,123 @@ function CategoryModal({ category, onClose, onCTA }) {
       onClick={onClose}
     >
       <motion.div
-        initial={{ y: "100%", opacity: 0.5 }}
-        animate={{ y: 0, opacity: 1 }}
-        exit={{ y: "100%", opacity: 0 }}
-        transition={{ type: "spring", damping: 30, stiffness: 300 }}
-        onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-5xl h-[92vh] md:h-auto md:max-h-[88vh] bg-white rounded-t-[40px] md:rounded-[40px] overflow-hidden flex flex-col"
-        dir="rtl"
+      initial={{ y: "100%", opacity: 0.5 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ y: "100%", opacity: 0 }}
+      transition={{ type: "spring", damping: 30, stiffness: 300 }}
+      onClick={(e) => e.stopPropagation()}
+      className="relative w-full max-w-5xl h-[92vh] md:h-auto md:max-h-[88vh] bg-white rounded-t-[40px] md:rounded-[40px] overflow-hidden flex flex-col"
+      dir="rtl"
       >
-        <button onClick={onClose} className="absolute top-4 left-4 z-[1010] w-10 h-10 rounded-full bg-black/10 hover:bg-black/20 flex items-center justify-center transition-colors">
-          <X className="w-5 h-5 text-slate-700" />
-        </button>
+      <button onClick={onClose} className="absolute top-4 left-4 z-[1010] w-10 h-10 rounded-full bg-black/10 hover:bg-black/20 flex items-center justify-center transition-colors">
+        <X className="w-5 h-5 text-slate-700" />
+      </button>
 
-        <div className="flex-1 overflow-y-auto">
-          <div className="flex flex-col lg:flex-row-reverse">
+      <div className="flex-1 overflow-y-auto">
+        <div className="flex flex-col lg:flex-row-reverse">
 
-            {/* Image side */}
-            <div className="w-full lg:w-3/5 bg-[#F5F7FA] p-6 flex flex-col items-center justify-center min-h-[280px] lg:min-h-[480px]">
-              <div className="relative w-full flex items-center justify-center">
-                {offers.length > 1 && (
-                  <button onClick={goPrev} className="absolute right-0 z-10 w-9 h-9 rounded-full bg-white/80 shadow-md flex items-center justify-center hover:bg-white transition-all">
-                    <ChevronRight className="w-5 h-5 text-slate-600" />
-                  </button>
-                )}
-                <AnimatePresence mode="wait">
-                  <motion.img
-                    key={currentOffer?.img}
-                    src={currentOffer?.img}
-                    initial={{ opacity: 0, scale: 0.92 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.92 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 28 }}
-                    className="max-w-[80%] max-h-[38vh] lg:max-h-[46vh] object-contain drop-shadow-2xl"
-                  />
-                </AnimatePresence>
-                {offers.length > 1 && (
-                  <button onClick={goNext} className="absolute left-0 z-10 w-9 h-9 rounded-full bg-white/80 shadow-md flex items-center justify-center hover:bg-white transition-all">
-                    <ChevronLeft className="w-5 h-5 text-slate-600" />
-                  </button>
-                )}
-              </div>
-
-              {/* Thumbnails */}
+          {/* Image side — large image + arrows + big thumbnails */}
+          <div className="w-full lg:w-3/5 bg-[#F5F7FA] p-6 flex flex-col items-center justify-center min-h-[320px] lg:min-h-[520px]">
+            <div className="relative w-full flex items-center justify-center" style={{ minHeight: 260 }}>
               {offers.length > 1 && (
-                <div className="mt-4 w-full">
-                  <div className="flex gap-2 overflow-x-auto" style={{ WebkitOverflowScrolling: "touch", scrollbarWidth: "none", paddingRight: "16px", paddingLeft: "48px" }}>
-                    {offers.map((o, i) => (
-                      <button key={i} onClick={() => setActiveIdx(i)}
-                        className={`flex-shrink-0 w-[64px] h-[64px] rounded-2xl border-2 bg-white shadow-sm transition-all relative ${i === activeIdx ? "border-blue-500 scale-105 shadow-md" : "border-slate-100 hover:border-blue-300"}`}>
-                        <div className="absolute top-1 right-1 z-10 bg-blue-600 text-white font-bold text-[9px] w-4 h-4 rounded-full flex items-center justify-center">
-                          {i + 1}
-                        </div>
-                        <img src={o.img} className="w-full h-full object-contain p-2 rounded-2xl" alt="" />
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Content side */}
-            <div className="w-full lg:w-2/5 p-8 md:p-10 flex flex-col gap-4">
-              <div>
-                <span className="bg-blue-50 text-blue-600 text-[11px] font-bold px-3 py-1.5 rounded-full inline-block mb-3 border border-blue-100">
-                  {category.tag}
-                </span>
-                <h2 className="text-2xl md:text-3xl font-black text-slate-900 mb-2 leading-tight">
-                  {category.title}
-                </h2>
-                {/* Product name updates with navigation */}
-                <AnimatePresence mode="wait">
-                  <motion.p
-                    key={currentOffer?.productName}
-                    initial={{ opacity: 0, y: 4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -4 }}
-                    transition={{ duration: 0.2 }}
-                    className="text-blue-600 font-bold text-sm mb-3"
-                  >
-                    {currentOffer?.productName}
-                  </motion.p>
-                </AnimatePresence>
-                <p className="text-slate-600 text-base leading-relaxed font-medium">
-                  {category.description}
-                </p>
-              </div>
-
-              {/* Price cards — update per image */}
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeIdx}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  transition={{ duration: 0.22 }}
-                >
-                  <PriceCards offer={currentOffer} mobile={false} />
-                </motion.div>
-              </AnimatePresence>
-
-              {/* Sub info */}
-              <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-blue-400 flex-shrink-0" />
-                <p className="text-blue-700 font-bold text-sm">{category.sub}</p>
-              </div>
-
-              {category.detail && (
-                <p className="text-slate-500 text-xs leading-relaxed" style={{ borderRight: "3px solid #E5E7EB", paddingRight: "10px" }}>
-                  {category.detail}
-                </p>
-              )}
-
-              <div className="relative mt-auto pt-2">
-                <motion.div
-                  animate={{ boxShadow: ["0 0 0px rgba(37,99,235,0)", "0 0 16px rgba(37,99,235,0.4)", "0 0 0px rgba(37,99,235,0)"] }}
-                  transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute inset-0 rounded-[28px]"
-                />
-                <button onClick={onCTA} className="relative w-full bg-[#0066CC] text-white font-bold py-4 rounded-[28px] shadow-lg hover:bg-blue-700 transition-all active:scale-[0.97] text-base">
-                  אני רוצה לבדוק התאמה לארגון שלי ←
+                <button onClick={goPrev} className="absolute right-0 z-10 w-11 h-11 rounded-full bg-white shadow-lg flex items-center justify-center hover:bg-slate-50 transition-all border border-slate-100">
+                  <ChevronRight className="w-6 h-6 text-slate-700" />
                 </button>
-              </div>
+              )}
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={currentOffer?.img}
+                  src={currentOffer?.img}
+                  initial={{ opacity: 0, scale: 0.92 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.92 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 28 }}
+                  className="max-w-[76%] max-h-[42vh] lg:max-h-[50vh] object-contain drop-shadow-2xl"
+                />
+              </AnimatePresence>
+              {offers.length > 1 && (
+                <button onClick={goNext} className="absolute left-0 z-10 w-11 h-11 rounded-full bg-white shadow-lg flex items-center justify-center hover:bg-slate-50 transition-all border border-slate-100">
+                  <ChevronLeft className="w-6 h-6 text-slate-700" />
+                </button>
+              )}
             </div>
 
+            {/* Big thumbnails */}
+            {offers.length > 1 && (
+              <div className="mt-5 w-full flex gap-3 overflow-x-auto justify-center" style={{ scrollbarWidth: "none", WebkitOverflowScrolling: "touch" }}>
+                {offers.map((o, i) => (
+                  <button key={i} onClick={() => setActiveIdx(i)}
+                    className={`flex-shrink-0 w-[80px] h-[80px] rounded-2xl border-2 bg-white shadow-sm transition-all hover:scale-105 ${i === activeIdx ? "border-blue-500 shadow-md scale-105" : "border-slate-100"}`}>
+                    <img src={o.img} className="w-full h-full object-contain p-2 rounded-2xl" alt="" />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
+
+          {/* Content side */}
+          <div className="w-full lg:w-2/5 p-8 md:p-10 flex flex-col gap-4">
+            <div>
+              <span className="bg-blue-50 text-blue-600 text-[11px] font-bold px-3 py-1.5 rounded-full inline-block mb-3 border border-blue-100">
+                {category.tag}
+              </span>
+              <h2 className="text-2xl md:text-3xl font-black text-slate-900 mb-2 leading-tight">
+                {category.title}
+              </h2>
+              <AnimatePresence mode="wait">
+                <motion.p
+                  key={currentOffer?.productName}
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.2 }}
+                  className="text-blue-600 font-bold text-sm mb-3"
+                >
+                  {currentOffer?.productName}
+                </motion.p>
+              </AnimatePresence>
+              <p className="text-slate-600 text-base leading-relaxed font-medium">
+                {category.description}
+              </p>
+            </div>
+
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeIdx}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.22 }}
+              >
+                <PriceCards offer={currentOffer} mobile={false} />
+              </motion.div>
+            </AnimatePresence>
+
+            <div className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-400 flex-shrink-0" />
+              <p className="text-blue-700 font-bold text-sm">{category.sub}</p>
+            </div>
+
+            {category.detail && (
+              <p className="text-slate-500 text-xs leading-relaxed" style={{ borderRight: "3px solid #E5E7EB", paddingRight: "10px" }}>
+                {category.detail}
+              </p>
+            )}
+
+            <div className="relative mt-auto pt-2">
+              <motion.div
+                animate={{ boxShadow: ["0 0 0px rgba(37,99,235,0)", "0 0 16px rgba(37,99,235,0.4)", "0 0 0px rgba(37,99,235,0)"] }}
+                transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute inset-0 rounded-[28px]"
+              />
+              <button onClick={onCTA} className="relative w-full bg-[#0066CC] text-white font-bold py-4 rounded-[28px] shadow-lg hover:bg-blue-700 transition-all active:scale-[0.97] text-base">
+                אני רוצה לבדוק התאמה לארגון שלי ←
+              </button>
+            </div>
+          </div>
+
         </div>
+      </div>
       </motion.div>
     </motion.div>
   );
@@ -323,9 +315,6 @@ export default function BenefitsShowcase() {
               className="cursor-pointer bg-white rounded-[40px] border border-slate-100 shadow-sm flex flex-col overflow-hidden"
             >
               <div className="aspect-square bg-white flex items-center justify-center overflow-hidden rounded-t-[40px] relative">
-                <div style={{ position: "absolute", top: 10, right: 10, zIndex: 5, background: "#0055CC", color: "#fff", fontWeight: 900, fontSize: 13, width: 26, height: 26, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  {idx + 1}
-                </div>
                 <img src={cat.previewImage} alt={cat.title} className="max-w-full max-h-full object-contain p-3" />
               </div>
               <div className="px-3 pt-1 pb-2 flex items-center gap-2">
