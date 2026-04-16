@@ -128,21 +128,22 @@ const CATEGORY_ICONS = {
 // ─── PRICE CARDS ──────────────────────────────────────────────────────────────
 function PriceCards({ offer, mobile }) {
   if (!offer?.priceOld) return null;
-  // סדר: מחיר שוק | מחיר לעובד | חיסכון — זהה לסליידר
+  // סדר RTL: מחיר שוק (ימין) | מחיר לעובד | החיסכון (שמאל)
+  const cards = [
+    { lbl: offer.labelOld, val: offer.priceOld, color: "#86868B", bg: "#F5F5F7", strike: true },
+    { lbl: "מחיר לעובד",   val: offer.priceNew, color: "#0055CC", bg: "#F0F4FF",  strike: false },
+    { lbl: "החיסכון שלך",  val: offer.saving,   color: "#1A7A43", bg: "rgba(52,199,89,0.1)", strike: false },
+  ];
   return (
-    <div style={{ display: "flex", gap: "8px", marginBottom: mobile ? "16px" : "20px" }}>
-      <div style={{ flex: 1, background: "#F5F5F7", borderRadius: "16px", padding: mobile ? "10px 6px" : "14px 8px", textAlign: "center" }}>
-        <p style={{ fontSize: "10px", fontWeight: 700, color: "#86868B", marginBottom: "4px" }}>{offer.labelOld}</p>
-        <ILS value={offer.priceOld} style={{ fontSize: mobile ? "16px" : "22px", fontWeight: 900, color: "#86868B", textDecoration: "line-through" }} />
-      </div>
-      <div style={{ flex: 1, background: "#F0F4FF", borderRadius: "16px", padding: mobile ? "10px 6px" : "14px 8px", textAlign: "center" }}>
-        <p style={{ fontSize: "10px", fontWeight: 700, color: "#86868B", marginBottom: "4px" }}>מחיר לעובד</p>
-        <ILS value={offer.priceNew} style={{ fontSize: mobile ? "16px" : "22px", fontWeight: 900, color: "#0055CC" }} />
-      </div>
-      <div style={{ flex: 1, background: "rgba(52,199,89,0.1)", borderRadius: "16px", padding: mobile ? "10px 6px" : "14px 8px", textAlign: "center" }}>
-        <p style={{ fontSize: "10px", fontWeight: 700, color: "#86868B", marginBottom: "4px" }}>החיסכון שלך</p>
-        <ILS value={offer.saving} style={{ fontSize: mobile ? "16px" : "22px", fontWeight: 900, color: "#1A7A43" }} />
-      </div>
+    <div style={{ display: "flex", flexDirection: "row", gap: "8px", marginBottom: mobile ? "16px" : "20px" }}>
+      {cards.map((c, i) => (
+        <div key={i} style={{ flex: 1, background: c.bg, borderRadius: "16px", padding: mobile ? "10px 6px" : "14px 8px", textAlign: "center" }}>
+          <p style={{ fontSize: "10px", fontWeight: 700, color: "#86868B", marginBottom: "4px" }}>{c.lbl}</p>
+          <span style={{ fontSize: mobile ? "16px" : "22px", fontWeight: 900, color: c.color, textDecoration: c.strike ? "line-through" : "none", whiteSpace: "nowrap" }}>
+            {c.val} ₪
+          </span>
+        </div>
+      ))}
     </div>
   );
 }
