@@ -44,11 +44,11 @@ const categories = [
     tag: "הנחה קבועה של 8% בסופר!",
     previewImage: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/d53a51271_-2026-03-22T163009970.png",
     offers: [
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ea0c9f5da_-2026-02-18T145540109.png", productName: "TNX · שובר סופר", priceOld: "350", priceNew: "149", saving: "201", labelOld: "מחיר שוק" },
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3784ac419_-2026-03-22T130058307.png", productName: "שמפו Kerastase", priceOld: "189", priceNew: "99", saving: "90", labelOld: "מחיר שוק" },
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/52e06185a_-2026-03-22T115442800.png", productName: "פרפום לבית", priceOld: "240", priceNew: "129", saving: "111", labelOld: "מחיר שוק" },
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6e4f9f168_-2026-03-22T130017988.png", productName: "מוצרי ניקיון", priceOld: "160", priceNew: "89", saving: "71", labelOld: "מחיר שוק" },
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6b98c8aed_72.png", productName: "קפסולות קפה", priceOld: "120", priceNew: "69", saving: "51", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ea0c9f5da_-2026-02-18T145540109.png", productName: "מארז מיני הכל כלול מבית ליאור קוקה — TNX", priceOld: "349", priceNew: "149", saving: "200", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3784ac419_-2026-03-22T130058307.png", productName: "200 קפסולות קפה פרמיום ג'ייקובס — Jacobs", priceOld: "338", priceNew: "129", saving: "209", labelOld: "מחיר KSP" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/52e06185a_-2026-03-22T115442800.png", productName: "3 מארזים - מוצרי חלבון ALLIN (סה\"כ 54 יח')", priceOld: null, priceNew: "159", saving: null, labelOld: null },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6e4f9f168_-2026-03-22T130017988.png", productName: "מארז 90 קפסולות לכביסה Ariel All-in-1", priceOld: "149", priceNew: "99", saving: "50", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6b98c8aed_72.png", productName: "מארז ענק למטבח — Finish", priceOld: "199", priceNew: "129.90", saving: "69", labelOld: "מחיר מחירון" },
     ],
   },
   {
