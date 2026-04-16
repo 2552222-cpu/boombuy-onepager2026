@@ -8,6 +8,7 @@ function getBrowserToken() {
   return t;
 }
 
+// 1:1 mapping with calcNetLift breakdown keys
 const CATEGORY_LABELS = {
   super: "סופר ומזון",
   tech: "חשמל ואלקטרוניקה",
@@ -16,6 +17,7 @@ const CATEGORY_LABELS = {
   insurance: "ביטוח רכב ודירה",
 };
 
+// Number first, then ₪ — consistent everywhere
 function ILS({ amount, size = 32, color = "#0055CC" }) {
   return (
     <bdi dir="ltr" style={{ display: "inline-block", whiteSpace: "nowrap", unicodeBidi: "isolate" }}>
@@ -58,6 +60,11 @@ export default function NetLiftResult({ result, answers, onRestart }) {
       </div>
     );
   }
+
+  // All categories from breakdown — no filtering except v > 0, sorted by size
+  const breakdownEntries = Object.entries(result.breakdown)
+    .filter(([, v]) => v > 0)
+    .sort((a, b) => b[1] - a[1]);
 
   return (
     <div dir="rtl" style={{ minHeight: "100vh", background: "#F5F5F7", fontFamily: "var(--font-heebo)", padding: "32px 20px 80px" }}>
@@ -121,8 +128,8 @@ export default function NetLiftResult({ result, answers, onRestart }) {
           </motion.div>
         </div>
 
-        {/* Breakdown */}
-        {result.breakdown && Object.keys(result.breakdown).length > 0 && (
+        {/* Breakdown — ALL categories, 1:1 with calculation output */}
+        {breakdownEntries.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
@@ -131,9 +138,11 @@ export default function NetLiftResult({ result, answers, onRestart }) {
           >
             <p style={{ fontSize: "12px", fontWeight: 700, color: "#86868B", marginBottom: "14px", letterSpacing: "0.02em" }}>פירוט לפי קטגוריות</p>
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              {Object.entries(result.breakdown).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]).map(([k, v]) => (
-                <div key={k} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span style={{ fontSize: "13px", color: "#555", fontWeight: 500 }}>{CATEGORY_LABELS[k] || k}</span>
+              {breakdownEntries.map(([k, v]) => (
+                <div key={k} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid rgba(0,0,0,0.05)" }}>
+                  <span style={{ fontSize: "13px", color: "#555", fontWeight: 500 }}>
+                    {CATEGORY_LABELS[k] || k}
+                  </span>
                   <span style={{ fontSize: "13px", fontWeight: 800, color: "#1D1D1F" }}>
                     <ILS amount={v} size={14} color="#1D1D1F" /> /חודש
                   </span>
@@ -143,14 +152,12 @@ export default function NetLiftResult({ result, answers, onRestart }) {
           </motion.div>
         )}
 
-        {/* CTA */}
+        {/* CTA — no external scrollIntoView */}
         <motion.button
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          onClick={() => {
-            document.getElementById("value-calculator")?.scrollIntoView({ behavior: "smooth" });
-          }}
+          onClick={() => {}}
           style={{
             width: "100%",
             background: "#0066CC",
