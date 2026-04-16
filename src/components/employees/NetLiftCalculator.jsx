@@ -10,11 +10,10 @@ export default function NetLiftCalculator({ onAdvance }) {
   const [answers, setAnswers] = useState(null);
 
   const handleComplete = (res, ans) => {
-    if (!res) return;
     setResult(res);
     setAnswers(ans);
     setStep("result");
-    if (onAdvance) onAdvance();
+    if (onAdvance && res) onAdvance();
   };
 
   if (step === "intro") return <NetLiftIntro onNext={() => setStep("survey")} />;
