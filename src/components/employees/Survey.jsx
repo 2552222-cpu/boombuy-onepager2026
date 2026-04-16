@@ -71,14 +71,17 @@ export default function Survey() {
 
 
 
+  const isLocked = step === "result";
+
   const goBack = () => {
-    if (stepHistory.length === 0) return;
+    if (isLocked || stepHistory.length === 0) return;
     const prev = stepHistory[stepHistory.length - 1];
     setStepHistory(stepHistory.slice(0, -1));
     setStep(prev);
   };
 
   const advance = (nextStep) => {
+    if (isLocked) return;
     setStepHistory((h) => [...h, step]);
     setStep(nextStep);
   };
