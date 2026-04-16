@@ -16,6 +16,16 @@ const CATEGORY_LABELS = {
   insurance: "ביטוח רכב ודירה",
 };
 
+// ₪ בצד שמאל
+function ILS({ amount, size = 32, color = "#0055CC" }) {
+  return (
+    <span style={{ display: "inline-flex", flexDirection: "row-reverse", alignItems: "baseline", gap: 3, direction: "ltr" }}>
+      <span style={{ fontSize: size, fontWeight: 900, color, lineHeight: 1 }}>{Number(amount).toLocaleString("he-IL")}</span>
+      <span style={{ fontSize: size * 0.62, fontWeight: 700, color }}>₪</span>
+    </span>
+  );
+}
+
 export default function NetLiftResult({ result, answers, onRestart }) {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -56,18 +66,18 @@ export default function NetLiftResult({ result, answers, onRestart }) {
       <div style={{ maxWidth: "480px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "16px" }}>
 
         {/* Header */}
-        <div style={{ textAlign: "center", padding: "16px 0" }}>
+        <div style={{ textAlign: "center", padding: "16px 0 8px" }}>
           <div style={{ display: "inline-block", background: "rgba(0,102,204,0.08)", border: "1px solid rgba(0,102,204,0.2)", borderRadius: "999px", padding: "5px 16px", marginBottom: "14px" }}>
             <span style={{ fontSize: "12px", fontWeight: 700, color: "#0066CC" }}>NetLift Index Summary</span>
           </div>
           <div style={{ fontSize: "40px", marginBottom: "12px" }}>🎯</div>
-          <h2 style={{ fontSize: "clamp(20px, 5vw, 28px)", fontWeight: 900, color: "#1D1D1F", letterSpacing: "-0.03em", lineHeight: 1.2, marginBottom: "10px" }}>
+          <h2 style={{ fontSize: "clamp(20px, 5vw, 28px)", fontWeight: 900, color: "#1D1D1F", letterSpacing: "-0.03em", lineHeight: 1.2, marginBottom: "8px" }}>
             הנטו האפקטיבי שלך עשוי לגדול
           </h2>
           <motion.p
             animate={{ opacity: [0.8, 1, 0.8] }}
             transition={{ duration: 3, repeat: Infinity }}
-            style={{ fontSize: "14px", color: "#0066CC", fontWeight: 700, lineHeight: 1.55 }}
+            style={{ fontSize: "14px", color: "#0066CC", fontWeight: 700 }}
           >
             בצורה משמעותית דרך מערכת ההטבות
           </motion.p>
@@ -75,37 +85,55 @@ export default function NetLiftResult({ result, answers, onRestart }) {
 
         {/* Main numbers */}
         <div style={{ display: "flex", gap: "12px" }}>
-          {[
-            { label: "חיסכון חודשי משוער", value: result.monthly, helper: "לפי התשובות שלך", color: "#0055CC", bg: "#F0F4FF", border: "rgba(0,85,204,0.15)" },
-            { label: "חיסכון שנתי משוער", value: result.annual, helper: "לאורך השנה", color: "#1A7A43", bg: "rgba(52,199,89,0.07)", border: "rgba(52,199,89,0.2)" },
-          ].map((c) => (
-            <div key={c.label} style={{ flex: 1, background: c.bg, border: `1.5px solid ${c.border}`, borderRadius: "20px", padding: "20px 14px", textAlign: "center" }}>
-              <p style={{ fontSize: "11px", fontWeight: 700, color: "#86868B", marginBottom: "8px" }}>{c.label}</p>
-              <p style={{ fontSize: "clamp(28px,7vw,36px)", fontWeight: 900, color: c.color, lineHeight: 1, direction: "ltr" }}>
-                {c.value.toLocaleString("he-IL")} ₪
-              </p>
-              <p style={{ fontSize: "11px", color: "#AEAEB2", marginTop: "6px" }}>{c.helper}</p>
-            </div>
-          ))}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            style={{ flex: 1, background: "#F0F4FF", border: "1.5px solid rgba(0,85,204,0.15)", borderRadius: "20px", padding: "20px 14px", textAlign: "center" }}
+          >
+            <p style={{ fontSize: "11px", fontWeight: 700, color: "#86868B", marginBottom: "8px" }}>חיסכון חודשי משוער</p>
+            <ILS amount={result.monthly} size={32} color="#0055CC" />
+            <p style={{ fontSize: "11px", color: "#AEAEB2", marginTop: "6px" }}>לפי התשובות שלך</p>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            style={{ flex: 1, background: "rgba(52,199,89,0.07)", border: "1.5px solid rgba(52,199,89,0.2)", borderRadius: "20px", padding: "20px 14px", textAlign: "center" }}
+          >
+            <p style={{ fontSize: "11px", fontWeight: 700, color: "#86868B", marginBottom: "8px" }}>חיסכון שנתי משוער</p>
+            <ILS amount={result.annual} size={32} color="#1A7A43" />
+            <p style={{ fontSize: "11px", color: "#AEAEB2", marginTop: "6px" }}>לאורך השנה</p>
+          </motion.div>
         </div>
 
         {/* Breakdown */}
         {result.breakdown && Object.keys(result.breakdown).length > 0 && (
-          <div style={{ background: "#fff", borderRadius: "20px", border: "1px solid rgba(0,0,0,0.07)", padding: "20px" }}>
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            style={{ background: "#fff", borderRadius: "20px", border: "1px solid rgba(0,0,0,0.07)", padding: "20px" }}
+          >
             <p style={{ fontSize: "12px", fontWeight: 700, color: "#86868B", marginBottom: "14px", letterSpacing: "0.02em" }}>פירוט לפי קטגוריות</p>
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              {Object.entries(result.breakdown).filter(([, v]) => v > 0).map(([k, v]) => (
+              {Object.entries(result.breakdown).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]).map(([k, v]) => (
                 <div key={k} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ fontSize: "13px", color: "#555", fontWeight: 500 }}>{CATEGORY_LABELS[k] || k}</span>
-                  <span style={{ fontSize: "13px", fontWeight: 800, color: "#1D1D1F", direction: "ltr" }}>{v.toLocaleString("he-IL")} ₪/חודש</span>
+                  <span style={{ fontSize: "13px", fontWeight: 800, color: "#1D1D1F" }}>
+                    <ILS amount={v} size={14} color="#1D1D1F" /> /חודש
+                  </span>
                 </div>
               ))}
             </div>
-          </div>
+          </motion.div>
         )}
 
-        {/* CTA to survey */}
-        <button
+        {/* CTA */}
+        <motion.button
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
           onClick={() => {
             document.getElementById("survey-section")?.scrollIntoView({ behavior: "smooth" });
           }}
@@ -124,7 +152,7 @@ export default function NetLiftResult({ result, answers, onRestart }) {
           }}
         >
           אני רוצה להביא את זה לארגון שלי ←
-        </button>
+        </motion.button>
 
         <button
           onClick={onRestart}

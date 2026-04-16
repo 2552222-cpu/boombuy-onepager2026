@@ -3,37 +3,34 @@ import { motion, AnimatePresence } from "framer-motion";
 
 // ─── QUESTIONS ────────────────────────────────────────────────────────────────
 const QUESTIONS = [
-  // A1 — סופר: הוצאה
   {
     id: "super_spend",
     section: "A",
     title: "כמה אתה מוציא בחודש על סופר?",
     sub: "סופר, פארם, מכולת",
     options: [
-      { label: "1,000–1,500 ₪", value: 1250 },
-      { label: "1,500–2,500 ₪", value: 2000 },
-      { label: "2,500–3,500 ₪", value: 3000 },
-      { label: "3,500+ ₪", value: 4000 },
+      { label: "₪1,000–1,500", value: 1250 },
+      { label: "₪1,500–2,500", value: 2000 },
+      { label: "₪2,500–3,500", value: 3000 },
+      { label: "₪3,500+", value: 4000 },
     ],
   },
-  // A2 — סופר: תדירות
   {
     id: "super_freq",
     section: "A",
     title: "אם הייתה הנחה קבועה של 8% ברשתות המזון — כמה היית משתמש?",
     sub: "הנחת עובד קבועה על כל קנייה",
     options: [
-      { label: "משתמש פעמיים בשבוע", value: 1.0 },
-      { label: "משתמש 1–2 פעמים בחודש", value: 0.4 },
-      { label: "משתמש פעם בכמה חודשים", value: 0.1 },
+      { label: "פעמיים בשבוע ויותר", value: 1.0 },
+      { label: "1–2 פעמים בחודש", value: 0.4 },
+      { label: "פעם בכמה חודשים", value: 0.1 },
       { label: "לא משתמש", value: 0 },
     ],
   },
-  // B — חשמל
   {
     id: "tech_purchases",
     section: "B",
-    title: "אם היו לך מחירי יבואן על מוצרי חשמל (אייפון, סמסונג, דייסון וכו׳) — כמה רכישות גדולות בשנה היית עושה?",
+    title: "אם היו לך מחירי יבואן על מוצרי חשמל — כמה רכישות גדולות בשנה?",
     sub: "iPhone, Samsung, Dyson, מכשירי חשמל גדולים",
     options: [
       { label: "1 בשנה", value: 1 },
@@ -42,11 +39,10 @@ const QUESTIONS = [
       { label: "לא משתמש", value: 0 },
     ],
   },
-  // C — הטבות כלליות
   {
     id: "general_usage",
     section: "C",
-    title: "בהטבות כלליות (אופנה, כלי בית, צעצועים וכו׳) — כמה היית משתמש בשנה?",
+    title: "בהטבות כלליות (אופנה, כלי בית, צעצועים) — כמה היית משתמש בשנה?",
     sub: "ביגוד, כלי בית, צעצועים, מוצרים יומיומיים",
     options: [
       { label: "כמעט לא משתמש", value: 0 },
@@ -55,7 +51,6 @@ const QUESTIONS = [
       { label: "באופן קבוע", value: 18 },
     ],
   },
-  // D — חופשות ובילויים
   {
     id: "leisure",
     section: "D",
@@ -68,7 +63,6 @@ const QUESTIONS = [
       { label: "4+", value: 5 },
     ],
   },
-  // E1 — ביטוח רכב: כמה
   {
     id: "car_count",
     section: "E",
@@ -82,7 +76,6 @@ const QUESTIONS = [
       { label: "4+", value: 4 },
     ],
   },
-  // E2 — ביטוח: עניין (רק אם car_count > 0 — מטופל בלוגיקה)
   {
     id: "insurance_interest",
     section: "E",
@@ -102,7 +95,7 @@ export function calcNetLift(answers) {
   let monthly = 0;
   const breakdown = {};
 
-  // A — סופר: 8% על הוצאה × גורם תדירות
+  // A — סופר: 8% × הוצאה × גורם תדירות
   const superSpend = answers.super_spend ?? null;
   const superFreq = answers.super_freq ?? null;
   if (superSpend !== null && superFreq !== null && superFreq > 0) {
@@ -111,26 +104,26 @@ export function calcNetLift(answers) {
     monthly += saving;
   }
 
-  // B — חשמל: ממוצע חיסכון 600₪ לרכישה
+  // B — חשמל: ממוצע חיסכון ₪700 לרכישה
   const tech = answers.tech_purchases ?? null;
   if (tech !== null && tech > 0) {
-    const saving = Math.round((tech * 600) / 12);
+    const saving = Math.round((tech * 700) / 12);
     breakdown.tech = saving;
     monthly += saving;
   }
 
-  // C — הטבות כלליות: ממוצע חיסכון 80₪ לשימוש
+  // C — הטבות כלליות: ממוצע חיסכון ₪90 לשימוש
   const general = answers.general_usage ?? null;
   if (general !== null && general > 0) {
-    const saving = Math.round((general * 80) / 12);
+    const saving = Math.round((general * 90) / 12);
     breakdown.general = saving;
     monthly += saving;
   }
 
-  // D — חופשות/בילויים: ממוצע חיסכון 600₪ לאירוע
+  // D — חופשות/בילויים: ממוצע חיסכון ₪700 לאירוע
   const leisure = answers.leisure ?? null;
   if (leisure !== null && leisure > 0) {
-    const saving = Math.round((leisure * 600) / 12);
+    const saving = Math.round((leisure * 700) / 12);
     breakdown.leisure = saving;
     monthly += saving;
   }
@@ -139,14 +132,56 @@ export function calcNetLift(answers) {
   const carCount = answers.car_count ?? null;
   const insInterest = answers.insurance_interest ?? null;
   if (carCount !== null && insInterest !== null && carCount > 0 && (insInterest === "yes" || insInterest === "maybe")) {
-    const saving = Math.round((carCount * 600) / 12);
+    const saving = Math.round((carCount * 650) / 12);
     breakdown.insurance = saving;
     monthly += saving;
   }
 
   if (monthly === 0) return null;
-
   return { monthly, annual: monthly * 12, breakdown };
+}
+
+// ─── ILS — ₪ בצד שמאל ────────────────────────────────────────────────────────
+function ILS({ amount, size = 20 }) {
+  return (
+    <span style={{ display: "inline-flex", flexDirection: "row-reverse", alignItems: "baseline", gap: 2, direction: "ltr" }}>
+      <span style={{ fontSize: size, fontWeight: 900, lineHeight: 1 }}>{Number(amount).toLocaleString("he-IL")}</span>
+      <span style={{ fontSize: size * 0.7, fontWeight: 700 }}>₪</span>
+    </span>
+  );
+}
+
+// ─── LIVE PREVIEW BAR ─────────────────────────────────────────────────────────
+function LivePreview({ answers }) {
+  const partial = calcNetLift(answers);
+  if (!partial) return null;
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      style={{
+        marginTop: "20px",
+        background: "linear-gradient(135deg, #EEF4FF, #F0FFF4)",
+        border: "1.5px solid rgba(0,102,204,0.2)",
+        borderRadius: "16px",
+        padding: "14px 18px",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}
+    >
+      <span style={{ fontSize: "12px", color: "#86868B", fontWeight: 600 }}>הערכת חיסכון נוכחית</span>
+      <motion.span
+        key={partial.monthly}
+        initial={{ scale: 1.15, color: "#0066CC" }}
+        animate={{ scale: 1, color: "#0055CC" }}
+        transition={{ duration: 0.3 }}
+        style={{ fontSize: "18px", fontWeight: 900, color: "#0055CC" }}
+      >
+        <ILS amount={partial.monthly} size={18} /> לחודש
+      </motion.span>
+    </motion.div>
+  );
 }
 
 // ─── COMPONENT ────────────────────────────────────────────────────────────────
@@ -154,13 +189,11 @@ export default function NetLiftSurvey({ onFinish }) {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({});
 
-  // דינמי: אם ענה car_count=0, דלג על שאלת insurance_interest
   const getNextStep = (currentStep, updatedAnswers) => {
     const nextStep = currentStep + 1;
     if (nextStep < QUESTIONS.length) {
-      const nextQ = QUESTIONS[nextStep];
-      if (nextQ.id === "insurance_interest" && updatedAnswers.car_count === 0) {
-        return nextStep + 1; // דלג
+      if (QUESTIONS[nextStep].id === "insurance_interest" && updatedAnswers.car_count === 0) {
+        return nextStep + 1;
       }
     }
     return nextStep;
@@ -170,11 +203,8 @@ export default function NetLiftSurvey({ onFinish }) {
     const current = QUESTIONS[step];
     const next = { ...answers, [current.id]: value };
     setAnswers(next);
-
     const nextStep = getNextStep(step, next);
-
     if (nextStep >= QUESTIONS.length) {
-      // אם דילגנו על insurance_interest, וודא שהיא לא בחישוב
       const result = calcNetLift(next);
       onFinish(result, next);
     } else {
@@ -184,28 +214,21 @@ export default function NetLiftSurvey({ onFinish }) {
 
   const goBack = () => {
     if (step === 0) return;
-    // חזרה אחורה — כולל דילוג חזרה אם צריך
     let prev = step - 1;
-    if (QUESTIONS[prev]?.id === "insurance_interest" && answers.car_count === 0) {
-      prev = prev - 1;
-    }
+    if (QUESTIONS[prev]?.id === "insurance_interest" && answers.car_count === 0) prev--;
     if (prev >= 0) setStep(prev);
   };
 
   const current = QUESTIONS[step];
-  const total = QUESTIONS.length - (answers.car_count === 0 ? 1 : 0);
-  const displayStep = step - (step > QUESTIONS.findIndex(q => q.id === "insurance_interest") && answers.car_count === 0 ? 1 : 0);
-
   const sectionColors = { A: "#0066CC", B: "#7C3AED", C: "#059669", D: "#D97706", E: "#DC2626" };
   const sectionLabels = { A: "סופר ומזון", B: "חשמל", C: "הטבות כלליות", D: "חופשות ובילויים", E: "ביטוח" };
-
   const progress = ((step + 1) / QUESTIONS.length) * 100;
 
   return (
     <div dir="rtl" style={{ minHeight: "100vh", background: "#F5F5F7", fontFamily: "var(--font-heebo)", padding: "32px 20px 80px" }}>
       <div style={{ maxWidth: "480px", margin: "0 auto" }}>
 
-        {/* Header */}
+        {/* Progress header */}
         <div style={{ marginBottom: "28px" }}>
           <div style={{ display: "inline-block", background: "rgba(0,102,204,0.08)", border: "1px solid rgba(0,102,204,0.2)", borderRadius: "999px", padding: "4px 14px", marginBottom: "14px" }}>
             <span style={{ fontSize: "12px", fontWeight: 700, color: "#0066CC" }}>NetLift Index · {sectionLabels[current.section]}</span>
@@ -233,10 +256,10 @@ export default function NetLiftSurvey({ onFinish }) {
             transition={{ duration: 0.25 }}
           >
             <div style={{ background: "#fff", borderRadius: "24px", border: "1px solid rgba(0,0,0,0.07)", padding: "28px 24px", boxShadow: "0 4px 24px rgba(0,0,0,0.06)" }}>
-              <span style={{ background: sectionColors[current.section] + "18", color: sectionColors[current.section], fontSize: "11px", fontWeight: 800, padding: "2px 10px", borderRadius: "999px", marginBottom: "10px", display: "inline-block" }}>
+              <span style={{ background: sectionColors[current.section] + "18", color: sectionColors[current.section], fontSize: "11px", fontWeight: 800, padding: "2px 10px", borderRadius: "999px", display: "inline-block", marginBottom: "12px" }}>
                 חלק {current.section}
               </span>
-              <h3 style={{ fontSize: "clamp(17px, 4vw, 21px)", fontWeight: 800, color: "#1D1D1F", marginBottom: "6px", lineHeight: 1.3, marginTop: "10px" }}>
+              <h3 style={{ fontSize: "clamp(17px, 4vw, 21px)", fontWeight: 800, color: "#1D1D1F", marginBottom: "6px", lineHeight: 1.3 }}>
                 {current.title}
               </h3>
               <p style={{ fontSize: "13px", color: "#86868B", marginBottom: "22px", lineHeight: 1.5 }}>
@@ -271,10 +294,13 @@ export default function NetLiftSurvey({ onFinish }) {
           </motion.div>
         </AnimatePresence>
 
+        {/* Live preview */}
+        <LivePreview answers={answers} />
+
         {step > 0 && (
           <button
             onClick={goBack}
-            style={{ marginTop: "16px", background: "none", border: "none", color: "#AEAEB2", fontSize: "13px", cursor: "pointer", fontFamily: "var(--font-heebo)" }}
+            style={{ marginTop: "14px", background: "none", border: "none", color: "#AEAEB2", fontSize: "13px", cursor: "pointer", fontFamily: "var(--font-heebo)" }}
           >
             ← חזרה
           </button>
