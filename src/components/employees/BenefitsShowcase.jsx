@@ -13,12 +13,12 @@ const categories = [
     tag: "המחיר הנמוך בישראל. תמיד.",
     previewImage: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/7e52326a0_-2026-03-22T160414836.png",
     offers: [
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/b7485969d_-2026-02-18T150744909.png", productName: "Adidas Samba", priceOld: "499", priceNew: "299", saving: "200", labelOld: "מחיר אדידס" },
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8fb586f26_-2026-03-15T180501791.png", productName: "Kitan — שמיכת מזגן קיצית מפנקת", priceOld: "449", priceNew: "139", saving: "310", labelOld: "מחיר כיתן" },
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3f27a30a4_.png", productName: "כסא גיימינג", priceOld: "1,090", priceNew: "120", saving: "970", labelOld: "מחיר שוק" },
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ccb0d029b_-2026-02-18T145838528.png", productName: "סט מצעי ג'רסי — Golf & Co", priceOld: "749", priceNew: "269", saving: "480", labelOld: "מחיר ברשת" },
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6186b6abc_-2026-03-22T123739070.png", productName: "שמיכת מזגן קיצית — כיתן", priceOld: "449", priceNew: "139", saving: "310", labelOld: "מחיר כיתן" },
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a4b03713f_-2026-03-22T142532392.png", productName: "כרטיס הופעה", priceOld: "290", priceNew: "99", saving: "191", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/b7485969d_-2026-02-18T150744909.png", productName: "נעלי סמבה — Adidas", priceOld: "519", priceNew: "299", saving: "220", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8fb586f26_-2026-03-15T180501791.png", productName: "מזוודות קייט היל — Kate Hill", priceOld: "1,999", priceNew: "249", saving: "1,750", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3f27a30a4_.png", productName: "כסא גיימינג — Yoko", priceOld: "1,090", priceNew: "120", saving: "970", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ccb0d029b_-2026-02-18T145838528.png", productName: "מזוודות סוויס — Swiss", priceOld: "699", priceNew: "199", saving: "500", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6186b6abc_-2026-03-22T123739070.png", productName: "שמיכת כיתן — Kitan", priceOld: "449", priceNew: "139", saving: "310", labelOld: "מחיר כיתן" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a4b03713f_-2026-03-22T142532392.png", productName: "סט מצעי ג'רסי — Golf & Co", priceOld: "749", priceNew: "269", saving: "480", labelOld: "מחיר ברשת" },
     ],
   },
   {
