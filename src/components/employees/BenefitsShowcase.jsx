@@ -128,18 +128,21 @@ const CATEGORY_ICONS = {
 // ─── PRICE CARDS ──────────────────────────────────────────────────────────────
 function PriceCards({ offer, mobile }) {
   if (!offer?.priceOld) return null;
+  // RTL: rightmost card first in array = מחיר שוק on right, חיסכון on left
   return (
-    <div style={{ display: "flex", gap: "8px", marginBottom: mobile ? "16px" : "20px" }}>
-      {[
-        { lbl: offer.labelOld, val: offer.priceOld, strike: true, color: "#86868B", bg: "#F5F5F7" },
-        { lbl: "מחיר לעובד", val: offer.priceNew, color: "#0055CC", bg: "#F0F4FF" },
-        { lbl: "החיסכון שלך", val: offer.saving, color: "#1A7A43", bg: "rgba(52,199,89,0.1)" },
-      ].map((c, i) => (
-        <div key={i} style={{ flex: 1, background: c.bg, borderRadius: "16px", padding: mobile ? "10px 6px" : "14px 8px", textAlign: "center" }}>
-          <p style={{ fontSize: "10px", fontWeight: 700, color: "#86868B", marginBottom: "4px" }}>{c.lbl}</p>
-          <ILS value={c.val} style={{ fontSize: mobile ? "16px" : "22px", fontWeight: 900, color: c.color, textDecoration: c.strike ? "line-through" : "none" }} />
-        </div>
-      ))}
+    <div style={{ display: "flex", gap: "8px", marginBottom: mobile ? "16px" : "20px", direction: "rtl" }}>
+      <div style={{ flex: 1, background: "#F5F5F7", borderRadius: "16px", padding: mobile ? "10px 6px" : "14px 8px", textAlign: "center" }}>
+        <p style={{ fontSize: "10px", fontWeight: 700, color: "#86868B", marginBottom: "4px" }}>{offer.labelOld}</p>
+        <ILS value={offer.priceOld} style={{ fontSize: mobile ? "16px" : "22px", fontWeight: 900, color: "#86868B", textDecoration: "line-through" }} />
+      </div>
+      <div style={{ flex: 1, background: "#F0F4FF", borderRadius: "16px", padding: mobile ? "10px 6px" : "14px 8px", textAlign: "center" }}>
+        <p style={{ fontSize: "10px", fontWeight: 700, color: "#86868B", marginBottom: "4px" }}>מחיר לעובד</p>
+        <ILS value={offer.priceNew} style={{ fontSize: mobile ? "16px" : "22px", fontWeight: 900, color: "#0055CC" }} />
+      </div>
+      <div style={{ flex: 1, background: "rgba(52,199,89,0.1)", borderRadius: "16px", padding: mobile ? "10px 6px" : "14px 8px", textAlign: "center" }}>
+        <p style={{ fontSize: "10px", fontWeight: 700, color: "#86868B", marginBottom: "4px" }}>החיסכון שלך</p>
+        <ILS value={offer.saving} style={{ fontSize: mobile ? "16px" : "22px", fontWeight: 900, color: "#1A7A43" }} />
+      </div>
     </div>
   );
 }
@@ -228,6 +231,9 @@ function CategoryModal({ category, onClose, onCTA }) {
           {/* Content side */}
           <div className="w-full lg:w-2/5 p-8 md:p-10 flex flex-col gap-4" dir="rtl">
             <div>
+              <h2 className="text-2xl md:text-3xl font-black text-slate-900 mb-1 leading-tight">
+                {category.title}
+              </h2>
               <AnimatePresence mode="wait">
                 <motion.p
                   key={currentOffer?.productName}
@@ -235,11 +241,23 @@ function CategoryModal({ category, onClose, onCTA }) {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.2 }}
-                  className="text-blue-600 font-bold text-sm mb-2"
+                  className="text-blue-600 font-bold text-sm mb-3"
                 >
                   {currentOffer?.productName}
                 </motion.p>
               </AnimatePresence>
+              <p className="text-slate-600 text-base leading-relaxed font-medium mb-2">
+                {category.description}
+              </p>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-400 flex-shrink-0" />
+                <p className="text-blue-700 font-bold text-sm">{category.sub}</p>
+              </div>
+              {category.detail && (
+                <p className="text-slate-500 text-xs leading-relaxed" style={{ borderRight: "3px solid #E5E7EB", paddingRight: "10px" }}>
+                  {category.detail}
+                </p>
+              )}
             </div>
 
             <AnimatePresence mode="wait">
