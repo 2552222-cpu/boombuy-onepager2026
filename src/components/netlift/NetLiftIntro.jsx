@@ -2,11 +2,11 @@ import React from "react";
 import { motion } from "framer-motion";
 
 export default function NetLiftIntro({ onNext }) {
-  const handleStart = onNext;
   return (
     <div
       dir="rtl"
       style={{
+        minHeight: "100vh",
         background: "linear-gradient(160deg, #0a0e1a 0%, #0d1829 50%, #0a1220 100%)",
         display: "flex",
         flexDirection: "column",
@@ -18,7 +18,6 @@ export default function NetLiftIntro({ onNext }) {
         overflow: "hidden",
       }}
     >
-      {/* Background glow */}
       <div style={{
         position: "absolute", top: "30%", left: "50%", transform: "translate(-50%, -50%)",
         width: "600px", height: "400px",
@@ -26,7 +25,6 @@ export default function NetLiftIntro({ onNext }) {
         pointerEvents: "none",
       }} />
 
-      {/* Logo */}
       <motion.div
         initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
@@ -36,7 +34,6 @@ export default function NetLiftIntro({ onNext }) {
         <span style={{ fontSize: "20px", fontWeight: 900, color: "#4A9EFF", letterSpacing: "-0.02em" }}>BoomBuy</span>
       </motion.div>
 
-      {/* Main card */}
       <motion.div
         initial={{ opacity: 0, y: 28 }}
         animate={{ opacity: 1, y: 0 }}
@@ -53,7 +50,6 @@ export default function NetLiftIntro({ onNext }) {
           boxShadow: "0 0 60px rgba(0,102,204,0.15), inset 0 1px 0 rgba(255,255,255,0.08)",
         }}
       >
-        {/* Badge */}
         <div style={{
           display: "inline-block",
           background: "rgba(0,102,204,0.2)",
@@ -63,11 +59,10 @@ export default function NetLiftIntro({ onNext }) {
           marginBottom: "20px",
         }}>
           <span style={{ fontSize: "12px", fontWeight: 700, color: "#4A9EFF", letterSpacing: "0.06em" }}>
-            EVI CHECK · Employee Value Index
+            NetLift Index
           </span>
         </div>
 
-        {/* Title */}
         <h1 style={{
           fontSize: "clamp(28px, 7vw, 40px)",
           fontWeight: 900,
@@ -76,12 +71,11 @@ export default function NetLiftIntro({ onNext }) {
           lineHeight: 1.1,
           marginBottom: "16px",
         }}>
-          NetLift Index
+          בכמה יגדל הנטו שלך?
         </h1>
 
-        {/* Subtitle with glow on key words */}
         <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.6)", lineHeight: 1.65, marginBottom: "10px" }}>
-          בדיקה מהירה בכמה יגדל
+          בדיקה מהירה לחישוב
         </p>
         <motion.p
           animate={{ opacity: [0.85, 1, 0.85] }}
@@ -95,16 +89,15 @@ export default function NetLiftIntro({ onNext }) {
             textShadow: "0 0 20px rgba(74,158,255,0.5)",
           }}
         >
-          הנטו האפקטיבי שלך
+          הערך הכלכלי האמיתי שלך
         </motion.p>
         <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.6)", lineHeight: 1.65, marginBottom: "36px" }}>
-          מהטבות הרווחה הקיימות
+          מהטבות הרווחה של הארגון
         </p>
 
-        {/* CTA */}
         <motion.button
           whileTap={{ scale: 0.97 }}
-          onClick={handleStart}
+          onClick={onNext}
           style={{
             width: "100%",
             background: "#0066CC",
@@ -130,7 +123,7 @@ export default function NetLiftIntro({ onNext }) {
               pointerEvents: "none",
             }}
           />
-          תראו לי את זה לפני שאני נרשם ←
+          בואו נתחיל
         </motion.button>
       </motion.div>
     </div>
