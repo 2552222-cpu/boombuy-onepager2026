@@ -10,13 +10,13 @@ import FinalBand from "../components/employees/FinalBand";
 import GlobalFooter from "../components/employees/GlobalFooter";
 import FloatingWhatsApp from "../components/employees/FloatingWhatsApp";
 import NetLiftCalculator from "../components/employees/NetLiftCalculator";
-import Survey from "../components/employees/Survey";
 import IntroSlides from "../components/employees/IntroSlides";
 import ZeroBudget from "../components/employees/ZeroBudget";
 
 export default function EmployeesLanding() {
   const [showNetLift, setShowNetLift] = useState(false);
   const [introDone, setIntroDone] = useState(false);
+  // Survey (org flow) is intentionally removed from this page — it's a separate system
 
   if (!introDone) {
     return <IntroSlides onDone={() => setIntroDone(true)} />;
@@ -32,14 +32,10 @@ export default function EmployeesLanding() {
       <ZeroBudget />
       <TrustLogos />
 
-      {/* NetLift Calculator — full screen overlay */}
+      {/* NetLift Calculator — self-contained, no external navigation */}
       {showNetLift ? (
         <section id="value-calculator">
-          <NetLiftCalculator onAdvance={() => {
-            setTimeout(() => {
-              document.getElementById("survey-section")?.scrollIntoView({ behavior: "smooth" });
-            }, 300);
-          }} />
+          <NetLiftCalculator />
         </section>
       ) : (
         <section id="value-calculator" style={{ background: "linear-gradient(160deg, #0a0e1a, #0d1829)", padding: "64px 20px", textAlign: "center", direction: "rtl" }}>
@@ -76,10 +72,6 @@ export default function EmployeesLanding() {
 
       <Testimonials />
       <FinalBand />
-
-      {/* Survey Section */}
-      <Survey />
-
       <GlobalFooter />
       <FloatingWhatsApp />
     </div>

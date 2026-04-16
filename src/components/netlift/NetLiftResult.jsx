@@ -25,7 +25,7 @@ function ILS({ amount, size = 32, color = "#0055CC" }) {
   );
 }
 
-export default function NetLiftResult({ result, answers, onRestart, onNext }) {
+export default function NetLiftResult({ result, answers, onRestart }) {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     if (result) {
@@ -150,11 +150,7 @@ export default function NetLiftResult({ result, answers, onRestart, onNext }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
           onClick={() => {
-            if (onNext) {
-              onNext();
-            } else {
-              document.getElementById("survey-section")?.scrollIntoView({ behavior: "smooth" });
-            }
+            document.getElementById("survey-section")?.scrollIntoView({ behavior: "smooth" });
           }}
           style={{
             width: "100%",
