@@ -112,10 +112,10 @@ const categories = [
     tag: "אירועים מיוחדים",
     previewImage: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a551368ec_-2026-03-22T163623874.png",
     offers: [
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/695e0f051_-2026-02-18T142715149.png", productName: "יריד צרכנות", priceOld: "150", priceNew: "49", saving: "101", labelOld: "מחיר שוק" },
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/53f2308b8_-2026-02-18T142941224.png", productName: "יריד חזרה לספר", priceOld: "200", priceNew: "89", saving: "111", labelOld: "מחיר שוק" },
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8cd871928_-2026-02-18T142743437.png", productName: "פופ-אפ מותג", priceOld: "350", priceNew: "149", saving: "201", labelOld: "מחיר שוק" },
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/252939dda_-2026-01-21T194558315.png", productName: "יריד רכב", priceOld: "500", priceNew: "220", saving: "280", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/695e0f051_-2026-02-18T142715149.png", productName: "יריד צרכנות", priceOld: null, priceNew: null, saving: null, labelOld: null },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/53f2308b8_-2026-02-18T142941224.png", productName: "יריד חזרה לספר", priceOld: null, priceNew: null, saving: null, labelOld: null },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8cd871928_-2026-02-18T142743437.png", productName: "פופ-אפ מותג", priceOld: null, priceNew: null, saving: null, labelOld: null },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/252939dda_-2026-01-21T194558315.png", productName: "יריד רכב", priceOld: null, priceNew: null, saving: null, labelOld: null },
     ],
   },
 ];
