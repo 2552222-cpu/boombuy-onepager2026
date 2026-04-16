@@ -203,7 +203,7 @@ export default function Survey() {
             כמה שאלות קצרות לפני שנפתח בקשה לארגון
           </p>
 
-          {step > 0 && step !== "result" && (
+          {step > 0 && step !== "result" && typeof step === "number" && (
             <button onClick={goBack} style={{ marginTop: 8, background: "none", border: "none", color: "#AEAEB2", fontSize: 13, cursor: "pointer", fontFamily: "var(--font-heebo)" }}>
               ← חזרה
             </button>
@@ -489,7 +489,7 @@ export default function Survey() {
                   {resultText}
                 </p>
                 <button
-                  onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                  onClick={() => document.getElementById("offers-slider")?.scrollIntoView({ behavior: "smooth" })}
                   style={{ width: "100%", background: "#0066CC", color: "#fff", fontWeight: 700, fontSize: "15px", padding: "15px", borderRadius: "12px", border: "none", cursor: "pointer", fontFamily: "var(--font-heebo)", boxShadow: "0 6px 20px rgba(0,102,204,0.24)" }}
                 >
                   חזרה לעמוד ההטבות
