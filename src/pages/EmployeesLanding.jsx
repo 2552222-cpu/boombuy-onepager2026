@@ -11,9 +11,16 @@ import GlobalFooter from "../components/employees/GlobalFooter";
 import FloatingWhatsApp from "../components/employees/FloatingWhatsApp";
 import NetLiftCalculator from "../components/employees/NetLiftCalculator";
 import Survey from "../components/employees/Survey";
+import IntroSlides from "../components/employees/IntroSlides";
+import ZeroBudget from "../components/employees/ZeroBudget";
 
 export default function EmployeesLanding() {
   const [showNetLift, setShowNetLift] = useState(false);
+  const [introDone, setIntroDone] = useState(false);
+
+  if (!introDone) {
+    return <IntroSlides onDone={() => setIntroDone(true)} />;
+  }
 
   return (
     <div dir="rtl" style={{ overflowX: "hidden", maxWidth: "100vw" }}>
@@ -22,6 +29,7 @@ export default function EmployeesLanding() {
       <FeaturedOffersSlider />
       <BenefitsShowcase />
       <EconomicSection />
+      <ZeroBudget />
       <TrustLogos />
 
       {/* NetLift Calculator — full screen overlay */}
