@@ -330,7 +330,7 @@ export default function BenefitsShowcase() {
                   />
                   <div className="relative bg-white/60 backdrop-blur-md border border-blue-200/70 rounded-2xl px-3 py-2 text-center">
                     <p className="text-[11px] md:text-[13px] font-bold text-blue-600 leading-tight">
-                      לחצו לראות את פרטי ההטבה
+                      {cat.id === "fairs" ? "לחצו כאן לצפות בדוגמאות מירידים" : "לחצו כאן לצפות בהטבות"}
                     </p>
                   </div>
                 </div>
