@@ -164,7 +164,7 @@ export default function Survey() {
       }
       const framing = getResultFraming(painPoint, currentClub, welfareBudget);
       setResultText(framing);
-      setStep(7);
+      setStep("result");
     } catch (err) {
       console.error(err);
     } finally {
@@ -203,7 +203,7 @@ export default function Survey() {
             כמה שאלות קצרות לפני שנפתח בקשה לארגון
           </p>
 
-          {step > 0 && step < 7 && (
+          {step > 0 && step !== "result" && (
             <button onClick={goBack} style={{ marginTop: 8, background: "none", border: "none", color: "#AEAEB2", fontSize: 13, cursor: "pointer", fontFamily: "var(--font-heebo)" }}>
               ← חזרה
             </button>
@@ -225,7 +225,7 @@ export default function Survey() {
               fontFamily: "var(--font-heebo)",
             }}
           >
-            <span>שלב {Math.min(step + 1, 6)} מתוך 6</span>
+            <span>{step === "result" ? "הושלם" : `שלב ${Math.min(step + 1, 6)} מתוך 6`}</span>
           </div>
           <div
             style={{
@@ -242,7 +242,7 @@ export default function Survey() {
                 borderRadius: "9999px",
               }}
               initial={{ width: 0 }}
-              animate={{ width: `${((Math.min(step, 5) + 1) / 6) * 100}%` }}
+              animate={{ width: step === "result" ? "100%" : `${((Math.min(step, 5) + 1) / 6) * 100}%` }}
               transition={{ duration: 0.4 }}
             />
           </div>
