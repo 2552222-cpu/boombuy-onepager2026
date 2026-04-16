@@ -491,12 +491,9 @@ export default function Survey() {
                 <p style={{ fontSize: "15px", color: "#6E6E73", lineHeight: 1.6, marginBottom: "28px", fontFamily: "var(--font-heebo)" }}>
                   {resultText}
                 </p>
-                <button
-                  onClick={() => document.getElementById("offers-slider")?.scrollIntoView({ behavior: "smooth" })}
-                  style={{ width: "100%", background: "#0066CC", color: "#fff", fontWeight: 700, fontSize: "15px", padding: "15px", borderRadius: "12px", border: "none", cursor: "pointer", fontFamily: "var(--font-heebo)", boxShadow: "0 6px 20px rgba(0,102,204,0.24)" }}
-                >
-                  חזרה לעמוד ההטבות
-                </button>
+                <p style={{ fontSize: "13px", color: "#AEAEB2", fontFamily: "var(--font-heebo)", marginTop: "8px" }}>
+                  נחזור אליך בהקדם עם הצעה מותאמת לארגון שלך
+                </p>
               </div>
             </motion.div>
           )}
