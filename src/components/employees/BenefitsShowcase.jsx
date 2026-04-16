@@ -98,10 +98,10 @@ const categories = [
     tag: "מחירים בלעדיים",
     previewImage: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/9349388b9_-2026-03-22T163505767.png",
     offers: [
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/82cf01fcc_87.png", productName: "Alo Yoga", priceOld: "499", priceNew: "224", saving: "275", labelOld: "מחיר שוק" },
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6a4f8399a_90.png", productName: "Dior Sauvage", priceOld: "600", priceNew: "430", saving: "170", labelOld: "מחיר שוק" },
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/69b6386a9_-2026-03-22T132245384.png", productName: "נעלי אדידס", priceOld: "550", priceNew: "299", saving: "251", labelOld: "מחיר שוק" },
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3715ded54_-2026-03-22T131700657.png", productName: "מותג פרימיום", priceOld: "380", priceNew: "189", saving: "191", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/82cf01fcc_87.png", productName: "טייץ אלו יוגה נשים — Alo Yoga", priceOld: "499", priceNew: "224", saving: "275", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/69b6386a9_-2026-03-22T132245384.png", productName: "מעיל נשים מחמם — Tommy Hilfiger | מידות XS-XL | לבן וכחול", priceOld: "899", priceNew: "299", saving: "600", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6a4f8399a_90.png", productName: "כריסטיאן דיור סאוואג' 100 מ\"ל — Dior Sauvage", priceOld: "600", priceNew: "430", saving: "170", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3715ded54_-2026-03-22T131700657.png", productName: "2 קפוצ'ונים צ'מפיון כולל משלוח — גברים/נשים | Champion", priceOld: "338", priceNew: "195", saving: "143", labelOld: "מחיר שוק" },
     ],
   },
   {
