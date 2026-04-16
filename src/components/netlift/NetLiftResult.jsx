@@ -43,7 +43,14 @@ export default function NetLiftResult({ result, answers, onRestart }) {
   }
 
   const CATEGORY_LABELS = {
-    super: "סופר ומזון", vacation: "חופשות", culture: "הופעות", tech: "חשמל", fashion: "אופנה", car: "ביטוח רכב",
+    super: "סופר ומזון",
+    tech: "חשמל ואלקטרוניקה",
+    general: "הטבות כלליות",
+    vacation: "חופשות",
+    culture: "הופעות ובילויים",
+    insurance: "ביטוח רכב ודירה",
+    fashion: "אופנה",
+    car: "ביטוח רכב",
   };
 
 

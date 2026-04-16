@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useAuth } from "@/lib/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ExternalLink, Users } from "lucide-react";
+import { X, ExternalLink, Users, TrendingUp } from "lucide-react";
 
 // ── Lead Score ──────────────────────────────────────────────────────────────
 function calcLeadScore(req) {
@@ -181,6 +181,97 @@ function DemoModal({ req, onClose }) {
   );
 }
 
+// ── NetLift Panel ────────────────────────────────────────────────────────────
+function NetLiftPanel() {
+  const [records, setRecords] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    base44.entities.WorkerNetLiftRecord.filter({ isComplete: true }, "-created_date", 200)
+      .then(setRecords)
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) return <div style={{ padding: "32px", textAlign: "center", color: "#86868B", fontSize: "13px" }}>טוען...</div>;
+  if (records.length === 0) return <div style={{ padding: "48px", textAlign: "center", color: "#C7C7CC", fontSize: "14px" }}>עדיין אין רשומות NetLift. עובדים שישלימו את הסקר יופיעו כאן.</div>;
+
+  const avgMonthly = Math.round(records.reduce((s, r) => s + (r.monthlySavingsEstimate || 0), 0) / records.length);
+  const avgAnnual = Math.round(records.reduce((s, r) => s + (r.annualSavingsEstimate || 0), 0) / records.length);
+  const totalAnnual = records.reduce((s, r) => s + (r.annualSavingsEstimate || 0), 0);
+
+  // Category breakdown aggregation
+  const catTotals = {};
+  const catLabels = { super: "סופר ומזון", tech: "חשמל", general: "הטבות כלליות", vacation: "חופשות", culture: "הופעות", insurance: "ביטוח", fashion: "אופנה", car: "ביטוח רכב" };
+  records.forEach((r) => {
+    if (!r.categoryUsage) return;
+    Object.entries(r.categoryUsage).forEach(([k, v]) => {
+      catTotals[k] = (catTotals[k] || 0) + (v || 0);
+    });
+  });
+  const sortedCats = Object.entries(catTotals).sort((a, b) => b[1] - a[1]);
+
+  return (
+    <div>
+      {/* Summary stats */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "10px", marginBottom: "20px" }}>
+        {[
+          ["עובדים שהשלימו סקר", records.length],
+          ["ממוצע חיסכון חודשי", `${avgMonthly.toLocaleString("he-IL")} ₪`],
+          ["ממוצע חיסכון שנתי", `${avgAnnual.toLocaleString("he-IL")} ₪`],
+          ["סה״כ ערך שנתי מצטבר", `${totalAnnual.toLocaleString("he-IL")} ₪`],
+        ].map(([label, value]) => (
+          <div key={label} style={{ background: "#fff", borderRadius: "12px", border: "1px solid rgba(0,0,0,0.06)", padding: "14px 16px" }}>
+            <p style={{ fontSize: "11px", color: "#86868B", marginBottom: "3px" }}>{label}</p>
+            <p style={{ fontSize: "20px", fontWeight: 900, color: "#1D1D1F", letterSpacing: "-0.02em" }}>{value}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Category breakdown */}
+      <div style={{ background: "#fff", borderRadius: "16px", border: "1px solid rgba(0,0,0,0.06)", padding: "20px 20px", marginBottom: "20px" }}>
+        <p style={{ fontSize: "13px", fontWeight: 700, color: "#1D1D1F", marginBottom: "16px" }}>פילוח לפי קטגוריות שימוש (סה״כ חודשי)</p>
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          {sortedCats.map(([k, v]) => (
+            <div key={k} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid rgba(0,0,0,0.05)" }}>
+              <span style={{ fontSize: "13px", color: "#555" }}>{catLabels[k] || k}</span>
+              <span style={{ fontSize: "13px", fontWeight: 800, color: "#0066CC" }}>{Math.round(v / records.length).toLocaleString("he-IL")} ₪/חודש ממוצע</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Individual records */}
+      <div style={{ background: "#fff", borderRadius: "16px", border: "1px solid rgba(0,0,0,0.06)", overflow: "hidden" }}>
+        <div style={{ overflowX: "auto" }}>
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <thead>
+              <tr style={{ background: "#F5F5F7", borderBottom: "1px solid rgba(0,0,0,0.06)" }}>
+                {["עובד", "NetLift חודשי", "NetLift שנתי", "קטגוריות מובילות", "תאריך"].map((h) => (
+                  <th key={h} style={{ padding: "11px 12px", textAlign: "right", fontSize: "11px", fontWeight: 600, color: "#86868B", whiteSpace: "nowrap" }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {records.map((r, i) => {
+                const topCats = Object.entries(r.categoryUsage || {}).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([k]) => catLabels[k] || k).join(", ");
+                return (
+                  <tr key={r.id} style={{ borderBottom: "1px solid rgba(0,0,0,0.05)" }}>
+                    <td style={{ padding: "11px 12px", fontSize: "12px", color: "#86868B" }}>{r.workerId?.slice(-6) || `#${i + 1}`}</td>
+                    <td style={{ padding: "11px 12px", fontWeight: 800, fontSize: "15px", color: "#0055CC" }}>{(r.monthlySavingsEstimate || 0).toLocaleString("he-IL")} ₪</td>
+                    <td style={{ padding: "11px 12px", fontWeight: 700, fontSize: "13px", color: "#1A7A43" }}>{(r.annualSavingsEstimate || 0).toLocaleString("he-IL")} ₪</td>
+                    <td style={{ padding: "11px 12px", fontSize: "12px", color: "#555" }}>{topCats || "—"}</td>
+                    <td style={{ padding: "11px 12px", fontSize: "11px", color: "#C7C7CC" }}>{new Date(r.created_date).toLocaleDateString("he-IL")}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── Dashboard ────────────────────────────────────────────────────────────────
 export default function AdminDashboard() {
   const { user } = useAuth();
@@ -189,6 +280,7 @@ export default function AdminDashboard() {
   const [demoReq, setDemoReq] = useState(null);
   const [drawerReq, setDrawerReq] = useState(null);
   const [sortBy, setSortBy] = useState("score");
+  const [activeTab, setActiveTab] = useState("leads");
 
   const fetchRequests = async () => {
     try {
@@ -244,20 +336,32 @@ export default function AdminDashboard() {
         {/* Header */}
         <div style={{ marginBottom: "24px", display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "12px" }}>
           <div>
-            <h1 style={{ fontSize: "26px", fontWeight: 900, letterSpacing: "-0.02em", color: "#1D1D1F", marginBottom: "2px" }}>BoomBuy — ניהול לידים</h1>
-            <p style={{ fontSize: "13px", color: "#86868B" }}>{sorted.length} ארגונים</p>
+            <h1 style={{ fontSize: "26px", fontWeight: 900, letterSpacing: "-0.02em", color: "#1D1D1F", marginBottom: "8px" }}>BoomBuy — ניהול לידים</h1>
+            <div style={{ display: "flex", gap: "6px" }}>
+              {[["leads", "לידים", Users], ["netlift", "NetLift", TrendingUp]].map(([tab, label, TabIcon]) => (
+                <button key={tab} onClick={() => setActiveTab(tab)}
+                  style={{ display: "flex", alignItems: "center", gap: "5px", padding: "6px 14px", borderRadius: "8px", border: "none", background: activeTab === tab ? "#0066CC" : "#fff", color: activeTab === tab ? "#fff" : "#1D1D1F", fontWeight: 600, fontSize: "13px", cursor: "pointer", fontFamily: "var(--font-heebo)" }}>
+                  <TabIcon size={13} />{label}
+                </button>
+              ))}
+            </div>
           </div>
-          <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-            <span style={{ fontSize: "12px", color: "#86868B" }}>מיון:</span>
-            {[["score", "Lead Score"], ["count", "עובדים"], ["updated", "עדכון אחרון"], ["date", "תאריך יצירה"]].map(([val, label]) => (
-              <button key={val} onClick={() => setSortBy(val)}
-                style={{ padding: "6px 12px", borderRadius: "8px", border: "none", background: sortBy === val ? "#0066CC" : "#fff", color: sortBy === val ? "#fff" : "#1D1D1F", fontWeight: 600, fontSize: "12px", cursor: "pointer", fontFamily: "var(--font-heebo)" }}>
-                {label}
-              </button>
-            ))}
-          </div>
+          {activeTab === "leads" && (
+            <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+              <span style={{ fontSize: "12px", color: "#86868B" }}>מיון:</span>
+              {[["score", "Lead Score"], ["count", "עובדים"], ["updated", "עדכון אחרון"], ["date", "תאריך יצירה"]].map(([val, label]) => (
+                <button key={val} onClick={() => setSortBy(val)}
+                  style={{ padding: "6px 12px", borderRadius: "8px", border: "none", background: sortBy === val ? "#0066CC" : "#fff", color: sortBy === val ? "#fff" : "#1D1D1F", fontWeight: 600, fontSize: "12px", cursor: "pointer", fontFamily: "var(--font-heebo)" }}>
+                  {label}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
+        {activeTab === "netlift" && <NetLiftPanel />}
+
+        {activeTab === "leads" && <>
         {/* Stats */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "10px", marginBottom: "20px" }}>
           {[
@@ -342,6 +446,8 @@ export default function AdminDashboard() {
           </div>
         </div>
       </div>
+
+        </>}
 
       <AnimatePresence>
         {demoReq && <DemoModal req={demoReq} onClose={() => setDemoReq(null)} />}
