@@ -29,11 +29,11 @@ const categories = [
     tag: "מחיר יבואן",
     previewImage: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/db8e935e8_-2026-03-22T162955489.png",
     offers: [
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/92d8c129a_-2026-02-18T150849922.png", productName: "iPhone 16 Pro", priceOld: "4,590", priceNew: "3,890", saving: "700", labelOld: "מחיר שוק" },
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/477510a11_-2026-02-18T150203869.png", productName: "Nespresso", priceOld: "833", priceNew: "589", saving: "244", labelOld: "מחיר שוק" },
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ca6b2de24_-2026-02-18T145345395.png", productName: "Dyson V15", priceOld: "2,499", priceNew: "1,699", saving: "800", labelOld: "מחיר שוק" },
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/c7ef06ffc_-2026-02-18T141936848.png", productName: "Samsung Galaxy S25", priceOld: "3,388", priceNew: "2,499", saving: "889", labelOld: "מחיר KSP" },
-      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/96816d966_92.png", productName: "Ninja Blender", priceOld: "649", priceNew: "399", saving: "250", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/92d8c129a_-2026-02-18T150849922.png", productName: "iPhone 16 Pro — Apple", priceOld: "4,590", priceNew: "3,890", saving: "700", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/477510a11_-2026-02-18T150203869.png", productName: "מסך טלוויזיה LG 75 אינץ'", priceOld: "3,890", priceNew: "2,290", saving: "1,600", labelOld: "מחיר שוק" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ca6b2de24_-2026-02-18T145345395.png", productName: "סמסונג גלאקסי Z Fold 7", priceOld: "3,388", priceNew: "2,799", saving: "589", labelOld: "מחיר KSP" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/c7ef06ffc_-2026-02-18T141936848.png", productName: "סמסונג גלאקסי S25+", priceOld: "3,388", priceNew: "2,499", saving: "889", labelOld: "מחיר KSP" },
+      { img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/96816d966_92.png", productName: "נספרסו Inissia + מקציף + 60 קפסולות + משלוח", priceOld: "833", priceNew: "589", saving: "244", labelOld: "מחיר שוק" },
     ],
   },
   {
