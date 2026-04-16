@@ -246,9 +246,6 @@ function CategoryModal({ category, onClose, onCTA }) {
                   {currentOffer?.productName}
                 </motion.p>
               </AnimatePresence>
-              <p className="text-slate-600 text-base leading-relaxed font-medium">
-                {category.description}
-              </p>
             </div>
 
             <AnimatePresence mode="wait">
@@ -262,17 +259,6 @@ function CategoryModal({ category, onClose, onCTA }) {
                 <PriceCards offer={currentOffer} mobile={false} />
               </motion.div>
             </AnimatePresence>
-
-            <div className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-400 flex-shrink-0" />
-              <p className="text-blue-700 font-bold text-sm">{category.sub}</p>
-            </div>
-
-            {category.detail && (
-              <p className="text-slate-500 text-xs leading-relaxed" style={{ borderRight: "3px solid #E5E7EB", paddingRight: "10px" }}>
-                {category.detail}
-              </p>
-            )}
 
             <div className="relative mt-auto pt-2">
               <motion.div
@@ -301,7 +287,6 @@ export default function BenefitsShowcase() {
     <section className="py-16 md:py-24 px-4 bg-white" dir="rtl">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
-          <p className="text-blue-600 font-bold text-xs tracking-widest uppercase mb-3">דוגמאות נוספות להטבות שכדאי להכיר</p>
           <h2 className="text-2xl md:text-4xl font-black text-slate-900">מה עוד מחכה לך בפנים?</h2>
         </div>
 

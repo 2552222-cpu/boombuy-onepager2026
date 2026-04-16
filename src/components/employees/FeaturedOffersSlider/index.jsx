@@ -300,7 +300,7 @@ function OfferModal({ offer, isMobile, onClose, onPrev, onNext }) {
         }}>
           <div>
             <p style={{ fontSize: 12, fontWeight: 700, color: "#0055CC", marginBottom: 6, letterSpacing: "0.05em" }}>
-              הטבה {offer.num} · {offer.cat} · {offer.brand}
+              הטבה {offer.num} · {offer.brand}
             </p>
             <AnimatePresence mode="wait">
               <motion.h3
@@ -449,20 +449,7 @@ export default function FeaturedOffersSlider() {
         </div>
 
         <Dots active={index} onSelect={setIndex} />
-
-        <AnimatePresence mode="wait">
-          <motion.p
-            key={index}
-            initial={{ opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: 0.2 }}
-            style={{ marginTop: 14, fontSize: 14, fontWeight: 700, color: "#1D1D1F" }}
-          >
-            {OFFERS[index].productName}
-          </motion.p>
-        </AnimatePresence>
-        <p style={{ fontSize: 12, color: "#AEAEB2", marginTop: 4 }}>החליקו ימינה/שמאלה או לחצו על החיצים</p>
+        <p style={{ fontSize: 12, color: "#AEAEB2", marginTop: 16 }}>החליקו ימינה/שמאלה או לחצו על החיצים</p>
       </div>
 
       <AnimatePresence>
