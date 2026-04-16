@@ -232,9 +232,9 @@ export default function TrustLogos() {
           color:#9CA3AF;
           margin:48px auto 0;
           text-align:center;
-          max-width:900px;
+          max-width:960px;
           padding:0 24px;
-          line-height:1.7;
+          line-height:1.9;
         }
 
         @media (max-width:1024px){
@@ -250,7 +250,7 @@ export default function TrustLogos() {
           .jci-subtitle{ font-size:12px; }
           .jci-rows{ display:none !important; }
           .jci-vcols{ display:flex !important; }
-          .jci-trust{ display:none; }
+          .jci-trust{ display:block; font-size:12px; margin-top:32px; }
           .jci-vcol-wrap{ height:300px; }
         }
       `}</style>
@@ -273,7 +273,9 @@ export default function TrustLogos() {
       </div>
 
       <p className="jci-trust">
-        לאומי, מזרחי, בנק ישראל, בזן, צים ורשות המיסים
+        בנק לאומי · בנק דיסקונט · בנק מזרחי · בנק ישראל · רשות המסים · אלקטרה · אפיקים · הוט מובייל · צים · בזן · דלק · סלקום
+        <br />
+        מיוצגים על ידי התאגדות / ועד עובדים
       </p>
     </section>
   );
