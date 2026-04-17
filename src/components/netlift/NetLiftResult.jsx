@@ -260,6 +260,44 @@ export default function NetLiftResult({ result, answers, onRestart }) {
           חשב מחדש
         </motion.button>
 
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.45 }}
+          style={{
+            background: "linear-gradient(135deg, #003D99, #0066CC)",
+            borderRadius: 20,
+            padding: "24px 20px",
+            textAlign: "center",
+            boxShadow: "0 8px 28px rgba(0,102,204,0.35)",
+          }}
+        >
+          <p style={{
+            fontSize: 14, fontWeight: 900, color: "#fff",
+            letterSpacing: "-0.02em", lineHeight: 1.3,
+            marginBottom: 16,
+          }}>
+            רוצה שהארגון שלך יצטרף<br/>וכל העובדים יחסכו כמוך?
+          </p>
+          <button
+            onClick={() => {
+              document.getElementById("survey-section")?.scrollIntoView({ behavior: "smooth" });
+            }}
+            style={{
+              background: "#fff", color: "#0055CC",
+              fontWeight: 800, fontSize: 16,
+              padding: "14px 32px",
+              borderRadius: 14, border: "none",
+              cursor: "pointer",
+              fontFamily: "var(--font-heebo)",
+              width: "100%",
+              boxShadow: "0 4px 16px rgba(0,0,0,0.12)",
+            }}
+          >
+            אני רוצה את זה בארגון שלי ←
+          </button>
+        </motion.div>
+
         <p style={{ fontSize: "11px", color: "#C0C0C0", textAlign: "center", lineHeight: 1.6 }}>
           החישוב מבוסס על הערכות ממוצעות. הערך בפועל תלוי בהרגלי השימוש שלך.
         </p>

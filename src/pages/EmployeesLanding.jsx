@@ -13,6 +13,7 @@ import FloatingWhatsApp from "../components/employees/FloatingWhatsApp";
 import NetLiftCalculator from "../components/employees/NetLiftCalculator";
 import IntroSlides from "../components/employees/IntroSlides";
 import ZeroBudget from "../components/employees/ZeroBudget";
+import Survey from "../components/employees/Survey";
 
 export default function EmployeesLanding() {
   const [showNetLift, setShowNetLift] = useState(false);
@@ -85,6 +86,7 @@ export default function EmployeesLanding() {
             </section>
           )}
 
+          <Survey />
           <Testimonials />
           <FinalBand />
           <GlobalFooter />

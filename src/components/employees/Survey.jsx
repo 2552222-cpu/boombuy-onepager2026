@@ -16,12 +16,6 @@ const HOLIDAY_BUDGET_OPTIONS = [
   { label: "לא מקבלים מתנות" },
 ];
 
-const CURRENT_CLUB_OPTIONS = [
-  { label: "יש מועדון חזק" },
-  { label: "יש משהו בסיסי" },
-  { label: "אין כלום כרגע" },
-];
-
 const PAIN_POINTS_OPTIONS = [
   { label: "סופר ופארם" },
   { label: "חשמל וטקסטיל" },
@@ -29,11 +23,7 @@ const PAIN_POINTS_OPTIONS = [
   { label: "חופשות" },
 ];
 
-const WELFARE_BUDGET_OPTIONS = [
-  { label: "כן, יש תקציבים (ימי הולדת, משפחה וכו׳)" },
-  { label: "רק ימי גיבוש" },
-  { label: "לא ממש" },
-];
+
 
 const normalizeOrgKey = (name) =>
   name
@@ -59,11 +49,9 @@ export default function Survey() {
   const [orgName, setOrgName] = useState("");
   const [orgSize, setOrgSize] = useState("");
   const [holidayBudget, setHolidayBudget] = useState("");
-  const [currentClub, setCurrentClub] = useState("");
   const [painPoint, setPainPoint] = useState("");
   const [loading, setLoading] = useState(false);
   const [resultText, setResultText] = useState("");
-  const [welfareBudget, setWelfareBudget] = useState("");
   const [initiatorName, setInitiatorName] = useState("");
   const [initiatorPhone, setInitiatorPhone] = useState("");
   const [myMemberId, setMyMemberId] = useState("");
@@ -93,27 +81,21 @@ export default function Survey() {
 
   const handleOrgSize = (label) => { setOrgSize(label); advance(2); };
   const handleBudget = (label) => { setHolidayBudget(label); advance(3); };
-  const handleClub = (label) => { setCurrentClub(label); advance(4); };
-  const handleWelfareBudget = (label) => { setWelfareBudget(label); advance(5); };
-  const handlePainPoint = (label) => { setPainPoint(label); advance(6); };
+  const handlePainPoint = (label) => { setPainPoint(label); advance(4); };
 
-  const getResultFraming = (painPoint, currentClub, welfareBudget) => {
+  const getResultFraming = (painPoint) => {
     if (painPoint === "סופר ופארם")
       return "הנתונים מראים שיוקר המחיה היומיומי הוא הכאב המרכזי. הטבות הסופר והפארם של BoomBuy יהיו ההשפעה המיידית והמורגשת ביותר עבור העובדים שלכם.";
     if (painPoint === "חופשות")
       return "חופשות ונסיעות הן הכאב המרכזי. חבילות הנופש הבלעדיות של BoomBuy יהיו ההטבה הכי חזקה עבור הארגון שלכם.";
     if (painPoint === "חשמל וטקסטיל")
       return "מוצרי חשמל ומותגים הם הכאב המרכזי. מחירי היבואן של BoomBuy על Apple, Samsung ועוד יהיו ההבדל הכי גדול עבורכם.";
-    if (currentClub === "אין כלום כרגע")
-      return "ארגון שמתחיל מאפס יראה את השיפור המשמעותי ביותר. BoomBuy יכולה להפוך את הרווחה שלכם ממצב חלקי למערכת הטבות מלאה.";
-    if (welfareBudget === "לא ממש")
-      return "גם בלי תקציב נוסף, BoomBuy מייצרת ערך אמיתי לעובדים. זה בדיוק המודל שמתאים לכם.";
     return "נראה שהטבות יוקר המחיה — הנחות בסופר, פארם ומוצרי יומיום — יהיו המשמעותיות ביותר עבור העובדים בארגון שלכם.";
   };
 
   const handleFinish = async () => {
     setLoading(true);
-    const finalActivities = [painPoint, currentClub, welfareBudget].filter(Boolean);
+    const finalActivities = [painPoint].filter(Boolean);
     const orgKey = normalizeOrgKey(orgName);
     const browserToken = getBrowserToken();
     try {
@@ -165,7 +147,7 @@ export default function Survey() {
         setMyMemberId(firstMember.id);
         base44.functions.invoke("notifyGroupMilestones", { event: "org_created", orgKey, prevCount: 0, newCount: 1 }).catch(() => {});
       }
-      const framing = getResultFraming(painPoint, currentClub, welfareBudget);
+      const framing = getResultFraming(painPoint);
       setResultText(framing);
       setStep("result");
     } catch (err) {
@@ -228,7 +210,7 @@ export default function Survey() {
               fontFamily: "var(--font-heebo)",
             }}
           >
-            <span>{step === "result" ? "הושלם" : `שלב ${Math.min(step + 1, 6)} מתוך 6`}</span>
+            <span>{step === "result" ? "הושלם" : `שלב ${Math.min(step + 1, 4)} מתוך 4`}</span>
           </div>
           <div
             style={{
@@ -245,7 +227,7 @@ export default function Survey() {
                 borderRadius: "9999px",
               }}
               initial={{ width: 0 }}
-              animate={{ width: step === "result" ? "100%" : `${((Math.min(step, 5) + 1) / 6) * 100}%` }}
+              animate={{ width: step === "result" ? "100%" : `${((Math.min(step, 3) + 1) / 4) * 100}%` }}
               transition={{ duration: 0.4 }}
             />
           </div>
@@ -402,36 +384,6 @@ export default function Survey() {
             </motion.div>
           ) : step === 3 ? (
             <motion.div key="step3" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -14 }} transition={{ duration: 0.28 }}>
-              <h3 style={{ fontSize: "20px", fontWeight: 700, marginBottom: "16px", textAlign: "center", fontFamily: "var(--font-heebo)" }}>
-                האם קיים כיום מועדון הטבות?
-              </h3>
-              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                {CURRENT_CLUB_OPTIONS.map((opt) => (
-                  <button key={opt.label} onClick={() => handleClub(opt.label)}
-                    style={{ background: "#fff", border: "1px solid rgba(0,0,0,0.1)", borderRadius: "12px", padding: "14px 18px", fontSize: "15px", fontWeight: 500, fontFamily: "var(--font-heebo)", textAlign: "right", cursor: "pointer", transition: "border-color 0.15s, background 0.15s" }}
-                    onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#0066CC"; e.currentTarget.style.background = "#F0F6FF"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(0,0,0,0.1)"; e.currentTarget.style.background = "#fff"; }}
-                  >{opt.label}</button>
-                ))}
-              </div>
-            </motion.div>
-          ) : step === 4 ? (
-            <motion.div key="step4" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -14 }} transition={{ duration: 0.28 }}>
-              <h3 style={{ fontSize: "20px", fontWeight: 700, marginBottom: "16px", textAlign: "center", fontFamily: "var(--font-heebo)" }}>
-                האם יש תקציבי רווחה נוספים?
-              </h3>
-              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                {WELFARE_BUDGET_OPTIONS.map((opt) => (
-                  <button key={opt.label} onClick={() => handleWelfareBudget(opt.label)}
-                    style={{ background: "#fff", border: "1px solid rgba(0,0,0,0.1)", borderRadius: "12px", padding: "14px 18px", fontSize: "15px", fontWeight: 500, fontFamily: "var(--font-heebo)", textAlign: "right", cursor: "pointer" }}
-                    onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#0066CC"; e.currentTarget.style.background = "#F0F6FF"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(0,0,0,0.1)"; e.currentTarget.style.background = "#fff"; }}
-                  >{opt.label}</button>
-                ))}
-              </div>
-            </motion.div>
-          ) : step === 5 ? (
-            <motion.div key="step5" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -14 }} transition={{ duration: 0.28 }}>
               <h3 style={{ fontSize: "20px", fontWeight: 700, marginBottom: "8px", textAlign: "center", fontFamily: "var(--font-heebo)" }}>
                 איפה העובדים הכי מרגישים את יוקר המחיה?
               </h3>
@@ -445,8 +397,8 @@ export default function Survey() {
                 ))}
               </div>
             </motion.div>
-          ) : step === 6 ? (
-            <motion.div key="step6" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -14 }} transition={{ duration: 0.28 }}>
+          ) : step === 4 ? (
+            <motion.div key="step4" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -14 }} transition={{ duration: 0.28 }}>
               <h3 style={{ fontSize: "20px", fontWeight: 700, marginBottom: "6px", textAlign: "center", fontFamily: "var(--font-heebo)" }}>
                 ספרו לנו קצת עליכם
               </h3>
