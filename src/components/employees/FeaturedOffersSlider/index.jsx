@@ -319,24 +319,7 @@ function OfferModal({ offer, isMobile, onClose, onPrev, onNext }) {
               <PriceTag label="חיסכון" amount={offer.saving} color="#1A7A43" bg="rgba(52,199,89,0.09)" />
             </div>
 
-            <button
-              onClick={() => {
-                onClose();
-                setTimeout(() => {
-                  const el = document.getElementById("survey-section");
-                  if (el) el.scrollIntoView({ behavior: "smooth" });
-                  else window.location.href = "/#survey-section";
-                }, 120);
-              }}
-              style={{
-                width: "100%", background: "#0055CC", color: "#fff",
-                border: "none", padding: "18px", borderRadius: 22,
-                fontSize: 16, fontWeight: 900, cursor: "pointer",
-                boxShadow: "0 12px 32px rgba(0,85,204,0.3)",
-              }}
-            >
-              אני רוצה לבדוק התאמה לארגון שלי ←
-            </button>
+
           </div>
         </div>
       </motion.div>

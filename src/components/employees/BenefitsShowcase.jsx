@@ -273,16 +273,7 @@ function CategoryModal({ category, onClose, onCTA }) {
               </motion.div>
             </AnimatePresence>
 
-            <div className="relative mt-auto pt-2">
-              <motion.div
-                animate={{ boxShadow: ["0 0 0px rgba(37,99,235,0)", "0 0 16px rgba(37,99,235,0.4)", "0 0 0px rgba(37,99,235,0)"] }}
-                transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute inset-0 rounded-[28px]"
-              />
-              <button onClick={onCTA} className="relative w-full bg-[#0066CC] text-white font-bold py-4 rounded-[28px] shadow-lg hover:bg-blue-700 transition-all active:scale-[0.97] text-base">
-                אני רוצה לבדוק התאמה לארגון שלי ←
-              </button>
-            </div>
+
           </div>
 
         </div>
