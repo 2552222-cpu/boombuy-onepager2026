@@ -60,7 +60,7 @@ const QUESTIONS = [
   },
   {
     id: "insurance_use",
-    title: "אם הייתה הנחה קבועה על ביטוח רכב ודירה - היית משתמש?",
+    title: "אם הייתה הנחה של כ-10% על ביטוחי רכב ודירה, היית משתמש בה?",
     sub: null,
     options: [
       { label: "כן", value: 1.0 },
