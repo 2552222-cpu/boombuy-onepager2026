@@ -14,7 +14,7 @@ const OFFERS = [
     priceOld: "519",
     priceNew: "299",
     saving: "220",
-    desc: "נעלי SAMBA (אדידס דגם samba og) במחיר בלעדי לעובדים.",
+    desc: "נעלי SAMBA · אדידס דגם samba og · במחיר בלעדי לעובדים.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/b7485969d_-2026-02-18T150744909.png",
   },
   {
@@ -27,7 +27,7 @@ const OFFERS = [
     priceOld: "1,999",
     priceNew: "249",
     saving: "1,750",
-    desc: "סט 3 מזוודות קשיחות Kate Hill עם חומר PC מתרחב, גלגלים 360°, מנעול קומבינציה. גדלים: 20״, 24״, 28״ — שנה אחריות יבואן רשמי.",
+    desc: "סט 3 מזוודות קשיחות Kate Hill עם חומר PC מתרחב, גלגלים 360°, מנעול קומבינציה. גדלים: 20״, 24״, 28״ · שנה אחריות יבואן רשמי.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8fb586f26_-2026-03-15T180501791.png",
   },
   {
@@ -40,7 +40,7 @@ const OFFERS = [
     priceOld: "350",
     priceNew: "77",
     saving: "273",
-    desc: "המחזמר קזבלן בכיכובו של איתי לוי — הבימה. כרטיס בלעדי לעובדים במחיר מיוחד.",
+    desc: "המחזמר קזבלן בכיכובו של איתי לוי · הבימה · כרטיס בלעדי לעובדים במחיר מיוחד.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/bb4b910ed_-2026-03-22T140039783.png",
   },
   {
@@ -53,7 +53,7 @@ const OFFERS = [
     priceOld: "499",
     priceNew: "224",
     saving: "275",
-    desc: "טייץ יוגה פרימיום של Alo Yoga — בד נושם, גמיש ומחמיא, במחיר בלעדי לעובדים.",
+    desc: "טייץ יוגה פרימיום של Alo Yoga · בד נושם, גמיש ומחמיא · במחיר בלעדי לעובדים.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/82cf01fcc_87.png",
   },
   {
@@ -66,7 +66,7 @@ const OFFERS = [
     priceOld: "1,790",
     priceNew: "899",
     saving: "891",
-    desc: "לילה מפנק ב-BoBo תל אביב — כולל לינה, עיסוי זוגי וארוחת בוקר זוגית.",
+    desc: "לילה מפנק ב-BoBo תל אביב · כולל לינה, עיסוי זוגי וארוחת בוקר זוגית.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/cf3b11fa5_-2026-03-22T133529822.png",
   },
   {
@@ -79,7 +79,7 @@ const OFFERS = [
     priceOld: "833",
     priceNew: "589",
     saving: "244",
-    desc: "מכונת נספרסו Inissia כולל מקציף חלב, 60 קפסולות ומשלוח — הכל במחיר בלעדי לעובדים.",
+    desc: "מכונת נספרסו Inissia כולל מקציף חלב, 60 קפסולות ומשלוח · הכל במחיר בלעדי לעובדים.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/96816d966_92.png",
   },
   {
@@ -92,7 +92,7 @@ const OFFERS = [
     priceOld: "3,388",
     priceNew: "2,499",
     saving: "889",
-    desc: "סמסונג גלאקסי S25+ — מסך 6.7 אינץ׳, מצלמה משולשת, AI מובנה, במחיר יבואן בלעדי.",
+    desc: "סמסונג גלאקסי S25+ · מסך 6.7 אינץ׳ · מצלמה משולשת · AI מובנה · במחיר יבואן בלעדי.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/c7ef06ffc_-2026-02-18T141936848.png",
   },
   {
@@ -105,7 +105,7 @@ const OFFERS = [
     priceOld: "4,590",
     priceNew: "3,890",
     saving: "700",
-    desc: "iPhone 16 Pro — מעבד A18 Pro, מצלמה 48MP, טיטניום, במחיר בלעדי לעובדים.",
+    desc: "iPhone 16 Pro · מעבד A18 Pro · מצלמה 48MP · טיטניום · במחיר בלעדי לעובדים.",
     img: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/92d8c129a_-2026-02-18T150849922.png",
   },
   {
@@ -293,7 +293,7 @@ function OfferModal({ offer, isMobile, onClose, onPrev, onNext }) {
         }}>
           <div>
             <p style={{ fontSize: 12, fontWeight: 700, color: "#0055CC", marginBottom: 6, letterSpacing: "0.05em" }}>
-              הטבה {offer.num} · {offer.brand}
+              {offer.brand}
             </p>
             <AnimatePresence mode="wait">
               <motion.h3
