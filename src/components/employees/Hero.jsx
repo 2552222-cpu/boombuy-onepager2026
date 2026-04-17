@@ -33,6 +33,10 @@ export default function Hero() {
     document.getElementById("offers-slider")?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const scrollToSurvey = () => {
+    document.getElementById("survey-section")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <section id="hero-section" style={{ background: "#fff", direction: "rtl", overflow: "visible", padding: "0", borderBottom: "1px solid rgba(0,0,0,0.06)" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: isMobile ? "20px 20px 80px" : "80px 20px 100px" }}>
@@ -136,7 +140,7 @@ export default function Hero() {
                 </button>
               ) : (
                 <motion.button
-                  onClick={scrollToOffers}
+                  onClick={() => document.getElementById("offers-slider")?.scrollIntoView({ behavior: "smooth" })}
                   animate={{ boxShadow: ["0 15px 35px rgba(45,99,208,0.25)", "0 15px 45px rgba(45,99,208,0.5)", "0 15px 35px rgba(45,99,208,0.25)"] }}
                   transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
                   style={{ background: "#2D63D0", color: "#fff", border: "none", padding: "20px 40px", borderRadius: "18px", fontSize: "18px", fontWeight: 800, cursor: "pointer" }}

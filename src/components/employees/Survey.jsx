@@ -25,6 +25,30 @@ const PAIN_POINTS_OPTIONS = [
 
 
 
+function SurveyLetterCopy({ orgName, orgKey }) {
+  const [copied, setCopied] = React.useState(false);
+  const letter = `שלום,\n\nאנחנו קבוצה של עובדים מ-${orgName} שמעוניינת לבחון צירוף של BoomBuy לארגון שלנו.\n\nמדובר בשכבה נוספת של הטבות וערך כלכלי מתמשך לאורך השנה — בהוצאות כמו סופר, פארם, חשמל, חופשות ומותגים.\n\nBoomBuy לא באה במקום מתנות חג או פעילות רווחה קיימת, אלא בנוסף. המטרה היא לאפשר לעובדים ליהנות מיותר ערך כלכלי בלי להכביד על המעסיק.\n\nנשמח לבדוק התאמה קצרה.\n\nלינק לעמוד הבקשה:\n${window.location.origin}/join/${orgKey}`;
+  const handleCopy = () => {
+    navigator.clipboard.writeText(letter);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+  return (
+    <div style={{ background: "#fff", borderRadius: "18px", border: "1px solid rgba(0,0,0,0.07)", padding: "20px" }}>
+      <p style={{ fontSize: "13px", fontWeight: 700, marginBottom: "10px", fontFamily: "var(--font-heebo)", color: "#1D1D1F" }}>מכתב מוכן ל-HR / הנהלה</p>
+      <div style={{ background: "#F5F5F7", borderRadius: "10px", padding: "12px 14px", fontSize: "12px", color: "#444", lineHeight: 1.65, fontFamily: "var(--font-heebo)", marginBottom: "10px", whiteSpace: "pre-line", maxHeight: "120px", overflowY: "auto" }}>
+        {letter}
+      </div>
+      <button
+        onClick={handleCopy}
+        style={{ background: copied ? "#34C759" : "#0066CC", color: "#fff", fontWeight: 700, fontSize: "13px", padding: "10px 18px", borderRadius: "10px", border: "none", cursor: "pointer", fontFamily: "var(--font-heebo)", transition: "background 0.15s" }}
+      >
+        {copied ? "הועתק!" : "העתק מכתב ל-HR"}
+      </button>
+    </div>
+  );
+}
+
 const normalizeOrgKey = (name) =>
   name
     .trim()
@@ -435,17 +459,48 @@ export default function Survey() {
               exit={{ opacity: 0, y: -14 }}
               transition={{ duration: 0.28 }}
             >
-              <div style={{ textAlign: "center", padding: "8px 0 24px" }}>
-                <div style={{ fontSize: "48px", marginBottom: "16px" }}>✓</div>
-                <h3 style={{ fontSize: "22px", fontWeight: 900, marginBottom: "14px", fontFamily: "var(--font-heebo)", letterSpacing: "-0.02em", color: "#1D1D1F" }}>
-                  הבקשה נשלחה בהצלחה
-                </h3>
-                <p style={{ fontSize: "15px", color: "#6E6E73", lineHeight: 1.6, marginBottom: "28px", fontFamily: "var(--font-heebo)" }}>
-                  {resultText}
-                </p>
-                <p style={{ fontSize: "13px", color: "#AEAEB2", fontFamily: "var(--font-heebo)", marginTop: "8px" }}>
-                  נחזור אליך בהקדם עם הצעה מותאמת לארגון שלך
-                </p>
+              <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+
+                {/* Framing */}
+                <div style={{ background: "#fff", borderRadius: "18px", border: "1px solid rgba(0,0,0,0.07)", padding: "22px 20px" }}>
+                  <h3 style={{ fontSize: "20px", fontWeight: 900, marginBottom: "10px", fontFamily: "var(--font-heebo)", letterSpacing: "-0.02em", color: "#1D1D1F" }}>
+                    תוצאה מותאמת לארגון שלכם
+                  </h3>
+                  <p style={{ fontSize: "14px", color: "#6E6E73", lineHeight: 1.65, fontFamily: "var(--font-heebo)" }}>
+                    {resultText}
+                  </p>
+                </div>
+
+                {/* 80% social proof */}
+                <div style={{ background: "#EBF3FF", borderRadius: "18px", border: "1px solid rgba(0,85,204,0.15)", padding: "22px 20px", textAlign: "center" }}>
+                  <p style={{ fontSize: "36px", fontWeight: 900, color: "#0055CC", lineHeight: 1, marginBottom: "8px", fontFamily: "var(--font-heebo)" }}>80%</p>
+                  <p style={{ fontSize: "13px", color: "#1D1D1F", lineHeight: 1.6, marginBottom: "16px", fontFamily: "var(--font-heebo)", fontWeight: 600 }}>
+                    אם עוד עמיתים יצטרפו — הסיכוי לקדם את זה גדל ב-80%!<br/>
+                    <span style={{ fontWeight: 400, color: "#86868B" }}>שתפו את ההודעה המוכנה לקבוצת העובדים</span>
+                  </p>
+                  <a
+                    href={`https://wa.me/?text=${encodeURIComponent(
+                      `היי 👋\n\nפתחתי בקשה להביא את BoomBuy ל-${orgName}.\n\nבדקתי את המחשבון שלהם — הנטו שלי יכול לגדול בצורה משמעותית מהוצאות שאני עושה בכל מקרה: סופר, חשמל, ביטוח, חופשות.\n\nזה לא עולה לארגון כלום. לוקח 10 שניות:\n${window.location.origin}/join/${normalizeOrgKey(orgName)}`
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ display: "block", background: "#25D366", color: "#fff", padding: "14px", borderRadius: "14px", fontSize: "15px", fontWeight: 800, textDecoration: "none", textAlign: "center", fontFamily: "var(--font-heebo)" }}
+                  >
+                    שתפו עמיתים בוואטסאפ ←
+                  </a>
+                </div>
+
+                {/* Copy letter */}
+                <SurveyLetterCopy orgName={orgName} orgKey={normalizeOrgKey(orgName)} />
+
+                {/* Go to org page */}
+                <a
+                  href={`/join/${normalizeOrgKey(orgName)}`}
+                  style={{ display: "block", background: "#fff", border: "1px solid rgba(0,102,204,0.25)", color: "#0066CC", fontWeight: 700, fontSize: "14px", padding: "14px", borderRadius: "14px", textAlign: "center", textDecoration: "none", fontFamily: "var(--font-heebo)" }}
+                >
+                  עבור לעמוד הבקשה של {orgName} ←
+                </a>
+
               </div>
             </motion.div>
           )}
