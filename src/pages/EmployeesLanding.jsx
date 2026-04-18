@@ -18,6 +18,8 @@ import Survey from "../components/employees/Survey";
 export default function EmployeesLanding() {
   const [showNetLift, setShowNetLift] = useState(false);
   const [introDone, setIntroDone] = useState(false);
+  const lastOrgKey = localStorage.getItem("boomBuyLastOrgKey");
+  const lastOrgName = localStorage.getItem("boomBuyLastOrgName");
 
   return (
     <AnimatePresence mode="wait">
@@ -86,7 +88,43 @@ export default function EmployeesLanding() {
             </section>
           )}
 
-          <Survey />
+          {lastOrgKey ? (
+            <section id="survey-section" style={{ background: "#F5F5F7", padding: "60px 16px" }}>
+              <div style={{ maxWidth: 480, margin: "0 auto", textAlign: "center" }}>
+                <div style={{ fontSize: 32, marginBottom: 12 }}>👋</div>
+                <h2 style={{ fontSize: "clamp(22px,4vw,28px)", fontWeight: 900, color: "#1D1D1F", marginBottom: 10, letterSpacing: "-0.025em" }}>
+                  כבר פתחתם בקשה עבור {lastOrgName}
+                </h2>
+                <p style={{ fontSize: 14, color: "#86868B", marginBottom: 24, lineHeight: 1.6 }}>
+                  הבקשה שלכם פעילה. כדי להגדיל את הסיכוי — שתפו עוד עמיתים
+                </p>
+                <a
+                  href={`/join/${lastOrgKey}`}
+                  style={{
+                    display: "block", background: "#0066CC", color: "#fff",
+                    fontWeight: 800, fontSize: 16, padding: "16px",
+                    borderRadius: 14, textDecoration: "none",
+                    boxShadow: "0 6px 20px rgba(0,102,204,0.28)",
+                    marginBottom: 12,
+                  }}
+                >
+                  חזרו לעמוד הבקשה שלכם ←
+                </a>
+                <button
+                  onClick={() => {
+                    localStorage.removeItem("boomBuyLastOrgKey");
+                    localStorage.removeItem("boomBuyLastOrgName");
+                    window.location.reload();
+                  }}
+                  style={{ background: "none", border: "none", color: "#AEAEB2", fontSize: 13, cursor: "pointer", fontFamily: "var(--font-heebo)" }}
+                >
+                  פתחו בקשה לארגון אחר
+                </button>
+              </div>
+            </section>
+          ) : (
+            <Survey />
+          )}
           <Testimonials />
           <FinalBand />
           <GlobalFooter />

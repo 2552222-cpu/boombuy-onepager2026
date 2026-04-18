@@ -182,6 +182,8 @@ export default function Survey() {
       const framing = getResultFraming(painPoint);
       setResultText(framing);
       setStep("result");
+      localStorage.setItem("boomBuyLastOrgKey", orgKey);
+      localStorage.setItem("boomBuyLastOrgName", orgName.trim());
     } catch (err) {
       console.error(err);
     } finally {
