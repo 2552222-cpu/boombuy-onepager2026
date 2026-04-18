@@ -169,7 +169,7 @@ function Dots({ active, onSelect }) {
 }
 
 // ─── MODAL ────────────────────────────────────────────────────────────────────
-function OfferModal({ offer, isMobile, onClose, onPrev, onNext }) {
+function OfferModal({ offer, isMobile, onClose, onPrev, onNext, onSelectIdx }) {
   useEffect(() => {
     document.body.style.overflow = "hidden";
     window.dispatchEvent(new CustomEvent("offersModalChange", { detail: { open: true } }));
@@ -273,7 +273,7 @@ function OfferModal({ offer, isMobile, onClose, onPrev, onNext }) {
         }}>
           {OFFERS.map((o) => (
             <button key={o.id}
-              onClick={(e) => { e.stopPropagation(); setSelectedIdx(OFFERS.indexOf(o)); }}
+              onClick={(e) => { e.stopPropagation(); onSelectIdx(OFFERS.indexOf(o)); }}
               style={{
                 width: 44, height: 44, borderRadius: 10, flexShrink: 0,
                 border: o.id === offer.id ? "2px solid #0055CC" : "2px solid transparent",
@@ -437,6 +437,7 @@ export default function FeaturedOffersSlider() {
             onClose={closeModal}
             onPrev={modalPrev}
             onNext={modalNext}
+            onSelectIdx={setSelectedIdx}
           />
         )}
       </AnimatePresence>
