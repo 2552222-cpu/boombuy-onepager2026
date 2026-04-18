@@ -368,27 +368,58 @@ export default function OrgPage() {
           <AnimatePresence mode="wait">
             {alreadyJoined ? (
               <motion.div key="joined" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                <div style={{ textAlign: "center", marginBottom: 20 }}>
+                <div style={{ textAlign: "center", marginBottom: 24 }}>
                   <div style={{ fontSize: 32, marginBottom: 8 }}>🎉</div>
                   <p style={{ fontWeight: 800, fontSize: 17, color: "#1D1D1F", marginBottom: 4 }}>הצטרפתם בהצלחה!</p>
-                  <p style={{ fontSize: 13, color: "#86868B", marginBottom: 20 }}>
-                    שתפו עוד עמיתים — ככל שיצטרפו יותר, כך גדל הסיכוי שזה יקרה
-                  </p>
+                  <p style={{ fontSize: 13, color: "#86868B" }}>שתפו עוד עמיתים כדי להגדיל את הסיכוי</p>
                 </div>
-                <a
-                  href={`https://wa.me/?text=${encodeURIComponent(waMsg(group.orgName, group.currentCount || 1, orgSlug, myMemberId))}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ display: "block", background: "#25D366", color: "#fff", textDecoration: "none", padding: "15px", borderRadius: 14, fontSize: 15, fontWeight: 800, textAlign: "center", marginBottom: 10, fontFamily: "var(--font-heebo)" }}
-                >
-                  שתפו עמיתים בוואטסאפ ← (מומלץ)
-                </a>
-                <button
-                  onClick={handleLetterCopy}
-                  style={{ width: "100%", background: "transparent", color: "#0066CC", fontWeight: 700, fontSize: 14, padding: "13px", borderRadius: 13, border: "1.5px solid rgba(0,102,204,0.25)", cursor: "pointer", fontFamily: "var(--font-heebo)" }}
-                >
-                  {letterCopied ? "✓ הועתק!" : "העתק מכתב ל-HR / ועד"}
-                </button>
+
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                  <a
+                    href={`https://wa.me/?text=${encodeURIComponent(waMsg(group.orgName, group.currentCount || 1, orgSlug, myMemberId))}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+                      background: "linear-gradient(145deg, #25D366, #1aad52)",
+                      borderRadius: 20, padding: "24px 16px",
+                      textDecoration: "none", cursor: "pointer",
+                      boxShadow: "0 8px 24px rgba(37,211,102,0.3)",
+                      transition: "transform 0.2s",
+                      minHeight: 130,
+                      textAlign: "center",
+                    }}
+                    onMouseEnter={e => e.currentTarget.style.transform = "translateY(-2px)"}
+                    onMouseLeave={e => e.currentTarget.style.transform = "translateY(0)"}
+                  >
+                    <span style={{ fontSize: 28, marginBottom: 10 }}>💬</span>
+                    <p style={{ fontSize: 14, fontWeight: 800, color: "#fff", marginBottom: 4, lineHeight: 1.2 }}>שתפו בוואטסאפ</p>
+                    <p style={{ fontSize: 11, color: "rgba(255,255,255,0.8)", lineHeight: 1.4 }}>מומלץ — מגדיל ב-80% את הסיכוי</p>
+                  </a>
+
+                  <button
+                    onClick={handleLetterCopy}
+                    style={{
+                      display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+                      background: "linear-gradient(145deg, #0066CC, #004fa3)",
+                      borderRadius: 20, padding: "24px 16px",
+                      border: "none", cursor: "pointer",
+                      boxShadow: "0 8px 24px rgba(0,102,204,0.28)",
+                      transition: "transform 0.2s",
+                      minHeight: 130,
+                      textAlign: "center",
+                      fontFamily: "var(--font-heebo)",
+                    }}
+                    onMouseEnter={e => e.currentTarget.style.transform = "translateY(-2px)"}
+                    onMouseLeave={e => e.currentTarget.style.transform = "translateY(0)"}
+                  >
+                    <span style={{ fontSize: 28, marginBottom: 10 }}>📋</span>
+                    <p style={{ fontSize: 14, fontWeight: 800, color: "#fff", marginBottom: 4, lineHeight: 1.2 }}>
+                      {letterCopied ? "✓ הועתק!" : "מכתב ל-HR / ועד"}
+                    </p>
+                    <p style={{ fontSize: 11, color: "rgba(255,255,255,0.8)", lineHeight: 1.4 }}>העתק ושלח להנהלה</p>
+                  </button>
+                </div>
               </motion.div>
             ) : !surveyDone ? (
               <MicroSurvey key="survey" orgKey={orgSlug} orgName={group.orgName} onDone={handleSurveyDone} />
