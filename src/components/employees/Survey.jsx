@@ -78,6 +78,8 @@ export default function Survey() {
   const [resultText, setResultText] = useState("");
   const [initiatorName, setInitiatorName] = useState("");
   const [initiatorPhone, setInitiatorPhone] = useState("");
+  const [initiatorEmail, setInitiatorEmail] = useState("");
+  const [hasUnion, setHasUnion] = useState("");
   const [myMemberId, setMyMemberId] = useState("");
   const [stepHistory, setStepHistory] = useState([]);
 
@@ -147,8 +149,10 @@ export default function Survey() {
           holidayBudget,
           painPoint,
           activities: finalActivities,
+          hasUnion,
           initiatorName: initiatorName.trim() || "לא ידוע",
           initiatorPhone: initiatorPhone.trim() || undefined,
+          initiatorEmail: initiatorEmail.trim() || undefined,
         });
         const firstMember = await base44.entities.GroupMember.create({
           groupRequestId: newGroup.id,
@@ -424,9 +428,20 @@ export default function Survey() {
           ) : step === 4 ? (
             <motion.div key="step4" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -14 }} transition={{ duration: 0.28 }}>
               <h3 style={{ fontSize: "20px", fontWeight: 700, marginBottom: "6px", textAlign: "center", fontFamily: "var(--font-heebo)" }}>
-                ספרו לנו קצת עליכם
+                ועוד שאלה אחרונה
               </h3>
-              <p style={{ fontSize: "13px", color: "#86868B", textAlign: "center", marginBottom: "18px", fontFamily: "var(--font-heebo)" }}>
+              <p style={{ fontSize: "13px", color: "#86868B", textAlign: "center", marginBottom: "16px", fontFamily: "var(--font-heebo)" }}>
+                האם יש בארגון שלך ועד עובדים או התאגדות?
+              </p>
+              <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "20px" }}>
+                {["כן, יש ועד פעיל", "יש משהו לא רשמי", "אין ועד"].map(opt => (
+                  <button key={opt} onClick={() => setHasUnion(opt)}
+                    style={{ background: hasUnion === opt ? "#EBF3FF" : "#fff", border: `1px solid ${hasUnion === opt ? "#0066CC" : "rgba(0,0,0,0.1)"}`, borderRadius: "12px", padding: "13px 18px", fontSize: "15px", fontWeight: 500, fontFamily: "var(--font-heebo)", textAlign: "right", cursor: "pointer" }}>
+                    {opt}
+                  </button>
+                ))}
+              </div>
+              <p style={{ fontSize: "13px", color: "#86868B", textAlign: "center", marginBottom: "12px", fontFamily: "var(--font-heebo)" }}>
                 השם והטלפון שלכם עוזרים לנו להתאים את ההצעה ולחזור אליכם בצורה האישית ביותר.
               </p>
               <input
@@ -441,6 +456,13 @@ export default function Survey() {
                 value={initiatorPhone}
                 onChange={(e) => setInitiatorPhone(e.target.value)}
                 placeholder="מספר הטלפון שלך"
+                style={{ width: "100%", padding: "13px 15px", fontSize: "15px", borderRadius: "11px", border: "1px solid rgba(0,0,0,0.12)", background: "#fff", fontFamily: "var(--font-heebo)", marginBottom: "10px", textAlign: "right", boxSizing: "border-box" }}
+              />
+              <input
+                type="email"
+                value={initiatorEmail}
+                onChange={(e) => setInitiatorEmail(e.target.value)}
+                placeholder="כתובת מייל (אופציונלי)"
                 style={{ width: "100%", padding: "13px 15px", fontSize: "15px", borderRadius: "11px", border: "1px solid rgba(0,0,0,0.12)", background: "#fff", fontFamily: "var(--font-heebo)", marginBottom: "14px", textAlign: "right", boxSizing: "border-box" }}
               />
               <button
@@ -459,48 +481,40 @@ export default function Survey() {
               exit={{ opacity: 0, y: -14 }}
               transition={{ duration: 0.28 }}
             >
-              <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              <div style={{ textAlign: "center", marginBottom: "14px" }}>
+                <div style={{ fontSize: 32, marginBottom: 12 }}>✅</div>
+                <h3 style={{ fontSize: "22px", fontWeight: 900, marginBottom: "14px", letterSpacing: "-0.02em", fontFamily: "var(--font-heebo)", color: "#1D1D1F" }}>
+                  תוצאה מותאמת לארגון שלכם
+                </h3>
+              </div>
+              <div style={{ background: "rgba(0,102,204,0.06)", border: "1px solid rgba(0,102,204,0.18)", borderRadius: 14, padding: "18px 20px", marginBottom: 20 }}>
+                <p style={{ fontSize: 16, fontWeight: 600, color: "#0066CC", lineHeight: 1.55, margin: 0, fontFamily: "var(--font-heebo)" }}>{resultText}</p>
+              </div>
 
-                {/* Framing */}
-                <div style={{ background: "#fff", borderRadius: "18px", border: "1px solid rgba(0,0,0,0.07)", padding: "22px 20px" }}>
-                  <h3 style={{ fontSize: "20px", fontWeight: 900, marginBottom: "10px", fontFamily: "var(--font-heebo)", letterSpacing: "-0.02em", color: "#1D1D1F" }}>
-                    תוצאה מותאמת לארגון שלכם
-                  </h3>
-                  <p style={{ fontSize: "14px", color: "#6E6E73", lineHeight: 1.65, fontFamily: "var(--font-heebo)" }}>
-                    {resultText}
-                  </p>
-                </div>
+              <div style={{ background: "rgba(0,102,204,0.06)", border: "1px solid rgba(0,102,204,0.18)", borderRadius: 20, padding: "18px 20px", textAlign: "center" }}>
+                <p style={{ fontSize: 28, fontWeight: 900, color: "#0066CC", marginBottom: 4, fontFamily: "var(--font-heebo)" }}>80%</p>
+                <p style={{ fontSize: 14, fontWeight: 600, color: "#1D1D1F", marginBottom: 10, lineHeight: 1.45, fontFamily: "var(--font-heebo)" }}>
+                  ככל שיותר עובדים יצטרפו לבקשה — כך גדל הסיכוי שהארגון יאמץ את הפלטפורמה
+                </p>
+                <p style={{ fontSize: 12, color: "#86868B", marginBottom: 14, fontFamily: "var(--font-heebo)" }}>מומלץ — מגדיל ב-80% את הסיכוי לקדם</p>
 
-                {/* 80% social proof */}
-                <div style={{ background: "#EBF3FF", borderRadius: "18px", border: "1px solid rgba(0,85,204,0.15)", padding: "22px 20px", textAlign: "center" }}>
-                  <p style={{ fontSize: "36px", fontWeight: 900, color: "#0055CC", lineHeight: 1, marginBottom: "8px", fontFamily: "var(--font-heebo)" }}>80%</p>
-                  <p style={{ fontSize: "13px", color: "#1D1D1F", lineHeight: 1.6, marginBottom: "16px", fontFamily: "var(--font-heebo)", fontWeight: 600 }}>
-                    אם עוד עמיתים יצטרפו — הסיכוי לקדם את זה גדל ב-80%!<br/>
-                    <span style={{ fontWeight: 400, color: "#86868B" }}>שתפו את ההודעה המוכנה לקבוצת העובדים</span>
-                  </p>
-                  <a
-                    href={`https://wa.me/?text=${encodeURIComponent(
-                      `היי 👋\n\nפתחתי בקשה להביא את BoomBuy ל-${orgName}.\n\nבדקתי את המחשבון שלהם — הנטו שלי יכול לגדול בצורה משמעותית מהוצאות שאני עושה בכל מקרה: סופר, חשמל, ביטוח, חופשות.\n\nזה לא עולה לארגון כלום. לוקח 10 שניות:\n${window.location.origin}/join/${normalizeOrgKey(orgName)}`
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ display: "block", background: "#25D366", color: "#fff", padding: "14px", borderRadius: "14px", fontSize: "15px", fontWeight: 800, textDecoration: "none", textAlign: "center", fontFamily: "var(--font-heebo)" }}
-                  >
-                    שתפו עמיתים בוואטסאפ ←
-                  </a>
-                </div>
-
-                {/* Copy letter */}
-                <SurveyLetterCopy orgName={orgName} orgKey={normalizeOrgKey(orgName)} />
-
-                {/* Go to org page */}
                 <a
-                  href={`/join/${normalizeOrgKey(orgName)}`}
-                  style={{ display: "block", background: "#fff", border: "1px solid rgba(0,102,204,0.25)", color: "#0066CC", fontWeight: 700, fontSize: "14px", padding: "14px", borderRadius: "14px", textAlign: "center", textDecoration: "none", fontFamily: "var(--font-heebo)" }}
+                  href={`https://wa.me/?text=${encodeURIComponent(
+                    `היי 👋\n\nהצטרפתי לבקשה להכניס את BoomBuy לארגון שלנו.\n\nזה אומר הטבות אמיתיות לאורך השנה — סופר, חשמל, חופשות ועוד — בלי שהארגון משלם שקל נוסף.\n\nרוצה לדעת כמה הנטו שלך יכול לגדול? לחץ כאן:\n${window.location.origin}/join/${normalizeOrgKey(orgName)}${myMemberId ? "?ref=" + myMemberId : ""}`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ display: "block", background: "#25D366", color: "#fff", textDecoration: "none", padding: "14px", borderRadius: 14, fontSize: 15, fontWeight: 800, marginBottom: 10, fontFamily: "var(--font-heebo)" }}
                 >
-                  עבור לעמוד הבקשה של {orgName} ←
+                  שתפו עמיתים בוואטסאפ ← (מומלץ)
                 </a>
 
+                <button
+                  onClick={() => { window.location.href = "/join/" + normalizeOrgKey(orgName); }}
+                  style={{ width: "100%", background: "#0066CC", color: "#fff", fontWeight: 700, fontSize: 14, padding: "13px", borderRadius: 13, border: "none", cursor: "pointer", fontFamily: "var(--font-heebo)" }}
+                >
+                  עבור לעמוד הבקשה שלכם
+                </button>
               </div>
             </motion.div>
           )}

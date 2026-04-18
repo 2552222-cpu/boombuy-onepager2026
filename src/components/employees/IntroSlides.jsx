@@ -65,13 +65,18 @@ export default function IntroSlides({ onDone }) {
   const isLast = index === SLIDES.length - 1;
   const slide = SLIDES[index];
 
-  const finish = () => {
+  const finish = (scrollToOffers = false) => {
     if (onDone) onDone();
+    if (scrollToOffers) {
+      setTimeout(() => {
+        document.getElementById("offers-slider")?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    }
   };
 
   const goNext = () => {
     if (index < SLIDES.length - 1) setIndex(p => p + 1);
-    else finish();
+    else finish(true);
   };
 
   const goPrev = () => {
@@ -265,7 +270,7 @@ export default function IntroSlides({ onDone }) {
 
         {!isLast && (
           <button
-            onClick={(e) => { e.stopPropagation(); finish(); }}
+            onClick={(e) => { e.stopPropagation(); finish(true); }}
             style={{
               background: "none",
               border: "none",

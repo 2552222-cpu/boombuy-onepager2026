@@ -230,20 +230,20 @@ function OfferModal({ offer, isMobile, onClose, onPrev, onNext }) {
 
         {/* IMAGE AREA */}
         <div style={{
-          flex: isMobile ? "0 0 44%" : "1.2",
+          flex: isMobile ? "0 0 52%" : "1.2",
           background: "#F5F5F7",
           position: "relative",
           display: "flex", alignItems: "center", justifyContent: "center",
           overflow: "hidden",
-          minHeight: isMobile ? 240 : "auto",
+          minHeight: isMobile ? 260 : "auto",
         }}>
           <button onClick={(e) => { e.stopPropagation(); onPrev(); }}
-            style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.9)", border: "none", width: 34, height: 34, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", zIndex: 5, boxShadow: "0 2px 10px rgba(0,0,0,0.12)" }}>
-            <ChevronRight size={18} color="#1D1D1F" />
+            style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", background: "rgba(0,0,0,0.06)", border: "none", width: 48, height: 48, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", zIndex: 5, boxShadow: "0 2px 10px rgba(0,0,0,0.12)" }}>
+            <ChevronRight size={22} color="#1D1D1F" />
           </button>
           <button onClick={(e) => { e.stopPropagation(); onNext(); }}
-            style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.9)", border: "none", width: 34, height: 34, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", zIndex: 5, boxShadow: "0 2px 10px rgba(0,0,0,0.12)" }}>
-            <ChevronLeft size={18} color="#1D1D1F" />
+            style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)", background: "rgba(0,0,0,0.06)", border: "none", width: 48, height: 48, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", zIndex: 5, boxShadow: "0 2px 10px rgba(0,0,0,0.12)" }}>
+            <ChevronLeft size={22} color="#1D1D1F" />
           </button>
 
           <AnimatePresence mode="wait">
