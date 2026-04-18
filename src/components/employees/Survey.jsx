@@ -80,6 +80,8 @@ export default function Survey() {
   const [initiatorPhone, setInitiatorPhone] = useState("");
   const [initiatorEmail, setInitiatorEmail] = useState("");
   const [hasUnion, setHasUnion] = useState("");
+  const [unionContactName, setUnionContactName] = useState("");
+  const [unionContactPhone, setUnionContactPhone] = useState("");
   const [myMemberId, setMyMemberId] = useState("");
   const [stepHistory, setStepHistory] = useState([]);
 
@@ -153,6 +155,8 @@ export default function Survey() {
           initiatorName: initiatorName.trim() || "לא ידוע",
           initiatorPhone: initiatorPhone.trim() || undefined,
           initiatorEmail: initiatorEmail.trim() || undefined,
+          unionContactName: unionContactName.trim() || undefined,
+          unionContactPhone: unionContactPhone.trim() || undefined,
         });
         const firstMember = await base44.entities.GroupMember.create({
           groupRequestId: newGroup.id,
@@ -433,7 +437,7 @@ export default function Survey() {
               <p style={{ fontSize: "13px", color: "#86868B", textAlign: "center", marginBottom: "16px", fontFamily: "var(--font-heebo)" }}>
                 האם יש בארגון שלך ועד עובדים או התאגדות?
               </p>
-              <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "20px" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "12px" }}>
                 {["כן, יש ועד פעיל", "יש משהו לא רשמי", "אין ועד"].map(opt => (
                   <button key={opt} onClick={() => setHasUnion(opt)}
                     style={{ background: hasUnion === opt ? "#EBF3FF" : "#fff", border: `1px solid ${hasUnion === opt ? "#0066CC" : "rgba(0,0,0,0.1)"}`, borderRadius: "12px", padding: "13px 18px", fontSize: "15px", fontWeight: 500, fontFamily: "var(--font-heebo)", textAlign: "right", cursor: "pointer" }}>
@@ -441,8 +445,33 @@ export default function Survey() {
                   </button>
                 ))}
               </div>
-              <p style={{ fontSize: "13px", color: "#86868B", textAlign: "center", marginBottom: "12px", fontFamily: "var(--font-heebo)" }}>
-                השם והטלפון שלכם עוזרים לנו להתאים את ההצעה ולחזור אליכם בצורה האישית ביותר.
+              {hasUnion === "כן, יש ועד פעיל" && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  style={{ marginTop: 4, marginBottom: 12, padding: "14px 16px", background: "#F0F6FF", borderRadius: 12, border: "1px solid rgba(0,102,204,0.15)" }}
+                >
+                  <p style={{ fontSize: 13, fontWeight: 700, color: "#0066CC", marginBottom: 10, fontFamily: "var(--font-heebo)" }}>
+                    מעולה! אם יש לך פרטי הועד — זה יזרז את התהליך (אופציונלי)
+                  </p>
+                  <input
+                    type="text"
+                    value={unionContactName}
+                    onChange={(e) => setUnionContactName(e.target.value)}
+                    placeholder="שם איש קשר בועד"
+                    style={{ width: "100%", padding: "11px 14px", fontSize: "14px", borderRadius: "10px", border: "1px solid rgba(0,0,0,0.1)", background: "#fff", fontFamily: "var(--font-heebo)", marginBottom: "8px", textAlign: "right", boxSizing: "border-box" }}
+                  />
+                  <input
+                    type="tel"
+                    value={unionContactPhone}
+                    onChange={(e) => setUnionContactPhone(e.target.value)}
+                    placeholder="טלפון הועד (אופציונלי)"
+                    style={{ width: "100%", padding: "11px 14px", fontSize: "14px", borderRadius: "10px", border: "1px solid rgba(0,0,0,0.1)", background: "#fff", fontFamily: "var(--font-heebo)", textAlign: "right", boxSizing: "border-box" }}
+                  />
+                </motion.div>
+              )}
+              <p style={{ fontSize: "13px", color: "#86868B", textAlign: "center", marginBottom: "16px", fontFamily: "var(--font-heebo)" }}>
+                כדי שנוכל לעזור לך להכניס את BoomBuy לארגון
               </p>
               <input
                 type="text"

@@ -70,7 +70,7 @@ export default function IntroSlides({ onDone }) {
     if (scrollToOffers) {
       setTimeout(() => {
         document.getElementById("offers-slider")?.scrollIntoView({ behavior: "smooth" });
-      }, 100);
+      }, 700);
     }
   };
 

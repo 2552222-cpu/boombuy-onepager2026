@@ -212,6 +212,7 @@ function OfferModal({ offer, isMobile, onClose, onPrev, onNext }) {
           display: "flex",
           flexDirection: isMobile ? "column" : "row-reverse",
           position: "relative",
+          overflowY: "auto",
         }}
       >
         {/* Close */}
@@ -230,12 +231,12 @@ function OfferModal({ offer, isMobile, onClose, onPrev, onNext }) {
 
         {/* IMAGE AREA */}
         <div style={{
-          flex: isMobile ? "0 0 52%" : "1.2",
+          flex: isMobile ? "0 0 45%" : "1.2",
           background: "#F5F5F7",
           position: "relative",
           display: "flex", alignItems: "center", justifyContent: "center",
           overflow: "hidden",
-          minHeight: isMobile ? 260 : "auto",
+          minHeight: isMobile ? 240 : "auto",
         }}>
           <button onClick={(e) => { e.stopPropagation(); onPrev(); }}
             style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", background: "rgba(0,0,0,0.06)", border: "none", width: 48, height: 48, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", zIndex: 5, boxShadow: "0 2px 10px rgba(0,0,0,0.12)" }}>
@@ -254,34 +255,36 @@ function OfferModal({ offer, isMobile, onClose, onPrev, onNext }) {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.94 }}
               transition={{ duration: 0.22 }}
-              style={{ maxWidth: "80%", maxHeight: isMobile ? 220 : "70%", objectFit: "contain" }}
+              style={{ maxWidth: "80%", maxHeight: isMobile ? 200 : "70%", objectFit: "contain" }}
               alt={offer.productName}
             />
           </AnimatePresence>
+        </div>
 
-          {/* Thumbnail strip */}
-          <div style={{
-            position: "absolute", bottom: 10, left: 0, right: 0,
-            display: "flex", justifyContent: "center", gap: 6, padding: "0 10px",
-          }}>
-            {OFFERS.map((o, i) => (
-              <button key={o.id} onClick={(e) => { e.stopPropagation(); const idx = OFFERS.indexOf(o); /* handled via onPrev/onNext from parent */ }}
-                style={{
-                  width: 44, height: 44, borderRadius: 10,
-                  border: o.id === offer.id ? "2px solid #0055CC" : "2px solid transparent",
-                  background: "#fff",
-                  padding: 2, cursor: "pointer",
-                  boxShadow: o.id === offer.id ? "0 2px 8px rgba(0,85,204,0.3)" : "0 1px 4px rgba(0,0,0,0.1)",
-                  overflow: "hidden",
-                  flexShrink: 0,
-                  position: "relative",
-                }}
-              >
-
-                <img src={o.img} style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: 8 }} alt={o.productName} />
-              </button>
-            ))}
-          </div>
+        {/* THUMBNAILS — מחוץ לתמונה */}
+        <div style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: 6,
+          padding: isMobile ? "10px 10px 0" : "12px 16px 0",
+          overflowX: "auto",
+          flexWrap: "nowrap",
+          scrollbarWidth: "none",
+        }}>
+          {OFFERS.map((o) => (
+            <button key={o.id}
+              onClick={(e) => { e.stopPropagation(); setSelectedIdx(OFFERS.indexOf(o)); }}
+              style={{
+                width: 44, height: 44, borderRadius: 10, flexShrink: 0,
+                border: o.id === offer.id ? "2px solid #0055CC" : "2px solid transparent",
+                background: "#fff", padding: 2, cursor: "pointer",
+                boxShadow: o.id === offer.id ? "0 2px 8px rgba(0,85,204,0.3)" : "0 1px 4px rgba(0,0,0,0.1)",
+                overflow: "hidden",
+              }}
+            >
+              <img src={o.img} style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: 8 }} alt={o.productName} />
+            </button>
+          ))}
         </div>
 
         {/* CONTENT AREA */}

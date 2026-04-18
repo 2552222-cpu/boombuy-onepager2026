@@ -303,10 +303,6 @@ export default function OrgPage() {
     base44.entities.GroupRequest.update(group.id, { letterCopied: true }).catch(() => {});
   };
 
-  // Share tools are ONLY visible after surveyDone — no exceptions.
-  // Returning users who never completed the survey do NOT get access.
-  const showShareTools = surveyDone;
-
   if (loading) {
     return (
       <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F5F7" }}>
@@ -371,10 +367,28 @@ export default function OrgPage() {
           style={{ background: "#fff", borderRadius: "16px", border: "1px solid rgba(0,0,0,0.07)", padding: "20px 22px" }}>
           <AnimatePresence mode="wait">
             {alreadyJoined ? (
-              <motion.div key="joined" initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: "center", padding: "8px 0" }}>
-                <div style={{ fontSize: "32px", marginBottom: "8px" }}>🎉</div>
-                <p style={{ fontWeight: 800, fontSize: "16px", color: "#34C759", marginBottom: "6px" }}>הצטרפתם בהצלחה!</p>
-                <p style={{ fontSize: "13px", color: "#86868B" }}>שתפו עוד עמיתים כדי להגדיל את הסיכוי</p>
+              <motion.div key="joined" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                <div style={{ textAlign: "center", marginBottom: 20 }}>
+                  <div style={{ fontSize: 32, marginBottom: 8 }}>🎉</div>
+                  <p style={{ fontWeight: 800, fontSize: 17, color: "#1D1D1F", marginBottom: 4 }}>הצטרפתם בהצלחה!</p>
+                  <p style={{ fontSize: 13, color: "#86868B", marginBottom: 20 }}>
+                    שתפו עוד עמיתים — ככל שיצטרפו יותר, כך גדל הסיכוי שזה יקרה
+                  </p>
+                </div>
+                <a
+                  href={`https://wa.me/?text=${encodeURIComponent(waMsg(group.orgName, group.currentCount || 1, orgSlug, myMemberId))}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ display: "block", background: "#25D366", color: "#fff", textDecoration: "none", padding: "15px", borderRadius: 14, fontSize: 15, fontWeight: 800, textAlign: "center", marginBottom: 10, fontFamily: "var(--font-heebo)" }}
+                >
+                  שתפו עמיתים בוואטסאפ ← (מומלץ)
+                </a>
+                <button
+                  onClick={handleLetterCopy}
+                  style={{ width: "100%", background: "transparent", color: "#0066CC", fontWeight: 700, fontSize: 14, padding: "13px", borderRadius: 13, border: "1.5px solid rgba(0,102,204,0.25)", cursor: "pointer", fontFamily: "var(--font-heebo)" }}
+                >
+                  {letterCopied ? "✓ הועתק!" : "העתק מכתב ל-HR / ועד"}
+                </button>
               </motion.div>
             ) : !surveyDone ? (
               <MicroSurvey key="survey" orgKey={orgSlug} orgName={group.orgName} onDone={handleSurveyDone} />
