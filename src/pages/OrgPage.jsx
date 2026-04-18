@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpLeft, ShoppingCart, Smartphone, Plane, Zap } from "lucide-react";
+import { ShoppingCart, Smartphone, Plane, Zap } from "lucide-react"; // kept for potential future use
+import FeaturedOffersSlider from "../components/employees/FeaturedOffersSlider";
+import NetLiftCalculator from "../components/employees/NetLiftCalculator";
 import { base44 } from "@/api/base44Client";
 import { buildWaMessage, buildLetterMessage, buildSurveyInsights } from "@/utils/messages";
 import ILS from "../components/employees/ILS";
@@ -51,66 +53,59 @@ function letterMsg(orgName, count, orgKey, group) {
   return buildLetterMessage(orgName, orgKey, count, insights);
 }
 
-// ─── Mini Landing Proof Cards ─────────────────────────────────────────────────
-const PROOF_CARDS = [
-  { Icon: ShoppingCart, title: "סופר ופארם", sub: "8% הנחה קבועה ברשתות הדיסקאונט המוזלות" },
-  { Icon: Smartphone, title: "חשמל ואלקטרוניקה", sub: "מחירי יבואן על Apple, Samsung ועוד" },
-  { Icon: Plane, title: "חופשות והופעות", sub: "חבילות בלעדיות בארץ ובחו\"ל" },
-  { Icon: Zap, title: "הטבה יומית", sub: "כל בוקר הטבה חדשה ישירות לוואטסאפ" },
-];
+// ─── Org Landing ──────────────────────────────────────────────────────────────
+function OrgLanding({ orgName, count, currentTarget }) {
+  const [showNetLift, setShowNetLift] = useState(false);
 
-
-
-// ─── Mini Landing ─────────────────────────────────────────────────────────────
-function MiniLanding({ orgName }) {
   return (
-    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}
-      style={{ background: "#fff", borderRadius: "20px", border: "1px solid rgba(0,0,0,0.07)", padding: "26px 22px" }}>
-      {/* Badge */}
-      <div style={{ display: "inline-block", background: "rgba(0,102,204,0.08)", border: "1px solid rgba(0,102,204,0.18)", borderRadius: 999, padding: "5px 14px", marginBottom: 16 }}>
-        <span style={{ fontSize: 12, fontWeight: 700, color: "#0066CC" }}>בקשה פעילה של עובדי {orgName}</span>
-      </div>
-      <h1 style={{ fontSize: "clamp(20px, 4.5vw, 26px)", fontWeight: 900, color: "#1D1D1F", letterSpacing: "-0.025em", lineHeight: 1.25, marginBottom: 10 }}>
-        כך זה יכול לעזור גם לעובדים אצלכם
-      </h1>
-      <p style={{ fontSize: 14, color: "#6E6E73", lineHeight: 1.65, marginBottom: 22 }}>
-        לפני שמצטרפים לבקשה, הנה כמה דוגמאות להטבות שיכולות לעזור להתמודד עם יוקר המחיה ולתת יותר ערך לאורך השנה
-      </p>
-      {/* Proof cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 18 }}>
-        {PROOF_CARDS.map((c) => (
-          <div key={c.title} style={{ background: "#F5F5F7", borderRadius: 12, padding: "12px 12px" }}>
-            <c.Icon size={18} color="#0055CC" strokeWidth={1.75} style={{ marginBottom: 8 }} />
-            <p style={{ fontSize: 12.5, fontWeight: 800, color: "#1D1D1F", marginBottom: 2, lineHeight: 1.25 }}>{c.title}</p>
-            <p style={{ fontSize: 11, color: "#86868B", lineHeight: 1.4 }}>{c.sub}</p>
-          </div>
-        ))}
-      </div>
-      {/* Full-width secondary benefits preview tile */}
-      <a href="https://boom-perk-flow.base44.app/#offers-slider" target="_blank" rel="noopener noreferrer"
-        style={{
-          display: "flex", alignItems: "center", justifyContent: "space-between",
-          background: "#F0F4FF", border: "1.5px solid rgba(0, 102, 204, 0.3)", borderRadius: 14, padding: "18px 16px",
-          textDecoration: "none", cursor: "pointer", transition: "all 0.24",
-          boxShadow: "0 2px 16px rgba(0, 102, 204, 0.12)"
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.borderColor = "rgba(0, 102, 204, 0.45)";
-          e.currentTarget.style.boxShadow = "0 4px 24px rgba(0, 102, 204, 0.18)";
-          e.currentTarget.style.background = "#E8F0FF";
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.borderColor = "rgba(0, 102, 204, 0.3)";
-          e.currentTarget.style.boxShadow = "0 2px 16px rgba(0, 102, 204, 0.12)";
-          e.currentTarget.style.background = "#F0F4FF";
-        }}>
-        <div style={{ flex: 1 }}>
-          <p style={{ fontSize: 13, fontWeight: 700, color: "#0066CC", marginBottom: 4, margin: 0 }}>תראו לי את ההסבר המלא וההטבות</p>
-          <p style={{ fontSize: 11.5, color: "#86868B", margin: 0, lineHeight: 1.4 }}>דוגמאות נוספות למה שהעובדים יכולים לקבל לאורך השנה</p>
+    <div>
+      {/* HERO */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        style={{ background: "#fff", borderRadius: 20, border: "1px solid rgba(0,0,0,0.07)", padding: "28px 22px", marginBottom: 16, textAlign: "center" }}
+      >
+        <div style={{ display: "inline-block", background: "rgba(0,102,204,0.08)", border: "1px solid rgba(0,102,204,0.15)", borderRadius: 999, padding: "5px 14px", marginBottom: 14 }}>
+          <span style={{ fontSize: 12, fontWeight: 700, color: "#0066CC" }}>בקשה פעילה של עובדי {orgName}</span>
         </div>
-        <ArrowUpLeft size={18} color="#0066CC" style={{ flexShrink: 0, marginRight: 12 }} strokeWidth={1.75} />
-      </a>
-    </motion.div>
+        <h1 style={{ fontSize: "clamp(22px,5vw,30px)", fontWeight: 900, color: "#1D1D1F", letterSpacing: "-0.025em", lineHeight: 1.2, marginBottom: 10 }}>
+          הנטו שלך יכול לגדול<br/>
+          <span style={{ color: "#0066CC" }}>דרך מקום העבודה</span>
+        </h1>
+        <p style={{ fontSize: 14, color: "#6E6E73", lineHeight: 1.6, marginBottom: 18 }}>
+          בום ביי נותנת לעובדים הנחות על סופר, חשמל, חופשות ועוד — בלי שהארגון משלם שקל נוסף
+        </p>
+        <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(52,199,89,0.08)", border: "1px solid rgba(52,199,89,0.2)", borderRadius: 12, padding: "10px 18px" }}>
+          <span style={{ fontSize: 20, fontWeight: 900, color: "#1A7A43" }}>{count}</span>
+          <span style={{ fontSize: 13, fontWeight: 600, color: "#1A7A43" }}>עובדים מ{orgName} כבר הצטרפו</span>
+        </div>
+      </motion.div>
+
+      {/* OFFERS SLIDER */}
+      <FeaturedOffersSlider />
+
+      {/* NETLIFT */}
+      {showNetLift ? (
+        <NetLiftCalculator />
+      ) : (
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          style={{ background: "linear-gradient(160deg, #0a0e1a, #0d1829)", padding: "40px 20px", textAlign: "center", borderRadius: 20, margin: "16px 0" }}
+        >
+          <p style={{ fontSize: 13, fontWeight: 700, color: "#4A9EFF", marginBottom: 12 }}>NetLift Index</p>
+          <h2 style={{ fontSize: "clamp(20px,4vw,28px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.025em", lineHeight: 1.2, marginBottom: 12 }}>
+            רוצה לדעת כמה הנטו שלך יכול לגדול?
+          </h2>
+          <button
+            onClick={() => setShowNetLift(true)}
+            style={{ background: "#0066CC", color: "#fff", fontWeight: 800, fontSize: 16, padding: "16px 36px", borderRadius: 16, border: "none", cursor: "pointer", fontFamily: "var(--font-heebo)", boxShadow: "0 8px 28px rgba(0,102,204,0.4)" }}
+          >
+            בדקו את הנטו שלי ←
+          </button>
+        </motion.div>
+      )}
+    </div>
   );
 }
 
@@ -338,8 +333,8 @@ export default function OrgPage() {
 
       <div style={{ maxWidth: 520, margin: "0 auto", padding: "32px 16px", display: "flex", flexDirection: "column", gap: "16px" }}>
 
-        {/* Mini Landing */}
-        <MiniLanding orgName={group.orgName} />
+        {/* Org Landing */}
+        <OrgLanding orgName={group.orgName} count={count} currentTarget={currentTarget} />
 
         {/* Progress */}
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }}
