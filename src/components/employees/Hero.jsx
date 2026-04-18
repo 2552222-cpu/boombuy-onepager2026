@@ -54,8 +54,9 @@ export default function Hero() {
             <motion.img
               src={HERO_DATA.iPhoneImg}
               alt="iPhone 16 Pro"
-              animate={{ y: [0, -14, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: [20, 0, -14, 0] }}
+              transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1], times: [0, 0.4, 0.7, 1], repeat: Infinity, repeatDelay: 2, repeatType: "loop" }}
               style={{ width: "100%", maxWidth: "416px", height: "auto", objectFit: "contain", display: "block", position: "relative", zIndex: 1 }}
             />
           </div>
@@ -76,6 +77,7 @@ export default function Hero() {
             <motion.p
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
               style={{ fontSize: "clamp(14px, 1.5vw, 16px)", fontWeight: 600, color: "#0066CC", margin: "0 0 12px", letterSpacing: "-0.01em" }}
             >
               {HERO_DATA.intro}
@@ -83,17 +85,27 @@ export default function Hero() {
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.05 }}
+              transition={{ duration: 0.6, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
               style={{ fontSize: "clamp(38px, 6vw, 76px)", fontWeight: 900, lineHeight: 1.05, color: "#1D1D1F", margin: 0, letterSpacing: "-0.04em", fontFamily: "var(--font-heebo)" }}
             >
-              <span style={{ display: "block", color: "#1D1D1F" }}>{HERO_DATA.headline}</span>
-              <span style={{ display: "block", color: "#0055CC" }}>{HERO_DATA.headline2}</span>
+              <motion.span
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
+                style={{ display: "block", color: "#1D1D1F" }}
+              >{HERO_DATA.headline}</motion.span>
+              <motion.span
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
+                style={{ display: "block", color: "#0055CC" }}
+              >{HERO_DATA.headline2}</motion.span>
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
+              transition={{ duration: 0.55, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
               style={{ fontSize: "clamp(18px, 2.5vw, 22px)", color: "#424245", margin: isMobile ? "24px auto 0" : "24px 0 0", maxWidth: isMobile ? "100%" : "580px", lineHeight: 1.5, fontWeight: 500 }}
             >
               {HERO_DATA.subheadline}
@@ -103,7 +115,7 @@ export default function Hero() {
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15 }}
+              transition={{ duration: 0.5, delay: 0.28, ease: [0.22, 1, 0.36, 1] }}
               style={{
                 marginTop: "28px",
                 display: "inline-flex",
@@ -130,7 +142,7 @@ export default function Hero() {
               </span>
             </motion.div>
 
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} style={{ marginTop: "44px" }}>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.32, ease: [0.22, 1, 0.36, 1] }} style={{ marginTop: "44px" }}>
               {isMobile ? (
                 <button
                   onClick={scrollToOffers}

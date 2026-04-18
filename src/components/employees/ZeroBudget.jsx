@@ -7,10 +7,10 @@ export default function ZeroBudget() {
     <section style={{ background: "#FAFAFA", overflowX: "hidden", maxWidth: "100vw" }}>
       <div className="max-w-screen-xl mx-auto px-5 md:px-10" style={{ paddingTop: "72px", paddingBottom: "72px" }}>
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 28 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.55, ease: "easeOut" }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="flex flex-col md:flex-row items-center md:items-stretch"
           style={{
             gap: "40px",

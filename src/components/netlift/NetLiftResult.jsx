@@ -2,6 +2,21 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { base44 } from "@/api/base44Client";
 
+function useCountUp(target, duration = 1200) {
+  const [val, setVal] = useState(0);
+  useEffect(() => {
+    let start = 0;
+    const step = target / (duration / 16);
+    const t = setInterval(() => {
+      start = Math.min(start + step, target);
+      setVal(Math.round(start));
+      if (start >= target) clearInterval(t);
+    }, 16);
+    return () => clearInterval(t);
+  }, [target]);
+  return val;
+}
+
 function getBrowserToken() {
   let t = localStorage.getItem("boomBuyBrowserToken");
   if (!t) {
@@ -92,6 +107,9 @@ export default function NetLiftResult({ result, answers, onRestart }) {
   const monthly = result?.monthly ?? 0;
   const annual = result?.annual ?? 0;
 
+  const monthlyDisplay = useCountUp(monthly, 1000);
+  const annualDisplay = useCountUp(annual, 1200);
+
   return (
     <div
       dir="rtl"
@@ -173,7 +191,7 @@ export default function NetLiftResult({ result, answers, onRestart }) {
             }}
           >
             <p style={{ fontSize: "11px", fontWeight: 700, color: "#86868B", marginBottom: "8px" }}>חיסכון חודשי</p>
-            <ILS amount={monthly} size={30} color="#0055CC" />
+            <ILS amount={monthlyDisplay} size={30} color="#0055CC" />
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 12 }}
@@ -189,7 +207,7 @@ export default function NetLiftResult({ result, answers, onRestart }) {
             }}
           >
             <p style={{ fontSize: "11px", fontWeight: 700, color: "#86868B", marginBottom: "8px" }}>חיסכון שנתי</p>
-            <ILS amount={annual} size={30} color="#1A7A43" />
+            <ILS amount={annualDisplay} size={30} color="#1A7A43" />
           </motion.div>
         </div>
 

@@ -33,9 +33,10 @@ export default function EconomicSection() {
 
         {/* Headline */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 28 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           style={{ textAlign: "center", marginBottom: 44 }}
         >
           <h2 style={{ fontSize: "clamp(22px,4vw,36px)", fontWeight: 900, color: "#1D1D1F", letterSpacing: "-0.03em", lineHeight: 1.2, marginBottom: 10 }}>
@@ -54,16 +55,29 @@ export default function EconomicSection() {
           {cards.map(({ icon: Icon, accent, title, body }, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.08, duration: 0.35 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ delay: i * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-3px)";
+                e.currentTarget.style.boxShadow = "0 12px 36px rgba(0,0,0,0.1)";
+                e.currentTarget.style.borderColor = "rgba(0,102,204,0.18)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "0 2px 12px rgba(0,0,0,0.06)";
+                e.currentTarget.style.borderColor = "rgba(0,0,0,0.07)";
+              }}
               style={{
                 background: "#fff",
                 border: "1px solid rgba(0,0,0,0.07)",
                 borderRadius: 20,
                 padding: "22px 18px",
-                boxShadow: "0 2px 12px rgba(0,0,0,0.05)",
+                boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
+                transition: "all 0.28s cubic-bezier(0.22, 1, 0.36, 1)",
+                position: "relative",
+                overflow: "hidden",
               }}
             >
               <div style={{ width: 32, height: 32, borderRadius: 10, background: `${accent}14`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>

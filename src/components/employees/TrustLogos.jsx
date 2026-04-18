@@ -105,6 +105,24 @@ export default function TrustLogos() {
           display:flex;
           align-items:center;
         }
+        .jci-row::before{
+          content:'';
+          position:absolute;
+          top:0; right:0; bottom:0;
+          width:140px;
+          background:linear-gradient(to right, #fff 0%, rgba(255,255,255,0.9) 40%, transparent 100%);
+          z-index:2;
+          pointer-events:none;
+        }
+        .jci-row::after{
+          content:'';
+          position:absolute;
+          top:0; left:0; bottom:0;
+          width:140px;
+          background:linear-gradient(to left, #fff 0%, rgba(255,255,255,0.9) 40%, transparent 100%);
+          z-index:2;
+          pointer-events:none;
+        }
         .jci-track{
           display:flex;
           align-items:center;
