@@ -390,6 +390,9 @@ export default function OrgPage() {
                     <span style={{ fontSize: 28, marginBottom: 10 }}>💬</span>
                     <p style={{ fontSize: 14, fontWeight: 800, color: "#fff", marginBottom: 4, lineHeight: 1.2 }}>שתפו בוואטסאפ</p>
                     <p style={{ fontSize: 11, color: "rgba(255,255,255,0.8)", lineHeight: 1.4 }}>מומלץ — מגדיל ב-80% את הסיכוי</p>
+                    <p style={{ fontSize: 11, color: "rgba(255,255,255,0.75)", textAlign: "center", marginTop: 6 }}>
+                      {count > 1 ? `${count} עובדים כבר שיתפו` : "היו הראשון לשתף"}
+                    </p>
                   </a>
 
                   <button
