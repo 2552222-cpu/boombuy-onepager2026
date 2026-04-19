@@ -254,30 +254,6 @@ export default function NetLiftResult({ result, answers, onRestart }) {
           </div>
         </motion.div>
 
-        {/* Restart */}
-        <motion.button
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          whileTap={{ scale: 0.97 }}
-          onClick={onRestart}
-          style={{
-            width: "100%",
-            background: "#0066CC",
-            color: "#fff",
-            fontWeight: 800,
-            fontSize: "16px",
-            padding: "17px",
-            borderRadius: "16px",
-            border: "none",
-            cursor: "pointer",
-            fontFamily: "var(--font-heebo)",
-            boxShadow: "0 6px 24px rgba(0,102,204,0.3)",
-          }}
-        >
-          חשב מחדש
-        </motion.button>
-
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}

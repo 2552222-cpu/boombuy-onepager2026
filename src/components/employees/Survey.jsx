@@ -72,7 +72,7 @@ export default function Survey() {
   const [step, setStep] = useState(0);
   const [orgName, setOrgName] = useState("");
   const [orgSize, setOrgSize] = useState("");
-  const [holidayBudget, setHolidayBudget] = useState("");
+
   const [painPoint, setPainPoint] = useState("");
   const [loading, setLoading] = useState(false);
   const [resultText, setResultText] = useState("");
@@ -108,8 +108,7 @@ export default function Survey() {
   };
 
   const handleOrgSize = (label) => { setOrgSize(label); advance(2); };
-  const handleBudget = (label) => { setHolidayBudget(label); advance(3); };
-  const handlePainPoint = (label) => { setPainPoint(label); advance(4); };
+  const handlePainPoint = (label) => { setPainPoint(label); advance(3); };
 
   const getResultFraming = (painPoint) => {
     if (painPoint === "סופר ופארם")
@@ -131,7 +130,6 @@ export default function Survey() {
       if (existing.length > 0) {
         await base44.entities.GroupRequest.update(existing[0].id, {
           orgSize,
-          holidayBudget,
           painPoint,
           activities: finalActivities,
           lastJoinedAt: new Date().toISOString(),
@@ -148,7 +146,6 @@ export default function Survey() {
           currentCount: 1,
           lastJoinedAt: new Date().toISOString(),
           orgSize,
-          holidayBudget,
           painPoint,
           activities: finalActivities,
           hasUnion,
@@ -244,7 +241,7 @@ export default function Survey() {
               fontFamily: "var(--font-heebo)",
             }}
           >
-            <span>{step === "result" ? "הושלם" : `שלב ${Math.min(step + 1, 4)} מתוך 4`}</span>
+            <span>{step === "result" ? "הושלם" : `שלב ${Math.min(step + 1, 3)} מתוך 3`}</span>
           </div>
           <div
             style={{
@@ -261,7 +258,7 @@ export default function Survey() {
                 borderRadius: "9999px",
               }}
               initial={{ width: 0 }}
-              animate={{ width: step === "result" ? "100%" : `${((Math.min(step, 3) + 1) / 4) * 100}%` }}
+              animate={{ width: step === "result" ? "100%" : `${((Math.min(step, 2) + 1) / 3) * 100}%` }}
               transition={{ duration: 0.4 }}
             />
           </div>
@@ -384,40 +381,7 @@ export default function Survey() {
               </div>
             </motion.div>
           ) : step === 2 ? (
-            <motion.div
-              key="step2"
-              initial={{ opacity: 0, x: 24, filter: "blur(4px)" }}
-              animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-              exit={{ opacity: 0, x: -24, filter: "blur(4px)" }}
-              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <h3
-                style={{
-                  fontSize: "20px",
-                  fontWeight: 700,
-                  marginBottom: "16px",
-                  textAlign: "center",
-                  fontFamily: "var(--font-heebo)",
-                }}
-              >
-                מה התקציב המשוער למתנת חג לעובד?
-              </h3>
-              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                {HOLIDAY_BUDGET_OPTIONS.map((opt) => (
-                  <button
-                    key={opt.label}
-                    onClick={() => handleBudget(opt.label)}
-                    style={{ background: "#fff", border: "1px solid rgba(0,0,0,0.1)", borderRadius: "12px", padding: "14px 18px", fontSize: "15px", fontWeight: 500, fontFamily: "var(--font-heebo)", textAlign: "right", cursor: "pointer", transition: "border-color 0.15s, background 0.15s" }}
-                    onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#0066CC"; e.currentTarget.style.background = "#F0F6FF"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(0,0,0,0.1)"; e.currentTarget.style.background = "#fff"; }}
-                  >
-                    <bdi dir="ltr">{opt.label}</bdi>
-                  </button>
-                ))}
-              </div>
-            </motion.div>
-          ) : step === 3 ? (
-            <motion.div key="step3" initial={{ opacity: 0, x: 24, filter: "blur(4px)" }} animate={{ opacity: 1, x: 0, filter: "blur(0px)" }} exit={{ opacity: 0, x: -24, filter: "blur(4px)" }} transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}>
+            <motion.div key="step2" initial={{ opacity: 0, x: 24, filter: "blur(4px)" }} animate={{ opacity: 1, x: 0, filter: "blur(0px)" }} exit={{ opacity: 0, x: -24, filter: "blur(4px)" }} transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}>
               <h3 style={{ fontSize: "20px", fontWeight: 700, marginBottom: "8px", textAlign: "center", fontFamily: "var(--font-heebo)" }}>
                 איפה העובדים הכי מרגישים את יוקר המחיה?
               </h3>
@@ -431,8 +395,8 @@ export default function Survey() {
                 ))}
               </div>
             </motion.div>
-          ) : step === 4 ? (
-            <motion.div key="step4" initial={{ opacity: 0, x: 24, filter: "blur(4px)" }} animate={{ opacity: 1, x: 0, filter: "blur(0px)" }} exit={{ opacity: 0, x: -24, filter: "blur(4px)" }} transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}>
+          ) : step === 3 ? (
+            <motion.div key="step3" initial={{ opacity: 0, x: 24, filter: "blur(4px)" }} animate={{ opacity: 1, x: 0, filter: "blur(0px)" }} exit={{ opacity: 0, x: -24, filter: "blur(4px)" }} transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}>
               <h3 style={{ fontSize: "20px", fontWeight: 700, marginBottom: "6px", textAlign: "center", fontFamily: "var(--font-heebo)" }}>
                 ועוד שאלה אחרונה
               </h3>

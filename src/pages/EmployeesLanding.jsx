@@ -97,6 +97,10 @@ export default function EmployeesLanding() {
             </section>
           )}
 
+          <React.Suspense fallback={<div style={{ height: 300 }} />}>
+            <Testimonials />
+          </React.Suspense>
+
           {lastOrgKey ? (
             <section id="survey-section" style={{ background: "#F5F5F7", padding: "60px 16px" }}>
               <div style={{ maxWidth: 480, margin: "0 auto", textAlign: "center" }}>
@@ -134,9 +138,6 @@ export default function EmployeesLanding() {
           ) : (
             <Survey />
           )}
-          <React.Suspense fallback={<div style={{ height: 300 }} />}>
-            <Testimonials />
-          </React.Suspense>
           <FinalBand />
           <GlobalFooter />
           <FloatingWhatsApp />
