@@ -408,7 +408,7 @@ export default function FeaturedOffersSlider() {
               >
                 <div style={{ width: "100%", height: 340, background: "#F5F5F7", borderRadius: 28, overflow: "hidden", boxShadow: isCenter ? "0 28px 70px rgba(0,0,0,0.14)" : "0 6px 20px rgba(0,0,0,0.06)", position: "relative" }}>
   
-                  <img src={offer.img} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} alt={offer.productName} />
+                  <img src={offer.img} loading={i === 0 ? "eager" : "lazy"} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} alt={offer.productName} />
                 </div>
 
                 {isCenter && (

@@ -3,17 +3,20 @@ import { motion, AnimatePresence } from "framer-motion";
 import GlobalHeader from "../components/employees/GlobalHeader";
 import Hero from "../components/employees/Hero";
 import FeaturedOffersSlider from "../components/employees/FeaturedOffersSlider";
-import BenefitsShowcase from "../components/employees/BenefitsShowcase";
-import EconomicSection from "../components/employees/EconomicSection";
+
 import TrustLogos from "../components/employees/TrustLogos";
-import Testimonials from "../components/employees/Testimonials";
+
 import FinalBand from "../components/employees/FinalBand";
 import GlobalFooter from "../components/employees/GlobalFooter";
 import FloatingWhatsApp from "../components/employees/FloatingWhatsApp";
-import NetLiftCalculator from "../components/employees/NetLiftCalculator";
 import IntroSlides from "../components/employees/IntroSlides";
 import ZeroBudget from "../components/employees/ZeroBudget";
 import Survey from "../components/employees/Survey";
+
+const NetLiftCalculator = React.lazy(() => import("../components/employees/NetLiftCalculator"));
+const BenefitsShowcase = React.lazy(() => import("../components/employees/BenefitsShowcase"));
+const EconomicSection = React.lazy(() => import("../components/employees/EconomicSection"));
+const Testimonials = React.lazy(() => import("../components/employees/Testimonials"));
 
 export default function EmployeesLanding() {
   const [showNetLift, setShowNetLift] = useState(false);
@@ -45,15 +48,21 @@ export default function EmployeesLanding() {
           <GlobalHeader />
           <Hero />
           <FeaturedOffersSlider />
-          <BenefitsShowcase />
-          <EconomicSection />
+          <React.Suspense fallback={<div style={{ height: 400 }} />}>
+            <BenefitsShowcase />
+          </React.Suspense>
+          <React.Suspense fallback={<div style={{ height: 300 }} />}>
+            <EconomicSection />
+          </React.Suspense>
           <ZeroBudget />
           <TrustLogos />
 
           {/* NetLift Calculator — self-contained, no external navigation */}
           {showNetLift ? (
             <section id="value-calculator">
-              <NetLiftCalculator />
+              <React.Suspense fallback={<div style={{ height: 400 }} />}>
+                <NetLiftCalculator />
+              </React.Suspense>
             </section>
           ) : (
             <section id="value-calculator" style={{ background: "linear-gradient(160deg, #0a0e1a, #0d1829)", padding: "64px 20px", textAlign: "center", direction: "rtl" }}>
@@ -125,7 +134,9 @@ export default function EmployeesLanding() {
           ) : (
             <Survey />
           )}
-          <Testimonials />
+          <React.Suspense fallback={<div style={{ height: 300 }} />}>
+            <Testimonials />
+          </React.Suspense>
           <FinalBand />
           <GlobalFooter />
           <FloatingWhatsApp />
