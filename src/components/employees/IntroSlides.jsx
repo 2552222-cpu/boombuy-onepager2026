@@ -69,7 +69,7 @@ export default function IntroSlides({ onDone }) {
     if (onDone) onDone();
     if (scrollToOffers) {
       setTimeout(() => {
-        document.getElementById("offers-slider")?.scrollIntoView({ behavior: "smooth" });
+        document.getElementById("hero-section")?.scrollIntoView({ behavior: "smooth" });
       }, 700);
     }
   };
