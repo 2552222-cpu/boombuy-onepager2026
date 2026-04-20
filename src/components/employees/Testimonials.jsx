@@ -35,6 +35,11 @@ const testimonials = [
 export default function Testimonials() {
   return (
     <section dir="rtl" style={{ background: "#F5F5F7", padding: "80px 20px" }}>
+      <style>{`
+        @media (max-width: 640px) {
+          .testimonials-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
       <div style={{ maxWidth: 1000, margin: "0 auto" }}>
 
         <motion.div
@@ -50,7 +55,7 @@ export default function Testimonials() {
           <p style={{ fontSize: 16, color: "#6E6E73", margin: 0 }}>כמה מילים ממי שכבר עובד איתנו.</p>
         </motion.div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 16 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 16 }} className="testimonials-grid">
           {testimonials.map((t, i) => (
             <motion.div
               key={i}
