@@ -3,13 +3,13 @@ import { motion } from "framer-motion";
 import ILS from "./ILS";
 
 const HERO_DATA = {
-  headline: "ממקסמים תקציב רווחה קיים",
-  headline2: "והופכים אותו לערך יומיומי לעובדים",
+  headline: "אותו תקציב רווחה.",
+  headline2: "הרבה יותר ערך לעובד. כל השנה.",
   subheadline1: "הפלטפורמה החכמה למקסום תקציבי רווחה קיימים.",
   subheadline2: "גלו איך ניתן לתת לעובדים שלכם הרבה יותר - גם ללא הגדלת התקציב הקיים.",
   primaryCTA: "לקביעת 15 דקות דמו ←",
   mobileCTA: "לקביעת 15 דקות דמו ←",
-  iPhoneImg: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/66514fe66_-2026-02-18T150849922.png",
+  iPhoneImg: "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/2d917dddf_bee371c19_superchargeyourhrimpact17.png",
 };
 
 
