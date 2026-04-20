@@ -45,9 +45,7 @@ export default function EconomicSection() {
           <p style={{ fontSize: "clamp(16px,2vw,19px)", fontWeight: 600, color: "#0066CC", maxWidth: 540, margin: "0 auto 8px", lineHeight: 1.5 }}>
             בום ביי מוסיפה שכבה נוספת של הטבות שיכולה לעזור לעובדים להגדיל את הנטו, בלי להחליף את מה שכבר קיים בארגון.
           </p>
-          <p style={{ fontSize: 14, color: "#6E6E73", maxWidth: 480, margin: "0 auto", lineHeight: 1.55 }}>
-            3 דברים שכדאי להבין לפני שמעבירים את זה לרווחה, לוועד או להנהלה.
-          </p>
+
         </motion.div>
 
         {/* 3 Cards */}

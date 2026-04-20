@@ -32,7 +32,7 @@ export default function EmployeesLanding() {
             <EconomicSection />
           </React.Suspense>
           <FeaturedOffersSlider />
-          <ZeroBudget />
+
 
           {/* NetLift Calculator — self-contained, no external navigation */}
           {showNetLift ? (
