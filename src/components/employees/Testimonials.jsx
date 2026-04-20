@@ -76,7 +76,7 @@ export default function Testimonials() {
             >
               <div style={{ height: 44, display: "flex", alignItems: "center" }}>
                 {t.logo && (
-                  <img src={t.logo} alt={t.name} style={{ height: t.logoHeight || 44, maxWidth: 140, objectFit: "contain", objectPosition: "right" }} />
+                  <img src={t.logo} alt={t.name} style={{ height: 36, maxWidth: 120, objectFit: "contain", objectPosition: "right" }} />
                 )}
               </div>
 
