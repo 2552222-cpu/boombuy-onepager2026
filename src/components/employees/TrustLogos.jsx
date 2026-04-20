@@ -274,8 +274,7 @@ export default function TrustLogos() {
       `}</style>
 
       <div className="jci-head">
-        <h2 className="jci-title">הם כבר מגדילים את הנטו לעובדים שלהם</h2>
-        <p className="jci-subtitle">מאות ארגונים · 250,000+ עובדים כבר בפנים</p>
+        <h2 className="jci-title">אנחנו מאפשרים לארגונים המובילים בישראל לתת יותר לעובדים שלהם</h2>
       </div>
 
       {/* Desktop: horizontal marquee */}

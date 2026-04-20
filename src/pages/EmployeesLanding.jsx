@@ -28,6 +28,7 @@ export default function EmployeesLanding() {
           <GlobalHeader />
           <Hero />
           <ComparisonSection />
+          <TrustLogos />
           <FeaturedOffersSlider />
           <React.Suspense fallback={<div style={{ height: 400 }} />}>
             <BenefitsShowcase />
@@ -36,7 +37,6 @@ export default function EmployeesLanding() {
             <EconomicSection />
           </React.Suspense>
           <ZeroBudget />
-          <TrustLogos />
 
           {/* NetLift Calculator — self-contained, no external navigation */}
           {showNetLift ? (
