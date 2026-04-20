@@ -5,7 +5,7 @@ import ILS from "./ILS";
 const HERO_DATA = {
   headline: "אותו תקציב רווחה.",
   headline2: "הרבה יותר ערך לעובד. כל השנה.",
-  subheadline1: "הפלטפורמה החכמה למקסום תקציבי רווחה קיימים.",
+  subheadline1: "הפלטפורמה החכמה למקסום תקציבי רווחה.",
   subheadline2: "גלו איך ניתן לתת לעובדים שלכם הרבה יותר - גם ללא הגדלת התקציב הקיים.",
   primaryCTA: "לקביעת 15 דקות דמו ←",
   mobileCTA: "לקביעת 15 דקות דמו ←",
@@ -79,7 +79,7 @@ export default function Hero() {
               transition={{ duration: 0.55, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
               style={{ fontSize: "clamp(18px, 2.5vw, 22px)", color: "#424245", margin: isMobile ? "24px auto 0" : "24px 0 0", maxWidth: isMobile ? "100%" : "580px", lineHeight: 1.6, fontWeight: 500 }}
             >
-              <strong>הכירו את בומביי:</strong> {HERO_DATA.subheadline1}
+              <strong>הכירו את בומביי,</strong> {HERO_DATA.subheadline1}
               <br />
               {HERO_DATA.subheadline2}
             </motion.p>
