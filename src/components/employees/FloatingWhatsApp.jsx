@@ -38,62 +38,10 @@ export default function FloatingWhatsApp() {
 
   return (
     <div style={{ position: "fixed", bottom: 24, left: 24, zIndex: 9999, direction: "rtl" }}>
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.85, y: 10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.85, y: 10 }}
-            transition={{ type: "spring", damping: 22, stiffness: 280 }}
-            style={{
-              position: "absolute",
-              bottom: 68,
-              left: 0,
-              background: "#fff",
-              borderRadius: 20,
-              padding: "18px 20px",
-              boxShadow: "0 12px 40px rgba(0,0,0,0.15)",
-              width: 240,
-              textAlign: "right",
-            }}
-          >
-            <button
-              onClick={() => setOpen(false)}
-              style={{ position: "absolute", top: 10, left: 10, background: "none", border: "none", cursor: "pointer", padding: 4 }}
-            >
-              <X size={16} color="#AEAEB2" />
-            </button>
-            <p style={{ fontSize: 13, fontWeight: 700, color: "#1D1D1F", marginBottom: 6, lineHeight: 1.4 }}>
-              הדרכה און-ליין לניהול המהלך 🤝
-            </p>
-            <p style={{ fontSize: 12, color: "#86868B", marginBottom: 14, lineHeight: 1.5 }}>
-              דברו איתנו להדרכה לניהול הכנסת בום ביי לארגון שלכם.
-            </p>
-            <a
-              href={`https://wa.me/${WA_NUMBER}?text=${WA_MESSAGE}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "block",
-                background: "#25D366",
-                color: "#fff",
-                textDecoration: "none",
-                textAlign: "center",
-                padding: "10px",
-                borderRadius: 12,
-                fontSize: 13,
-                fontWeight: 700,
-                fontFamily: "var(--font-heebo)",
-              }}
-            >
-              דברו איתנו להדרכה ←
-            </a>
-          </motion.div>
-        )}
-      </AnimatePresence>
+
 
       <motion.button
-        onClick={() => setOpen(o => !o)}
+        onClick={() => window.open(`https://wa.me/${WA_NUMBER}?text=${WA_MESSAGE}`, "_blank")}
         whileTap={{ scale: 0.93 }}
         animate={{ boxShadow: ["0 4px 20px rgba(37,211,102,0.3)", "0 4px 28px rgba(37,211,102,0.6)", "0 4px 20px rgba(37,211,102,0.3)"] }}
         transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}

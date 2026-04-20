@@ -14,6 +14,7 @@ const testimonials = [
     role: "מזכיר כללי התאגדות עובדי בנק לאומי",
     logo: "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/333366c6f_.png",
     logoHeight: 44,
+    logoScale: 0.55,
     text: "If BoomBuy פשוט ההשקעה הטובה ביותר למען העובדים. הפלטפורמה מספקת ערך מדהים מבלי להוסיף שקל אחד לתקציב הרווחה שלנו. העובדים שלנו מרוצים יותר, מעורבים יותר, ומגלים כל הזמן הטבות חדשות שהם אוהבים.",
   },
   {
@@ -76,7 +77,7 @@ export default function Testimonials() {
             >
               <div style={{ height: 44, display: "flex", alignItems: "center" }}>
                 {t.logo && (
-                  <img src={t.logo} alt={t.name} style={{ height: 36, maxWidth: 120, objectFit: "contain", objectPosition: "right" }} />
+                  <img src={t.logo} alt={t.name} style={{ height: 36, maxWidth: 120, objectFit: "contain", objectPosition: "right", transform: t.logoScale ? `scale(${t.logoScale})` : "none", transformOrigin: "right center" }} />
                 )}
               </div>
 
