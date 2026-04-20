@@ -5,25 +5,25 @@ const testimonials = [
   {
     name: "יחזקאל מזרחי",
     role: "יו\"ר ועד עובדי עיריית תל אביב - אגף שפע",
-    logo: null,
+    logo: "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/5325ce61f_.png",
     text: "BoomBuy יצרה חוויית עובד אחרת. הם מספקים רמת שירות וטכנולוגיה מתוחכמת שקובעת סטנדרט שלא הכרנו לפני.",
   },
   {
     name: "גניב דוד",
     role: "מזכיר כללי התאגדות עובדי בנק לאומי",
-    logo: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/leumi-logo.png",
+    logo: "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/333366c6f_.png",
     text: "If BoomBuy פשוט ההשקעה הטובה ביותר למען העובדים. הפלטפורמה מספקת ערך מדהים מבלי להוסיף שקל אחד לתקציב הרווחה שלנו. העובדים שלנו מרוצים יותר, מעורבים יותר, ומגלים כל הזמן הטבות חדשות שהם אוהבים.",
   },
   {
     name: "שירה סיירי",
     role: "ראש מטה הנהלה, עמותת שלוה",
-    logo: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/shaloha-logo.png",
+    logo: "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/febd43cdc_KUUV.png",
     text: "Boombuy – היא שותפה אמיתית לדרך. השירות האנושי, החוס האישי והמקצועיות מורגשים בכל פרס. אתר ההטבות מגוון, משתלם ואטרקטיבי, והעובדים שלנו נהנים ממנו מאוד!",
   },
   {
     name: "יקירה שינדר",
     role: "משאבי אנוש סוכנות לביטוח שקל",
-    logo: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/shekel-logo.png",
+    logo: "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/2279bccfc_.png",
     text: "חברת boombuy דואגת כל זום לבום המתפרץ. דבר שיצר בז חיובי ומדהים אצל העובדים. השירות והמקצועות מעל הכל!",
   },
 ];
@@ -46,7 +46,7 @@ export default function Testimonials() {
           <p style={{ fontSize: 16, color: "#6E6E73", margin: 0 }}>כמה מילים ממי שכבר עובד איתנו.</p>
         </motion.div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 16 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 16 }}>
           {testimonials.map((t, i) => (
             <motion.div
               key={i}
