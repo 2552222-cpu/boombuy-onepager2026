@@ -5,7 +5,8 @@ import ILS from "./ILS";
 const HERO_DATA = {
   headline: "ממקסמים תקציב רווחה קיים",
   headline2: "והופכים אותו לערך יומיומי לעובדים",
-  subheadline: "בומביי: הפלטפורמה החכמה למקסום תקציבי רווחה קיימים. גלו איך ניתן לתת לעובדים שלכם הרבה יותר - גם ללא הגדלת התקציב הקיים.",
+  subheadline1: "הפלטפורמה החכמה למקסום תקציבי רווחה קיימים.",
+  subheadline2: "גלו איך ניתן לתת לעובדים שלכם הרבה יותר - גם ללא הגדלת התקציב הקיים.",
   primaryCTA: "לקביעת 15 דקות דמו ←",
   mobileCTA: "לקביעת 15 דקות דמו ←",
   iPhoneImg: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/66514fe66_-2026-02-18T150849922.png",
@@ -76,9 +77,11 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
-              style={{ fontSize: "clamp(18px, 2.5vw, 22px)", color: "#424245", margin: isMobile ? "24px auto 0" : "24px 0 0", maxWidth: isMobile ? "100%" : "580px", lineHeight: 1.5, fontWeight: 500 }}
+              style={{ fontSize: "clamp(18px, 2.5vw, 22px)", color: "#424245", margin: isMobile ? "24px auto 0" : "24px 0 0", maxWidth: isMobile ? "100%" : "580px", lineHeight: 1.6, fontWeight: 500 }}
             >
-              {HERO_DATA.subheadline}
+              <strong>הכירו את בומביי:</strong> {HERO_DATA.subheadline1}
+              <br />
+              {HERO_DATA.subheadline2}
             </motion.p>
 
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.28, ease: [0.22, 1, 0.36, 1] }} style={{ marginTop: "36px" }}>
