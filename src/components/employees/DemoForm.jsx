@@ -9,11 +9,18 @@ export default function DemoForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    await base44.integrations.Core.SendEmail({
-      to: "info@boombuy.co.il",
-      subject: `בקשת דמו חדשה – ${form.org}`,
-      body: `שם: ${form.name}\nטלפון: ${form.phone}\nארגון: ${form.org}`,
-    }).catch(() => {});
+    await Promise.all([
+      base44.integrations.Core.SendEmail({
+        to: "uriel@boombuy.co.il",
+        subject: `בקשת דמו חדשה – ${form.org}`,
+        body: `שם: ${form.name}\nטלפון: ${form.phone}\nארגון: ${form.org}`,
+      }),
+      base44.integrations.Core.SendEmail({
+        to: "ari@boombuy.co.il",
+        subject: `בקשת דמו חדשה – ${form.org}`,
+        body: `שם: ${form.name}\nטלפון: ${form.phone}\nארגון: ${form.org}`,
+      }),
+    ]).catch(() => {});
     setLoading(false);
     setSubmitted(true);
   };
