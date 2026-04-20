@@ -1,15 +1,11 @@
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import GlobalHeader from "../components/employees/GlobalHeader";
 import Hero from "../components/employees/Hero";
 import FeaturedOffersSlider from "../components/employees/FeaturedOffersSlider";
-
 import TrustLogos from "../components/employees/TrustLogos";
-
 import FinalBand from "../components/employees/FinalBand";
 import GlobalFooter from "../components/employees/GlobalFooter";
 import FloatingWhatsApp from "../components/employees/FloatingWhatsApp";
-import IntroSlides from "../components/employees/IntroSlides";
 import ZeroBudget from "../components/employees/ZeroBudget";
 import Survey from "../components/employees/Survey";
 
@@ -20,28 +16,11 @@ const Testimonials = React.lazy(() => import("../components/employees/Testimonia
 
 export default function EmployeesLanding() {
   const [showNetLift, setShowNetLift] = useState(false);
-  const [introDone, setIntroDone] = useState(false);
   const lastOrgKey = localStorage.getItem("boomBuyLastOrgKey");
   const lastOrgName = localStorage.getItem("boomBuyLastOrgName");
 
   return (
-    <AnimatePresence mode="wait">
-      {!introDone ? (
-        <motion.div
-          key="intro"
-          initial={{ opacity: 1 }}
-          exit={{ opacity: 0, y: -12 }}
-          transition={{ duration: 0.4, ease: "easeInOut" }}
-          style={{ position: "fixed", inset: 0, zIndex: 100 }}
-        >
-          <IntroSlides onDone={() => setIntroDone(true)} />
-        </motion.div>
-      ) : (
-        <motion.div
-          key="landing"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3 }}
+        <div
           dir="rtl"
           style={{ overflowX: "hidden", maxWidth: "100vw" }}
         >
@@ -141,8 +120,6 @@ export default function EmployeesLanding() {
           <FinalBand />
           <GlobalFooter />
           <FloatingWhatsApp />
-        </motion.div>
-      )}
-    </AnimatePresence>
+        </div>
   );
 }
