@@ -9,9 +9,14 @@ export default function DemoForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    await base44.functions.invoke("sendDemoLead", { name: form.name, phone: form.phone, org: form.org });
-    setLoading(false);
-    setSubmitted(true);
+    try {
+      await base44.functions.invoke("sendDemoLead", { name: form.name, phone: form.phone, org: form.org });
+      setSubmitted(true);
+    } catch (err) {
+      alert("שגיאה בשליחה: " + err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (submitted) {
