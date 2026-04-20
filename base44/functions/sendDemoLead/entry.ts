@@ -5,13 +5,7 @@ Deno.serve(async (req) => {
     const base44 = createClientFromRequest(req);
     const { name, phone, org } = await req.json();
 
-    const subject = `בקשת דמו חדשה – ${org}`;
-    const body = `שם: ${name}\nטלפון: ${phone}\nארגון: ${org}`;
-
-    await Promise.all([
-      base44.asServiceRole.integrations.Core.SendEmail({ to: "uriel@boombuy.co.il", subject, body }),
-      base44.asServiceRole.integrations.Core.SendEmail({ to: "ari@boombuy.co.il", subject, body }),
-    ]);
+    await base44.asServiceRole.entities.DemoLead.create({ name, phone, org });
 
     return Response.json({ success: true });
   } catch (error) {
