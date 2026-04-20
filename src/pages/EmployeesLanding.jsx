@@ -7,6 +7,7 @@ import FinalBand from "../components/employees/FinalBand";
 import GlobalFooter from "../components/employees/GlobalFooter";
 import FloatingWhatsApp from "../components/employees/FloatingWhatsApp";
 import ZeroBudget from "../components/employees/ZeroBudget";
+import ComparisonSection from "../components/employees/ComparisonSection";
 import Survey from "../components/employees/Survey";
 
 const NetLiftCalculator = React.lazy(() => import("../components/employees/NetLiftCalculator"));
@@ -26,6 +27,7 @@ export default function EmployeesLanding() {
         >
           <GlobalHeader />
           <Hero />
+          <ComparisonSection />
           <FeaturedOffersSlider />
           <React.Suspense fallback={<div style={{ height: 400 }} />}>
             <BenefitsShowcase />
