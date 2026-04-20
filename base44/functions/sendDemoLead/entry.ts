@@ -7,10 +7,10 @@ Deno.serve(async (req) => {
 
     await base44.asServiceRole.entities.DemoLead.create({ name, phone, org });
 
-    await base44.asServiceRole.integrations.Core.SendEmail({
-      to: "contact@boombuy.co.il",
-      subject: `בקשת דמו חדשה – ${org}`,
-      body: `שם: ${name}\nטלפון: ${phone}\nארגון: ${org}`,
+    await fetch("https://hook.us1.make.com/u5dkj97q6no2wqotkken98kra26j3oc3", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, phone, org }),
     });
 
     return Response.json({ success: true });
