@@ -7,6 +7,12 @@ Deno.serve(async (req) => {
 
     await base44.asServiceRole.entities.DemoLead.create({ name, phone, org });
 
+    await base44.asServiceRole.integrations.Core.SendEmail({
+      to: "contact@boombuy.co.il",
+      subject: `בקשת דמו חדשה – ${org}`,
+      body: `שם: ${name}\nטלפון: ${phone}\nארגון: ${org}`,
+    });
+
     return Response.json({ success: true });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
