@@ -42,8 +42,8 @@ export default function Hero() {
               src={HERO_DATA.iPhoneImg}
               alt="iPhone 16 Pro"
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: [20, 0, -14, 0] }}
-              transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1], times: [0, 0.4, 0.7, 1], repeat: Infinity, repeatDelay: 2, repeatType: "loop" }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
               style={{ width: "100%", maxWidth: "416px", height: "auto", objectFit: "contain", display: "block", position: "relative", zIndex: 1 }}
             />
           </div>

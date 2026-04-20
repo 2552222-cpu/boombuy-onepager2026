@@ -32,7 +32,7 @@ export default function EmployeesLanding() {
           <section style={{ background: "linear-gradient(160deg, #0a0e1a, #0d1829)", padding: "64px 20px", textAlign: "center", direction: "rtl" }}>
             <div style={{ maxWidth: 480, margin: "0 auto" }}>
               <h2 style={{ fontSize: "clamp(24px, 5vw, 36px)", fontWeight: 900, color: "#fff", letterSpacing: "-0.03em", lineHeight: 1.2, marginBottom: 14 }}>
-                בואו נראה איך זה נראה אצלכם
+                בוא נבין כמה הארגון שלך יכול לחסוך
               </h2>
               <p style={{ fontSize: 15, color: "rgba(255,255,255,0.6)", lineHeight: 1.65, marginBottom: 32 }}>
                 שיחת דמו קצרה של 15 דקות — נראה לכם בדיוק מה העובדים שלכם יקבלו
