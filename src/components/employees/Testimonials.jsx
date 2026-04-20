@@ -1,56 +1,52 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Star } from "lucide-react";
-import ILS from "./ILS";
 
 const testimonials = [
   {
-    name: "ירדן אילוז",
-    org: "בנק לאומי",
-    text: "החבילה הגיעה, ושוב תודה על השירות המדהים שלך. כיף שיש אותך.",
+    name: "יחזקאל מזרחי",
+    role: "יו\"ר ועד עובדי עיריית תל אביב - אגף שפע",
+    logo: null,
+    text: "BoomBuy יצרה חוויית עובד אחרת. הם מספקים רמת שירות וטכנולוגיה מתוחכמת שקובעת סטנדרט שלא הכרנו לפני.",
   },
   {
-    name: "תהילה מליחי",
-    org: "מקס",
-    text: <>ההטבות שלכם באמת שוות. קניתי אלו יוגה וחסכתי בקנייה אחת <ILS value="1000" />.</>,
+    name: "גניב דוד",
+    role: "מזכיר כללי התאגדות עובדי בנק לאומי",
+    logo: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/leumi-logo.png",
+    text: "If BoomBuy פשוט ההשקעה הטובה ביותר למען העובדים. הפלטפורמה מספקת ערך מדהים מבלי להוסיף שקל אחד לתקציב הרווחה שלנו. העובדים שלנו מרוצים יותר, מעורבים יותר, ומגלים כל הזמן הטבות חדשות שהם אוהבים.",
   },
   {
-    name: "מיכל ברגר",
-    org: "בנק ישראל",
-    text: "ציפינו לעוד מועדון, ובפועל קיבלנו הטבות שבאמת מרגישים. תמשיכו כך.",
+    name: "שירה סיירי",
+    role: "ראש מטה הנהלה, עמותת שלוה",
+    logo: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/shaloha-logo.png",
+    text: "Boombuy – היא שותפה אמיתית לדרך. השירות האנושי, החוס האישי והמקצועיות מורגשים בכל פרס. אתר ההטבות מגוון, משתלם ואטרקטיבי, והעובדים שלנו נהנים ממנו מאוד!",
   },
   {
-    name: "דן לוי",
-    org: "SAP",
-    text: "על אייפון עוד לא ראיתי הטבה כזאת בשום מועדון. הופתעתי לגמרי.",
+    name: "יקירה שינדר",
+    role: "משאבי אנוש סוכנות לביטוח שקל",
+    logo: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/shekel-logo.png",
+    text: "חברת boombuy דואגת כל זום לבום המתפרץ. דבר שיצר בז חיובי ומדהים אצל העובדים. השירות והמקצועות מעל הכל!",
   },
 ];
 
-function Stars() {
-  return (
-    <div className="flex gap-0.5 mb-3">
-      {[...Array(5)].map((_, i) => (
-        <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-      ))}
-    </div>
-  );
-}
-
 export default function Testimonials() {
   return (
-    <section className="py-10 md:py-20 bg-white" style={{ overflowX: 'hidden', maxWidth: '100vw', padding: '60px 16px' }}>
-      <div className="max-w-5xl mx-auto">
-        <motion.h2
+    <section dir="rtl" style={{ background: "#F5F5F7", padding: "80px 20px" }}>
+      <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-xl md:text-3xl font-bold text-center mb-6 md:mb-10"
+          style={{ textAlign: "center", marginBottom: 48 }}
         >
-          מה עובדים אומרים
-        </motion.h2>
+          <h2 style={{ fontSize: "clamp(26px, 5vw, 42px)", fontWeight: 900, color: "#1D1D1F", letterSpacing: "-0.03em", margin: "0 0 10px", fontFamily: "var(--font-heebo)" }}>
+            יותר לעובדים, יותר לארגון
+          </h2>
+          <p style={{ fontSize: 16, color: "#6E6E73", margin: 0 }}>כמה מילים ממי שכבר עובד איתנו.</p>
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 16 }}>
           {testimonials.map((t, i) => (
             <motion.div
               key={i}
@@ -58,20 +54,30 @@ export default function Testimonials() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.45, delay: i * 0.08 }}
-              className="bg-secondary/40 rounded-lg md:rounded-2xl p-4 md:p-6"
+              style={{
+                background: "#fff",
+                borderRadius: 20,
+                padding: "28px 24px",
+                border: "1px solid rgba(0,0,0,0.07)",
+                boxShadow: "0 2px 12px rgba(0,0,0,0.05)",
+                display: "flex",
+                flexDirection: "column",
+                gap: 16,
+              }}
             >
-              <Stars />
-              <p className="text-sm md:text-[15px] leading-relaxed mb-3 md:mb-4 text-foreground/90">
-                "{t.text}"
+              {t.logo ? (
+                <img src={t.logo} alt={t.name} style={{ height: 36, objectFit: "contain", objectPosition: "right" }} />
+              ) : (
+                <div style={{ height: 36 }} />
+              )}
+
+              <p style={{ fontSize: 14, color: "#3A3A3C", lineHeight: 1.7, margin: 0, flex: 1 }}>
+                ״{t.text}״
               </p>
-              <div className="flex items-center gap-2">
-                <div className="w-7 md:w-8 h-7 md:h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs md:text-sm flex-shrink-0">
-                  {t.name[0]}
-                </div>
-                <div className="min-w-0">
-                  <p className="text-sm md:text-[15px] font-semibold truncate">{t.name}</p>
-                  <p className="text-xs md:text-sm text-muted-foreground truncate">{t.org}</p>
-                </div>
+
+              <div>
+                <p style={{ fontSize: 14, fontWeight: 800, color: "#1D1D1F", margin: "0 0 2px" }}>{t.name}</p>
+                <p style={{ fontSize: 13, color: "#6E6E73", margin: 0 }}>{t.role}</p>
               </div>
             </motion.div>
           ))}
