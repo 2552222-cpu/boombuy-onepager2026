@@ -11,7 +11,6 @@ import ComparisonSection from "../components/employees/ComparisonSection";
 import Survey from "../components/employees/Survey";
 
 const NetLiftCalculator = React.lazy(() => import("../components/employees/NetLiftCalculator"));
-const BenefitsShowcase = React.lazy(() => import("../components/employees/BenefitsShowcase"));
 const EconomicSection = React.lazy(() => import("../components/employees/EconomicSection"));
 const Testimonials = React.lazy(() => import("../components/employees/Testimonials"));
 
@@ -29,13 +28,10 @@ export default function EmployeesLanding() {
           <Hero />
           <ComparisonSection />
           <TrustLogos />
-          <FeaturedOffersSlider />
-          <React.Suspense fallback={<div style={{ height: 400 }} />}>
-            <BenefitsShowcase />
-          </React.Suspense>
           <React.Suspense fallback={<div style={{ height: 300 }} />}>
             <EconomicSection />
           </React.Suspense>
+          <FeaturedOffersSlider />
           <ZeroBudget />
 
           {/* NetLift Calculator — self-contained, no external navigation */}
