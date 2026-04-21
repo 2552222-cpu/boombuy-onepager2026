@@ -1,0 +1,36 @@
+{
+  "name": "SurveyResponse",
+  "type": "object",
+  "properties": {
+    "orgKey": {
+      "type": "string",
+      "description": "Organization key (if known)"
+    },
+    "orgName": {
+      "type": "string",
+      "description": "Organization name (if known)"
+    },
+    "answer1": {
+      "type": "string",
+      "description": "Answer to: What's the most painful expense?"
+    },
+    "answer2": {
+      "type": "string",
+      "description": "Answer to: How much would this change impact you?"
+    },
+    "answer3": {
+      "type": "string",
+      "description": "Answer to: How many employees in your organization?"
+    },
+    "sessionToken": {
+      "type": "string",
+      "description": "Unique session token for this response"
+    }
+  },
+  "required": [
+    "answer1",
+    "answer2",
+    "answer3",
+    "sessionToken"
+  ]
+}
