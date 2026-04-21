@@ -31,12 +31,10 @@ export const logoList = [
 
 export const allLogos = logoList.map(l => l.url);
 
-// שורה 1: 2 ממלאים + מרכז (25,22,23,12,11,1,13,10,9) + 2 ממלאים
-// מרכז = indices: 24,21,22,11,10,0,12,9,8
-const rowAIndices = [3, 4,  24, 21, 22, 11, 10, 0, 12, 9, 8,  5, 7];
+// שורה 1: לאומי, Teva, סלקום, אלקטרה אפיקים, מזרחי, בנק ישראל, ZIM, קרן קיימת, בזן, ORT, אלבר, Estee Lauder
+const rowAIndices = [0, 12, 10, 20, 11, 8, 9, 3, 6, 5, 7, 4];
 export const rowA = rowAIndices.map(i => allLogos[i]);
 
-// שורה 2: 3 ממלאים + מרכז (16,19,7,24,14,27,20,15) + 3 ממלאים
-// מרכז = indices: 15,18,6,23,13,26,19,14
-const rowBIndices = [1, 2, 16,  15, 18, 6, 13, 25, 19, 14,  17, 20, 24];
+// שורה 2: ישראייר, תעש, SAP, מגן דוד אדום, מילגם, MAX, ONE, רשות המסים, בנק לאומי, דלק, HOT mobile, דופלט, AMOT, רמלאל
+const rowBIndices = [1, 2, 15, 16, 17, 19, 13, 14, 25, 26, 28, 24, 18, 27];
 export const rowB = rowBIndices.map(i => allLogos[i]);
