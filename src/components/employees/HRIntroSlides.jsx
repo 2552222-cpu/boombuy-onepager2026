@@ -48,8 +48,7 @@ const SLIDES = [
     weight: 900,
     lines: [
       { text: "רוצה לראות איך?", color: "#0055CC" },
-      { text: "15 דקות.", color: "#1D1D1F" },
-      { text: "זה הכל שצריך.", color: "#1D1D1F" },
+      { text: "15 דקות להדגמת הקסם.", color: "#1D1D1F" },
     ],
   },
 ];
