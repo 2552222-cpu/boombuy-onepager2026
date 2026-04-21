@@ -31,15 +31,16 @@ export const logoList = [
 
 export const allLogos = logoList.map(l => l.url);
 
-// הרשימה הנוכחית (indices 0–29, 30 פריטים):
-// 0=לאומי, 1=ישראייר, 2=תעש, 3=קרן קיימת, 4=Estee Lauder, 5=ORT, 6=בזן, 7=אלבר
-// 8=בנק ישראל, 9=ZIM, 10=סלקום, 11=מזרחי טפחות, 12=Teva, 13=ONE, 14=רשות המסים
-// 15=SAP, 16=מגן דוד אדום, 17=מילגם, 18=AMOT, 19=MAX, 20=אלקטרה אפיקים
-// 21=דופלט, 22=בנק לאומי, 23=דלק, 24=רמלאל, 25=HOT mobile (29)
-// rowA: 12 פריטים (זוגי)
-const rowAIndices = [3, 4, 20, 11, 10, 0, 12, 9, 8, 5, 7, 6];
-export const rowA = rowAIndices.map(i => allLogos[i]);
+// שורה 1: 16 לוגואים (זוגי) — לפי שם
+export const rowA = [
+  "לאומי", "Teva", "סלקום", "אלקטרה אפיקים", "Estee Lauder", "קרן קיימת",
+  "בנק ישראל", "ZIM", "מזרחי טפחות", "ORT", "אלבר", "בזן",
+  "HOT mobile", "ONE", "MAX", "AMOT",
+].map(name => logoList.find(l => l.name === name)?.url).filter(Boolean);
 
-// rowB: 14 פריטים (זוגי)
-const rowBIndices = [1, 2, 16, 15, 18, 13, 19, 14, 22, 23, 29, 21, 17, 24];
-export const rowB = rowBIndices.map(i => allLogos[i]);
+// שורה 2: 14 לוגואים (זוגי) — לפי שם
+export const rowB = [
+  "ישראייר", "תעש", "מגן דוד אדום", "SAP", "מילגם", "ONE",
+  "רשות המסים", "בנק לאומי", "דלק", "רמלאל", "דופלט", "Teva",
+  "ZIM", "סלקום",
+].map(name => logoList.find(l => l.name === name)?.url).filter(Boolean);
