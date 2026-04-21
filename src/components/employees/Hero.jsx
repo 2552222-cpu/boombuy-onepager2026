@@ -3,12 +3,12 @@ import { motion } from "framer-motion";
 import ILS from "./ILS";
 
 const HERO_DATA = {
-  headline: "אותו תקציב רווחה.",
-  headline2: "הרבה יותר ערך לעובד. כל השנה.",
+  headline: "תקציב הרווחה שלך",
+  headline2: "יכול לתת הרבה יותר.",
   subheadline1: "הפלטפורמה החכמה למקסום תקציבי רווחה.",
-  subheadline2: "גלו איך ניתן לתת לעובדים שלכם הרבה יותר - גם ללא הגדלת התקציב הקיים.",
-  primaryCTA: "לקביעת 15 דקות דמו ←",
-  mobileCTA: "לקביעת 15 דקות דמו ←",
+  subheadline2: "חשמל ואלקטרוניקה במחירי יבואן, 8% הנחה קבועה בסופר, חופשות בארץ ובחו\"ל במחירי סיטונאי. בלי תוספת תקציב.",
+  primaryCTA: "בואו נדבר 15 דקות ←",
+  mobileCTA: "בואו נדבר 15 דקות ←",
   iPhoneImg: "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/2d917dddf_bee371c19_superchargeyourhrimpact17.png",
 };
 

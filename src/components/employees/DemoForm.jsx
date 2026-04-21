@@ -70,7 +70,7 @@ export default function DemoForm() {
           marginTop: 4,
         }}
       >
-        {loading ? "שולח..." : "קבע 15 דק׳ דמו ←"}
+        {loading ? "שולח..." : "בואו נדבר ←"}
       </button>
     </form>
   );
