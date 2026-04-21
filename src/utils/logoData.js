@@ -25,7 +25,6 @@ export const logoList = [
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6862cd610_-2026-03-22T184752919.png", name: "דופלט" },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/62fa4ae8e_-2026-03-22T184709815.png", name: "בנק לאומי" },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/be9e3de1a_-2026-03-22T184841801.png", name: "דלק" },
-  { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e71824c2e_-2026-04-02T203121306.png", name: "Check Point" },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ee6b05338_-2026-04-03T180125393.png", name: "רמלאל" },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/5f7a627b6_-2026-04-06T212635319.png", name: "HOT mobile" },
 ];
@@ -39,5 +38,5 @@ export const rowA = rowAIndices.map(i => allLogos[i]);
 
 // שורה 2: 3 ממלאים + מרכז (16,19,7,24,14,27,20,15) + 3 ממלאים
 // מרכז = indices: 15,18,6,23,13,26,19,14
-const rowBIndices = [1, 2, 16,  15, 18, 6, 23, 13, 26, 19, 14,  17, 20, 25];
+const rowBIndices = [1, 2, 16,  15, 18, 6, 13, 25, 19, 14,  17, 20, 24];
 export const rowB = rowBIndices.map(i => allLogos[i]);

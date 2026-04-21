@@ -48,12 +48,7 @@ const colA = (() => {
   return [...arr.slice(dIdx - 1), ...arr.slice(0, dIdx - 1)];
 })();
 
-// Reorder rowB so Check Point appears at position 2 (visible on load)
-const colB = (() => {
-  const arr = [...rowB];
-  const cpIdx = arr.findIndex(url => logoList.find(l => l.url === url)?.name === "Check Point");
-  return [...arr.slice(cpIdx - 1), ...arr.slice(0, cpIdx - 1)];
-})();
+const colB = [...rowB];
 
 export default function TrustLogos() {
   return (
