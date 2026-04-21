@@ -21,28 +21,7 @@ export default function GlobalHeader() {
           />
         </div>
 
-        {/* Links - Left Side */}
-        <nav className="flex items-center gap-5 md:gap-8">
-          <button
-            onClick={() => scrollToSection("benefits-showcase")}
-            style={{ fontSize: "14px", fontWeight: 500, color: "#1D1D1F" }}
-            className="hover:text-primary transition-colors"
-          >
-            הטבות לדוגמא
-          </button>
-
-          <a
-            href="https://www.boombuyonepage.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ fontSize: "14px", fontWeight: 500, color: "#1D1D1F" }}
-            className="hover:text-primary transition-colors"
-          >
-            לארגונים
-          </a>
-
-
-        </nav>
+        <nav />
       </div>
     </header>
   );
