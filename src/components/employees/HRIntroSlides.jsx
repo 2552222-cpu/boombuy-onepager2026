@@ -43,6 +43,29 @@ const SLIDES = [
   },
 ];
 
+const slideVariants = {
+  enter: {
+    opacity: 0,
+    y: 18,
+    filter: "blur(8px)",
+    scale: 0.98,
+  },
+  center: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    scale: 1,
+    transition: { duration: 0.42, ease: [0.25, 0.46, 0.45, 0.94] },
+  },
+  exit: {
+    opacity: 0,
+    y: -14,
+    filter: "blur(6px)",
+    scale: 1.01,
+    transition: { duration: 0.28, ease: [0.25, 0.46, 0.45, 0.94] },
+  },
+};
+
 export default function HRIntroSlides({ onDone }) {
   const [index, setIndex] = useState(0);
   const touchStartX = useRef(null);
@@ -114,7 +137,7 @@ export default function HRIntroSlides({ onDone }) {
           <div key={i} style={{
             height: "2.5px", flex: 1,
             background: i <= index ? "#0055CC" : "rgba(0,0,0,0.08)",
-            borderRadius: 10, transition: "background 0.2s",
+            borderRadius: 10, transition: "background 0.3s",
           }} />
         ))}
       </div>
@@ -128,23 +151,24 @@ export default function HRIntroSlides({ onDone }) {
           width: "100%", padding: "0 28px",
           paddingTop: "80px", paddingBottom: "20px",
           boxSizing: "border-box", cursor: "pointer",
+          position: "relative",
         }}
       >
         <AnimatePresence mode="wait">
           <motion.div
             key={slide.id}
-            initial={{ opacity: 0, scale: 0.993 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 1.006 }}
-            transition={{ duration: 0.18, ease: "easeOut" }}
-            style={{ textAlign: "center", width: "100%", maxWidth: 640 }}
+            variants={slideVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            style={{ textAlign: "center", width: "100%", maxWidth: 640, position: "absolute" }}
           >
             {slide.lines.map((line, li) => (
               <motion.span
                 key={`${slide.id}-${li}`}
-                initial={{ opacity: 0, y: 10, filter: "blur(6px)" }}
+                initial={{ opacity: 0, y: 12, filter: "blur(8px)" }}
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                transition={{ duration: 0.24, delay: li * 0.07, ease: [0.23, 1, 0.32, 1] }}
+                transition={{ duration: 0.36, delay: 0.08 + li * 0.09, ease: [0.25, 0.46, 0.45, 0.94] }}
                 style={{
                   fontSize: slide.size,
                   fontWeight: slide.weight,
@@ -165,7 +189,7 @@ export default function HRIntroSlides({ onDone }) {
       <div
         onClick={e => e.stopPropagation()}
         style={{
-          width: "100%", maxWidth: 300,
+          width: "100%", maxWidth: 320,
           paddingBottom: 44, paddingTop: 8,
           display: "flex", flexDirection: "column",
           gap: 10, zIndex: 10, alignItems: "center",
@@ -178,23 +202,23 @@ export default function HRIntroSlides({ onDone }) {
               onClick={e => {
                 e.stopPropagation();
                 finish();
-                setTimeout(() => {
-                  document.getElementById("demo-form-section")?.scrollIntoView({ behavior: "smooth" });
-                }, 350);
               }}
               style={{
                 width: "100%", background: "#0055CC", color: "#fff",
-                padding: "14px 24px", borderRadius: 980, fontSize: 16, fontWeight: 800,
+                padding: "15px 24px", borderRadius: 980, fontSize: 15, fontWeight: 800,
                 border: "none", cursor: "pointer", fontFamily: "inherit",
                 boxShadow: "0 8px 24px rgba(0,85,204,0.3)",
-                display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
+                display: "flex", flexDirection: "column", alignItems: "center", gap: 3,
+                minHeight: 60,
+                justifyContent: "center",
               }}
             >
               <span>בואו נבדוק התאמה לארגון שלכם ←</span>
               <span style={{ fontSize: 12, fontWeight: 400, opacity: 0.8 }}>לוקח 15 דקות</span>
             </motion.button>
 
-            <button
+            <motion.button
+              whileTap={{ scale: 0.97 }}
               onClick={e => {
                 e.stopPropagation();
                 if (onDone) onDone();
@@ -203,22 +227,25 @@ export default function HRIntroSlides({ onDone }) {
                 }, 350);
               }}
               style={{
-                background: "none", border: "1px solid rgba(0,0,0,0.12)",
-                borderRadius: 980, color: "#1D1D1F", fontSize: 14, fontWeight: 600,
-                padding: "11px 24px", cursor: "pointer", fontFamily: "inherit", width: "100%",
+                width: "100%",
+                background: "none", border: "1.5px solid rgba(0,0,0,0.15)",
+                borderRadius: 980, color: "#1D1D1F", fontSize: 15, fontWeight: 700,
+                padding: "15px 24px", cursor: "pointer", fontFamily: "inherit",
+                minHeight: 60,
+                display: "flex", alignItems: "center", justifyContent: "center",
               }}
             >
               קודם תראו לי איך זה עובד
-            </button>
+            </motion.button>
           </>
         ) : (
           <motion.button
             whileTap={{ scale: 0.97 }}
             onClick={e => { e.stopPropagation(); goNext(); }}
             style={{
-              width: "100%", background: "#1D1D1F", color: "#fff", padding: "13px 24px",
+              width: "100%", background: "#1D1D1F", color: "#fff", padding: "15px 24px",
               borderRadius: 980, fontSize: 15, fontWeight: 700, border: "none", cursor: "pointer",
-              fontFamily: "inherit", boxShadow: "0 4px 14px rgba(0,0,0,0.15)",
+              fontFamily: "inherit", boxShadow: "0 4px 14px rgba(0,0,0,0.15)", minHeight: 54,
             }}
           >
             המשך
