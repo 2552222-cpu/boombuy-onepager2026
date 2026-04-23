@@ -10,7 +10,7 @@ const testimonials = [
     text: "BoomBuy יצרה חוויית עובד אחרת. הם מספקים רמת שירות וטכנולוגיה מתוחכמת שקובעת סטנדרט שלא הכרנו לפני.",
   },
   {
-    name: "גניב דוד",
+    name: "יניב דוד",
     role: "מזכיר כללי התאגדות עובדי בנק לאומי",
     logo: "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/333366c6f_.png",
     logoHeight: 44,
