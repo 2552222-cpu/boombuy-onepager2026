@@ -55,7 +55,7 @@ export default function EmployeesLanding() {
           <section id="demo-form-section" style={{ background: "#F5F5F7", padding: "72px 20px", direction: "rtl" }}>
             <div style={{ maxWidth: 480, margin: "0 auto", textAlign: "center" }}>
               <h2 style={{ fontSize: "clamp(22px,4vw,30px)", fontWeight: 900, color: "#1D1D1F", marginBottom: 10, letterSpacing: "-0.025em" }}>
-                בואו נדבר 15 דקות
+                בואו נבדוק התאמה לארגון שלכם (15 דקות בזום)
               </h2>
               <p style={{ fontSize: 15, color: "#6E6E73", marginBottom: 32, lineHeight: 1.6 }}>
                 ממלאים פרטים ואנחנו חוזרים אליכם לתיאום

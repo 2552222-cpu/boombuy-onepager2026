@@ -197,9 +197,9 @@ export default function HRIntroSlides({ onDone }) {
             <button
               onClick={e => {
                 e.stopPropagation();
-                finish();
+                if (onDone) onDone();
                 setTimeout(() => {
-                  window.scrollTo({ top: 0, behavior: "smooth" });
+                  document.getElementById("hero-section")?.scrollIntoView({ behavior: "smooth" });
                 }, 350);
               }}
               style={{
