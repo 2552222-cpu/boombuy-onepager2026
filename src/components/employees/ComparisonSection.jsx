@@ -31,7 +31,7 @@ export default function ComparisonSection() {
         {/* Heading */}
         <div style={{ textAlign: "center", marginBottom: isMobile ? "40px" : "56px" }}>
           <h2 style={{ fontSize: "clamp(28px, 5vw, 44px)", fontWeight: 900, color: "#1D1D1F", letterSpacing: "-0.035em", margin: "0 0 14px", fontFamily: "var(--font-heebo)" }}>
-            אותו תקציב — רק{" "}
+            אותו תקציב | רק{" "}
             <span style={{ color: "#0055CC" }}>ממוקסם.</span>
           </h2>
           <p style={{ fontSize: "clamp(15px, 2vw, 17px)", color: "#6E6E73", maxWidth: 520, margin: "0 auto", lineHeight: 1.65 }}>
