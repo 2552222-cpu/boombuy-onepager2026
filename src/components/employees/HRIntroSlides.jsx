@@ -197,20 +197,28 @@ export default function HRIntroSlides({ onDone }) {
                 padding: "14px 24px", borderRadius: 980, fontSize: 16, fontWeight: 800,
                 border: "none", cursor: "pointer", fontFamily: "inherit",
                 boxShadow: "0 8px 24px rgba(0,85,204,0.3)",
+                display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
               }}
             >
-              בואי נדבר 15 דקות ←
+              <span>בואו נבדוק התאמה לארגון שלכם ←</span>
+              <span style={{ fontSize: 12, fontWeight: 400, opacity: 0.8 }}>לוקח 15 דקות</span>
             </motion.button>
 
             <button
-              onClick={e => { e.stopPropagation(); finish(); }}
+              onClick={e => {
+                e.stopPropagation();
+                finish();
+                setTimeout(() => {
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }, 350);
+              }}
               style={{
                 background: "none", border: "1px solid rgba(0,0,0,0.12)",
                 borderRadius: 980, color: "#1D1D1F", fontSize: 14, fontWeight: 600,
                 padding: "11px 24px", cursor: "pointer", fontFamily: "inherit", width: "100%",
               }}
             >
-              קודם תראי לי איך זה עובד
+              קודם תראו לי איך זה עובד
             </button>
           </>
         ) : (
