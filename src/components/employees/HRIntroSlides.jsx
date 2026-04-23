@@ -7,8 +7,8 @@ const SLIDES = [
     size: "clamp(30px, 7vw, 52px)",
     weight: 900,
     lines: [
-      { text: "חברות הייטק הגדולות בעולם", color: "#1D1D1F" },
-      { text: "נותנות לעובדים שלהן", color: "#1D1D1F" },
+      { text: "200 המעסיקים הגדולים בישראל", color: "#1D1D1F" },
+      { text: "כבר נותנים לעובדים שלהם", color: "#1D1D1F" },
       { text: "הרבה יותר ממתנה בחג.", color: "#0055CC" },
     ],
   },
@@ -181,38 +181,50 @@ export default function HRIntroSlides({ onDone }) {
           gap: 10, zIndex: 10, alignItems: "center",
         }}
       >
-        <motion.button
-          whileTap={{ scale: 0.97 }}
-          onClick={e => { e.stopPropagation(); goNext(); }}
-          style={{
-            width: "100%",
-            background: isLast ? "#0055CC" : "#1D1D1F",
-            color: "#fff",
-            padding: "13px 24px",
-            borderRadius: 980,
-            fontSize: 15, fontWeight: 700,
-            border: "none", cursor: "pointer",
-            fontFamily: "inherit",
-            letterSpacing: "-0.01em",
-            boxShadow: isLast
-              ? "0 8px 24px rgba(0,85,204,0.3)"
-              : "0 4px 14px rgba(0,0,0,0.15)",
-          }}
-        >
-          {isLast ? "בואי נדבר ←" : "המשך"}
-        </motion.button>
+        {isLast ? (
+          <>
+            <motion.button
+              whileTap={{ scale: 0.97 }}
+              onClick={e => {
+                e.stopPropagation();
+                finish();
+                setTimeout(() => {
+                  document.getElementById("demo-form-section")?.scrollIntoView({ behavior: "smooth" });
+                }, 350);
+              }}
+              style={{
+                width: "100%", background: "#0055CC", color: "#fff",
+                padding: "14px 24px", borderRadius: 980, fontSize: 16, fontWeight: 800,
+                border: "none", cursor: "pointer", fontFamily: "inherit",
+                boxShadow: "0 8px 24px rgba(0,85,204,0.3)",
+              }}
+            >
+              בואי נדבר 15 דקות ←
+            </motion.button>
 
-        {!isLast && (
-          <button
-            onClick={e => { e.stopPropagation(); finish(); }}
+            <button
+              onClick={e => { e.stopPropagation(); finish(); }}
+              style={{
+                background: "none", border: "1px solid rgba(0,0,0,0.12)",
+                borderRadius: 980, color: "#1D1D1F", fontSize: 14, fontWeight: 600,
+                padding: "11px 24px", cursor: "pointer", fontFamily: "inherit", width: "100%",
+              }}
+            >
+              קודם תראי לי איך זה עובד
+            </button>
+          </>
+        ) : (
+          <motion.button
+            whileTap={{ scale: 0.97 }}
+            onClick={e => { e.stopPropagation(); goNext(); }}
             style={{
-              background: "none", border: "none",
-              color: "#AEAEB2", fontSize: 13, fontWeight: 500,
-              cursor: "pointer", fontFamily: "inherit",
+              width: "100%", background: "#1D1D1F", color: "#fff", padding: "13px 24px",
+              borderRadius: 980, fontSize: 15, fontWeight: 700, border: "none", cursor: "pointer",
+              fontFamily: "inherit", boxShadow: "0 4px 14px rgba(0,0,0,0.15)",
             }}
           >
-            דלג ישר לעמוד
-          </button>
+            המשך
+          </motion.button>
         )}
       </div>
     </section>
