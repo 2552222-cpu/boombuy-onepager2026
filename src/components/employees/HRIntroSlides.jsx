@@ -75,16 +75,9 @@ export default function HRIntroSlides({ onDone }) {
   const isLast = index === SLIDES.length - 1;
   const slide = SLIDES[index];
 
-  const finish = () => {
-    if (onDone) onDone();
-    setTimeout(() => {
-      document.getElementById("demo-form-section")?.scrollIntoView({ behavior: "smooth" });
-    }, 400);
-  };
-
   const goNext = () => {
     if (index < SLIDES.length - 1) setIndex(p => p + 1);
-    else finish();
+    else onDone(false);
   };
   const goPrev = () => { if (index > 0) setIndex(p => p - 1); };
 
@@ -214,8 +207,7 @@ export default function HRIntroSlides({ onDone }) {
               whileTap={{ scale: 0.97 }}
               onClick={e => {
                 e.stopPropagation();
-                finish();
-                setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 350);
+                onDone(true);
               }}
               style={{
                 width: "100%", background: "#0055CC", color: "#fff",
@@ -233,8 +225,8 @@ export default function HRIntroSlides({ onDone }) {
                 whileTap={{ scale: 0.97 }}
                 onClick={e => {
                   e.stopPropagation();
-                  finish();
-                  setTimeout(() => document.getElementById("demo-form-section")?.scrollIntoView({ behavior: "smooth" }), 350);
+                  onDone(false);
+                  setTimeout(() => document.getElementById("demo-form-section")?.scrollIntoView({ behavior: "smooth" }), 500);
                 }}
                 style={{
                   width: "100%", background: "#0055CC", color: "#fff",
@@ -250,8 +242,7 @@ export default function HRIntroSlides({ onDone }) {
               <button
                 onClick={e => {
                   e.stopPropagation();
-                  finish();
-                  setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 350);
+                  onDone(true);
                 }}
                 style={{
                   background: "none", border: "1px solid rgba(0,0,0,0.12)",

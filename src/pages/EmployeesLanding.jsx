@@ -23,11 +23,20 @@ export default function EmployeesLanding() {
           <motion.div
             key="hr-intro"
             initial={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.35 }}
-            style={{ position: "fixed", inset: 0, zIndex: 100 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            style={{ position: "fixed", inset: 0, zIndex: 100, background: "#fff" }}
           >
-            <HRIntroSlides onDone={() => setIntroDone(true)} />
+            <HRIntroSlides onDone={(scrollToHero) => {
+              setIntroDone(true);
+              if (scrollToHero) {
+                requestAnimationFrame(() => {
+                  setTimeout(() => {
+                    document.getElementById("hero-section")?.scrollIntoView({ behavior: "smooth" });
+                  }, 300);
+                });
+              }
+            }} />
           </motion.div>
         )}
       </AnimatePresence>
