@@ -197,46 +197,71 @@ export default function HRIntroSlides({ onDone }) {
       >
         {isLast ? (
           <>
+            <style>{`
+              @media (min-width: 768px) {
+                .mobile-single-cta { display: none !important; }
+                .desktop-dual-ctas { display: flex !important; }
+              }
+              @media (max-width: 767px) {
+                .mobile-single-cta { display: block !important; }
+                .desktop-dual-ctas { display: none !important; }
+              }
+            `}</style>
+
+            {/* מובייל: כפתור אחד */}
             <motion.button
+              className="mobile-single-cta"
               whileTap={{ scale: 0.97 }}
               onClick={e => {
                 e.stopPropagation();
                 finish();
+                setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 350);
               }}
               style={{
                 width: "100%", background: "#0055CC", color: "#fff",
-                padding: "15px 24px", borderRadius: 980, fontSize: 15, fontWeight: 800,
+                padding: "15px 24px", borderRadius: 980, fontSize: 16, fontWeight: 800,
                 border: "none", cursor: "pointer", fontFamily: "inherit",
                 boxShadow: "0 8px 24px rgba(0,85,204,0.3)",
-                display: "flex", flexDirection: "column", alignItems: "center", gap: 3,
-                minHeight: 60,
-                justifyContent: "center",
               }}
             >
-              <span>בואו נבדוק התאמה לארגון שלכם ←</span>
-              <span style={{ fontSize: 12, fontWeight: 400, opacity: 0.8 }}>לוקח 15 דקות</span>
+              תראו לי איך זה עובד ←
             </motion.button>
 
-            <motion.button
-              whileTap={{ scale: 0.97 }}
-              onClick={e => {
-                e.stopPropagation();
-                if (onDone) onDone();
-                setTimeout(() => {
-                  document.getElementById("hero-section")?.scrollIntoView({ behavior: "smooth" });
-                }, 350);
-              }}
-              style={{
-                width: "100%",
-                background: "none", border: "1.5px solid rgba(0,0,0,0.15)",
-                borderRadius: 980, color: "#1D1D1F", fontSize: 15, fontWeight: 700,
-                padding: "15px 24px", cursor: "pointer", fontFamily: "inherit",
-                minHeight: 60,
-                display: "flex", alignItems: "center", justifyContent: "center",
-              }}
-            >
-              קודם תראו לי איך זה עובד
-            </motion.button>
+            {/* דסקטופ: 2 כפתורים */}
+            <div className="desktop-dual-ctas" style={{ flexDirection: "column", gap: 10, width: "100%" }}>
+              <motion.button
+                whileTap={{ scale: 0.97 }}
+                onClick={e => {
+                  e.stopPropagation();
+                  finish();
+                  setTimeout(() => document.getElementById("demo-form-section")?.scrollIntoView({ behavior: "smooth" }), 350);
+                }}
+                style={{
+                  width: "100%", background: "#0055CC", color: "#fff",
+                  padding: "14px 24px", borderRadius: 980, fontSize: 16, fontWeight: 800,
+                  border: "none", cursor: "pointer", fontFamily: "inherit",
+                  boxShadow: "0 8px 24px rgba(0,85,204,0.3)",
+                  display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
+                }}
+              >
+                <span>בואו נבדוק התאמה לארגון שלכם ←</span>
+                <span style={{ fontSize: 12, fontWeight: 400, opacity: 0.8 }}>לוקח 15 דקות</span>
+              </motion.button>
+              <button
+                onClick={e => {
+                  e.stopPropagation();
+                  finish();
+                  setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 350);
+                }}
+                style={{
+                  background: "none", border: "1px solid rgba(0,0,0,0.12)",
+                  borderRadius: 980, color: "#1D1D1F", fontSize: 14, fontWeight: 600,
+                  padding: "11px 24px", cursor: "pointer", fontFamily: "inherit", width: "100%",
+                }}
+              >
+                קודם תראו לי איך זה עובד
+              </button>
+            </div>
           </>
         ) : (
           <motion.button
