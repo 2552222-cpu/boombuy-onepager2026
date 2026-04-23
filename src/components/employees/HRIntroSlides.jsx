@@ -33,16 +33,6 @@ const SLIDES = [
     ],
   },
   {
-    id: 4,
-    size: "clamp(22px, 5.5vw, 40px)",
-    weight: 700,
-    lines: [
-      { text: "בלי לבקש שקל מה-CFO.", color: "#1D1D1F" },
-      { text: "בלי תפעול ולוגיסטיקה.", color: "#1D1D1F" },
-      { text: "הקרדיט שלך. העבודה שלנו.", color: "#0055CC" },
-    ],
-  },
-  {
     id: 5,
     size: "clamp(32px, 8vw, 58px)",
     weight: 900,
