@@ -38,7 +38,6 @@ const SLIDES = [
     weight: 900,
     lines: [
       { text: "רוצה לראות איך?", color: "#0055CC" },
-      { text: "15 דקות להדגמת הקסם.", color: "#1D1D1F" },
     ],
   },
 ];
@@ -264,7 +263,7 @@ export default function HRIntroSlides({ onDone }) {
               fontFamily: "inherit", boxShadow: "0 4px 14px rgba(0,0,0,0.15)", minHeight: 54,
             }}
           >
-            המשך
+            תנו לי להציץ דקה ←
           </motion.button>
         )}
       </div>
