@@ -263,7 +263,7 @@ export default function HRIntroSlides({ onDone }) {
               fontFamily: "inherit", boxShadow: "0 4px 14px rgba(0,0,0,0.15)", minHeight: 54,
             }}
           >
-            תנו לי להציץ דקה ←
+            {isLast ? "תנו לי להציץ דקה ←" : "המשך"}
           </motion.button>
         )}
       </div>
