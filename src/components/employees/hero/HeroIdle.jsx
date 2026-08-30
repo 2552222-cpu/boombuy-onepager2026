@@ -40,34 +40,34 @@ export default function HeroIdle({ stage, isMobile, onStart }) {
         <motion.div animate={groupFade}>
           <div
             style={{
-              color: CORAL,
-              fontSize: isMobile ? 18 : 20,
+              color: "#FFFFFF",
+              fontSize: isMobile ? 18 : 22,
               fontWeight: 600,
+              lineHeight: 1,
+              marginBottom: 18,
+              textShadow: "0 2px 10px rgba(0,0,0,0.35)",
               display: "flex",
-              alignItems: "center",
-              gap: 8,
-              marginBottom: 14,
               justifyContent: "flex-end"
             }}>
             
-            <CoralDot />
-            <span className="text-center">נראה מוכר?</span>
+            <span>נראה מוכר?</span>
           </div>
           <h1
             style={{
-              fontSize: isMobile ? "clamp(36px, 10vw, 52px)" : "clamp(48px, 4vw, 72px)",
+              fontSize: isMobile ? "clamp(38px, 10vw, 48px)" : "clamp(48px, 4vw, 68px)",
               fontWeight: 700,
               color: "#fff",
-              lineHeight: 1.08,
-              letterSpacing: "-0.02em",
+              lineHeight: 1.05,
+              letterSpacing: "-0.025em",
               margin: 0,
               maxWidth: isMobile ? "100%" : 500,
-              textShadow: "0 2px 12px rgba(0,0,0,0.38)"
-            }} className="text-sm opacity-100">
+              textShadow: "0 3px 16px rgba(0,0,0,0.26)",
+              textAlign: "right"
+            }}>
             
             כמה ידיים צריך
             <br />
-            כדי לנהל רווחה?
+            כדי לנהל רווחה<span style={{ color: CORAL, fontSize: "1.7em", fontWeight: 800, lineHeight: 0.82, verticalAlign: "baseline", marginLeft: 4, textShadow: "none" }}>?</span>
           </h1>
         </motion.div>
 
