@@ -63,7 +63,7 @@ export default function HeroIdle({ stage, isMobile, onStart }) {
               margin: 0,
               maxWidth: isMobile ? "100%" : 500,
               textShadow: "0 2px 12px rgba(0,0,0,0.38)"
-            }}>
+            }} className="text-sm opacity-100">
             
             כמה ידיים צריך
             <br />
