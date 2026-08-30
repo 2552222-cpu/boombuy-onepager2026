@@ -6,16 +6,15 @@ const AFTER_IMG = "https://media.base44.com/images/public/69e48538aaee477b09fc7b
 const VIDEO_SRC = "https://media.base44.com/videos/public/69e48538aaee477b09fc7b49/fe014e428__23.mp4";
 
 const CHARCOAL = "#1D1D1F";
-const CHARCOAL_SOFT = "#424245";
 const CORAL = "#F26847";
 const WARM_WHITE = "#FBFAF8";
 
-const SCRIM =
-  "linear-gradient(to left, rgba(251,250,248,0.94) 0%, rgba(251,250,248,0.88) 44%, rgba(251,250,248,0.45) 78%, rgba(251,250,248,0) 100%)";
+const DARK_SCRIM =
+  "linear-gradient(to left, rgba(29,29,31,0.78) 0%, rgba(29,29,31,0.54) 46%, rgba(29,29,31,0.14) 80%, rgba(29,29,31,0) 100%)";
 
 const buttonStyle = {
-  background: CHARCOAL,
-  color: "#fff",
+  background: "#FFFFFF",
+  color: CHARCOAL,
   border: "none",
   cursor: "pointer",
   padding: "0 34px",
@@ -27,7 +26,7 @@ const buttonStyle = {
   display: "inline-flex",
   alignItems: "center",
   gap: 12,
-  boxShadow: "0 6px 18px rgba(29,29,31,0.14)",
+  boxShadow: "0 6px 18px rgba(0,0,0,0.16)",
 };
 
 function CoralDot() {
@@ -45,84 +44,48 @@ function CoralDot() {
   );
 }
 
-function BeforeContent({ onStart }) {
+function BeforeContent({ onStart, isMobile }) {
   return (
     <div style={{ textAlign: "right" }}>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 10,
-          marginBottom: 20,
-          justifyContent: "flex-end",
-        }}
-      >
-        <span
-          style={{
-            color: CORAL,
-            fontSize: 15,
-            fontWeight: 700,
-            letterSpacing: "0.02em",
-            fontFamily: "var(--font-heebo)",
-          }}
-        >
-          מערכת ההפעלה לרווחה ולחוויית העובד
-        </span>
-        <span
-          style={{
-            width: 28,
-            height: 2,
-            background: CORAL,
-            borderRadius: 2,
-            display: "inline-block",
-            flexShrink: 0,
-          }}
-        />
-      </div>
-
       <h1
         style={{
-          fontSize: "clamp(42px, 5.1vw, 72px)",
-          fontWeight: 800,
-          color: CHARCOAL,
-          lineHeight: 1.08,
-          letterSpacing: "-0.03em",
+          fontSize: isMobile ? "clamp(40px, 11vw, 46px)" : "clamp(52px, 5.8vw, 70px)",
+          fontWeight: 700,
+          color: "#fff",
+          lineHeight: 1.06,
+          letterSpacing: "-0.02em",
           margin: "0 0 22px",
-          maxWidth: 600,
+          maxWidth: isMobile ? "100%" : 620,
           fontFamily: "var(--font-heebo)",
         }}
       >
         כמה ידיים צריך כדי לנהל את כל הרווחה בארגון?
       </h1>
-
       <p
         style={{
-          fontSize: "clamp(19px, 1.7vw, 23px)",
-          color: CHARCOAL_SOFT,
+          fontSize: "clamp(19px, 1.9vw, 22px)",
+          color: "rgba(255,255,255,0.85)",
           lineHeight: 1.55,
           margin: "0 0 30px",
           maxWidth: 520,
-          fontWeight: 500,
+          fontWeight: 400,
           fontFamily: "var(--font-heebo)",
         }}
       >
         מתנות, ספקים, אירועים, הטבות, עובדים, אקסלים ותקלות. בסוף, הכל מגיע אלייך.
       </p>
-
       <motion.button
-        whileHover={{ y: -2, boxShadow: "0 14px 30px rgba(29,29,31,0.22)" }}
-        whileTap={{ scale: 0.98 }}
+        whileHover={{ y: -2, boxShadow: "0 14px 28px rgba(0,0,0,0.22)" }}
         onClick={onStart}
         style={buttonStyle}
       >
         הראו לי איך נראה השדרוג
         <CoralDot />
       </motion.button>
-
       <p
         style={{
           fontSize: 14,
-          color: "#6E6E73",
+          color: "rgba(255,255,255,0.65)",
           margin: "16px 0 0",
           fontWeight: 500,
           fontFamily: "var(--font-heebo)",
@@ -134,41 +97,86 @@ function BeforeContent({ onStart }) {
   );
 }
 
-function AfterContent({ onContinue }) {
+function AfterHeadline({ stage, isMobile }) {
+  return (
+    <h1
+      style={{
+        fontSize: isMobile ? "clamp(40px, 11vw, 46px)" : "clamp(52px, 5.8vw, 72px)",
+        fontWeight: 700,
+        color: "#fff",
+        lineHeight: 1.06,
+        letterSpacing: "-0.02em",
+        margin: "0 0 24px",
+        maxWidth: isMobile ? "100%" : 620,
+        fontFamily: "var(--font-heebo)",
+        textAlign: "right",
+      }}
+    >
+      <span style={{ display: "block", overflow: "hidden" }}>
+        <motion.span
+          initial={{ y: "110%", opacity: 0 }}
+          animate={stage >= 1 ? { y: "0%", opacity: 1 } : {}}
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          style={{ display: "block" }}
+        >
+          התקציב עובד יותר.
+        </motion.span>
+      </span>
+      <span style={{ display: "block", overflow: "hidden", marginTop: 4 }}>
+        <motion.span
+          initial={{ y: "110%", opacity: 0 }}
+          animate={stage >= 2 ? { y: "0%", opacity: 1 } : {}}
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          style={{ display: "block", fontWeight: 800, position: "relative", paddingBottom: 8 }}
+        >
+          את פחות.
+          <motion.span
+            initial={{ scaleX: 0 }}
+            animate={stage >= 2 ? { scaleX: 1 } : {}}
+            transition={{ duration: 0.5, delay: 0.18, ease: "easeOut" }}
+            style={{
+              position: "absolute",
+              bottom: 0,
+              right: 0,
+              height: 3,
+              width: "100%",
+              background: CORAL,
+              borderRadius: 2,
+              transformOrigin: "right center",
+              opacity: 0.85,
+            }}
+          />
+        </motion.span>
+      </span>
+    </h1>
+  );
+}
+
+function AfterContent({ stage, phase, onContinue, isMobile }) {
   return (
     <div style={{ textAlign: "right" }}>
-      <h1
+      <AfterHeadline stage={stage} isMobile={isMobile} />
+      <motion.p
+        initial={{ opacity: 0, y: 12 }}
+        animate={phase === "after" ? { opacity: 0.85, y: 0 } : {}}
+        transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
         style={{
-          fontSize: "clamp(42px, 5.1vw, 72px)",
-          fontWeight: 800,
-          color: CHARCOAL,
-          lineHeight: 1.08,
-          letterSpacing: "-0.03em",
-          margin: "0 0 22px",
-          maxWidth: 600,
-          fontFamily: "var(--font-heebo)",
-        }}
-      >
-        התקציב עובד יותר. את פחות.
-      </h1>
-
-      <p
-        style={{
-          fontSize: "clamp(19px, 1.7vw, 23px)",
-          color: CHARCOAL_SOFT,
+          fontSize: "clamp(19px, 1.9vw, 22px)",
+          color: "rgba(255,255,255,0.85)",
           lineHeight: 1.55,
-          margin: "0 0 30px",
+          margin: "0 0 28px",
           maxWidth: 520,
-          fontWeight: 500,
+          fontWeight: 400,
           fontFamily: "var(--font-heebo)",
         }}
       >
         BoomBuy מרכזת את הרווחה, המתנות, ההטבות והשירות לעובדים במערכת אחת.
-      </p>
-
+      </motion.p>
       <motion.button
-        whileHover={{ y: -2, boxShadow: "0 14px 30px rgba(29,29,31,0.22)" }}
-        whileTap={{ scale: 0.98 }}
+        initial={{ opacity: 0, y: 12 }}
+        animate={phase === "after" ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.5, delay: 0.35, ease: "easeOut" }}
+        whileHover={{ y: -2, boxShadow: "0 14px 28px rgba(0,0,0,0.22)" }}
         onClick={onContinue}
         style={buttonStyle}
       >
@@ -182,6 +190,10 @@ function AfterContent({ onContinue }) {
 export default function HeroTransformation() {
   const [phase, setPhase] = useState("before"); // "before" | "video" | "after"
   const [isMobile, setIsMobile] = useState(false);
+  const [outro, setOutro] = useState(false);
+  const [headlineStage, setHeadlineStage] = useState(0);
+  const [crossfade, setCrossfade] = useState(false);
+  const [flash, setFlash] = useState(false);
   const videoRef = useRef(null);
 
   useEffect(() => {
@@ -191,27 +203,148 @@ export default function HeroTransformation() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
+  // Preload after-image
   useEffect(() => {
-    if (phase === "video" && videoRef.current) {
-      const p = videoRef.current.play?.();
-      if (p && typeof p.catch === "function") p.catch(() => {});
-    }
-  }, [phase]);
+    const img = new Image();
+    img.src = AFTER_IMG;
+  }, []);
+
+  // Outro sequence: headline stage 1 immediately, stage 2 at 350ms, crossfade at 400ms, flash at 550ms
+  useEffect(() => {
+    if (!outro) return;
+    setHeadlineStage(1);
+    const t2 = setTimeout(() => setHeadlineStage(2), 350);
+    const t3 = setTimeout(() => setCrossfade(true), 400);
+    const t4 = setTimeout(() => setFlash(true), 550);
+    return () => {
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+    };
+  }, [outro]);
 
   const startVideo = () => setPhase("video");
-  const handleEnded = () => setPhase("after");
+
+  const handleTimeUpdate = () => {
+    const v = videoRef.current;
+    if (!v || !v.duration || !isFinite(v.duration)) return;
+    const remaining = v.duration - v.currentTime;
+    if (remaining <= 1.0 && !outro) setOutro(true);
+  };
+
+  const handleEnded = () => {
+    // Ensure final state regardless of whether outro triggered
+    setOutro(true);
+    setHeadlineStage(2);
+    setCrossfade(true);
+    setPhase("after");
+  };
+
   const scrollToDemo = () =>
     document.getElementById("demo-form-section")?.scrollIntoView({ behavior: "smooth" });
 
-  const mediaStyle = (extra) => ({
+  const baseMedia = {
     position: "absolute",
     inset: 0,
     width: "100%",
     height: "100%",
-    objectFit: isMobile ? "contain" : "cover",
     objectPosition: "center",
-    ...extra,
-  });
+  };
+
+  const cardShadow =
+    "0 24px 70px rgba(0,0,0,0.14), 0 8px 24px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(255,255,255,0.3)";
+
+  const glowBackground =
+    "radial-gradient(ellipse at 56% 42%, rgba(255,238,228,0.6) 0%, rgba(251,250,248,0.18) 52%, rgba(251,250,248,0) 78%)";
+
+  const renderMedia = (zShift) => (
+    <>
+      {/* Before-image */}
+      <AnimatePresence>
+        {phase === "before" && (
+          <motion.img
+            key="before-media"
+            src={BEFORE_IMG}
+            alt="מנהלת רווחה בעומס"
+            exit={{ opacity: 0, transition: { duration: 0.3 } }}
+            style={{ ...baseMedia, objectFit: isMobile ? "contain" : "cover", zIndex: 1 }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Video */}
+      <AnimatePresence>
+        {phase === "video" && (
+          <motion.video
+            key="video-media"
+            ref={videoRef}
+            src={VIDEO_SRC}
+            poster={BEFORE_IMG}
+            autoPlay
+            muted
+            playsInline
+            preload="metadata"
+            onTimeUpdate={handleTimeUpdate}
+            onEnded={handleEnded}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: { duration: 0.3 } }}
+            style={{ ...baseMedia, objectFit: isMobile ? "contain" : "cover", background: "#000", zIndex: 1 }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* After-image (crossfade during outro) */}
+      {(outro || phase === "after") && (
+        <motion.img
+          key="after-media"
+          src={AFTER_IMG}
+          alt="מנהלת רווחה רגועה מול מערכת BoomBuy"
+          initial={{ opacity: 0, filter: "blur(4px)" }}
+          animate={
+            crossfade || phase === "after"
+              ? { opacity: 1, filter: "blur(0px)" }
+              : { opacity: 0, filter: "blur(4px)" }
+          }
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          style={{ ...baseMedia, objectFit: isMobile ? "contain" : "cover", zIndex: 2 }}
+        />
+      )}
+
+      {/* Coral flash sweep */}
+      {flash && (
+        <motion.div
+          initial={{ x: "130%" }}
+          animate={{ x: "-130%" }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            height: "100%",
+            width: "55%",
+            background:
+              "linear-gradient(to left, transparent 0%, rgba(242,104,71,0.28) 50%, transparent 100%)",
+            zIndex: 5,
+            pointerEvents: "none",
+          }}
+        />
+      )}
+
+      {/* Soft top light on "glass" */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          height: "26%",
+          background: "linear-gradient(to bottom, rgba(255,255,255,0.1) 0%, transparent 100%)",
+          pointerEvents: "none",
+          zIndex: 4,
+        }}
+      />
+    </>
+  );
 
   return (
     <section
@@ -229,200 +362,163 @@ export default function HeroTransformation() {
           width: isMobile ? "100%" : "94vw",
           maxWidth: 1600,
           margin: "0 auto",
-          height: isMobile ? "auto" : "min(88vh, 820px)",
           position: "relative",
-          borderRadius: isMobile ? 20 : 32,
-          overflow: "hidden",
-          background: WARM_WHITE,
-          boxShadow: "0 10px 40px rgba(0,0,0,0.08)",
         }}
       >
-        {isMobile ? (
-          // ===== Mobile: text above, media below =====
-          <div style={{ padding: 20, display: "flex", flexDirection: "column", gap: 20 }}>
-            <AnimatePresence>
-              {phase === "before" && (
-                <motion.div
-                  key="before-mobile"
-                  exit={{ opacity: 0, transition: { duration: 0.4 } }}
-                >
-                  <BeforeContent onStart={startVideo} />
-                </motion.div>
-              )}
-              {phase === "after" && (
-                <motion.div
-                  key="after-mobile"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1, transition: { duration: 0.6, delay: 0.2 } }}
-                >
-                  <AfterContent onContinue={scrollToDemo} />
-                </motion.div>
-              )}
-            </AnimatePresence>
+        {/* Background glow */}
+        <div
+          style={{
+            position: "absolute",
+            inset: -30,
+            background: glowBackground,
+            filter: "blur(18px)",
+            zIndex: 0,
+            pointerEvents: "none",
+            borderRadius: 60,
+          }}
+        />
 
-            {/* Media 16:9 */}
-            <div
-              style={{
-                position: "relative",
-                width: "100%",
-                aspectRatio: "16 / 9",
-                borderRadius: 18,
-                overflow: "hidden",
-                background: "#fff",
-                boxShadow: "0 8px 28px rgba(0,0,0,0.08)",
-              }}
-            >
-              <AnimatePresence mode="sync">
+        {/* Card */}
+        <div
+          style={{
+            position: "relative",
+            zIndex: 1,
+            height: isMobile ? "auto" : "min(88vh, 820px)",
+            borderRadius: isMobile ? 22 : 34,
+            overflow: "hidden",
+            boxShadow: cardShadow,
+          }}
+        >
+          {isMobile ? (
+            // ===== Mobile: charcoal text block above, media below =====
+            <div style={{ padding: 20, display: "flex", flexDirection: "column", gap: 18 }}>
+              <AnimatePresence>
                 {phase === "before" && (
-                  <motion.img
-                    key="before-media"
-                    initial={{ opacity: 1 }}
-                    exit={{ opacity: 0, transition: { duration: 0.4 } }}
-                    src={BEFORE_IMG}
-                    alt="מנהלת רווחה בעומס"
-                    style={mediaStyle()}
-                  />
+                  <motion.div
+                    key="before-mobile"
+                    exit={{ opacity: 0, transition: { duration: 0.3 } }}
+                    style={{
+                      background: CHARCOAL,
+                      borderRadius: 22,
+                      padding: "28px 22px",
+                      boxShadow: "0 10px 30px rgba(0,0,0,0.12), inset 0 0 0 1px rgba(255,255,255,0.06)",
+                    }}
+                  >
+                    <BeforeContent onStart={startVideo} isMobile={isMobile} />
+                  </motion.div>
                 )}
-                {phase === "video" && (
-                  <motion.video
-                    key="video-media"
-                    ref={videoRef}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1, transition: { duration: 0.4 } }}
-                    exit={{ opacity: 0, transition: { duration: 0.4 } }}
-                    src={VIDEO_SRC}
-                    autoPlay
-                    muted
-                    playsInline
-                    preload="auto"
-                    onEnded={handleEnded}
-                    style={mediaStyle({ background: "#000" })}
-                  />
-                )}
-                {phase === "after" && (
-                  <motion.img
-                    key="after-media"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1, transition: { duration: 0.6 } }}
-                    src={AFTER_IMG}
-                    alt="מנהלת רווחה רגועה מול מערכת BoomBuy"
-                    style={mediaStyle()}
-                  />
+                {(outro || phase === "after") && (
+                  <motion.div
+                    key="after-mobile"
+                    style={{
+                      background: CHARCOAL,
+                      borderRadius: 22,
+                      padding: "28px 22px",
+                      boxShadow: "0 10px 30px rgba(0,0,0,0.12), inset 0 0 0 1px rgba(255,255,255,0.06)",
+                    }}
+                  >
+                    <AfterContent
+                      stage={headlineStage}
+                      phase={phase}
+                      onContinue={scrollToDemo}
+                      isMobile={isMobile}
+                    />
+                  </motion.div>
                 )}
               </AnimatePresence>
-            </div>
-          </div>
-        ) : (
-          // ===== Desktop: media as background, text overlay on right =====
-          <>
-            <AnimatePresence mode="sync">
-              {phase === "before" && (
-                <motion.img
-                  key="before-media"
-                  initial={{ opacity: 1 }}
-                  exit={{ opacity: 0, transition: { duration: 0.4 } }}
-                  src={BEFORE_IMG}
-                  alt="מנהלת רווחה בעומס"
-                  style={mediaStyle()}
-                />
-              )}
-              {phase === "video" && (
-                <motion.video
-                  key="video-media"
-                  ref={videoRef}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1, transition: { duration: 0.4 } }}
-                  exit={{ opacity: 0, transition: { duration: 0.4 } }}
-                  src={VIDEO_SRC}
-                  autoPlay
-                  muted
-                  playsInline
-                  preload="auto"
-                  onEnded={handleEnded}
-                  style={mediaStyle({ background: "#000" })}
-                />
-              )}
-              {phase === "after" && (
-                <motion.img
-                  key="after-media"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1, transition: { duration: 0.6 } }}
-                  src={AFTER_IMG}
-                  alt="מנהלת רווחה רגועה מול מערכת BoomBuy"
-                  style={mediaStyle()}
-                />
-              )}
-            </AnimatePresence>
 
-            {/* Text overlay (right side) */}
-            <AnimatePresence>
-              {phase === "before" && (
-                <motion.div
-                  key="before-overlay"
-                  initial={{ opacity: 1 }}
-                  exit={{ opacity: 0, transition: { duration: 0.4 } }}
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    right: 0,
-                    height: "100%",
-                    width: "50%",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    padding: "60px 56px 60px 24px",
-                    zIndex: 3,
-                  }}
-                >
-                  <div
+              {/* Media 16:9 */}
+              <div
+                style={{
+                  position: "relative",
+                  width: "100%",
+                  aspectRatio: "16 / 9",
+                  borderRadius: 20,
+                  overflow: "hidden",
+                  background: "#fff",
+                  boxShadow: "0 10px 30px rgba(0,0,0,0.1), inset 0 0 0 1px rgba(255,255,255,0.3)",
+                }}
+              >
+                {renderMedia()}
+              </div>
+            </div>
+          ) : (
+            // ===== Desktop: media as background, text overlay on right =====
+            <>
+              {renderMedia()}
+
+              {/* Text overlays */}
+              <AnimatePresence>
+                {phase === "before" && (
+                  <motion.div
+                    key="before-overlay"
+                    exit={{ opacity: 0, transition: { duration: 0.3 } }}
                     style={{
                       position: "absolute",
-                      inset: 0,
-                      background: SCRIM,
-                      borderRadius: 32,
-                      pointerEvents: "none",
+                      top: 0,
+                      right: 0,
+                      height: "100%",
+                      width: "50%",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      padding: "60px 56px 60px 24px",
+                      zIndex: 6,
                     }}
-                  />
-                  <div style={{ position: "relative" }}>
-                    <BeforeContent onStart={startVideo} />
-                  </div>
-                </motion.div>
-              )}
-              {phase === "after" && (
-                <motion.div
-                  key="after-overlay"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1, transition: { duration: 0.6, delay: 0.2 } }}
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    right: 0,
-                    height: "100%",
-                    width: "50%",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    padding: "60px 56px 60px 24px",
-                    zIndex: 3,
-                  }}
-                >
-                  <div
+                  >
+                    <div
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        background: DARK_SCRIM,
+                        borderRadius: 34,
+                        pointerEvents: "none",
+                      }}
+                    />
+                    <div style={{ position: "relative" }}>
+                      <BeforeContent onStart={startVideo} isMobile={isMobile} />
+                    </div>
+                  </motion.div>
+                )}
+                {(outro || phase === "after") && (
+                  <motion.div
+                    key="after-overlay"
                     style={{
                       position: "absolute",
-                      inset: 0,
-                      background: SCRIM,
-                      borderRadius: 32,
-                      pointerEvents: "none",
+                      top: 0,
+                      right: 0,
+                      height: "100%",
+                      width: "50%",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      padding: "60px 56px 60px 24px",
+                      zIndex: 6,
                     }}
-                  />
-                  <div style={{ position: "relative" }}>
-                    <AfterContent onContinue={scrollToDemo} />
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </>
-        )}
+                  >
+                    <div
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        background: DARK_SCRIM,
+                        borderRadius: 34,
+                        pointerEvents: "none",
+                      }}
+                    />
+                    <div style={{ position: "relative" }}>
+                      <AfterContent
+                        stage={headlineStage}
+                        phase={phase}
+                        onContinue={scrollToDemo}
+                        isMobile={isMobile}
+                      />
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </>
+          )}
+        </div>
       </div>
     </section>
   );
