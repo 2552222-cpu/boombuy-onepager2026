@@ -40,34 +40,37 @@ export default function HeroIdle({ stage, isMobile, onStart }) {
         <motion.div animate={groupFade}>
           <div
             style={{
-              color: "#FFFFFF",
-              fontSize: isMobile ? 18 : 22,
+              color: CORAL,
+              fontSize: isMobile ? 18 : 20,
               fontWeight: 600,
               lineHeight: 1,
-              marginBottom: 18,
+              marginBottom: 16,
               textShadow: "0 2px 10px rgba(0,0,0,0.35)",
               display: "flex",
+              alignItems: "center",
+              gap: 8,
               justifyContent: "flex-end"
             }}>
             
+            <CoralDot />
             <span>נראה מוכר?</span>
           </div>
           <h1
             style={{
-              fontSize: isMobile ? "clamp(38px, 10vw, 48px)" : "clamp(48px, 4vw, 68px)",
-              fontWeight: 700,
+              fontSize: isMobile ? "clamp(40px, 10vw, 52px)" : "clamp(52px, 5vw, 82px)",
+              fontWeight: 900,
               color: "#fff",
-              lineHeight: 1.05,
-              letterSpacing: "-0.025em",
+              lineHeight: 1.0,
+              letterSpacing: "-0.03em",
               margin: 0,
-              maxWidth: isMobile ? "100%" : 500,
-              textShadow: "0 3px 16px rgba(0,0,0,0.26)",
-              textAlign: "right"
+              maxWidth: isMobile ? "100%" : 560,
+              textAlign: "right",
+              WebkitTextStroke: "1px rgba(0,0,0,0.5)",
+              textShadow: "0 4px 18px rgba(0,0,0,0.32)"
             }}>
             
-            כמה ידיים צריך
-            <br />
-            כדי לנהל רווחה<span style={{ color: CORAL, fontSize: "1.7em", fontWeight: 800, lineHeight: 0.82, verticalAlign: "baseline", marginLeft: 4, textShadow: "none" }}>?</span>
+            <span style={{ display: "block" }}>כמה ידיים צריך</span>
+            <span style={{ display: "block", marginRight: isMobile ? 24 : 44 }}>כדי לנהל רווחה?</span>
           </h1>
         </motion.div>
 
