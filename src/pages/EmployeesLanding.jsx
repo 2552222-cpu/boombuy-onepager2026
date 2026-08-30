@@ -1,51 +1,24 @@
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React from "react";
 import GlobalHeader from "../components/employees/GlobalHeader";
-import Hero from "../components/employees/Hero";
+import HeroTransformation from "../components/employees/HeroTransformation";
 import FeaturedOffersSlider from "../components/employees/FeaturedOffersSlider";
 import TrustLogos from "../components/employees/TrustLogos";
 import GlobalFooter from "../components/employees/GlobalFooter";
 import FloatingWhatsApp from "../components/employees/FloatingWhatsApp";
 import ComparisonSection from "../components/employees/ComparisonSection";
 import DemoForm from "../components/employees/DemoForm";
-import HRIntroSlides from "../components/employees/HRIntroSlides";
 
 const EconomicSection = React.lazy(() => import("../components/employees/EconomicSection"));
 const Testimonials = React.lazy(() => import("../components/employees/Testimonials"));
 
 export default function EmployeesLanding() {
-  const [introDone, setIntroDone] = useState(false);
-
   return (
-    <>
-      <AnimatePresence>
-        {!introDone && (
-          <motion.div
-            key="hr-intro"
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            style={{ position: "fixed", inset: 0, zIndex: 100, background: "#fff" }}
-          >
-            <HRIntroSlides onDone={(scrollToHero) => {
-              setIntroDone(true);
-              if (scrollToHero) {
-                requestAnimationFrame(() => {
-                  setTimeout(() => {
-                    document.getElementById("hero-section")?.scrollIntoView({ behavior: "smooth" });
-                  }, 300);
-                });
-              }
-            }} />
-          </motion.div>
-        )}
-      </AnimatePresence>
-        <div
-          dir="rtl"
-          style={{ overflowX: "hidden", maxWidth: "100vw" }}
-        >
-          <GlobalHeader />
-          <Hero />
+    <div
+      dir="rtl"
+      style={{ overflowX: "hidden", maxWidth: "100vw" }}
+    >
+      <GlobalHeader />
+      <HeroTransformation />
           <ComparisonSection />
           <TrustLogos />
           <React.Suspense fallback={<div style={{ height: 300 }} />}>
@@ -75,7 +48,6 @@ export default function EmployeesLanding() {
           </section>
           <GlobalFooter />
           <FloatingWhatsApp />
-        </div>
-    </>
+    </div>
   );
 }
