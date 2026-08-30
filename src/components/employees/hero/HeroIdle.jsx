@@ -60,6 +60,7 @@ export default function HeroIdle({ stage, isMobile, onStart }) {
               fontSize: isMobile ? "clamp(40px, 10vw, 52px)" : "clamp(52px, 5vw, 82px)",
               fontWeight: 900,
               color: "#fff",
+              fontFamily: "'Frank Ruhl Libre', serif",
               lineHeight: 1.0,
               letterSpacing: "-0.03em",
               margin: 0,
