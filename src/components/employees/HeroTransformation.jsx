@@ -13,13 +13,13 @@ const DARK_SCRIM =
   "linear-gradient(to left, rgba(29,29,31,0.8) 0%, rgba(29,29,31,0.55) 46%, rgba(29,29,31,0.14) 80%, rgba(29,29,31,0) 100%)";
 
 const TAGS = [
-  { word: "ספקים",  x: 14, y: 60, delay: 0.35, float: 2.8 },
-  { word: "מתנות",  x: 32, y: 58, delay: 0.60, float: 3.2 },
-  { word: "אירועים", x: 50, y: 61, delay: 0.85, float: 2.6 },
-  { word: "הטבות",  x: 66, y: 59, delay: 1.10, float: 3.4 },
-  { word: "עובדים", x: 20, y: 75, delay: 1.35, float: 2.9 },
+  { word: "ספקים",  x: 12, y: 60, delay: 0.35, float: 2.8 },
+  { word: "מתנות",  x: 30, y: 58, delay: 0.60, float: 3.2 },
+  { word: "אירועים", x: 48, y: 61, delay: 0.85, float: 2.6 },
+  { word: "הטבות",  x: 64, y: 59, delay: 1.10, float: 3.4 },
+  { word: "עובדים", x: 20, y: 76, delay: 1.35, float: 2.9 },
   { word: "אקסלים", x: 40, y: 78, delay: 1.60, float: 3.1 },
-  { word: "תקלות",  x: 60, y: 73, delay: 1.85, float: 2.7 },
+  { word: "תקלות",  x: 60, y: 75, delay: 1.85, float: 2.7 },
 ];
 const CONVERGE = { x: 42, y: 64 };
 
@@ -39,20 +39,20 @@ function CoralDot() {
 }
 
 const tagStyle = {
-  background: "rgba(255,255,255,0.91)",
+  background: "rgba(255,255,255,0.94)",
   backdropFilter: "blur(6px)",
   WebkitBackdropFilter: "blur(6px)",
   color: CHARCOAL,
-  borderRadius: 16,
-  padding: "0 18px",
-  height: 42,
-  fontSize: 17,
-  fontWeight: 600,
+  borderRadius: 18,
+  padding: "0 22px",
+  height: 52,
+  fontSize: 21,
+  fontWeight: 650,
   fontFamily: "var(--font-heebo)",
   display: "inline-flex",
   alignItems: "center",
-  gap: 8,
-  boxShadow: "0 3px 10px rgba(0,0,0,0.08)",
+  gap: 9,
+  boxShadow: "0 5px 16px rgba(0,0,0,0.14)",
   whiteSpace: "nowrap",
 };
 
@@ -83,7 +83,7 @@ function IntroTags({ introPhase, isMobile }) {
             style={{ position: "absolute", zIndex: 7 }}
           >
             <motion.div
-              animate={introPhase === "converge" ? { y: 0 } : { y: [0, -4, 0] }}
+              animate={introPhase === "converge" ? { y: 0 } : { y: [0, -5, 0] }}
               transition={
                 introPhase === "converge"
                   ? { duration: 0.3 }
@@ -125,7 +125,7 @@ function IntroTextBlock({ introPhase, isMobile, onStart }) {
       transition={{ duration: introPhase === "converge" ? 0.4 : 0.3 }}
       style={{
         position: "absolute",
-        top: "42%",
+        top: "40%",
         right: 80,
         transform: "translateY(-50%)",
         zIndex: 6,
@@ -134,50 +134,50 @@ function IntroTextBlock({ introPhase, isMobile, onStart }) {
         display: "flex",
         flexDirection: "column",
         alignItems: "flex-end",
-        gap: 22,
+        gap: 16,
       }}
     >
+      {/* very subtle white gradient for readability — not a card */}
       <div
         style={{
-          background: "rgba(255,255,255,0.5)",
-          backdropFilter: "blur(6px)",
-          WebkitBackdropFilter: "blur(6px)",
-          borderRadius: 14,
-          padding: "16px 18px",
-          maxWidth: 470,
+          position: "absolute",
+          inset: -24,
+          background:
+            "linear-gradient(to left, rgba(255,255,255,0.42) 0%, rgba(255,255,255,0.22) 55%, transparent 100%)",
+          borderRadius: 24,
+          zIndex: -1,
+          pointerEvents: "none",
+        }}
+      />
+      <div
+        style={{
+          color: CORAL,
+          fontSize: 19,
+          fontWeight: 600,
+          marginBottom: 10,
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+          fontFamily: "var(--font-heebo)",
         }}
       >
-        <div
-          style={{
-            color: CORAL,
-            fontSize: 19,
-            fontWeight: 600,
-            marginBottom: 14,
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            justifyContent: "flex-end",
-            fontFamily: "var(--font-heebo)",
-          }}
-        >
-          <span>איך נראית הרווחה אצלך?</span>
-          <CoralDot />
-        </div>
-        <h1
-          style={{
-            fontSize: "clamp(48px, 4.4vw, 58px)",
-            fontWeight: 700,
-            color: CHARCOAL,
-            lineHeight: 1.1,
-            letterSpacing: "-0.02em",
-            margin: 0,
-            maxWidth: 470,
-            fontFamily: "var(--font-heebo)",
-          }}
-        >
-          כמה ידיים צריך כדי לנהל אותה?
-        </h1>
+        <CoralDot />
+        <span>נראה מוכר?</span>
       </div>
+      <h1
+        style={{
+          fontSize: "clamp(44px, 4vw, 50px)",
+          fontWeight: 700,
+          color: CHARCOAL,
+          lineHeight: 1.08,
+          letterSpacing: "-0.02em",
+          margin: 0,
+          maxWidth: 390,
+          fontFamily: "var(--font-heebo)",
+        }}
+      >
+        כמה ידיים צריך כדי לנהל רווחה?
+      </h1>
       <motion.button
         animate={introPhase === "idle" ? { opacity: 1 } : { opacity: 0 }}
         transition={{ duration: 0.2 }}
@@ -187,9 +187,9 @@ function IntroTextBlock({ introPhase, isMobile, onStart }) {
           color: "#fff",
           border: "none",
           cursor: "pointer",
-          height: 56,
-          padding: "0 27px",
-          borderRadius: 15,
+          height: 54,
+          padding: "0 24px",
+          borderRadius: 14,
           fontSize: 18,
           fontWeight: 700,
           fontFamily: "var(--font-heebo)",
@@ -220,7 +220,7 @@ function IntroTextBlockMobile({ introPhase, onStart }) {
         display: "flex",
         flexDirection: "column",
         alignItems: "flex-end",
-        gap: 14,
+        gap: 12,
         textAlign: "right",
       }}
     >
@@ -232,25 +232,24 @@ function IntroTextBlockMobile({ introPhase, onStart }) {
           display: "flex",
           alignItems: "center",
           gap: 8,
-          justifyContent: "flex-end",
           fontFamily: "var(--font-heebo)",
         }}
       >
-        <span>איך נראית הרווחה אצלך?</span>
         <CoralDot />
+        <span>נראה מוכר?</span>
       </div>
       <h1
         style={{
-          fontSize: "clamp(34px, 8.5vw, 40px)",
+          fontSize: "clamp(34px, 8vw, 38px)",
           fontWeight: 700,
           color: CHARCOAL,
-          lineHeight: 1.12,
+          lineHeight: 1.1,
           letterSpacing: "-0.02em",
           margin: 0,
           fontFamily: "var(--font-heebo)",
         }}
       >
-        כמה ידיים צריך כדי לנהל אותה?
+        כמה ידיים צריך כדי לנהל רווחה?
       </h1>
       <motion.button
         animate={introPhase === "idle" ? { opacity: 1 } : { opacity: 0 }}
@@ -261,10 +260,10 @@ function IntroTextBlockMobile({ introPhase, onStart }) {
           color: "#fff",
           border: "none",
           cursor: "pointer",
-          height: 54,
-          padding: "0 24px",
-          borderRadius: 15,
-          fontSize: 18,
+          height: 52,
+          padding: "0 22px",
+          borderRadius: 14,
+          fontSize: 17,
           fontWeight: 700,
           fontFamily: "var(--font-heebo)",
           display: "inline-flex",
@@ -399,7 +398,10 @@ export default function HeroTransformation() {
   const [headlineStage, setHeadlineStage] = useState(0);
   const [crossfade, setCrossfade] = useState(false);
   const [flash, setFlash] = useState(false);
-  const [introFlash, setIntroFlash] = useState(false);
+  const [lightOn, setLightOn] = useState(false);
+  const [lightExpand, setLightExpand] = useState(false);
+  const [lightFade, setLightFade] = useState(false);
+  const [videoStart, setVideoStart] = useState(false);
   const videoRef = useRef(null);
 
   useEffect(() => {
@@ -417,22 +419,30 @@ export default function HeroTransformation() {
   // Intro: headline -> converge (after reading time)
   useEffect(() => {
     if (introPhase !== "headline") return;
-    const lastTagDelay = isMobile ? 1.10 : 1.85;
-    const reading = isMobile ? 1.5 : 1.45;
-    const convergeStart = lastTagDelay + 0.4 + reading;
-    const t1 = setTimeout(() => setIntroPhase("converge"), convergeStart * 1000);
+    const convergeStart = isMobile ? 3300 : 3700;
+    const t1 = setTimeout(() => setIntroPhase("converge"), convergeStart);
     return () => clearTimeout(t1);
   }, [introPhase, isMobile]);
 
-  // Intro: converge -> video
+  // Intro: converge -> light transition -> video
   useEffect(() => {
     if (introPhase !== "converge") return;
-    const t2 = setTimeout(() => {
-      setIntroPhase("done");
+    const tGlow = setTimeout(() => setLightOn(true), 600);
+    const tExpand = setTimeout(() => setLightExpand(true), 850);
+    const tVideo = setTimeout(() => {
+      setVideoStart(true);
       setPhase("video");
-      setIntroFlash(true);
-    }, 1200);
-    return () => clearTimeout(t2);
+      setIntroPhase("done");
+    }, 1100);
+    const tFade = setTimeout(() => setLightFade(true), 1350);
+    const tOff = setTimeout(() => setLightOn(false), 1700);
+    return () => {
+      clearTimeout(tGlow);
+      clearTimeout(tExpand);
+      clearTimeout(tVideo);
+      clearTimeout(tFade);
+      clearTimeout(tOff);
+    };
   }, [introPhase]);
 
   // Outro sequence (video -> after) — unchanged
@@ -484,37 +494,40 @@ export default function HeroTransformation() {
 
   const renderMedia = () => (
     <>
-      <AnimatePresence>
-        {phase === "before" && (
-          <motion.img
-            key="before-media"
-            src={BEFORE_IMG}
-            alt="מנהלת רווחה בעומס"
-            exit={{ opacity: 0, filter: "blur(4px)", transition: { duration: 0.55, ease: "easeInOut" } }}
-            style={{ ...baseMedia, objectFit: isMobile ? "contain" : "cover", zIndex: 1 }}
-          />
-        )}
-      </AnimatePresence>
+      {/* Before image — clean until light expand, then blur/scale; removed when video starts */}
+      {!videoStart && (
+        <motion.img
+          key="before-media"
+          src={BEFORE_IMG}
+          alt="מנהלת רווחה בעומס"
+          animate={
+            lightExpand
+              ? { filter: "blur(10px)", scale: 1.015, opacity: 0.55 }
+              : { filter: "blur(0px)", scale: 1, opacity: 1 }
+          }
+          transition={{ duration: 0.6, ease: "easeInOut" }}
+          style={{ ...baseMedia, objectFit: isMobile ? "contain" : "cover", zIndex: 1 }}
+        />
+      )}
 
-      <AnimatePresence>
-        {phase === "video" && (
-          <motion.video
-            key="video-media"
-            ref={videoRef}
-            src={VIDEO_SRC}
-            poster={BEFORE_IMG}
-            autoPlay
-            muted
-            playsInline
-            preload="metadata"
-            onTimeUpdate={handleTimeUpdate}
-            onEnded={handleEnded}
-            initial={{ opacity: 0, filter: "blur(4px)" }}
-            animate={{ opacity: 1, filter: "blur(0px)", transition: { duration: 0.55, ease: "easeInOut" } }}
-            style={{ ...baseMedia, objectFit: isMobile ? "contain" : "cover", background: "#000", zIndex: 1 }}
-          />
-        )}
-      </AnimatePresence>
+      {/* Video — starts behind the light, fades in as light recedes */}
+      {phase === "video" && (
+        <motion.video
+          key="video-media"
+          ref={videoRef}
+          src={VIDEO_SRC}
+          poster={BEFORE_IMG}
+          autoPlay
+          muted
+          playsInline
+          preload="metadata"
+          onTimeUpdate={handleTimeUpdate}
+          onEnded={handleEnded}
+          initial={{ opacity: 0, filter: "blur(10px)" }}
+          animate={{ opacity: 1, filter: "blur(0px)", transition: { duration: 0.6, ease: "easeInOut" } }}
+          style={{ ...baseMedia, objectFit: isMobile ? "contain" : "cover", background: "#000", zIndex: 1 }}
+        />
+      )}
 
       {(outro || phase === "after") && (
         <motion.img
@@ -532,6 +545,34 @@ export default function HeroTransformation() {
         />
       )}
 
+      {/* Light transition — image -> video (expands from computer) */}
+      {lightOn && (
+        <motion.div
+          animate={{
+            opacity: lightFade ? 0 : lightExpand ? 0.82 : 0.5,
+            scale: lightExpand ? 1 : 0.28,
+          }}
+          transition={{
+            duration: lightFade ? 0.45 : lightExpand ? 0.6 : 0.25,
+            ease: "easeOut",
+          }}
+          style={{
+            position: "absolute",
+            left: `${CONVERGE.x}%`,
+            top: `${CONVERGE.y}%`,
+            width: "150%",
+            height: "150%",
+            marginLeft: "-75%",
+            marginTop: "-75%",
+            background:
+              "radial-gradient(circle, rgba(255,246,238,0.95) 0%, rgba(242,104,71,0.55) 28%, rgba(255,238,228,0.18) 52%, transparent 72%)",
+            zIndex: 8,
+            pointerEvents: "none",
+            transformOrigin: "center center",
+          }}
+        />
+      )}
+
       {/* Coral flash — outro (video->after) */}
       {flash && (
         <motion.div
@@ -546,27 +587,6 @@ export default function HeroTransformation() {
             width: "55%",
             background:
               "linear-gradient(to left, transparent 0%, rgba(242,104,71,0.28) 50%, transparent 100%)",
-            zIndex: 5,
-            pointerEvents: "none",
-          }}
-        />
-      )}
-
-      {/* Coral pulse — intro (image->video) toward computer */}
-      {introFlash && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: [0, 0.4, 0], scale: [0.5, 1.2, 1.5] }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
-          style={{
-            position: "absolute",
-            left: `${CONVERGE.x}%`,
-            top: `${CONVERGE.y}%`,
-            width: 320,
-            height: 320,
-            marginLeft: -160,
-            marginTop: -160,
-            background: "radial-gradient(circle, rgba(242,104,71,0.5) 0%, transparent 70%)",
             zIndex: 5,
             pointerEvents: "none",
           }}
@@ -598,9 +618,9 @@ export default function HeroTransformation() {
   );
 
   const desktopSize = {
-    width: "min(calc((100svh - 96px) * 16 / 9), calc(100vw - 64px), 1600px)",
+    width: "min(calc((100svh - 90px) * 16 / 9), calc(100vw - 64px), 1600px)",
     aspectRatio: "16 / 9",
-    maxHeight: "calc(100svh - 96px)",
+    maxHeight: "calc(100svh - 90px)",
   };
 
   return (
@@ -609,8 +629,8 @@ export default function HeroTransformation() {
       style={{
         background: WARM_WHITE,
         direction: "rtl",
-        paddingTop: 12,
-        paddingBottom: isMobile ? 24 : 16,
+        paddingTop: 10,
+        paddingBottom: isMobile ? 24 : 12,
         fontFamily: "var(--font-heebo)",
       }}
     >
