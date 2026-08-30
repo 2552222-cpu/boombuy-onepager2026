@@ -15,7 +15,7 @@ export default function HeroIdle({ stage, isMobile, onStart }) {
 
   const blockPos = isMobile ?
   { left: "6%", right: "6%", bottom: "5%", top: "auto", transform: "none", maxWidth: "88%" } :
-  { left: "67%", right: "6%", top: "42%", transform: "translateY(-50%)", maxWidth: 500 };
+  { left: "60%", right: "5%", top: "8%", transform: "none", maxWidth: 540 };
 
   return (
     <>
@@ -57,21 +57,20 @@ export default function HeroIdle({ stage, isMobile, onStart }) {
           </div>
           <h1
             style={{
-              fontSize: isMobile ? "clamp(40px, 10vw, 52px)" : "clamp(52px, 5vw, 82px)",
-              fontWeight: 900,
+              fontSize: isMobile ? "clamp(38px, 10vw, 50px)" : "clamp(38px, 3.6vw, 58px)",
+              fontWeight: 800,
               color: "#fff",
-              fontFamily: "'Aileron', 'Heebo', sans-serif",
-              lineHeight: 1.0,
-              letterSpacing: "-0.03em",
+              fontFamily: "var(--font-heebo)",
+              lineHeight: 1.08,
+              letterSpacing: "-0.02em",
               margin: 0,
-              maxWidth: isMobile ? "100%" : 560,
+              maxWidth: isMobile ? "100%" : 540,
               textAlign: "right",
-              WebkitTextStroke: "1px rgba(0,0,0,0.5)",
-              textShadow: "0 4px 18px rgba(0,0,0,0.32)"
+              textShadow: "0 3px 16px rgba(0,0,0,0.4)"
             }}>
             
             <span style={{ display: "block" }}>כמה ידיים צריך</span>
-            <span style={{ display: "block", marginRight: isMobile ? 24 : 44 }}>כדי לנהל רווחה?</span>
+            <span style={{ display: "block" }}>כדי לנהל רווחה?</span>
           </h1>
         </motion.div>
 
