@@ -10,24 +10,18 @@ const CORAL = "#F26847";
 const WARM_WHITE = "#FBFAF8";
 
 const DARK_SCRIM =
-  "linear-gradient(to left, rgba(29,29,31,0.78) 0%, rgba(29,29,31,0.54) 46%, rgba(29,29,31,0.14) 80%, rgba(29,29,31,0) 100%)";
+  "linear-gradient(to left, rgba(29,29,31,0.8) 0%, rgba(29,29,31,0.55) 46%, rgba(29,29,31,0.14) 80%, rgba(29,29,31,0) 100%)";
 
-const buttonStyle = {
-  background: "#FFFFFF",
-  color: CHARCOAL,
-  border: "none",
-  cursor: "pointer",
-  padding: "0 34px",
-  height: 60,
-  borderRadius: 16,
-  fontSize: 19,
-  fontWeight: 800,
-  fontFamily: "var(--font-heebo)",
-  display: "inline-flex",
-  alignItems: "center",
-  gap: 12,
-  boxShadow: "0 6px 18px rgba(0,0,0,0.16)",
-};
+const TAGS = [
+  { word: "מתנות", x: "20%", y: "22%" },
+  { word: "ספקים", x: "33%", y: "14%" },
+  { word: "אירועים", x: "13%", y: "46%" },
+  { word: "הטבות", x: "24%", y: "68%" },
+  { word: "עובדים", x: "42%", y: "74%" },
+  { word: "אקסלים", x: "47%", y: "28%" },
+  { word: "תקלות", x: "36%", y: "56%" },
+];
+const CONVERGE = { x: "40%", y: "58%" };
 
 function CoralDot() {
   return (
@@ -44,60 +38,206 @@ function CoralDot() {
   );
 }
 
-function BeforeContent({ onStart, isMobile }) {
+const tagStyle = {
+  background: "rgba(255,255,255,0.93)",
+  color: CHARCOAL,
+  borderRadius: 999,
+  padding: "7px 14px",
+  fontSize: 16,
+  fontWeight: 600,
+  fontFamily: "var(--font-heebo)",
+  display: "inline-flex",
+  alignItems: "center",
+  gap: 7,
+  boxShadow: "0 4px 12px rgba(0,0,0,0.12)",
+  whiteSpace: "nowrap",
+};
+
+function IntroTags({ introPhase, isMobile }) {
+  const list = isMobile ? TAGS.slice(0, 4) : TAGS;
+  const stagger = isMobile ? 0.09 : 0.1;
   return (
-    <div style={{ textAlign: "right" }}>
-      <h1
-        style={{
-          fontSize: isMobile ? "clamp(40px, 11vw, 46px)" : "clamp(52px, 5.8vw, 70px)",
-          fontWeight: 700,
-          color: "#fff",
-          lineHeight: 1.06,
-          letterSpacing: "-0.02em",
-          margin: "0 0 22px",
-          maxWidth: isMobile ? "100%" : 620,
-          fontFamily: "var(--font-heebo)",
-        }}
-      >
-        כמה ידיים צריך כדי לנהל את כל הרווחה בארגון?
-      </h1>
-      <p
-        style={{
-          fontSize: "clamp(19px, 1.9vw, 22px)",
-          color: "rgba(255,255,255,0.85)",
-          lineHeight: 1.55,
-          margin: "0 0 30px",
-          maxWidth: 520,
-          fontWeight: 400,
-          fontFamily: "var(--font-heebo)",
-        }}
-      >
-        מתנות, ספקים, אירועים, הטבות, עובדים, אקסלים ותקלות. בסוף, הכל מגיע אלייך.
-      </p>
-      <motion.button
-        whileHover={{ y: -2, boxShadow: "0 14px 28px rgba(0,0,0,0.22)" }}
-        onClick={onStart}
-        style={buttonStyle}
-      >
-        הראו לי איך נראה השדרוג
-        <CoralDot />
-      </motion.button>
-      <p
-        style={{
-          fontSize: 14,
-          color: "rgba(255,255,255,0.65)",
-          margin: "16px 0 0",
-          fontWeight: 500,
-          fontFamily: "var(--font-heebo)",
-        }}
-      >
-        לחיצה אחת. פחות עומס. יותר ערך לעובדים.
-      </p>
+    <>
+      {list.map((tag, i) => (
+        <motion.div
+          key={tag.word}
+          initial={{ left: tag.x, top: tag.y }}
+          animate={
+            introPhase === "converge"
+              ? { left: CONVERGE.x, top: CONVERGE.y }
+              : { left: tag.x, top: tag.y }
+          }
+          transition={{ duration: introPhase === "converge" ? 0.45 : 0.4, ease: "easeInOut" }}
+          style={{ position: "absolute", zIndex: 7 }}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={
+              introPhase === "converge"
+                ? { opacity: 0, scale: 0.5 }
+                : introPhase === "headline"
+                ? { opacity: 1, scale: 1 }
+                : { opacity: 0, scale: 0.85 }
+            }
+            transition={
+              introPhase === "headline"
+                ? { duration: 0.3, delay: i * stagger, ease: "easeOut" }
+                : { duration: 0.45, ease: "easeIn" }
+            }
+            style={tagStyle}
+          >
+            {tag.word}
+            <CoralDot />
+          </motion.div>
+        </motion.div>
+      ))}
+    </>
+  );
+}
+
+function IntroHeadlineDesktop({ introPhase }) {
+  return (
+    <div
+      style={{
+        position: "absolute",
+        top: 0,
+        right: 0,
+        height: "100%",
+        width: "50%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        padding: "60px 48px 60px 24px",
+        zIndex: 6,
+      }}
+    >
+      <div style={{ overflow: "hidden", maxWidth: 560 }}>
+        <motion.div
+          initial={{ y: "110%" }}
+          animate={
+            introPhase === "converge"
+              ? { y: "0%", opacity: 0 }
+              : { y: "0%", opacity: 1 }
+          }
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div
+            style={{
+              background: "rgba(29,29,31,0.45)",
+              backdropFilter: "blur(8px)",
+              WebkitBackdropFilter: "blur(8px)",
+              borderRadius: 14,
+              padding: "18px 22px",
+              display: "inline-block",
+            }}
+          >
+            <h1
+              style={{
+                fontSize: "clamp(48px, 4.6vw, 56px)",
+                fontWeight: 700,
+                color: "#fff",
+                lineHeight: 1.1,
+                letterSpacing: "-0.02em",
+                margin: 0,
+                fontFamily: "var(--font-heebo)",
+                maxWidth: 520,
+              }}
+            >
+              כמה ידיים צריך כדי לנהל רווחה?
+            </h1>
+          </div>
+        </motion.div>
+      </div>
     </div>
   );
 }
 
+function IntroHeadlineMobile({ introPhase }) {
+  return (
+    <div style={{ overflow: "hidden" }}>
+      <motion.div
+        initial={{ y: "110%" }}
+        animate={
+          introPhase === "converge" ? { y: "0%", opacity: 0 } : { y: "0%", opacity: 1 }
+        }
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <h1
+          style={{
+            fontSize: "clamp(34px, 9vw, 40px)",
+            fontWeight: 700,
+            color: "#fff",
+            lineHeight: 1.12,
+            letterSpacing: "-0.02em",
+            margin: 0,
+            fontFamily: "var(--font-heebo)",
+          }}
+        >
+          כמה ידיים צריך כדי לנהל רווחה?
+        </h1>
+      </motion.div>
+    </div>
+  );
+}
+
+function IntroButton({ onClick, isMobile }) {
+  const style = {
+    background: "rgba(29,29,31,0.5)",
+    backdropFilter: "blur(10px)",
+    WebkitBackdropFilter: "blur(10px)",
+    color: "#fff",
+    border: "1px solid rgba(255,255,255,0.2)",
+    borderRadius: 15,
+    height: 54,
+    padding: "0 26px",
+    fontSize: 17,
+    fontWeight: 700,
+    fontFamily: "var(--font-heebo)",
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 10,
+    cursor: "pointer",
+    boxShadow: "0 6px 18px rgba(0,0,0,0.18)",
+  };
+  if (isMobile) {
+    return (
+      <div
+        style={{
+          position: "absolute",
+          bottom: 22,
+          left: 0,
+          right: 0,
+          display: "flex",
+          justifyContent: "center",
+          zIndex: 6,
+          pointerEvents: "none",
+        }}
+      >
+        <motion.button
+          onClick={onClick}
+          exit={{ opacity: 0, transition: { duration: 0.2 } }}
+          style={{ ...style, pointerEvents: "auto" }}
+        >
+          רוצה לשדרג?
+          <CoralDot />
+        </motion.button>
+      </div>
+    );
+  }
+  return (
+    <motion.button
+      onClick={onClick}
+      exit={{ opacity: 0, transition: { duration: 0.2 } }}
+      style={{ ...style, position: "absolute", top: 40, right: 48, zIndex: 6 }}
+    >
+      רוצה לשדרג?
+      <CoralDot />
+    </motion.button>
+  );
+}
+
 function AfterHeadline({ stage, isMobile }) {
+  const underlineWidth = isMobile ? 120 : 180;
   return (
     <h1
       style={{
@@ -138,8 +278,8 @@ function AfterHeadline({ stage, isMobile }) {
               position: "absolute",
               bottom: 0,
               right: 0,
-              height: 3,
-              width: "100%",
+              height: 2.5,
+              width: underlineWidth,
               background: CORAL,
               borderRadius: 2,
               transformOrigin: "right center",
@@ -170,7 +310,7 @@ function AfterContent({ stage, phase, onContinue, isMobile }) {
           fontFamily: "var(--font-heebo)",
         }}
       >
-        BoomBuy מרכזת את הרווחה, המתנות, ההטבות והשירות לעובדים במערכת אחת.
+        בום ביי מרכזת את הרווחה, המתנות, ההטבות והשירות לעובדים במערכת אחת.
       </motion.p>
       <motion.button
         initial={{ opacity: 0, y: 12 }}
@@ -178,7 +318,25 @@ function AfterContent({ stage, phase, onContinue, isMobile }) {
         transition={{ duration: 0.5, delay: 0.35, ease: "easeOut" }}
         whileHover={{ y: -2, boxShadow: "0 14px 28px rgba(0,0,0,0.22)" }}
         onClick={onContinue}
-        style={buttonStyle}
+        style={{
+          background: "#FFFFFF",
+          color: CHARCOAL,
+          border: "none",
+          cursor: "pointer",
+          width: "fit-content",
+          maxWidth: 330,
+          height: 56,
+          padding: "0 26px",
+          borderRadius: 16,
+          fontSize: 18,
+          fontWeight: 800,
+          fontFamily: "var(--font-heebo)",
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 10,
+          boxShadow: "0 6px 18px rgba(0,0,0,0.16)",
+          marginLeft: "auto",
+        }}
       >
         ומה העובדים מרגישים?
         <CoralDot />
@@ -189,6 +347,7 @@ function AfterContent({ stage, phase, onContinue, isMobile }) {
 
 export default function HeroTransformation() {
   const [phase, setPhase] = useState("before"); // "before" | "video" | "after"
+  const [introPhase, setIntroPhase] = useState("idle"); // "idle" | "headline" | "converge" | "done"
   const [isMobile, setIsMobile] = useState(false);
   const [outro, setOutro] = useState(false);
   const [headlineStage, setHeadlineStage] = useState(0);
@@ -209,7 +368,29 @@ export default function HeroTransformation() {
     img.src = AFTER_IMG;
   }, []);
 
-  // Outro sequence: headline stage 1 immediately, stage 2 at 350ms, crossfade at 400ms, flash at 550ms
+  // Intro: headline -> converge
+  useEffect(() => {
+    if (introPhase !== "headline") return;
+    const tagCount = isMobile ? 4 : 7;
+    const stagger = isMobile ? 0.09 : 0.1;
+    const firstTagDelay = isMobile ? 0.25 : 0.35;
+    const lastTagAppear = firstTagDelay + (tagCount - 1) * stagger;
+    const convergeStart = lastTagAppear + (isMobile ? 0.1 : 0.13);
+    const t1 = setTimeout(() => setIntroPhase("converge"), convergeStart * 1000);
+    return () => clearTimeout(t1);
+  }, [introPhase, isMobile]);
+
+  // Intro: converge -> video
+  useEffect(() => {
+    if (introPhase !== "converge") return;
+    const t2 = setTimeout(() => {
+      setIntroPhase("done");
+      setPhase("video");
+    }, 470);
+    return () => clearTimeout(t2);
+  }, [introPhase]);
+
+  // Outro sequence
   useEffect(() => {
     if (!outro) return;
     setHeadlineStage(1);
@@ -223,7 +404,7 @@ export default function HeroTransformation() {
     };
   }, [outro]);
 
-  const startVideo = () => setPhase("video");
+  const startIntro = () => setIntroPhase("headline");
 
   const handleTimeUpdate = () => {
     const v = videoRef.current;
@@ -233,7 +414,6 @@ export default function HeroTransformation() {
   };
 
   const handleEnded = () => {
-    // Ensure final state regardless of whether outro triggered
     setOutro(true);
     setHeadlineStage(2);
     setCrossfade(true);
@@ -257,9 +437,8 @@ export default function HeroTransformation() {
   const glowBackground =
     "radial-gradient(ellipse at 56% 42%, rgba(255,238,228,0.6) 0%, rgba(251,250,248,0.18) 52%, rgba(251,250,248,0) 78%)";
 
-  const renderMedia = (zShift) => (
+  const renderMedia = () => (
     <>
-      {/* Before-image */}
       <AnimatePresence>
         {phase === "before" && (
           <motion.img
@@ -272,7 +451,6 @@ export default function HeroTransformation() {
         )}
       </AnimatePresence>
 
-      {/* Video */}
       <AnimatePresence>
         {phase === "video" && (
           <motion.video
@@ -293,7 +471,6 @@ export default function HeroTransformation() {
         )}
       </AnimatePresence>
 
-      {/* After-image (crossfade during outro) */}
       {(outro || phase === "after") && (
         <motion.img
           key="after-media"
@@ -310,7 +487,6 @@ export default function HeroTransformation() {
         />
       )}
 
-      {/* Coral flash sweep */}
       {flash && (
         <motion.div
           initial={{ x: "130%" }}
@@ -330,7 +506,6 @@ export default function HeroTransformation() {
         />
       )}
 
-      {/* Soft top light on "glass" */}
       <div
         style={{
           position: "absolute",
@@ -343,6 +518,22 @@ export default function HeroTransformation() {
           zIndex: 4,
         }}
       />
+    </>
+  );
+
+  const introOverlays = (
+    <>
+      <AnimatePresence>
+        {introPhase === "idle" && (
+          <IntroButton key="intro-btn" onClick={startIntro} isMobile={isMobile} />
+        )}
+      </AnimatePresence>
+      {(introPhase === "headline" || introPhase === "converge") && (
+        <>
+          {!isMobile && <IntroHeadlineDesktop introPhase={introPhase} />}
+          <IntroTags introPhase={introPhase} isMobile={isMobile} />
+        </>
+      )}
     </>
   );
 
@@ -365,7 +556,6 @@ export default function HeroTransformation() {
           position: "relative",
         }}
       >
-        {/* Background glow */}
         <div
           style={{
             position: "absolute",
@@ -378,56 +568,55 @@ export default function HeroTransformation() {
           }}
         />
 
-        {/* Card */}
         <div
           style={{
             position: "relative",
             zIndex: 1,
-            height: isMobile ? "auto" : "min(88vh, 820px)",
             borderRadius: isMobile ? 22 : 34,
             overflow: "hidden",
             boxShadow: cardShadow,
+            background: "#fff",
           }}
         >
           {isMobile ? (
-            // ===== Mobile: charcoal text block above, media below =====
-            <div style={{ padding: 20, display: "flex", flexDirection: "column", gap: 18 }}>
+            <div style={{ padding: 20, display: "flex", flexDirection: "column", gap: 14 }}>
+              {/* Mobile intro headline panel (above media) */}
               <AnimatePresence>
-                {phase === "before" && (
+                {(introPhase === "headline" || introPhase === "converge") && phase === "before" && (
                   <motion.div
-                    key="before-mobile"
-                    exit={{ opacity: 0, transition: { duration: 0.3 } }}
+                    key="intro-headline-mobile"
+                    exit={{ opacity: 0, transition: { duration: 0.4 } }}
                     style={{
                       background: CHARCOAL,
-                      borderRadius: 22,
-                      padding: "28px 22px",
-                      boxShadow: "0 10px 30px rgba(0,0,0,0.12), inset 0 0 0 1px rgba(255,255,255,0.06)",
+                      borderRadius: 18,
+                      padding: "20px 18px",
                     }}
                   >
-                    <BeforeContent onStart={startVideo} isMobile={isMobile} />
-                  </motion.div>
-                )}
-                {(outro || phase === "after") && (
-                  <motion.div
-                    key="after-mobile"
-                    style={{
-                      background: CHARCOAL,
-                      borderRadius: 22,
-                      padding: "28px 22px",
-                      boxShadow: "0 10px 30px rgba(0,0,0,0.12), inset 0 0 0 1px rgba(255,255,255,0.06)",
-                    }}
-                  >
-                    <AfterContent
-                      stage={headlineStage}
-                      phase={phase}
-                      onContinue={scrollToDemo}
-                      isMobile={isMobile}
-                    />
+                    <IntroHeadlineMobile introPhase={introPhase} />
                   </motion.div>
                 )}
               </AnimatePresence>
 
-              {/* Media 16:9 */}
+              {/* Mobile after text block */}
+              {phase === "after" && (
+                <div
+                  style={{
+                    background: CHARCOAL,
+                    borderRadius: 22,
+                    padding: "28px 22px",
+                    boxShadow: "0 10px 30px rgba(0,0,0,0.12), inset 0 0 0 1px rgba(255,255,255,0.06)",
+                  }}
+                >
+                  <AfterContent
+                    stage={headlineStage}
+                    phase={phase}
+                    onContinue={scrollToDemo}
+                    isMobile={isMobile}
+                  />
+                </div>
+              )}
+
+              {/* Media container */}
               <div
                 style={{
                   position: "relative",
@@ -440,82 +629,61 @@ export default function HeroTransformation() {
                 }}
               >
                 {renderMedia()}
+                {phase === "before" && introOverlays}
               </div>
             </div>
           ) : (
-            // ===== Desktop: media as background, text overlay on right =====
             <>
-              {renderMedia()}
+              <div
+                style={{
+                  position: "relative",
+                  height: "min(88vh, 820px)",
+                }}
+              >
+                {renderMedia()}
 
-              {/* Text overlays */}
-              <AnimatePresence>
-                {phase === "before" && (
-                  <motion.div
-                    key="before-overlay"
-                    exit={{ opacity: 0, transition: { duration: 0.3 } }}
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      right: 0,
-                      height: "100%",
-                      width: "50%",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      padding: "60px 56px 60px 24px",
-                      zIndex: 6,
-                    }}
-                  >
-                    <div
+                {/* Intro overlays (desktop) */}
+                {phase === "before" && introOverlays}
+
+                {/* After overlay (desktop) */}
+                <AnimatePresence>
+                  {(outro || phase === "after") && (
+                    <motion.div
+                      key="after-overlay"
                       style={{
                         position: "absolute",
-                        inset: 0,
-                        background: DARK_SCRIM,
-                        borderRadius: 34,
-                        pointerEvents: "none",
+                        top: 0,
+                        right: 0,
+                        height: "100%",
+                        width: "50%",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        padding: "60px 56px 60px 24px",
+                        zIndex: 6,
                       }}
-                    />
-                    <div style={{ position: "relative" }}>
-                      <BeforeContent onStart={startVideo} isMobile={isMobile} />
-                    </div>
-                  </motion.div>
-                )}
-                {(outro || phase === "after") && (
-                  <motion.div
-                    key="after-overlay"
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      right: 0,
-                      height: "100%",
-                      width: "50%",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      padding: "60px 56px 60px 24px",
-                      zIndex: 6,
-                    }}
-                  >
-                    <div
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        background: DARK_SCRIM,
-                        borderRadius: 34,
-                        pointerEvents: "none",
-                      }}
-                    />
-                    <div style={{ position: "relative" }}>
-                      <AfterContent
-                        stage={headlineStage}
-                        phase={phase}
-                        onContinue={scrollToDemo}
-                        isMobile={isMobile}
+                    >
+                      <div
+                        style={{
+                          position: "absolute",
+                          inset: 0,
+                          background: DARK_SCRIM,
+                          borderRadius: 34,
+                          pointerEvents: "none",
+                        }}
                       />
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                      <div style={{ position: "relative" }}>
+                        <AfterContent
+                          stage={headlineStage}
+                          phase={phase}
+                          onContinue={scrollToDemo}
+                          isMobile={isMobile}
+                        />
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </>
           )}
         </div>
