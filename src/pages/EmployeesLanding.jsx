@@ -15,7 +15,7 @@ export default function EmployeesLanding() {
   return (
     <div
       dir="rtl"
-      style={{ overflowX: "hidden", maxWidth: "100vw" }}
+      style={{ overflowX: "hidden", maxWidth: "100vw", background: "#FBFAF8" }}
     >
       <GlobalHeader />
       <HeroTransformation />
