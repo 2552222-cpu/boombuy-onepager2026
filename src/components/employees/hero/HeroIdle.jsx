@@ -11,11 +11,11 @@ export default function HeroIdle({ stage, isMobile, onStart }) {
 
   const gradient = isMobile ?
   "linear-gradient(to top, rgba(29,29,31,0.78) 0%, rgba(29,29,31,0.4) 38%, rgba(29,29,31,0) 72%)" :
-  "linear-gradient(to left, rgba(29,29,31,0.75) 0%, rgba(29,29,31,0.45) 32%, rgba(29,29,31,0) 66%)";
+  "linear-gradient(to bottom, rgba(29,29,31,0.72) 0%, rgba(29,29,31,0.4) 22%, rgba(29,29,31,0.08) 42%, rgba(29,29,31,0) 58%)";
 
   const blockPos = isMobile ?
   { left: "6%", right: "6%", bottom: "5%", top: "auto", transform: "none", maxWidth: "88%" } :
-  { left: "60%", right: "5%", top: "8%", transform: "none", maxWidth: 540 };
+  { left: "58%", right: "5%", top: "6%", transform: "none", maxWidth: 520 };
 
   return (
     <>
@@ -78,27 +78,23 @@ export default function HeroIdle({ stage, isMobile, onStart }) {
           animate={btnFade}
           onClick={onStart}
           style={{
-            marginTop: 32,
-            background: CHARCOAL,
+            marginTop: 22,
+            background: "transparent",
             color: "#fff",
             border: "none",
             cursor: "pointer",
-            width: isMobile ? "88%" : 290,
-            height: 68,
-            borderRadius: 20,
-            fontSize: 18,
+            padding: 0,
+            fontSize: 19,
             fontWeight: 700,
             fontFamily: "var(--font-heebo)",
             display: "inline-flex",
             alignItems: "center",
-            justifyContent: "center",
-            gap: 10,
-            boxShadow: "0 8px 22px rgba(0,0,0,0.22)",
+            gap: 8,
+            textShadow: "0 2px 10px rgba(0,0,0,0.45)",
             pointerEvents: fading ? "none" : "auto"
           }}>
-          
-          לראות את השדרוג
-          <CoralDot />
+          <span>לראות את השדרוג</span>
+          <span style={{ fontSize: 17, opacity: 0.9 }}>→</span>
         </motion.button>
       </div>
     </>);
