@@ -11,26 +11,27 @@ export const AFTER_IMG =
 export const VIDEO_SRC =
   "https://media.base44.com/videos/public/69e48538aaee477b09fc7b49/fe014e428__23.mp4";
 
-// Convergence target — laptop center (desktop)
+// Convergence target — system / laptop center
 export const LAPTOP = { x: 50, y: 69 };
 
-// The six chaos words. First two enter on hero-load; the rest enter by video.currentTime.
-// All converge toward LAPTOP by video.currentTime.
+// Entry order: ספקים, מתנות, עובדים, הקצאות, שירות, הטבות
+// enterAt = seconds from click; convergeAt = seconds from video.currentTime
+// ox/oy = entry direction offset (px)
 export const CHAOS_WORDS = [
-  { word: "ספקים",  left: 9,  top: 58, fontSize: 38, rotate: -3, enterAt: 0.45, convergeAt: 1.68 },
-  { word: "הקצאות", left: 55, top: 76, fontSize: 34, rotate: 2,  enterAt: 1.05, convergeAt: 1.74 },
-  { word: "שירות",  left: 74, top: 58, fontSize: 32, rotate: -2, enterAt: 0.22, convergeAt: 1.80 },
-  { word: "מתנות",  left: 25, top: 74, fontSize: 40, rotate: 3,  enterAt: 0.48, convergeAt: 1.86 },
-  { word: "עובדים", left: 45, top: 82, fontSize: 36, rotate: -2, enterAt: 0.74, convergeAt: 1.92 },
-  { word: "הטבות",  left: 62, top: 20, fontSize: 38, rotate: 2,  enterAt: 1.00, convergeAt: 1.98 },
+  { word: "ספקים",  left: 7,  top: 55, fontSize: 54, rotate: -4, enterAt: 0.15, convergeAt: 0.55, ox: -72, oy: 0 },
+  { word: "מתנות",  left: 15, top: 25, fontSize: 48, rotate: 3,  enterAt: 0.27, convergeAt: 0.70, ox: -60, oy: -55 },
+  { word: "עובדים", left: 29, top: 81, fontSize: 50, rotate: -2, enterAt: 0.39, convergeAt: 0.85, ox: 0, oy: 78 },
+  { word: "הקצאות", left: 48, top: 77, fontSize: 46, rotate: 3,  enterAt: 0.51, convergeAt: 1.00, ox: 0, oy: 78 },
+  { word: "שירות",  left: 61, top: 57, fontSize: 48, rotate: -3, enterAt: 0.63, convergeAt: 1.15, ox: 72, oy: 0 },
+  { word: "הטבות",  left: 70, top: 76, fontSize: 54, rotate: 2,  enterAt: 0.75, convergeAt: 1.30, ox: 65, oy: 55 },
 ];
 
 export function CoralDot() {
   return (
     <span
       style={{
-        width: 7,
-        height: 7,
+        width: 8,
+        height: 8,
         borderRadius: "50%",
         background: CORAL,
         display: "inline-block",

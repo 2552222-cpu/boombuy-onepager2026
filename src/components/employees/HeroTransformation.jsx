@@ -8,10 +8,24 @@ import {
   CHARCOAL,
   WARM_WHITE,
   CoralDot,
+  CHAOS_WORDS,
 } from "./hero/heroShared";
 
 const cardShadow =
   "0 24px 70px rgba(0,0,0,0.14), 0 8px 24px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(255,255,255,0.3)";
+
+const LIGHT_GRADIENT =
+  "radial-gradient(circle at 52% 58%, rgba(255,255,255,0.20), rgba(240,120,88,0.08) 32%, transparent 58%)";
+
+// Shared container for all three media layers — prevents jump between video and ending image
+const baseMedia = {
+  position: "absolute",
+  inset: 0,
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
+  objectPosition: "center",
+};
 
 export default function HeroTransformation() {
   // idle | playing | ending | complete
@@ -19,12 +33,18 @@ export default function HeroTransformation() {
   const [isMobile, setIsMobile] = useState(false);
   const [videoTime, setVideoTime] = useState(0);
   const [videoStarted, setVideoStarted] = useState(false);
-  const [wordsActive, setWordsActive] = useState(true);
-  const [w0In, setW0In] = useState(false);
-  const [w1In, setW1In] = useState(false);
-  const [forceIn, setForceIn] = useState(false);
+  const [wordsActive, setWordsActive] = useState(false);
+  const [enteredWords, setEnteredWords] = useState({});
   const [buttonGone, setButtonGone] = useState(false);
+  const [lightId, setLightId] = useState(0);
   const videoRef = useRef(null);
+  const timers = useRef([]);
+
+  const clearTimers = () => {
+    timers.current.forEach((t) => clearTimeout(t));
+    timers.current = [];
+  };
+  useEffect(() => () => clearTimers(), []);
 
   useEffect(() => {
     const c = () => setIsMobile(window.innerWidth < 768);
@@ -33,39 +53,33 @@ export default function HeroTransformation() {
     return () => window.removeEventListener("resize", c);
   }, []);
 
+  // Preload ending image before the video starts
   useEffect(() => {
     const img = new Image();
     img.src = AFTER_IMG;
   }, []);
 
-  // Auto entry of the first two words on hero load
-  useEffect(() => {
-    if (forceIn) return; // early click forces them in immediately
-    const t0 = setTimeout(() => setW0In(true), 450);
-    const t1 = setTimeout(() => setW1In(true), 1050);
-    return () => {
-      clearTimeout(t0);
-      clearTimeout(t1);
-    };
-  }, [forceIn]);
+  const triggerLight = () => setLightId((id) => id + 1);
 
-  const startVideo = () => {
-    setVideoStarted(true);
-    setStage("playing");
-  };
-
-  // Handle early click: force the two words in, wait 220ms, then play
   const onStart = () => {
     if (buttonGone) return;
     setButtonGone(true);
-    if (!w0In || !w1In) {
-      setForceIn(true);
-      setW0In(true);
-      setW1In(true);
-      setTimeout(startVideo, 220);
-    } else {
-      startVideo();
-    }
+    // Create the words layer now; words themselves enter on their stagger timers
+    setWordsActive(true);
+    CHAOS_WORDS.forEach((w) => {
+      const t = setTimeout(
+        () => setEnteredWords((s) => ({ ...s, [w.word]: true })),
+        w.enterAt * 1000
+      );
+      timers.current.push(t);
+    });
+    // Start the video 1.15s after the click, with the crossfade + light flash
+    const vt = setTimeout(() => {
+      setVideoStarted(true);
+      setStage("playing");
+      triggerLight();
+    }, 1150);
+    timers.current.push(vt);
   };
 
   const onTimeUpdate = () => {
@@ -73,8 +87,11 @@ export default function HeroTransformation() {
     if (!v) return;
     setVideoTime(v.currentTime || 0);
     if (v.duration && isFinite(v.duration)) {
-      if (v.currentTime >= 2.3 && wordsActive) setWordsActive(false);
-      if (v.currentTime >= v.duration - 0.75 && stage === "playing") setStage("ending");
+      if (v.currentTime >= 1.7 && wordsActive) setWordsActive(false);
+      if (v.currentTime >= v.duration - 0.75 && stage === "playing") {
+        setStage("ending");
+        triggerLight();
+      }
     }
   };
 
@@ -82,8 +99,6 @@ export default function HeroTransformation() {
 
   const scrollToDemo = () =>
     document.getElementById("demo-form-section")?.scrollIntoView({ behavior: "smooth" });
-
-  const baseMedia = { position: "absolute", inset: 0, width: "100%", height: "100%" };
 
   const showOpening = stage === "idle" || stage === "playing";
   const showVideo = stage === "playing" || stage === "ending";
@@ -94,10 +109,6 @@ export default function HeroTransformation() {
     aspectRatio: "16 / 9",
     maxHeight: "calc(100svh - 90px)",
   };
-
-  const imgFit = isMobile ? "contain" : "cover";
-  const vidFit = isMobile ? "contain" : "cover";
-  const vidPos = isMobile ? "center" : "center bottom";
 
   const btnBase = {
     position: "absolute",
@@ -141,16 +152,23 @@ export default function HeroTransformation() {
             ...(isMobile ? { width: "100%", height: "82svh" } : desktopSize),
           }}
         >
-          {/* Opening image — headline is built into the PNG */}
+          {/* Opening image — static until the click, then crossfades out */}
           {showOpening && (
-            <img
+            <motion.img
               src={BEFORE_IMG}
               alt="מנהלת רווחה בעומס"
-              style={{ ...baseMedia, objectFit: imgFit, objectPosition: "center", zIndex: 1 }}
+              initial={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
+              animate={
+                stage === "playing"
+                  ? { opacity: 0, filter: "blur(4px)", scale: 1.012 }
+                  : { opacity: 1, filter: "blur(0px)", scale: 1 }
+              }
+              transition={{ duration: stage === "playing" ? 0.65 : 0, ease: "easeInOut" }}
+              style={{ ...baseMedia, zIndex: 1 }}
             />
           )}
 
-          {/* Video — crossfades over the opening image (320ms) */}
+          {/* Video — crossfades in over the opening image (650ms), then out to ending (700ms) */}
           {showVideo && (
             <motion.video
               ref={videoRef}
@@ -162,31 +180,44 @@ export default function HeroTransformation() {
               preload="auto"
               onTimeUpdate={onTimeUpdate}
               onEnded={onEnded}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.32, ease: "easeInOut" }}
-              style={{ ...baseMedia, objectFit: vidFit, objectPosition: vidPos, background: "#000", zIndex: 1 }}
+              initial={{ opacity: 0, filter: "blur(4px)", scale: 0.988 }}
+              animate={
+                stage === "ending"
+                  ? { opacity: 0, filter: "blur(4px)", scale: 1.012 }
+                  : { opacity: 1, filter: "blur(0px)", scale: 1 }
+              }
+              transition={{ duration: stage === "ending" ? 0.7 : 0.65, ease: "easeInOut" }}
+              style={{ ...baseMedia, background: "#000", zIndex: 1 }}
             />
           )}
 
-          {/* Ending image — crossfades in over the last 0.75s of the video */}
+          {/* Ending image — crossfades in over the last 0.75s of the video (700ms) */}
           {showEnding && (
             <motion.img
               src={AFTER_IMG}
               alt="מנהלת רווחה רגועה מול מערכת boombuy"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.75, ease: "easeOut" }}
-              style={{ ...baseMedia, objectFit: imgFit, objectPosition: "center", zIndex: 2 }}
+              initial={{ opacity: 0, filter: "blur(4px)", scale: 0.988 }}
+              animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
+              transition={{ duration: 0.7, ease: "easeInOut" }}
+              style={{ ...baseMedia, zIndex: 2 }}
             />
           )}
 
-          {/* Chaos words layer — persistent across opening→video, unmounts at video.currentTime 2.30 */}
+          {/* Local light flash during transitions — opacity 0 -> 0.22 -> 0 over 420ms */}
+          {lightId > 0 && (
+            <motion.div
+              key={lightId}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 0.22, 0] }}
+              transition={{ duration: 0.42, ease: "easeOut" }}
+              style={{ position: "absolute", inset: 0, background: LIGHT_GRADIENT, zIndex: 15, pointerEvents: "none" }}
+            />
+          )}
+
+          {/* Chaos words layer — created on click, persists across opening->video, unmounts at video.currentTime 1.70 */}
           {wordsActive && (
             <ChaosWordsLayer
-              w0In={w0In}
-              w1In={w1In}
-              forceIn={forceIn}
+              enteredWords={enteredWords}
               videoStarted={videoStarted}
               videoTime={videoTime}
               isMobile={isMobile}
@@ -199,7 +230,7 @@ export default function HeroTransformation() {
               onClick={onStart}
               initial={{ opacity: 1, y: 0 }}
               animate={{ opacity: buttonGone ? 0 : 1, y: buttonGone ? 10 : 0 }}
-              transition={{ duration: 0.18, ease: "easeOut" }}
+              transition={{ duration: 0.15, ease: "easeOut" }}
               whileHover={{ y: buttonGone ? 10 : -2 }}
               style={{
                 ...btnBase,
