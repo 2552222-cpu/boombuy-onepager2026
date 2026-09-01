@@ -1,44 +1,30 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import HeroIdle from "./hero/HeroIdle";
-import HeroLabels from "./hero/HeroLabels";
-import { AfterContent } from "./hero/heroShared";
+import ChaosWordsLayer from "./hero/ChaosWordsLayer";
 import {
   BEFORE_IMG,
   AFTER_IMG,
   VIDEO_SRC,
   CHARCOAL,
   WARM_WHITE,
-  LAPTOP,
+  CoralDot,
 } from "./hero/heroShared";
-
-const DARK_SCRIM =
-  "linear-gradient(to left, rgba(29,29,31,0.8) 0%, rgba(29,29,31,0.55) 46%, rgba(29,29,31,0.14) 80%, rgba(29,29,31,0) 100%)";
 
 const cardShadow =
   "0 24px 70px rgba(0,0,0,0.14), 0 8px 24px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(255,255,255,0.3)";
 
 export default function HeroTransformation() {
-  const [stage, setStage] = useState("idle"); // idle | labels | introTransition | playing | ending | complete
+  // idle | playing | ending | complete
+  const [stage, setStage] = useState("idle");
   const [isMobile, setIsMobile] = useState(false);
-  const [crossfade, setCrossfade] = useState(false);
-  const [localFlash, setLocalFlash] = useState(false);
-  const [headlineStage, setHeadlineStage] = useState(0);
-  const [outroCrossfade, setOutroCrossfade] = useState(false);
-  const [outroFlash, setOutroFlash] = useState(false);
+  const [videoTime, setVideoTime] = useState(0);
+  const [videoStarted, setVideoStarted] = useState(false);
+  const [wordsActive, setWordsActive] = useState(true);
+  const [w0In, setW0In] = useState(false);
+  const [w1In, setW1In] = useState(false);
+  const [forceIn, setForceIn] = useState(false);
+  const [buttonGone, setButtonGone] = useState(false);
   const videoRef = useRef(null);
-  const timers = useRef([]);
-
-  const clearTimers = () => {
-    timers.current.forEach((t) => clearTimeout(t));
-    timers.current = [];
-  };
-  const addTimer = (fn, ms) => {
-    const t = setTimeout(fn, ms);
-    timers.current.push(t);
-  };
-
-  useEffect(() => () => clearTimers(), []);
 
   useEffect(() => {
     const c = () => setIsMobile(window.innerWidth < 768);
@@ -52,55 +38,56 @@ export default function HeroTransformation() {
     img.src = AFTER_IMG;
   }, []);
 
-  // idle -> labels -> introTransition
-  const startIntro = () => {
-    clearTimers();
-    setStage("labels");
-    addTimer(() => setStage("introTransition"), 3800);
+  // Auto entry of the first two words on hero load
+  useEffect(() => {
+    if (forceIn) return; // early click forces them in immediately
+    const t0 = setTimeout(() => setW0In(true), 450);
+    const t1 = setTimeout(() => setW1In(true), 1050);
+    return () => {
+      clearTimeout(t0);
+      clearTimeout(t1);
+    };
+  }, [forceIn]);
+
+  const startVideo = () => {
+    setVideoStarted(true);
+    setStage("playing");
   };
 
-  // introTransition -> playing (local flash + clean crossfade into video)
-  useEffect(() => {
-    if (stage !== "introTransition") return;
-    addTimer(() => setLocalFlash(true), 500);
-    addTimer(() => setLocalFlash(false), 1050);
-    addTimer(() => setCrossfade(true), 650);
-    addTimer(() => setStage("playing"), 1300);
-  }, [stage]);
-
-  // video time tracking -> ending at duration - 0.9
-  const handleTimeUpdate = () => {
-    const v = videoRef.current;
-    if (!v || !v.duration || !isFinite(v.duration)) return;
-    if (v.currentTime >= v.duration - 0.9 && stage === "playing") {
-      setStage("ending");
+  // Handle early click: force the two words in, wait 220ms, then play
+  const onStart = () => {
+    if (buttonGone) return;
+    setButtonGone(true);
+    if (!w0In || !w1In) {
+      setForceIn(true);
+      setW0In(true);
+      setW1In(true);
+      setTimeout(startVideo, 220);
+    } else {
+      startVideo();
     }
   };
 
-  // ending -> approved outro effect
-  useEffect(() => {
-    if (stage !== "ending") return;
-    setHeadlineStage(1);
-    setOutroCrossfade(true);
-    addTimer(() => setOutroFlash(true), 200);
-    addTimer(() => setHeadlineStage(2), 350);
-  }, [stage]);
-
-  const handleEnded = () => {
-    setHeadlineStage(2);
-    setOutroCrossfade(true);
-    setStage("complete");
+  const onTimeUpdate = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    setVideoTime(v.currentTime || 0);
+    if (v.duration && isFinite(v.duration)) {
+      if (v.currentTime >= 2.3 && wordsActive) setWordsActive(false);
+      if (v.currentTime >= v.duration - 0.75 && stage === "playing") setStage("ending");
+    }
   };
+
+  const onEnded = () => setStage("complete");
 
   const scrollToDemo = () =>
     document.getElementById("demo-form-section")?.scrollIntoView({ behavior: "smooth" });
 
   const baseMedia = { position: "absolute", inset: 0, width: "100%", height: "100%" };
 
-  const showBefore = stage === "idle" || stage === "labels" || stage === "introTransition";
-  const showVideo = crossfade && stage !== "complete";
-  const showAfter = stage === "ending" || stage === "complete";
-  const afterPhase = stage === "complete" ? "after" : "ending";
+  const showOpening = stage === "idle" || stage === "playing";
+  const showVideo = stage === "playing" || stage === "ending";
+  const showEnding = stage === "ending" || stage === "complete";
 
   const desktopSize = {
     width: "min(calc((100svh - 90px) * 16 / 9), calc(100vw - 64px), 1600px)",
@@ -108,8 +95,27 @@ export default function HeroTransformation() {
     maxHeight: "calc(100svh - 90px)",
   };
 
-  const objFit = isMobile ? "contain" : "cover";
-  const objPos = isMobile ? "center" : "center bottom";
+  const imgFit = isMobile ? "contain" : "cover";
+  const vidFit = isMobile ? "contain" : "cover";
+  const vidPos = isMobile ? "center" : "center bottom";
+
+  const btnBase = {
+    position: "absolute",
+    background: CHARCOAL,
+    color: "#fff",
+    border: "none",
+    cursor: "pointer",
+    borderRadius: 16,
+    fontFamily: "var(--font-heebo)",
+    fontWeight: 800,
+    fontSize: 18,
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 10,
+    zIndex: 30,
+    boxShadow: "0 8px 22px rgba(0,0,0,0.22)",
+  };
 
   return (
     <section
@@ -135,16 +141,16 @@ export default function HeroTransformation() {
             ...(isMobile ? { width: "100%", height: "82svh" } : desktopSize),
           }}
         >
-          {/* before image */}
-          {showBefore && (
-            <motion.img
+          {/* Opening image — headline is built into the PNG */}
+          {showOpening && (
+            <img
               src={BEFORE_IMG}
               alt="מנהלת רווחה בעומס"
-              style={{ ...baseMedia, objectFit: objFit, objectPosition: objPos, zIndex: 1 }}
+              style={{ ...baseMedia, objectFit: imgFit, objectPosition: "center", zIndex: 1 }}
             />
           )}
 
-          {/* video — fades in over the before image during introTransition */}
+          {/* Video — crossfades over the opening image (320ms) */}
           {showVideo && (
             <motion.video
               ref={videoRef}
@@ -153,131 +159,81 @@ export default function HeroTransformation() {
               autoPlay
               muted
               playsInline
-              preload="metadata"
-              onTimeUpdate={handleTimeUpdate}
-              onEnded={handleEnded}
+              preload="auto"
+              onTimeUpdate={onTimeUpdate}
+              onEnded={onEnded}
               initial={{ opacity: 0 }}
-              animate={{ opacity: crossfade ? 1 : 0 }}
-              transition={{ duration: 0.65, ease: "easeInOut" }}
-              style={{ ...baseMedia, objectFit: objFit, objectPosition: objPos, background: "#000", zIndex: 1 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.32, ease: "easeInOut" }}
+              style={{ ...baseMedia, objectFit: vidFit, objectPosition: vidPos, background: "#000", zIndex: 1 }}
             />
           )}
 
-          {/* after image — ending/complete */}
-          {showAfter && (
+          {/* Ending image — crossfades in over the last 0.75s of the video */}
+          {showEnding && (
             <motion.img
               src={AFTER_IMG}
               alt="מנהלת רווחה רגועה מול מערכת boombuy"
               initial={{ opacity: 0 }}
-              animate={{ opacity: outroCrossfade || stage === "complete" ? 1 : 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              style={{ ...baseMedia, objectFit: objFit, objectPosition: "center", zIndex: 2 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.75, ease: "easeOut" }}
+              style={{ ...baseMedia, objectFit: imgFit, objectPosition: "center", zIndex: 2 }}
             />
           )}
 
-          {/* idle overlay (gradient + headline + button) */}
-          <HeroIdle stage={stage} isMobile={isMobile} onStart={startIntro} />
-
-          {/* floating words */}
-          <HeroLabels stage={stage} isMobile={isMobile} />
-
-          {/* local flash at laptop (introTransition only) */}
-          {localFlash && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.6 }}
-              animate={{ opacity: [0, 0.32, 0], scale: [0.6, 1, 1.12] }}
-              transition={{ duration: 0.55, ease: "easeOut" }}
-              style={{
-                position: "absolute",
-                left: `${LAPTOP.x}%`,
-                top: `${LAPTOP.y}%`,
-                width: 440,
-                height: 440,
-                marginLeft: -220,
-                marginTop: -220,
-                background:
-                  "radial-gradient(circle, rgba(255,250,245,0.95) 0%, rgba(242,104,71,0.5) 42%, transparent 70%)",
-                zIndex: 5,
-                pointerEvents: "none",
-              }}
+          {/* Chaos words layer — persistent across opening→video, unmounts at video.currentTime 2.30 */}
+          {wordsActive && (
+            <ChaosWordsLayer
+              w0In={w0In}
+              w1In={w1In}
+              forceIn={forceIn}
+              videoStarted={videoStarted}
+              videoTime={videoTime}
+              isMobile={isMobile}
             />
           )}
 
-          {/* end screen overlay (ending/complete) — approved design */}
-          {(stage === "ending" || stage === "complete") &&
-            (isMobile ? (
-              <div
-                style={{
-                  position: "absolute",
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  background: CHARCOAL,
-                  padding: "24px 20px 22px",
-                  zIndex: 6,
-                  borderTopLeftRadius: 22,
-                  borderTopRightRadius: 22,
-                }}
-              >
-                <AfterContent
-                  stage={headlineStage}
-                  phase={afterPhase}
-                  onContinue={scrollToDemo}
-                  isMobile={isMobile}
-                />
-              </div>
-            ) : (
-              <div
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  right: 0,
-                  height: "100%",
-                  width: "50%",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  padding: "60px 56px 60px 24px",
-                  zIndex: 6,
-                }}
-              >
-                <div
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    background: DARK_SCRIM,
-                    pointerEvents: "none",
-                  }}
-                />
-                <div style={{ position: "relative" }}>
-                  <AfterContent
-                    stage={headlineStage}
-                    phase={afterPhase}
-                    onContinue={scrollToDemo}
-                    isMobile={isMobile}
-                  />
-                </div>
-              </div>
-            ))}
-
-          {/* outro coral flash (ending) — approved */}
-          {outroFlash && (
-            <motion.div
-              initial={{ x: "130%" }}
-              animate={{ x: "-130%" }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
+          {/* Opening live button */}
+          {(stage === "idle" || stage === "playing") && (
+            <motion.button
+              onClick={onStart}
+              initial={{ opacity: 1, y: 0 }}
+              animate={{ opacity: buttonGone ? 0 : 1, y: buttonGone ? 10 : 0 }}
+              transition={{ duration: 0.18, ease: "easeOut" }}
+              whileHover={{ y: buttonGone ? 10 : -2 }}
               style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                height: "100%",
-                width: "55%",
-                background:
-                  "linear-gradient(to left, transparent 0%, rgba(242,104,71,0.28) 50%, transparent 100%)",
-                zIndex: 7,
-                pointerEvents: "none",
+                ...btnBase,
+                right: "7%",
+                bottom: "10%",
+                width: 230,
+                height: 56,
+                pointerEvents: buttonGone ? "none" : "auto",
               }}
-            />
+            >
+              לראות את השדרוג
+              <CoralDot />
+            </motion.button>
+          )}
+
+          {/* Ending live button */}
+          {stage === "complete" && (
+            <motion.button
+              onClick={scrollToDemo}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              whileHover={{ y: -2 }}
+              style={{
+                ...btnBase,
+                right: "7%",
+                top: "65%",
+                width: 240,
+                height: 54,
+              }}
+            >
+              ומה העובדים מרגישים?
+              <CoralDot />
+            </motion.button>
           )}
         </div>
       </div>
