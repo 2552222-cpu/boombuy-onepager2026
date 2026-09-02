@@ -18,12 +18,12 @@ export const LAPTOP = { x: 50, y: 69 };
 // enterAt = seconds from click; convergeAt = seconds from video.currentTime
 // ox/oy = entry direction offset (px)
 export const CHAOS_WORDS = [
-  { word: "ספקים",  left: 7,  top: 55, fontSize: 54, rotate: -4, enterAt: 0.15, convergeAt: 0.55, ox: -72, oy: 0 },
-  { word: "מתנות",  left: 15, top: 25, fontSize: 48, rotate: 3,  enterAt: 0.27, convergeAt: 0.70, ox: -60, oy: -55 },
-  { word: "עובדים", left: 29, top: 81, fontSize: 50, rotate: -2, enterAt: 0.39, convergeAt: 0.85, ox: 0, oy: 78 },
-  { word: "הקצאות", left: 48, top: 77, fontSize: 46, rotate: 3,  enterAt: 0.51, convergeAt: 1.00, ox: 0, oy: 78 },
-  { word: "שירות",  left: 61, top: 57, fontSize: 48, rotate: -3, enterAt: 0.63, convergeAt: 1.15, ox: 72, oy: 0 },
-  { word: "הטבות",  left: 70, top: 76, fontSize: 54, rotate: 2,  enterAt: 0.75, convergeAt: 1.30, ox: 65, oy: 55 },
+  { word: "עובדים",   left: 7,  top: 55, fontSize: 54, rotate: -4, enterAt: 0.15, convergeAt: 0.55, ox: -72, oy: 0 },
+  { word: "ספקים",    left: 15, top: 25, fontSize: 48, rotate: 3,  enterAt: 0.27, convergeAt: 0.70, ox: -60, oy: -55 },
+  { word: "מתנה",    left: 29, top: 81, fontSize: 50, rotate: -2, enterAt: 0.39, convergeAt: 0.85, ox: 0, oy: 78 },
+  { word: "יום הולדת", left: 48, top: 77, fontSize: 38, rotate: 3,  enterAt: 0.51, convergeAt: 1.00, ox: 0, oy: 78 },
+  { word: "הקצאות",   left: 61, top: 57, fontSize: 48, rotate: -3, enterAt: 0.63, convergeAt: 1.15, ox: 72, oy: 0 },
+  { word: "שירות",    left: 70, top: 76, fontSize: 54, rotate: 2,  enterAt: 0.75, convergeAt: 1.30, ox: 65, oy: 55 },
 ];
 
 export function CoralDot() {
