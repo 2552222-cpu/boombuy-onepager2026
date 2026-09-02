@@ -15,12 +15,9 @@ const cardShadow =
   "0 24px 70px rgba(0,0,0,0.14), 0 8px 24px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(255,255,255,0.3)";
 
 // Opening -> video transition light (hides the frame swap)
-const LIGHT_GRADIENT_OPENING =
-  "radial-gradient(circle at 52% 58%, rgba(255,255,255,0.96) 0%, rgba(255,244,239,0.84) 22%, rgba(240,120,88,0.32) 44%, rgba(255,255,255,0) 72%)";
-
-// Ending transition light (unchanged)
-const LIGHT_GRADIENT_ENDING =
-  "radial-gradient(circle at 52% 58%, rgba(255,255,255,0.20), rgba(240,120,88,0.08) 32%, transparent 58%)";
+// Solid white — used for the full-screen camera-flash blinds at each cut
+const LIGHT_GRADIENT_OPENING = "#FFFFFF";
+const LIGHT_GRADIENT_ENDING = "#FFFFFF";
 
 // Shared container for all media layers — prevents any size/crop jump
 const baseMedia = {
@@ -32,7 +29,7 @@ const baseMedia = {
   objectPosition: "center",
 };
 
-const TRANSITION_MS = 780;
+const TRANSITION_MS = 1000;
 const REDUCED_MS = 400;
 
 export default function HeroTransformation() {
@@ -144,10 +141,13 @@ export default function HeroTransformation() {
     if (!v) return;
     setVideoTime(v.currentTime || 0);
     if (v.duration && isFinite(v.duration)) {
-      if (v.currentTime >= 3.2 && wordsActive) setWordsActive(false);
-      if (v.currentTime >= v.duration - 1.0 && stage === "playing") {
+      if (v.currentTime >= 3.0 && wordsActive) setWordsActive(false);
+      if (v.currentTime >= v.duration - 1.5 && stage === "playing") {
+        try { v.pause(); } catch (e) {}
         setStage("ending");
         setLightId((id) => id + 1);
+        const t = setTimeout(() => setStage("complete"), 1000);
+        timers.current.push(t);
       }
     }
   };
@@ -194,7 +194,7 @@ export default function HeroTransformation() {
           scale: [0.982, 0.982, 0.982, 1],
         }
     : stage === "ending"
-    ? { opacity: 0, filter: "blur(4px)", scale: 1.012 }
+    ? { opacity: 1, filter: "blur(0px)", scale: 1.012 }
     : { opacity: videoVisible ? 1 : 0, filter: "blur(0px)", scale: 1 };
   const videoTransitionCfg = openingTransition
     ? reducedMotion
@@ -289,19 +289,14 @@ export default function HeroTransformation() {
           {/* Opening -> video transition light (expands from table/laptop center, hides the frame swap) */}
           {openingTransition && !reducedMotion && (
             <motion.div
-              initial={{ opacity: 0, scale: 0.65 }}
-              animate={{
-                opacity: [0, 0.72, 0.72, 0],
-                scale: [0.65, 1.35, 1.35, 1.65],
-              }}
-              transition={{ duration: TRANSITION_MS / 1000, ease: "easeOut", times: [0, 0.359, 0.5, 1] }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 0.97, 0.97, 0] }}
+              transition={{ duration: TRANSITION_MS / 1000, ease: "easeOut", times: [0, 0.2, 0.7, 1] }}
               style={{
                 position: "absolute",
                 inset: 0,
                 background: LIGHT_GRADIENT_OPENING,
-                mixBlendMode: "screen",
-                transformOrigin: "52% 58%",
-                zIndex: 15,
+                zIndex: 25,
                 pointerEvents: "none",
               }}
             />
@@ -312,9 +307,9 @@ export default function HeroTransformation() {
             <motion.div
               key={lightId}
               initial={{ opacity: 0 }}
-              animate={{ opacity: [0, 0.22, 0] }}
-              transition={{ duration: 0.42, ease: "easeOut" }}
-              style={{ position: "absolute", inset: 0, background: LIGHT_GRADIENT_ENDING, zIndex: 15, pointerEvents: "none" }}
+              animate={{ opacity: [0, 0.97, 0.97, 0] }}
+              transition={{ duration: 0.75, ease: "easeOut", times: [0, 0.2, 0.85, 1] }}
+              style={{ position: "absolute", inset: 0, background: LIGHT_GRADIENT_ENDING, zIndex: 25, pointerEvents: "none" }}
             />
           )}
 
