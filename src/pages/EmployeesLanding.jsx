@@ -19,8 +19,9 @@ export default function EmployeesLanding() {
     >
       <GlobalHeader />
       <HeroTransformation />
-          <ComparisonSection />
           <TrustLogos />
+          <div id="employee-experience" />
+          <ComparisonSection />
           <React.Suspense fallback={<div style={{ height: 300 }} />}>
             <EconomicSection />
           </React.Suspense>

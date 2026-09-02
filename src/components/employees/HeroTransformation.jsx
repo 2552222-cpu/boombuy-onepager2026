@@ -160,7 +160,7 @@ export default function HeroTransformation() {
   };
 
   const scrollToDemo = () =>
-    document.getElementById("demo-form-section")?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById("employee-experience")?.scrollIntoView({ behavior: "smooth" });
 
   const desktopSize = {
     width: "min(calc((100svh - 90px) * 16 / 9), calc(100vw - 64px), 1600px)",

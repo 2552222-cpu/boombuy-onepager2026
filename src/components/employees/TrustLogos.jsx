@@ -1,294 +1,172 @@
-import React from "react";
-import { logoList, rowA, rowB } from "../../utils/logoData";
+import React, { useEffect, useRef } from "react";
+import { base44 } from "@/api/base44Client";
+import { rowA, rowB } from "../../utils/logoData";
 
-// Desktop: horizontal marquee rows
-function HRow({ items, dir = "left", duration = 85 }) {
-  const trackClass = dir === "left" ? "jci-track jci-left" : "jci-track jci-right";
+const CHARCOAL = "#17191D";
+const CORAL = "#F47A5A";
+const BG = "#F7F7F4";
+
+// Horizontal marquee rail. dir="left" => content slides right-to-left (top rail).
+// dir="right" => content slides left-to-right (bottom rail).
+// Seamless loop: each logo carries its own horizontal margin (no flex gap), so the
+// track is exactly 2x one set and translateX(-50%) aligns the duplicated set perfectly.
+function Rail({ items, dir = "left", duration = 90 }) {
+  const trackClass = dir === "left" ? "tl-track tl-left" : "tl-track tl-right";
   return (
-    <div className="jci-row">
-      <div className={trackClass} style={{ ["--jci-dur"]: `${duration}s` }}>
-        {[...items, ...items].map((src, i) => {
-          const logoObj = logoList.find(l => l.url === src);
-          const logoIndex = logoList.findIndex(l => l.url === src);
-          return (
-            <div key={`${src}-${i}`} className="jci-logoCard" data-logo-index={logoIndex}>
-              <img src={src} alt={logoObj?.name || "לוגו לקוח"} loading="lazy" decoding="async" width="200" height="100" />
-            </div>
-          );
-        })}
+    <div className="tl-row" data-dir={dir}>
+      <div className={trackClass} style={{ ["--tl-dur"]: `${duration}s` }}>
+        {[...items, ...items].map((src, i) => (
+          <img
+            key={`${src}-${i}`}
+            src={src}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="tl-logo"
+          />
+        ))}
       </div>
     </div>
   );
 }
-
-// Mobile: vertical marquee column
-function VCol({ items, dir = "up", duration = 30 }) {
-  const animClass = dir === "up" ? "jci-vcol-up" : "jci-vcol-down";
-  return (
-    <div className="jci-vcol-wrap">
-      <div className={`jci-vcol-track ${animClass}`} style={{ ["--jci-vdur"]: `${duration}s` }}>
-        {[...items, ...items].map((src, i) => {
-          const logoObj = logoList.find(l => l.url === src);
-          return (
-            <div key={`${src}-${i}`} className="jci-vcol-card">
-              <img src={src} alt={logoObj?.name || "לוגו לקוח"} loading="lazy" />
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-// Reorder rowA so לאומי (index 0) and דלק (index 22) appear at positions 1-2 (visible on load)
-const colA = (() => {
-  // rowA has לאומי at pos 7, דלק at pos 4 → rotate so דלק is at pos 1
-  const arr = [...rowA];
-  const dIdx = arr.findIndex(url => logoList.find(l => l.url === url)?.name === "דלק");
-  return [...arr.slice(dIdx - 1), ...arr.slice(0, dIdx - 1)];
-})();
-
-const colB = [...rowB];
 
 export default function TrustLogos() {
+  const sectionRef = useRef(null);
+  const firedRef = useRef(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting && !firedRef.current) {
+            firedRef.current = true;
+            try {
+              base44.analytics.track({ eventName: "trust_logos_view" });
+            } catch (err) {
+              /* analytics must never break the UI */
+            }
+            io.disconnect();
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
-    <section id="logo-wall-section" className="jci-logoWall">
+    <section ref={sectionRef} id="trust-logos-section" className="tl-wall" dir="rtl">
       <style>{`
-        .jci-logoWall{
+        .tl-wall{
           width:100%;
-          background:#fff;
-          padding:90px 0 96px;
-          font-family:'Heebo',sans-serif;
-          direction:rtl;
+          background:${BG};
+          padding:36px 32px 28px;
           box-sizing:border-box;
           overflow:hidden;
+          font-family:'Heebo','Assistant',sans-serif;
         }
-        .jci-head{
+        .tl-head{
+          max-width:900px;
+          margin:0 auto 24px;
           text-align:center;
-          margin:0 auto 44px;
-          padding:0 20px;
+          padding:0 8px;
         }
-        .jci-title{
-          font-size:clamp(28px, 5vw, 48px);
-          font-weight:900;
-          color:#1D1D1F;
-          letter-spacing:-0.025em;
-          margin:0 0 12px;
-          line-height:1.15;
-        }
-        .jci-subtitle{
-          font-size:15.5px;
-          font-weight:400;
-          color:#4B5563;
+        .tl-title{
+          font-size:clamp(26px, 3.2vw, 36px);
+          font-weight:700;
+          color:${CHARCOAL};
+          letter-spacing:-0.02em;
+          line-height:1.25;
           margin:0;
-          line-height:1.6;
         }
+        .tl-accent{ color:${CORAL}; }
 
-        /* ── Desktop: horizontal rows ── */
-        .jci-rows{
+        .tl-rows{
           display:flex;
           flex-direction:column;
           gap:20px;
-          padding:0;
-          overflow:hidden;
         }
-        .jci-row{
+        .tl-row{
+          position:relative;
           width:100%;
           overflow:hidden;
-          position:relative;
-          height:132px;
-          display:flex;
-          align-items:center;
+          height:46px;
         }
-        .jci-row::before{
+        .tl-row::before, .tl-row::after{
           content:'';
           position:absolute;
-          top:0; right:0; bottom:0;
-          width:140px;
-          background:linear-gradient(to right, #fff 0%, rgba(255,255,255,0.9) 40%, transparent 100%);
+          top:0; bottom:0;
+          width:120px;
           z-index:2;
           pointer-events:none;
         }
-        .jci-row::after{
-          content:'';
-          position:absolute;
-          top:0; left:0; bottom:0;
-          width:140px;
-          background:linear-gradient(to left, #fff 0%, rgba(255,255,255,0.9) 40%, transparent 100%);
-          z-index:2;
-          pointer-events:none;
+        .tl-row::before{
+          right:0;
+          background:linear-gradient(to right, ${BG} 0%, rgba(247,247,244,0) 100%);
         }
-        .jci-track{
-          display:flex;
-          align-items:center;
-          gap:0;
-          width:max-content;
+        .tl-row::after{
+          left:0;
+          background:linear-gradient(to left, ${BG} 0%, rgba(247,247,244,0) 100%);
+        }
+        .tl-track{
           position:absolute;
           left:0;
           top:0;
           height:100%;
-          animation-duration:var(--jci-dur);
+          display:flex;
+          align-items:center;
+          width:max-content;
           animation-timing-function:linear;
           animation-iteration-count:infinite;
+          animation-duration:var(--tl-dur);
+          will-change:transform;
         }
-        @media (prefers-reduced-motion:no-preference){
-          .jci-track{ animation-play-state:running !important; }
-        }
-        .jci-left{ animation-name:jciSlideLeft; }
-        .jci-right{ animation-name:jciSlideRight; }
-        @keyframes jciSlideLeft{
+        .tl-left{ animation-name:tlSlideLeft; }
+        .tl-right{ animation-name:tlSlideRight; }
+        @keyframes tlSlideLeft{
           from{ transform:translateX(0); }
           to{ transform:translateX(-50%); }
         }
-        @keyframes jciSlideRight{
+        @keyframes tlSlideRight{
           from{ transform:translateX(-50%); }
           to{ transform:translateX(0); }
         }
-        .jci-row:hover .jci-track{ animation-play-state:paused; }
-        .jci-logoCard{
-          flex:0 0 auto;
-          display:flex;
-          align-items:center;
-          justify-content:center;
-          width:180px;
-          height:100px;
-          padding:0;
-          box-sizing:border-box;
-          position:relative;
-        }
-        .jci-logoCard img{
+        .tl-logo{
+          height:40px;
+          width:auto;
+          margin:0 32px;
           display:block;
-          width:100%;
-          height:100%;
-          object-fit:contain;
-          object-position:center;
-          padding:4px 8px;
-          box-sizing:border-box;
+          flex:0 0 auto;
         }
-        [data-logo-index="0"] img { transform: scale(1.2); }
-        [data-logo-index="1"] img { transform: scale(1.5); }
-        [data-logo-index="2"] img { transform: scale(1.5); }
-        [data-logo-index="3"] img { transform: scale(1.2); }
-        [data-logo-index="4"] img { transform: scale(1.44); }
-        [data-logo-index="5"] img { transform: scale(1.44); }
-        [data-logo-index="6"] img { transform: scale(1.44); }
-        [data-logo-index="7"] img { transform: scale(1.44); }
-        [data-logo-index="8"] img { transform: scale(1.2); }
-        [data-logo-index="9"] img { transform: scale(0.72); }
-        [data-logo-index="12"] img { transform: scale(1.2); }
-        [data-logo-index="13"] img { transform: scale(1.2); }
-        [data-logo-index="16"] img { transform: scale(1.2); }
-        [data-logo-index="17"] img { transform: scale(1.2); }
-        [data-logo-index="18"] img { transform: scale(1.25); }
-        [data-logo-index="20"] img { transform: scale(1.3); }
-        [data-logo-index="24"] img { transform: scale(1.8); }
-        [data-logo-index="25"] img { transform: scale(1.2); }
-        [data-logo-index="26"] img { transform: scale(0.72); }
-
-        /* ── Mobile: vertical marquee columns ── */
-        .jci-vcols{
-          display:none;
-          flex-direction:row;
-          gap:8px;
-          justify-content:center;
-          padding:0 16px;
-        }
-        .jci-vcol-wrap{
-          flex:1;
-          max-width:50%;
-          height:380px;
-          overflow:hidden;
-          position:relative;
-          border-radius:16px;
-        }
-        .jci-vcol-track{
-          display:flex;
-          flex-direction:column;
-          gap:0;
-          width:100%;
-          animation-timing-function:linear;
-          animation-iteration-count:infinite;
-          animation-duration:var(--jci-vdur);
-        }
-        .jci-vcol-up{ animation-name:jciSlideUp; }
-        .jci-vcol-down{ animation-name:jciSlideDown; }
-        @keyframes jciSlideUp{
-          from{ transform:translateY(0); }
-          to{ transform:translateY(-50%); }
-        }
-        @keyframes jciSlideDown{
-          from{ transform:translateY(-50%); }
-          to{ transform:translateY(0); }
-        }
-        .jci-vcol-wrap:hover .jci-vcol-track{ animation-play-state:paused; }
-        .jci-vcol-card{
-          flex:0 0 100px;
-          height:100px;
-          display:flex;
-          align-items:center;
-          justify-content:center;
-          background:#fff;
-          border-bottom:1px solid rgba(0,0,0,0.05);
-        }
-        .jci-vcol-card img{
-          width:90%;
-          height:80px;
-          object-fit:contain;
-          padding:8px;
-          /* Neutralize per-logo scale in mobile columns */
-          transform:none !important;
+        @media (hover:hover) and (pointer:fine){
+          .tl-row:hover .tl-track{ animation-play-state:paused; }
         }
 
-        .jci-trust{
-          font-size:13.5px;
-          font-weight:400;
-          color:#9CA3AF;
-          margin:48px auto 0;
-          text-align:center;
-          max-width:960px;
-          padding:0 24px;
-          line-height:1.9;
-        }
-
-        @media (max-width:1024px){
-          .jci-title{ font-size:32px; }
-          .jci-track{ gap:2px; }
-          .jci-logoCard{ width:160px; height:90px; padding:8px 10px; }
-          .jci-row{ height:90px; }
-        }
         @media (max-width:768px){
-          .jci-logoWall{ padding:56px 0 64px; }
-          .jci-head{ margin:0 auto 32px; }
-          .jci-title{ font-size:clamp(22px, 4.5vw, 28px); }
-          .jci-subtitle{ font-size:12px; }
-          .jci-rows{ display:none !important; }
-          .jci-vcols{ display:flex !important; }
-          .jci-trust{ display:block; font-size:12px; margin-top:32px; }
-          .jci-vcol-wrap{ height:300px; }
+          .tl-wall{ padding:28px 20px 24px; }
+          .tl-head{ margin:0 auto 18px; }
+          .tl-title{ font-size:clamp(22px, 5vw, 26px); line-height:1.3; }
+          .tl-rows{ gap:18px; }
+          .tl-row{ height:38px; }
+          .tl-logo{ height:32px; margin:0 20px; }
+          .tl-row::before, .tl-row::after{ width:64px; }
         }
       `}</style>
 
-      <div className="jci-head">
-        <h2 className="jci-title">אנחנו מאפשרים לארגונים המובילים בישראל לתת יותר לעובדים שלהם</h2>
+      <div className="tl-head">
+        <h2 className="tl-title">
+          כבר הופכים תקציב רווחה לחוויית עובד יומיומית{" "}
+          <span className="tl-accent">ביותר מ-300 ארגונים</span>
+        </h2>
       </div>
 
-      {/* Desktop: horizontal marquee */}
-      <div className="jci-rows">
-        <HRow items={rowA} dir="left" duration={120} />
-        <HRow items={rowB} dir="right" duration={140} />
+      <div className="tl-rows">
+        <Rail items={rowA} dir="left" duration={90} />
+        <Rail items={rowB} dir="right" duration={105} />
       </div>
-
-      {/* Mobile: 2 vertical marquee columns */}
-      <div className="jci-vcols">
-        <VCol items={colA} dir="up" duration={60} />
-        <VCol items={colB} dir="down" duration={68} />
-      </div>
-
-      <p className="jci-trust">
-        בנק לאומי · בנק דיסקונט · בנק מזרחי · בנק ישראל · רשות המסים · אלקטרה · אפיקים · הוט מובייל · צים · בזן · דלק · סלקום
-        <br />
-        מיוצגים על ידי התאגדות / ועד עובדים
-      </p>
     </section>
   );
 }
