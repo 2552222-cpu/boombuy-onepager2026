@@ -15,9 +15,10 @@ export default function ChaosWordsLayer({ enteredWords, videoStarted, videoTime,
     >
       {CHAOS_WORDS.map((w, i) => {
         const entered = !!enteredWords[w.word];
-        const converging = videoStarted && videoTime >= w.convergeAt;
-        const floating = entered && !converging;
-        const fontSize = isMobile ? 28 : w.fontSize;
+        const exiting = videoStarted && videoTime >= w.convergeAt;
+        const floating = entered && !exiting;
+        const fontSize = isMobile ? Math.round(w.fontSize * 0.62) : w.fontSize;
+        const maxOpacity = w.opacity ?? 0.85;
 
         return (
           <motion.div
@@ -30,49 +31,46 @@ export default function ChaosWordsLayer({ enteredWords, videoStarted, videoTime,
             }}
             initial={{ left: `${w.left}%`, top: `${w.top}%` }}
             animate={{
-              left: converging ? `${LAPTOP.x}%` : `${w.left}%`,
-              top: converging ? `${LAPTOP.y}%` : `${w.top}%`,
+              left: exiting ? `${w.left + (LAPTOP.x - w.left) * 0.16}%` : `${w.left}%`,
+              top: exiting ? `${w.top + (LAPTOP.y - w.top) * 0.16}%` : `${w.top}%`,
             }}
-            transition={{
-              duration: converging ? 0.4 : 0,
-              ease: [0.65, 0, 0.35, 1],
-            }}
+            transition={{ duration: exiting ? 0.7 : 0, ease: [0.45, 0, 0.55, 1] }}
           >
             <motion.div
-              initial={{ opacity: 0, filter: "blur(8px)", scale: 0.72, x: w.ox, y: w.oy, rotate: w.rotate }}
+              initial={{ opacity: 0, filter: "blur(10px)", scale: 0.9, y: 30, rotate: w.rotate }}
               animate={
-                converging
-                  ? { opacity: 0, filter: "blur(7px)", scale: 0.14, x: 0, y: 0, rotate: w.rotate }
+                exiting
+                  ? { opacity: 0, filter: "blur(8px)", scale: 1.12, y: -26, rotate: w.rotate }
                   : entered
-                  ? { opacity: 1, filter: "blur(0px)", scale: [0.72, 1.06, 1], x: 0, y: 0, rotate: w.rotate }
-                  : { opacity: 0, filter: "blur(8px)", scale: 0.72, x: w.ox, y: w.oy, rotate: w.rotate }
+                  ? { opacity: maxOpacity, filter: "blur(0px)", scale: 1, y: 0, rotate: w.rotate }
+                  : { opacity: 0, filter: "blur(10px)", scale: 0.9, y: 30, rotate: w.rotate }
               }
               transition={
-                converging
-                  ? { duration: 0.4, ease: [0.65, 0, 0.35, 1] }
-                  : { duration: 0.46, ease: [0.16, 1, 0.3, 1] }
+                exiting
+                  ? { duration: 0.7, ease: [0.42, 0, 0.58, 1] }
+                  : { duration: 0.95, ease: [0.16, 1, 0.3, 1] }
               }
               style={{
                 direction: "rtl",
                 color: "#FFFFFF",
                 fontFamily: "Heebo, Arial, sans-serif",
-                fontWeight: 800,
-                lineHeight: 1,
-                letterSpacing: "-0.035em",
+                fontWeight: 600,
+                lineHeight: 1.05,
+                letterSpacing: "-0.02em",
                 whiteSpace: "nowrap",
                 fontSize,
-                textShadow: "0 4px 18px rgba(0,0,0,0.62), 0 1px 3px rgba(0,0,0,0.42)",
+                textShadow: "0 2px 12px rgba(0,0,0,0.45), 0 1px 2px rgba(0,0,0,0.3)",
                 willChange: "transform, opacity, filter",
               }}
             >
               <motion.div
-                animate={floating ? { x: [0, 3, -2, 0], y: [0, -7, 2, 0] } : { x: 0, y: 0 }}
+                animate={floating ? { y: [0, -6, 2, 0], x: [0, 3, -2, 0] } : { x: 0, y: 0 }}
                 transition={
                   floating
-                    ? { duration: 1.4, repeat: Infinity, ease: "easeInOut", delay: i * 0.12 }
-                    : { duration: 0.2 }
+                    ? { duration: 2.4, repeat: Infinity, ease: "easeInOut", delay: i * 0.18 }
+                    : { duration: 0.3 }
                 }
-                style={{ display: "inline-flex", alignItems: "center", gap: 8 }}
+                style={{ display: "inline-flex", alignItems: "center", gap: 10 }}
               >
                 <CoralDot />
                 <span>{w.word}</span>

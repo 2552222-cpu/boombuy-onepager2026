@@ -144,8 +144,8 @@ export default function HeroTransformation() {
     if (!v) return;
     setVideoTime(v.currentTime || 0);
     if (v.duration && isFinite(v.duration)) {
-      if (v.currentTime >= 1.7 && wordsActive) setWordsActive(false);
-      if (v.currentTime >= v.duration - 0.75 && stage === "playing") {
+      if (v.currentTime >= 3.2 && wordsActive) setWordsActive(false);
+      if (v.currentTime >= v.duration - 1.0 && stage === "playing") {
         setStage("ending");
         setLightId((id) => id + 1);
       }
@@ -281,7 +281,7 @@ export default function HeroTransformation() {
               alt="מנהלת רווחה רגועה מול מערכת boombuy"
               initial={{ opacity: 0, filter: "blur(4px)", scale: 0.988 }}
               animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
-              transition={{ duration: 0.7, ease: "easeInOut" }}
+              transition={{ duration: 0.9, ease: "easeInOut" }}
               style={{ ...baseMedia, zIndex: 2 }}
             />
           )}
