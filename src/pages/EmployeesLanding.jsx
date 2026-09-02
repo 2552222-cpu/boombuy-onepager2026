@@ -7,6 +7,7 @@ import GlobalFooter from "../components/employees/GlobalFooter";
 import FloatingWhatsApp from "../components/employees/FloatingWhatsApp";
 import ComparisonSection from "../components/employees/ComparisonSection";
 import DemoForm from "../components/employees/DemoForm";
+import EmployeeExperience from "../components/employees/EmployeeExperience";
 
 const EconomicSection = React.lazy(() => import("../components/employees/EconomicSection"));
 const Testimonials = React.lazy(() => import("../components/employees/Testimonials"));
@@ -20,7 +21,8 @@ export default function EmployeesLanding() {
       <GlobalHeader />
       <HeroTransformation />
           <TrustLogos />
-          <div id="employee-experience" />
+          <EmployeeExperience />
+          <div id="platform-explanation" />
           <ComparisonSection />
           <React.Suspense fallback={<div style={{ height: 300 }} />}>
             <EconomicSection />
