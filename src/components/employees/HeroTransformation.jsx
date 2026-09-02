@@ -97,15 +97,6 @@ export default function HeroTransformation() {
       v.addEventListener("canplay", done);
     });
 
-  const waitForPlaying = (v) =>
-    new Promise((resolve) => {
-      const done = () => {
-        v.removeEventListener("playing", done);
-        resolve();
-      };
-      v.addEventListener("playing", done);
-    });
-
   const twoRaf = () =>
     new Promise((resolve) => {
       requestAnimationFrame(() => requestAnimationFrame(resolve));
@@ -115,13 +106,17 @@ export default function HeroTransformation() {
     const v = videoRef.current;
     if (v) {
       await waitForVideoReady(v);
-      try {
-        v.currentTime = 0;
-        await v.play();
-      } catch (e) {
-        /* ignore */
-      }
-      await waitForPlaying(v);
+      try { v.currentTime = 0; } catch (e) { /* ignore */ }
+      // React's `muted` prop is unreliable on <video> — set it imperatively so autoplay is allowed
+      v.muted = true;
+      // Listen for 'playing' BEFORE calling play() (avoids the event racing ahead and hanging forever)
+      const playing = new Promise((resolve) => {
+        const onPlay = () => { v.removeEventListener("playing", onPlay); clearTimeout(fallback); resolve(); };
+        const fallback = setTimeout(() => { v.removeEventListener("playing", onPlay); resolve(); }, 400);
+        v.addEventListener("playing", onPlay);
+      });
+      try { await v.play(); } catch (e) { /* ignore */ }
+      await playing;
       await twoRaf();
     }
     setStage("openingTransition");
