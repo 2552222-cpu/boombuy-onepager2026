@@ -65,7 +65,6 @@ export default function TrustLogos() {
           background:${BG};
           padding:36px 32px 28px;
           box-sizing:border-box;
-          overflow:hidden;
           font-family:'Heebo','Assistant',sans-serif;
         }
         .tl-head{
@@ -88,12 +87,13 @@ export default function TrustLogos() {
           display:flex;
           flex-direction:column;
           gap:20px;
+          box-shadow:0 18px 60px rgba(20,22,26,0.055);
         }
         .tl-row{
           position:relative;
           width:100%;
           overflow:hidden;
-          height:46px;
+          height:52px;
         }
         .tl-row::before, .tl-row::after{
           content:'';
@@ -135,7 +135,7 @@ export default function TrustLogos() {
           to{ transform:translateX(0); }
         }
         .tl-logo{
-          height:40px;
+          height:45px;
           width:auto;
           margin:0 32px;
           display:block;
@@ -150,8 +150,8 @@ export default function TrustLogos() {
           .tl-head{ margin:0 auto 18px; }
           .tl-title{ font-size:clamp(22px, 5vw, 26px); line-height:1.3; }
           .tl-rows{ gap:18px; }
-          .tl-row{ height:38px; }
-          .tl-logo{ height:32px; margin:0 20px; }
+          .tl-row{ height:42px; }
+          .tl-logo{ height:36px; margin:0 20px; }
           .tl-row::before, .tl-row::after{ width:64px; }
         }
       `}</style>
