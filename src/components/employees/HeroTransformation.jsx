@@ -14,12 +14,15 @@ import {
 const cardShadow =
   "0 24px 70px rgba(0,0,0,0.14), 0 8px 24px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(255,255,255,0.3)";
 
-// Opening -> video transition light (hides the frame swap)
-// Solid white — used for the full-screen camera-flash blinds at each cut
-const LIGHT_GRADIENT_OPENING = "#FFFFFF";
-const LIGHT_GRADIENT_ENDING = "#FFFFFF";
+// Soft warm radial light (warm white + coral touch) — opening image -> video
+const LIGHT_OPENING =
+  "radial-gradient(circle at 52% 58%, rgba(255,250,245,0.94) 0%, rgba(255,244,238,0.80) 22%, rgba(240,120,88,0.34) 46%, rgba(255,255,255,0) 74%)";
 
-// Shared container for all media layers — prevents any size/crop jump
+// Warm horizontal light sweep (warm white + coral touch) — video -> ending image
+const LIGHT_ENDING =
+  "linear-gradient(100deg, transparent 28%, rgba(255,248,240,0.92) 46%, rgba(240,120,88,0.42) 52%, rgba(255,248,240,0.92) 58%, transparent 72%)";
+
+// Shared media layer geometry — identical for all three media layers (no jump on swap)
 const baseMedia = {
   position: "absolute",
   inset: 0,
@@ -29,24 +32,21 @@ const baseMedia = {
   objectPosition: "center",
 };
 
-const TRANSITION_MS = 1000;
-const REDUCED_MS = 400;
+const OPEN_MS = 820; // opening image -> video
+const END_MS = 950; // video -> ending image
+const END_BEFORE = 700; // start ending transition this many ms before the video ends
 
 export default function HeroTransformation() {
-  // idle | playing | ending | complete
+  // idle | chaos | openingTransition | playing | endingTransition | complete
   const [stage, setStage] = useState("idle");
   const [isMobile, setIsMobile] = useState(false);
   const [videoTime, setVideoTime] = useState(0);
-  const [videoStarted, setVideoStarted] = useState(false);
-  const [wordsActive, setWordsActive] = useState(false);
   const [enteredWords, setEnteredWords] = useState({});
   const [buttonGone, setButtonGone] = useState(false);
-  const [lightId, setLightId] = useState(0);
-  const [openingTransition, setOpeningTransition] = useState(false);
-  const [openingDone, setOpeningDone] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const videoRef = useRef(null);
   const timers = useRef([]);
+  const endedRef = useRef(false);
 
   const clearTimers = () => {
     timers.current.forEach((t) => clearTimeout(t));
@@ -68,13 +68,13 @@ export default function HeroTransformation() {
     };
   }, []);
 
-  // Preload ending image before the video starts
+  // Preload ending image
   useEffect(() => {
     const img = new Image();
     img.src = AFTER_IMG;
   }, []);
 
-  // Kick off video preload as soon as the element mounts
+  // Kick off video preload as soon as it mounts
   useEffect(() => {
     if (videoRef.current) {
       try {
@@ -97,6 +97,20 @@ export default function HeroTransformation() {
       v.addEventListener("canplay", done);
     });
 
+  const waitForPlaying = (v) =>
+    new Promise((resolve) => {
+      const done = () => {
+        v.removeEventListener("playing", done);
+        resolve();
+      };
+      v.addEventListener("playing", done);
+    });
+
+  const twoRaf = () =>
+    new Promise((resolve) => {
+      requestAnimationFrame(() => requestAnimationFrame(resolve));
+    });
+
   const startOpeningTransition = async () => {
     const v = videoRef.current;
     if (v) {
@@ -107,24 +121,19 @@ export default function HeroTransformation() {
       } catch (e) {
         /* ignore */
       }
+      await waitForPlaying(v);
+      await twoRaf();
     }
-    setVideoStarted(true);
-    setStage("playing");
-    // Let the first frame render behind the opening image
-    await new Promise((r) => setTimeout(r, 80));
-    setOpeningTransition(true);
-    const dur = reducedMotion ? REDUCED_MS : TRANSITION_MS;
-    const t = setTimeout(() => {
-      setOpeningTransition(false);
-      setOpeningDone(true);
-    }, dur);
+    setStage("openingTransition");
+    const dur = reducedMotion ? 300 : OPEN_MS;
+    const t = setTimeout(() => setStage("playing"), dur);
     timers.current.push(t);
   };
 
   const onStart = () => {
-    if (buttonGone) return;
+    if (stage !== "idle") return;
     setButtonGone(true);
-    setWordsActive(true);
+    setStage("chaos");
     CHAOS_WORDS.forEach((w) => {
       const t = setTimeout(
         () => setEnteredWords((s) => ({ ...s, [w.word]: true })),
@@ -141,66 +150,93 @@ export default function HeroTransformation() {
     if (!v) return;
     setVideoTime(v.currentTime || 0);
     if (v.duration && isFinite(v.duration)) {
-      if (v.currentTime >= 3.0 && wordsActive) setWordsActive(false);
-      if (v.currentTime >= v.duration - 1.5 && stage === "playing") {
-        try { v.pause(); } catch (e) {}
-        setStage("ending");
-        setLightId((id) => id + 1);
-        const t = setTimeout(() => setStage("complete"), 1000);
+      if (
+        v.currentTime >= v.duration - END_BEFORE / 1000 &&
+        stage === "playing" &&
+        !endedRef.current
+      ) {
+        endedRef.current = true;
+        setStage("endingTransition");
+        const dur = reducedMotion ? 300 : END_MS;
+        const t = setTimeout(() => setStage("complete"), dur);
         timers.current.push(t);
       }
     }
   };
 
-  const onEnded = () => setStage("complete");
-
   const scrollToDemo = () =>
     document.getElementById("demo-form-section")?.scrollIntoView({ behavior: "smooth" });
-
-  const showOpening = (stage === "idle" || stage === "playing") && !openingDone;
-  const showVideo = stage !== "complete";
-  const showEnding = stage === "ending" || stage === "complete";
 
   const desktopSize = {
     width: "min(calc((100svh - 90px) * 16 / 9), calc(100vw - 64px), 1600px)",
     aspectRatio: "16 / 9",
     maxHeight: "calc(100svh - 90px)",
   };
+  const mediaRadius = isMobile ? 18 : 34;
 
-  // Opening image animate
-  const openingAnimate = openingTransition
-    ? reducedMotion
-      ? { opacity: [1, 0] }
-      : {
-          opacity: [1, 0.72, 0, 0],
-          filter: ["blur(0px)", "blur(9px)", "blur(9px)", "blur(9px)"],
-          scale: [1, 1.025, 1.025, 1.025],
-        }
-    : { opacity: 1, filter: "blur(0px)", scale: 1 };
-  const openingTransitionCfg = openingTransition
-    ? reducedMotion
-      ? { duration: REDUCED_MS / 1000, ease: "easeInOut" }
-      : { duration: TRANSITION_MS / 1000, ease: "easeInOut", times: [0, 0.359, 0.5, 1] }
-    : { duration: 0 };
+  // --- Opening image (layer 3, top of media) ---
+  const openingAnimate = (() => {
+    if (reducedMotion) {
+      if (stage === "openingTransition") return { opacity: [1, 0] };
+      if (stage === "idle" || stage === "chaos") return { opacity: 1 };
+      return { opacity: 0 };
+    }
+    if (stage === "idle" || stage === "chaos")
+      return { opacity: 1, filter: "blur(0px)", scale: 1 };
+    if (stage === "openingTransition")
+      return { opacity: [1, 0], filter: ["blur(0px)", "blur(8px)"], scale: [1, 1.018] };
+    return { opacity: 0, filter: "blur(8px)", scale: 1.018 };
+  })();
+  const openingTransitionCfg = {
+    duration: (reducedMotion ? 300 : OPEN_MS) / 1000,
+    ease: "easeInOut",
+  };
 
-  // Video animate
-  const videoVisible = videoStarted && openingDone;
-  const videoAnimate = openingTransition
-    ? reducedMotion
-      ? { opacity: [0, 1] }
-      : {
-          opacity: [0, 0, 0.55, 1],
-          filter: ["blur(8px)", "blur(8px)", "blur(8px)", "blur(0px)"],
-          scale: [0.982, 0.982, 0.982, 1],
-        }
-    : stage === "ending"
-    ? { opacity: 1, filter: "blur(0px)", scale: 1.012 }
-    : { opacity: videoVisible ? 1 : 0, filter: "blur(0px)", scale: 1 };
-  const videoTransitionCfg = openingTransition
-    ? reducedMotion
-      ? { duration: REDUCED_MS / 1000, ease: "easeInOut" }
-      : { duration: TRANSITION_MS / 1000, ease: "easeInOut", times: [0, 0.359, 0.5, 1] }
-    : { duration: stage === "ending" ? 0.7 : 0.3, ease: "easeInOut" };
+  // --- Video (layer 2) ---
+  const videoAnimate = (() => {
+    if (reducedMotion) {
+      if (stage === "openingTransition") return { opacity: [0, 1] };
+      if (stage === "idle" || stage === "chaos") return { opacity: 0 };
+      if (stage === "playing") return { opacity: 1 };
+      if (stage === "endingTransition") return { opacity: [1, 0] };
+      return { opacity: 0 };
+    }
+    if (stage === "idle" || stage === "chaos")
+      return { opacity: 0, filter: "blur(0px)", scale: 1 };
+    if (stage === "openingTransition")
+      return { opacity: [0, 1], filter: ["blur(7px)", "blur(0px)"], scale: [0.992, 1] };
+    if (stage === "playing") return { opacity: 1, filter: "blur(0px)", scale: 1 };
+    if (stage === "endingTransition")
+      // keep last frame visible until the ending image reaches ~0.65, then fade out
+      return {
+        opacity: [1, 1, 0],
+        filter: ["blur(0px)", "blur(0px)", "blur(7px)"],
+        scale: [1, 1, 1.012],
+      };
+    return { opacity: 0, filter: "blur(7px)", scale: 1.012 };
+  })();
+  const videoTransitionCfg = {
+    duration: (reducedMotion ? 300 : stage === "endingTransition" ? END_MS : OPEN_MS) / 1000,
+    ease: "easeInOut",
+    ...(stage === "endingTransition" && !reducedMotion ? { times: [0, 0.65, 1] } : {}),
+  };
+
+  // --- Ending image (layer 1, lowest) ---
+  const endingAnimate = (() => {
+    if (reducedMotion) {
+      if (stage === "endingTransition") return { opacity: [0, 1] };
+      if (stage === "complete") return { opacity: 1 };
+      return { opacity: 0 };
+    }
+    if (stage === "endingTransition")
+      return { opacity: [0, 1], filter: ["blur(8px)", "blur(0px)"], scale: [0.988, 1] };
+    if (stage === "complete") return { opacity: 1, filter: "blur(0px)", scale: 1 };
+    return { opacity: 0, filter: "blur(8px)", scale: 0.988 };
+  })();
+  const endingTransitionCfg = {
+    duration: (reducedMotion ? 300 : END_MS) / 1000,
+    ease: "easeInOut",
+  };
 
   const btnBase = {
     position: "absolute",
@@ -220,6 +256,9 @@ export default function HeroTransformation() {
     boxShadow: "0 8px 22px rgba(0,0,0,0.22)",
   };
 
+  const showOpeningLight = stage === "openingTransition" && !reducedMotion;
+  const showEndingLight = stage === "endingTransition" && !reducedMotion;
+
   return (
     <section
       id="hero-section"
@@ -237,94 +276,94 @@ export default function HeroTransformation() {
             position: "relative",
             zIndex: 1,
             margin: "0 auto",
-            borderRadius: isMobile ? 18 : 34,
+            borderRadius: mediaRadius,
             overflow: "hidden",
             boxShadow: cardShadow,
             background: "#000",
             ...(isMobile ? { width: "100%", height: "82svh" } : desktopSize),
           }}
         >
-          {/* Video — always mounted for preload; plays behind the opening image, then revealed */}
-          {showVideo && (
-            <motion.video
-              ref={videoRef}
-              src={VIDEO_SRC}
-              poster={BEFORE_IMG}
-              muted
-              playsInline
-              preload="auto"
-              onTimeUpdate={onTimeUpdate}
-              onEnded={onEnded}
-              initial={{ opacity: 0, filter: "blur(0px)", scale: 1 }}
-              animate={videoAnimate}
-              transition={videoTransitionCfg}
-              style={{ ...baseMedia, background: "#000", zIndex: 1 }}
-            />
-          )}
+          {/* Layer 1 — Ending image (lowest, preloaded beneath the video) */}
+          <motion.img
+            src={AFTER_IMG}
+            alt=""
+            initial={{ opacity: 0, filter: "blur(8px)", scale: 0.988 }}
+            animate={endingAnimate}
+            transition={endingTransitionCfg}
+            style={{ ...baseMedia, borderRadius: mediaRadius, zIndex: 1 }}
+          />
 
-          {/* Opening image — covers the video, crossfades out during the 780ms transition */}
-          {showOpening && (
-            <motion.img
-              src={BEFORE_IMG}
-              alt="מנהלת רווחה בעומס"
-              initial={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
-              animate={openingAnimate}
-              transition={openingTransitionCfg}
-              style={{ ...baseMedia, zIndex: 2 }}
-            />
-          )}
+          {/* Layer 2 — Video (always mounted for preload) */}
+          <motion.video
+            ref={videoRef}
+            src={VIDEO_SRC}
+            poster={BEFORE_IMG}
+            muted
+            playsInline
+            preload="auto"
+            onTimeUpdate={onTimeUpdate}
+            initial={{ opacity: 0, filter: "blur(0px)", scale: 1 }}
+            animate={videoAnimate}
+            transition={videoTransitionCfg}
+            style={{ ...baseMedia, borderRadius: mediaRadius, zIndex: 2 }}
+          />
 
-          {/* Ending image — crossfades in over the last 0.75s of the video (unchanged) */}
-          {showEnding && (
-            <motion.img
-              src={AFTER_IMG}
-              alt="מנהלת רווחה רגועה מול מערכת boombuy"
-              initial={{ opacity: 0, filter: "blur(4px)", scale: 0.988 }}
-              animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
-              transition={{ duration: 0.9, ease: "easeInOut" }}
-              style={{ ...baseMedia, zIndex: 2 }}
-            />
-          )}
+          {/* Layer 3 — Opening image (above the video, crossfades out) */}
+          <motion.img
+            src={BEFORE_IMG}
+            alt="מנהלת רווחה בעומס"
+            initial={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
+            animate={openingAnimate}
+            transition={openingTransitionCfg}
+            style={{ ...baseMedia, borderRadius: mediaRadius, zIndex: 3 }}
+          />
 
-          {/* Opening -> video transition light (expands from table/laptop center, hides the frame swap) */}
-          {openingTransition && !reducedMotion && (
+          {/* Light layer — opening image -> video (soft warm radial, max 0.58) */}
+          {showOpeningLight && (
             <motion.div
               initial={{ opacity: 0 }}
-              animate={{ opacity: [0, 0.97, 0.97, 0] }}
-              transition={{ duration: TRANSITION_MS / 1000, ease: "easeOut", times: [0, 0.2, 0.7, 1] }}
+              animate={{ opacity: [0, 0.58, 0.58, 0] }}
+              transition={{ duration: OPEN_MS / 1000, ease: "easeOut", times: [0, 0.22, 0.41, 1] }}
               style={{
                 position: "absolute",
                 inset: 0,
-                background: LIGHT_GRADIENT_OPENING,
-                zIndex: 25,
+                background: LIGHT_OPENING,
+                mixBlendMode: "screen",
+                zIndex: 10,
                 pointerEvents: "none",
               }}
             />
           )}
 
-          {/* Ending transition light (unchanged) */}
-          {lightId > 0 && (
+          {/* Light layer — video -> ending image (warm horizontal sweep, max 0.52) */}
+          {showEndingLight && (
             <motion.div
-              key={lightId}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: [0, 0.97, 0.97, 0] }}
-              transition={{ duration: 0.75, ease: "easeOut", times: [0, 0.2, 0.85, 1] }}
-              style={{ position: "absolute", inset: 0, background: LIGHT_GRADIENT_ENDING, zIndex: 25, pointerEvents: "none" }}
+              initial={{ opacity: 0, x: "-42%" }}
+              animate={{ opacity: [0, 0.52, 0.52, 0], x: ["-42%", "42%"] }}
+              transition={{ duration: END_MS / 1000, ease: "easeInOut", times: [0, 0.23, 0.44, 1] }}
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "140%",
+                background: LIGHT_ENDING,
+                mixBlendMode: "screen",
+                zIndex: 10,
+                pointerEvents: "none",
+              }}
             />
           )}
 
-          {/* Chaos words layer — stays sharp above the transition, created on click, unmounts at 1.70 */}
-          {wordsActive && (
-            <ChaosWordsLayer
-              enteredWords={enteredWords}
-              videoStarted={videoStarted}
-              videoTime={videoTime}
-              isMobile={isMobile}
-            />
-          )}
+          {/* Layer 4 — Chaos words overlay (always mounted, opacity-driven) */}
+          <ChaosWordsLayer
+            enteredWords={enteredWords}
+            videoTime={videoTime}
+            isMobile={isMobile}
+            reducedMotion={reducedMotion}
+            active={stage !== "idle"}
+          />
 
           {/* Opening live button */}
-          {(stage === "idle" || stage === "playing") && (
+          {(stage === "idle" || stage === "chaos") && (
             <motion.button
               onClick={onStart}
               initial={{ opacity: 1, y: 0 }}
@@ -345,18 +384,18 @@ export default function HeroTransformation() {
             </motion.button>
           )}
 
-          {/* Ending live button */}
+          {/* Ending live button — only after the ending image has settled */}
           {stage === "complete" && (
             <motion.button
               onClick={scrollToDemo}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
+              transition={{ duration: 0.35, ease: "easeOut", delay: 0.18 }}
               whileHover={{ y: -2 }}
               style={{
                 ...btnBase,
                 right: "7%",
-                top: "65%",
+                top: "62%",
                 width: 240,
                 height: 54,
               }}

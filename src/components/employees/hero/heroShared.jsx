@@ -11,21 +11,19 @@ export const AFTER_IMG =
 export const VIDEO_SRC =
   "https://media.base44.com/videos/public/69e48538aaee477b09fc7b49/fe014e428__23.mp4";
 
-// Convergence target — system / laptop center
+// Convergence target — laptop / system center
 export const LAPTOP = { x: 50, y: 69 };
 
-// Entry order: ספקים, מתנות, עובדים, הקצאות, שירות, הטבות
-// enterAt = seconds from click; convergeAt = seconds from video.currentTime
-// ox/oy = entry direction offset (px)
+// enterAt  = seconds from click (word entry)
+// convergeAt = seconds of video.currentTime (word suction exit)
+// Positions avoid the face, the right-side title, the button and body center.
 export const CHAOS_WORDS = [
-  { word: "עובדים",    left: 8,  top: 28, fontSize: 44, rotate: -3, opacity: 0.62, enterAt: 0.20, convergeAt: 2.15 },
-  { word: "ספקים",     left: 22, top: 58, fontSize: 42, rotate: 2,  opacity: 0.56, enterAt: 0.34, convergeAt: 2.15 },
-  { word: "מתנה",     left: 14, top: 80, fontSize: 40, rotate: -2, opacity: 0.50, enterAt: 0.48, convergeAt: 2.15 },
-  { word: "יום הולדת", left: 32, top: 16, fontSize: 66, rotate: 1,  opacity: 0.92, enterAt: 0.62, convergeAt: 2.15 },
-  { word: "הקצאות",    left: 60, top: 22, fontSize: 44, rotate: -3, opacity: 0.60, enterAt: 0.76, convergeAt: 2.15 },
-  { word: "שירות",     left: 76, top: 50, fontSize: 42, rotate: 2,  opacity: 0.55, enterAt: 0.90, convergeAt: 2.15 },
-  { word: "רווחה",     left: 82, top: 72, fontSize: 72, rotate: -2, opacity: 0.95, enterAt: 1.04, convergeAt: 2.15 },
-  { word: "יום גיבוש",  left: 64, top: 84, fontSize: 58, rotate: 2,  opacity: 0.90, enterAt: 1.18, convergeAt: 2.15 },
+  { word: "ספקים",  left: 20, top: 60, rotate: -2, enterAt: 0.15, convergeAt: 0.55 },
+  { word: "מתנות",  left: 14, top: 80, rotate: 2,  enterAt: 0.27, convergeAt: 0.70 },
+  { word: "עובדים",  left: 30, top: 40, rotate: -3, enterAt: 0.39, convergeAt: 0.85 },
+  { word: "הקצאות", left: 58, top: 44, rotate: 2,  enterAt: 0.51, convergeAt: 1.00 },
+  { word: "שירות",  left: 72, top: 62, rotate: -2, enterAt: 0.63, convergeAt: 1.15 },
+  { word: "הטבות",  left: 40, top: 84, rotate: 2,  enterAt: 0.75, convergeAt: 1.30 },
 ];
 
 export function CoralDot() {
