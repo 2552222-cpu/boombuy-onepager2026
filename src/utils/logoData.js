@@ -27,6 +27,10 @@ export const logoList = [
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/be9e3de1a_-2026-03-22T184841801.png", name: "דלק" },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ee6b05338_-2026-04-03T180125393.png", name: "רמלאל" },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/5f7a627b6_-2026-04-06T212635319.png", name: "HOT mobile" },
+  { url: "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/d7d065fd0_GreenRetroTreeRootLogoTemplate3.png", name: "הבינלאומי" },
+  { url: "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/4077f88d1_GreenRetroTreeRootLogoTemplate2.png", name: "תדהר" },
+  { url: "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/02de53736_GreenRetroTreeRootLogoTemplate5.png", name: "איחוד הצלה" },
+  { url: "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/92ca0e4b9_GreenRetroTreeRootLogoTemplate4.png", name: "גינדי החזקות" },
 ];
 
 export const allLogos = logoList.map(l => l.url);
@@ -35,12 +39,12 @@ export const allLogos = logoList.map(l => l.url);
 export const rowA = [
   "לאומי", "Teva", "סלקום", "אלקטרה אפיקים", "Estee Lauder", "קרן קיימת",
   "בנק ישראל", "ZIM", "מזרחי טפחות", "ORT", "אלבר", "בזן",
-  "HOT mobile", "ONE", "MAX", "AMOT",
+  "HOT mobile", "ONE", "MAX", "AMOT", "הבינלאומי", "תדהר",
 ].map(name => logoList.find(l => l.name === name)?.url).filter(Boolean);
 
 // שורה 2: 14 לוגואים (זוגי) — לפי שם
 export const rowB = [
   "ישראייר", "תעש", "מגן דוד אדום", "SAP", "מילגם", "ONE",
   "רשות המסים", "בנק לאומי", "דלק", "רמלאל", "דופלט", "Teva",
-  "ZIM", "סלקום",
+  "ZIM", "סלקום", "איחוד הצלה", "גינדי החזקות",
 ].map(name => logoList.find(l => l.name === name)?.url).filter(Boolean);
