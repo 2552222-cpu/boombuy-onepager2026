@@ -8,6 +8,7 @@ import FloatingWhatsApp from "../components/employees/FloatingWhatsApp";
 import ComparisonSection from "../components/employees/ComparisonSection";
 import DemoForm from "../components/employees/DemoForm";
 import EmployeeExperience from "../components/employees/EmployeeExperience";
+import PlatformExplanation from "../components/employees/PlatformExplanation";
 
 const EconomicSection = React.lazy(() => import("../components/employees/EconomicSection"));
 const Testimonials = React.lazy(() => import("../components/employees/Testimonials"));
@@ -22,8 +23,9 @@ export default function EmployeesLanding() {
       <HeroTransformation />
           <TrustLogos />
           <EmployeeExperience />
-          <div id="platform-explanation" />
-          <ComparisonSection />
+            <PlatformExplanation />
+            <div id="welfare-comparison" />
+            <ComparisonSection />
           <React.Suspense fallback={<div style={{ height: 300 }} />}>
             <EconomicSection />
           </React.Suspense>
