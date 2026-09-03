@@ -323,7 +323,7 @@ export default function HeroTransformation() {
 
   return (
     <section
-      id="hero-section"
+      id="hero-transformation"
       style={{
         background: WARM_WHITE,
         direction: "rtl",

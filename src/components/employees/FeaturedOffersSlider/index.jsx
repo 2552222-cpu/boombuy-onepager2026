@@ -356,11 +356,17 @@ export default function FeaturedOffersSlider() {
   const modalNext = () => setSelectedIdx((p) => (p + 1) % OFFERS.length);
 
   return (
-    <section id="offers-slider" style={{ background: "#FFFFFF", padding: "80px 0", direction: "rtl", overflowX: "hidden" }}>
+    <section id="benefits" style={{ background: "#FFFFFF", padding: "80px 0", direction: "rtl", overflowX: "hidden" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto", textAlign: "center", padding: "0 16px" }}>
-        <h2 style={{ fontSize: "clamp(28px, 5vw, 48px)", fontWeight: 900, marginBottom: "52px", color: "#15172A", letterSpacing: "-0.03em" }}>
-          הטבות אמיתיות לעובדים, כל יום, כל השנה.
+        <p style={{ fontSize: "clamp(15px, 1.4vw, 18px)", fontWeight: 600, color: "#F47A5A", letterSpacing: "-0.01em", margin: "0 0 12px" }}>
+          לא רק בחגים
+        </p>
+        <h2 style={{ fontSize: "clamp(28px, 5vw, 48px)", fontWeight: 900, color: "#15172A", letterSpacing: "-0.03em", lineHeight: 1.08, margin: "0 0 18px" }}>
+          ערך שהעובדים באמת משתמשים בו.
         </h2>
+        <p style={{ fontSize: "clamp(16px, 1.4vw, 19px)", color: "#6E6E73", lineHeight: 1.6, maxWidth: 640, margin: "0 auto 48px" }}>
+          סופר, חשמל, מותגים, חופשות, תרבות וולנס - חיסכון שמורגש לאורך כל השנה.
+        </p>
 
         {/* ── CAROUSEL ── */}
         <div
@@ -427,6 +433,35 @@ export default function FeaturedOffersSlider() {
 
         <Dots active={index} onSelect={setIndex} />
         <p style={{ fontSize: 12, color: "#AEAEB2", marginTop: 16 }}>החליקו ימינה/שמאלה או לחצו על החיצים</p>
+
+        <div style={{ marginTop: 40, display: "flex", justifyContent: "center" }}>
+          <button
+            type="button"
+            onClick={() => document.getElementById("employee-demo-kit")?.scrollIntoView({ behavior: "smooth", block: "start" })}
+            style={{
+              background: "#17191D",
+              color: "#fff",
+              border: "none",
+              borderRadius: 999,
+              height: 56,
+              minWidth: 240,
+              maxWidth: 360,
+              padding: "0 30px",
+              fontFamily: "inherit",
+              fontWeight: 700,
+              fontSize: "clamp(16px, 1.1vw, 18px)",
+              cursor: "pointer",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 10,
+              boxShadow: "0 8px 24px rgba(23,25,29,0.18)",
+            }}
+          >
+            <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#F47A5A", display: "inline-block", flexShrink: 0 }} />
+            לראות את זה דרך העיניים של העובד
+          </button>
+        </div>
       </div>
 
       <AnimatePresence>

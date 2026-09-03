@@ -15,7 +15,7 @@ export default function FloatingWhatsApp() {
     window.addEventListener("offersModalChange", handler);
 
     // Hide while the Hero (or calculator/survey) is visible on screen
-    const hiddenSections = ["hero-section", "value-calculator", "survey-gate", "survey-section"];
+    const hiddenSections = ["hero-transformation", "value-calculator", "survey-gate", "survey-section"];
     const observers = [];
     hiddenSections.forEach((id) => {
       const el = document.getElementById(id);
