@@ -99,27 +99,8 @@ export default function OrganizationFit() {
     sessionIdRef.current = id;
   }, []);
 
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting && !firedView.current) {
-            firedView.current = true;
-            try {
-              base44.analytics.track({ eventName: "organization_fit_started" });
-            } catch (err) {
-              /* ignore */
-            }
-          }
-        });
-      },
-      { threshold: 0.35 }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
+  // organization_fit_started is fired on the user's first answer (real engagement),
+  // not on section view, to send it exactly once per real session.
 
   const choose = (key, value) => {
     if (!firedStarted.current) {
