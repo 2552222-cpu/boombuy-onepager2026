@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { base44 } from "@/api/base44Client";
 
 // ─── OFFERS DATA (9 items, single source of truth) ───────────────────────────
 const OFFERS = [
@@ -339,6 +340,8 @@ export default function FeaturedOffersSlider() {
   const [index, setIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const touchStart = useRef(0);
+  const secRef = useRef(null);
+  const firedBenefitsView = useRef(false);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
@@ -347,16 +350,46 @@ export default function FeaturedOffersSlider() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
+  useEffect(() => {
+    const el = secRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting && !firedBenefitsView.current) {
+            firedBenefitsView.current = true;
+            try {
+              base44.analytics.track({ eventName: "benefits_viewed" });
+            } catch (err) {
+              /* ignore */
+            }
+            io.disconnect();
+          }
+        });
+      },
+      { threshold: 0.4 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   const go = (dir) => setIndex((p) => (p + dir + OFFERS.length) % OFFERS.length);
 
-  const openModal = (i) => setSelectedIdx(i);
+  const openModal = (i) => {
+    try {
+      base44.analytics.track({ eventName: "benefit_opened" });
+    } catch (err) {
+      /* ignore */
+    }
+    setSelectedIdx(i);
+  };
   const closeModal = () => setSelectedIdx(null);
 
   const modalPrev = () => setSelectedIdx((p) => (p - 1 + OFFERS.length) % OFFERS.length);
   const modalNext = () => setSelectedIdx((p) => (p + 1) % OFFERS.length);
 
   return (
-    <section id="benefits" style={{ background: "#FFFFFF", padding: "80px 0", direction: "rtl", overflowX: "hidden" }}>
+    <section id="benefits" ref={secRef} style={{ background: "#FFFFFF", padding: "80px 0", direction: "rtl", overflowX: "hidden" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto", textAlign: "center", padding: "0 16px" }}>
         <p style={{ fontSize: "clamp(15px, 1.4vw, 18px)", fontWeight: 600, color: "#F47A5A", letterSpacing: "-0.01em", margin: "0 0 12px" }}>
           לא רק בחגים
@@ -365,7 +398,7 @@ export default function FeaturedOffersSlider() {
           ערך שהעובדים באמת משתמשים בו.
         </h2>
         <p style={{ fontSize: "clamp(16px, 1.4vw, 19px)", color: "#6E6E73", lineHeight: 1.6, maxWidth: 640, margin: "0 auto 48px" }}>
-          סופר, חשמל, מותגים, חופשות, תרבות וולנס - חיסכון שמורגש לאורך כל השנה.
+          סופר, חשמל, מותגים, חופשות, תרבות וולנס - חיסכון וחוויות שפוגשות את העובדים לאורך כל השנה.
         </p>
 
         {/* ── CAROUSEL ── */}

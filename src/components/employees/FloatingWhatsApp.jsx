@@ -8,11 +8,16 @@ const WA_MESSAGE = encodeURIComponent("היי, אני רוצה להתייעץ ל
 export default function FloatingWhatsApp() {
   const [open, setOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
+  const [persistentHidden, setPersistentHidden] = useState(false);
 
   useEffect(() => {
     // Hide when a modal opens
     const handler = (e) => setHidden(e.detail.open);
     window.addEventListener("offersModalChange", handler);
+
+    // Hide while the persistent CTA is visible (avoid two floating buttons)
+    const onPersistent = (e) => setPersistentHidden(Boolean(e.detail && e.detail.visible));
+    window.addEventListener("boom_persistent_cta", onPersistent);
 
     // Hide while the Hero (or calculator/survey) is visible on screen
     const hiddenSections = ["hero-transformation", "value-calculator", "survey-gate", "survey-section"];
@@ -30,6 +35,7 @@ export default function FloatingWhatsApp() {
 
     return () => {
       window.removeEventListener("offersModalChange", handler);
+      window.removeEventListener("boom_persistent_cta", onPersistent);
       observers.forEach((o) => o.disconnect());
     };
   }, []);
@@ -37,7 +43,7 @@ export default function FloatingWhatsApp() {
   return (
     <div style={{ position: "fixed", bottom: 24, left: 24, zIndex: 9999, direction: "rtl", pointerEvents: "none" }}>
       <AnimatePresence>
-        {!hidden && (
+        {!hidden && !persistentHidden && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

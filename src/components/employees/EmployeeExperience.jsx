@@ -60,6 +60,13 @@ export default function EmployeeExperience() {
   };
   useEffect(() => () => clearTimers(), []);
 
+  // Notify the persistent CTA that the employee video has ended (mobile bar eligibility)
+  useEffect(() => {
+    if (stage === "complete") {
+      window.dispatchEvent(new CustomEvent("boom_employee_completed"));
+    }
+  }, [stage]);
+
   useEffect(() => {
     const c = () => setIsMobile(window.innerWidth < 768);
     c();

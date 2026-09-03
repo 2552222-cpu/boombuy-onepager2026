@@ -182,8 +182,11 @@ export default function TrustLogos() {
 
       <div className="tl-head">
         <h2 className="tl-title">
-          כבר הופכים תקציב רווחה לחוויית עובד יומיומית{" "}
-          <span className="tl-accent">ביותר מ-300 ארגונים</span>
+          כבר הופכים תקציב רווחה
+          <br />
+          <span className="tl-accent">לחוויית עובד יומיומית</span>
+          <br />
+          <span className="tl-accent">במאות מהארגונים המובילים בישראל</span>
         </h2>
       </div>
 

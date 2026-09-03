@@ -16,11 +16,6 @@ const EASE = [0.22, 1, 0.36, 1];
 
 const CARDS = [
   {
-    kicker: "לרווחה",
-    title: "פחות תפעול",
-    text: "ספקים, תכנים, הקצאות, שירות ופניות עובדים - מנוהלים במקום אחד.",
-  },
-  {
     kicker: "לעובדים",
     title: "יותר ערך",
     text: "חיסכון, מתנות, חוויות, תרבות וולנס שנוכחים בחיי העובד לאורך כל השנה.",
@@ -29,6 +24,11 @@ const CARDS = [
     kicker: "לתקציב",
     title: "עובד הרבה יותר",
     text: "אותו תקציב קיים מייצר יותר רגעים, יותר שימוש ויותר מחוברות.",
+  },
+  {
+    kicker: "לרווחה",
+    title: "פחות תפעול",
+    text: "ספקים, תכנים, הקצאות, שירות ופניות עובדים - מנוהלים במקום אחד.",
   },
 ];
 
@@ -151,14 +151,30 @@ export default function PlatformExplanation() {
               transition={itemTransition}
               style={{
                 color: CORAL,
-                fontSize: "clamp(17px, 1.3vw, 20px)",
+                fontSize: "clamp(16px, 1.2vw, 19px)",
                 fontWeight: 600,
                 margin: 0,
                 letterSpacing: "-0.01em",
                 lineHeight: 1.4,
               }}
             >
-              כך נראה השדרוג מאחורי הקלעים
+              בום ביי מציגה
+            </motion.p>
+            <motion.p
+              initial={{ opacity: 0, y: hiddenY }}
+              whileInView={{ opacity: 1, y: visibleY }}
+              viewport={{ once: true, amount: 0.35 }}
+              transition={{ ...itemTransition, delay: 0.05 }}
+              style={{
+                color: "rgba(255,255,255,0.72)",
+                fontSize: "clamp(16px, 1.2vw, 19px)",
+                fontWeight: 500,
+                margin: "2px 0 0",
+                letterSpacing: "-0.01em",
+                lineHeight: 1.4,
+              }}
+            >
+              מערכת הפעלה לרווחה וחוויית העובד
             </motion.p>
 
             <motion.h2
