@@ -211,11 +211,6 @@ export default function HeroTransformation() {
     }
   };
 
-  const scrollToLogos = () =>
-    document
-      .getElementById("trust-logos-section")
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
-
   const desktopSize = {
     width: "min(calc((100svh - 90px) * 16 / 9), calc(100vw - 64px), 1600px)",
     aspectRatio: "16 / 9",
@@ -463,32 +458,7 @@ export default function HeroTransformation() {
 
         </div>
 
-        {/* Ending live button — below the frame, clear of all image content (all viewports) */}
-        {stage === "complete" && (
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35, ease: "easeOut", delay: 0.18 }}
-            style={{ display: "flex", justifyContent: "center", marginTop: 16 }}
-          >
-            <button
-              onClick={scrollToLogos}
-              style={{
-                ...btnBase,
-                width: "auto",
-                minWidth: 190,
-                maxWidth: 230,
-                height: 50,
-                borderRadius: 14,
-                fontSize: 16,
-                padding: "0 22px",
-              }}
-            >
-              ומה העובדים מרגישים?
-              <CoralDot />
-            </button>
-          </motion.div>
-        )}
+
       </div>
     </section>
   );
