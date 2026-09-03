@@ -14,11 +14,11 @@ import {
 const cardShadow =
   "0 24px 70px rgba(0,0,0,0.14), 0 8px 24px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(255,255,255,0.3)";
 
-// Soft warm radial light (warm white + coral touch) — opening image -> video
-const LIGHT_OPENING =
-  "radial-gradient(circle at 52% 58%, rgba(255,250,245,0.94) 0%, rgba(255,244,238,0.80) 22%, rgba(240,120,88,0.34) 46%, rgba(255,255,255,0) 74%)";
+// Coral light sweep — opening image -> video (subtle, blurred, left -> right)
+const OPEN_SWEEP_BG =
+  "linear-gradient(90deg, rgba(244,122,90,0) 0%, rgba(244,122,90,0.18) 50%, rgba(244,122,90,0) 100%)";
 
-// Warm horizontal light sweep (warm white + coral touch) — video -> ending image
+// Warm horizontal light sweep — video -> ending image (kept as-is)
 const LIGHT_ENDING =
   "linear-gradient(100deg, transparent 28%, rgba(255,248,240,0.92) 46%, rgba(240,120,88,0.42) 52%, rgba(255,248,240,0.92) 58%, transparent 72%)";
 
@@ -29,24 +29,33 @@ const baseMedia = {
   width: "100%",
   height: "100%",
   objectFit: "cover",
-  objectPosition: "center",
+  objectPosition: "center center",
+  backfaceVisibility: "hidden",
+  WebkitBackfaceVisibility: "hidden",
 };
 
-const OPEN_MS = 820; // opening image -> video
-const END_MS = 950; // video -> ending image
-const END_BEFORE = 700; // start ending transition this many ms before the video ends
+const EASE_OPEN = [0.22, 1, 0.36, 1];
+const OPEN_CROSSFADE_MS = 700; // crossfade duration (after the 150ms hold)
+const OPEN_HOLD_MS = 150; // opening image stays full before crossfade
+const OPEN_SWEEP_MS = 750; // light sweep duration
+const OPEN_SWEEP_LEAD_MS = 80; // sweep starts this long before crossfade
+const END_MS = 950; // video -> ending image (design kept)
+const END_BEFORE = 650; // start ending transition this many ms before the video ends
 
 export default function HeroTransformation() {
-  // idle | chaos | openingTransition | playing | endingTransition | complete
+  // idle | chaos | opening | playing | endingTransition | complete
   const [stage, setStage] = useState("idle");
   const [isMobile, setIsMobile] = useState(false);
   const [videoTime, setVideoTime] = useState(0);
   const [enteredWords, setEnteredWords] = useState({});
   const [buttonGone, setButtonGone] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [openingSweep, setOpeningSweep] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const videoRef = useRef(null);
   const timers = useRef([]);
   const endedRef = useRef(false);
+  const startedRef = useRef(false);
 
   const clearTimers = () => {
     timers.current.forEach((t) => clearTimeout(t));
@@ -68,10 +77,12 @@ export default function HeroTransformation() {
     };
   }, []);
 
-  // Preload ending image
+  // Preload both opening and ending images on mount
   useEffect(() => {
-    const img = new Image();
-    img.src = AFTER_IMG;
+    [BEFORE_IMG, AFTER_IMG].forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
   }, []);
 
   // Kick off video preload as soon as it mounts
@@ -97,9 +108,40 @@ export default function HeroTransformation() {
       v.addEventListener("canplay", done);
     });
 
-  const twoRaf = () =>
+  const waitForPlaying = (v) =>
     new Promise((resolve) => {
-      requestAnimationFrame(() => requestAnimationFrame(resolve));
+      const onPlay = () => {
+        v.removeEventListener("playing", onPlay);
+        clearTimeout(fb);
+        resolve();
+      };
+      const fb = setTimeout(() => {
+        v.removeEventListener("playing", onPlay);
+        resolve();
+      }, 600);
+      v.addEventListener("playing", onPlay);
+    });
+
+  // Wait until the video has advanced past the very first frame (avoids the jump
+  // from the static opening image to the video's first frame)
+  const waitCurrentTime = (v, threshold) =>
+    new Promise((resolve) => {
+      if (v.currentTime > threshold) return resolve();
+      let raf;
+      const fb = setTimeout(() => {
+        cancelAnimationFrame(raf);
+        resolve();
+      }, 2000);
+      const tick = () => {
+        if (v.currentTime > threshold) {
+          cancelAnimationFrame(raf);
+          clearTimeout(fb);
+          resolve();
+          return;
+        }
+        raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
     });
 
   const startOpeningTransition = async () => {
@@ -107,27 +149,37 @@ export default function HeroTransformation() {
     if (v) {
       await waitForVideoReady(v);
       try { v.currentTime = 0; } catch (e) { /* ignore */ }
-      // React's `muted` prop is unreliable on <video> — set it imperatively so autoplay is allowed
+      // React's `muted` prop is unreliable on <video> — set imperatively so autoplay is allowed
       v.muted = true;
-      // Listen for 'playing' BEFORE calling play() (avoids the event racing ahead and hanging forever)
-      const playing = new Promise((resolve) => {
-        const onPlay = () => { v.removeEventListener("playing", onPlay); clearTimeout(fallback); resolve(); };
-        const fallback = setTimeout(() => { v.removeEventListener("playing", onPlay); resolve(); }, 400);
-        v.addEventListener("playing", onPlay);
-      });
       try { await v.play(); } catch (e) { /* ignore */ }
-      await playing;
-      await twoRaf();
+      await waitForPlaying(v);
+      // hold the opening image at opacity 1 while the video plays behind it, past its first frame
+      await waitCurrentTime(v, 0.12);
     }
-    setStage("openingTransition");
-    const dur = reducedMotion ? 300 : OPEN_MS;
-    const t = setTimeout(() => setStage("playing"), dur);
-    timers.current.push(t);
+    // sweep starts OPEN_SWEEP_LEAD_MS before the crossfade
+    if (!reducedMotion) {
+      const tSweep = setTimeout(() => setOpeningSweep(true), OPEN_HOLD_MS - OPEN_SWEEP_LEAD_MS);
+      timers.current.push(tSweep);
+    }
+    const hold = reducedMotion ? 0 : OPEN_HOLD_MS;
+    const cross = reducedMotion ? 300 : OPEN_CROSSFADE_MS;
+    const tOpen = setTimeout(() => {
+      setLoading(false);
+      setButtonGone(true);
+      setStage("opening");
+    }, hold);
+    timers.current.push(tOpen);
+    const tPlay = setTimeout(() => setStage("playing"), hold + cross);
+    timers.current.push(tPlay);
+    // remove the sweep layer fully after the transition
+    const tSweepOff = setTimeout(() => setOpeningSweep(false), hold + cross + 100);
+    timers.current.push(tSweepOff);
   };
 
   const onStart = () => {
-    if (stage !== "idle") return;
-    setButtonGone(true);
+    if (stage !== "idle" || startedRef.current) return;
+    startedRef.current = true;
+    setLoading(true);
     setStage("chaos");
     CHAOS_WORDS.forEach((w) => {
       const t = setTimeout(
@@ -159,8 +211,10 @@ export default function HeroTransformation() {
     }
   };
 
-  const scrollToDemo = () =>
-    document.getElementById("employee-experience")?.scrollIntoView({ behavior: "smooth" });
+  const scrollToLogos = () =>
+    document
+      .getElementById("trust-logos-section")
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
 
   const desktopSize = {
     width: "min(calc((100svh - 90px) * 16 / 9), calc(100vw - 64px), 1600px)",
@@ -169,40 +223,41 @@ export default function HeroTransformation() {
   };
   const mediaRadius = isMobile ? 18 : 34;
 
+  const inTransition = stage === "opening" || stage === "endingTransition";
+  const mediaWill = inTransition ? "opacity, transform" : "auto";
+
   // --- Opening image (layer 3, top of media) ---
   const openingAnimate = (() => {
     if (reducedMotion) {
-      if (stage === "openingTransition") return { opacity: [1, 0] };
+      if (stage === "opening") return { opacity: [1, 0] };
       if (stage === "idle" || stage === "chaos") return { opacity: 1 };
       return { opacity: 0 };
     }
-    if (stage === "idle" || stage === "chaos")
-      return { opacity: 1, filter: "blur(0px)", scale: 1 };
-    if (stage === "openingTransition")
-      return { opacity: [1, 0], filter: ["blur(0px)", "blur(8px)"], scale: [1, 1.018] };
-    return { opacity: 0, filter: "blur(8px)", scale: 1.018 };
+    if (stage === "idle" || stage === "chaos") return { opacity: 1, scale: 1 };
+    if (stage === "opening")
+      // no blur on the manager's face — clean crossfade with a tiny scale-up
+      return { opacity: [1, 0], scale: [1, 1.008] };
+    return { opacity: 0, scale: 1.008 };
   })();
   const openingTransitionCfg = {
-    duration: (reducedMotion ? 300 : OPEN_MS) / 1000,
-    ease: "easeInOut",
+    duration: (reducedMotion ? 300 : OPEN_CROSSFADE_MS) / 1000,
+    ease: EASE_OPEN,
   };
 
   // --- Video (layer 2) ---
   const videoAnimate = (() => {
     if (reducedMotion) {
-      if (stage === "openingTransition") return { opacity: [0, 1] };
+      if (stage === "opening") return { opacity: [0, 1] };
       if (stage === "idle" || stage === "chaos") return { opacity: 0 };
       if (stage === "playing") return { opacity: 1 };
       if (stage === "endingTransition") return { opacity: [1, 0] };
       return { opacity: 0 };
     }
-    if (stage === "idle" || stage === "chaos")
-      return { opacity: 0, filter: "blur(0px)", scale: 1 };
-    if (stage === "openingTransition")
-      return { opacity: [0, 1], filter: ["blur(7px)", "blur(0px)"], scale: [0.992, 1] };
-    if (stage === "playing") return { opacity: 1, filter: "blur(0px)", scale: 1 };
+    if (stage === "idle" || stage === "chaos") return { opacity: 0, scale: 1 };
+    if (stage === "opening") return { opacity: [0, 1], scale: 1 };
+    if (stage === "playing") return { opacity: 1, scale: 1 };
     if (stage === "endingTransition")
-      // keep last frame visible until the ending image reaches ~0.65, then fade out
+      // keep last frame visible until the ending image reaches ~0.65, then fade out (design kept)
       return {
         opacity: [1, 1, 0],
         filter: ["blur(0px)", "blur(0px)", "blur(7px)"],
@@ -211,12 +266,12 @@ export default function HeroTransformation() {
     return { opacity: 0, filter: "blur(7px)", scale: 1.012 };
   })();
   const videoTransitionCfg = {
-    duration: (reducedMotion ? 300 : stage === "endingTransition" ? END_MS : OPEN_MS) / 1000,
-    ease: "easeInOut",
+    duration: (reducedMotion ? 300 : stage === "endingTransition" ? END_MS : OPEN_CROSSFADE_MS) / 1000,
+    ease: stage === "opening" ? EASE_OPEN : "easeInOut",
     ...(stage === "endingTransition" && !reducedMotion ? { times: [0, 0.65, 1] } : {}),
   };
 
-  // --- Ending image (layer 1, lowest) ---
+  // --- Ending image (layer 1, lowest) — design kept as-is ---
   const endingAnimate = (() => {
     if (reducedMotion) {
       if (stage === "endingTransition") return { opacity: [0, 1] };
@@ -234,7 +289,6 @@ export default function HeroTransformation() {
   };
 
   const btnBase = {
-    position: "absolute",
     background: CHARCOAL,
     color: "#fff",
     border: "none",
@@ -247,12 +301,25 @@ export default function HeroTransformation() {
     alignItems: "center",
     justifyContent: "center",
     gap: 10,
-    zIndex: 30,
     boxShadow: "0 8px 22px rgba(0,0,0,0.22)",
   };
 
-  const showOpeningLight = stage === "openingTransition" && !reducedMotion;
   const showEndingLight = stage === "endingTransition" && !reducedMotion;
+
+  const Spinner = () => (
+    <span
+      style={{
+        width: 14,
+        height: 14,
+        borderRadius: "50%",
+        border: "2px solid rgba(255,255,255,0.35)",
+        borderTopColor: "#fff",
+        animation: "ee-spin 0.8s linear infinite",
+        display: "inline-block",
+        flexShrink: 0,
+      }}
+    />
+  );
 
   return (
     <section
@@ -265,6 +332,7 @@ export default function HeroTransformation() {
         fontFamily: "var(--font-heebo)",
       }}
     >
+      <style>{`@keyframes ee-spin{to{transform:rotate(360deg)}}`}</style>
       <div style={{ margin: "0 auto", padding: isMobile ? "0 16px" : "0 32px", position: "relative" }}>
         <div
           style={{
@@ -275,6 +343,7 @@ export default function HeroTransformation() {
             overflow: "hidden",
             boxShadow: cardShadow,
             background: "#000",
+            transform: "translateZ(0)",
             ...(isMobile ? { width: "100%", height: "82svh" } : desktopSize),
           }}
         >
@@ -285,7 +354,7 @@ export default function HeroTransformation() {
             initial={{ opacity: 0, filter: "blur(8px)", scale: 0.988 }}
             animate={endingAnimate}
             transition={endingTransitionCfg}
-            style={{ ...baseMedia, borderRadius: mediaRadius, zIndex: 1 }}
+            style={{ ...baseMedia, borderRadius: mediaRadius, zIndex: 1, willChange: mediaWill }}
           />
 
           {/* Layer 2 — Video (always mounted for preload) */}
@@ -295,42 +364,51 @@ export default function HeroTransformation() {
             poster={BEFORE_IMG}
             muted
             playsInline
-            preload="auto"
+            preload={isMobile ? "metadata" : "auto"}
             onTimeUpdate={onTimeUpdate}
-            initial={{ opacity: 0, filter: "blur(0px)", scale: 1 }}
+            initial={{ opacity: 0, scale: 1 }}
             animate={videoAnimate}
             transition={videoTransitionCfg}
-            style={{ ...baseMedia, borderRadius: mediaRadius, zIndex: 2 }}
+            style={{ ...baseMedia, borderRadius: mediaRadius, zIndex: 2, willChange: mediaWill }}
           />
 
           {/* Layer 3 — Opening image (above the video, crossfades out) */}
           <motion.img
             src={BEFORE_IMG}
             alt="מנהלת רווחה בעומס"
-            initial={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
+            initial={{ opacity: 1, scale: 1 }}
             animate={openingAnimate}
             transition={openingTransitionCfg}
-            style={{ ...baseMedia, borderRadius: mediaRadius, zIndex: 3 }}
+            style={{ ...baseMedia, borderRadius: mediaRadius, zIndex: 3, willChange: mediaWill }}
           />
 
-          {/* Light layer — opening image -> video (soft warm radial, max 0.58) */}
-          {showOpeningLight && (
+          {/* Light layer — opening image -> video (subtle coral sweep, blurred, left -> right) */}
+          {openingSweep && !reducedMotion && (
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: [0, 0.58, 0.58, 0] }}
-              transition={{ duration: OPEN_MS / 1000, ease: "easeOut", times: [0, 0.22, 0.41, 1] }}
+              initial={{ x: "-90%", opacity: 0 }}
+              animate={{ x: ["-90%", "190%"], opacity: [0, 1, 1, 0] }}
+              transition={{
+                duration: OPEN_SWEEP_MS / 1000,
+                ease: "easeInOut",
+                times: [0, 0.12, 0.85, 1],
+              }}
               style={{
                 position: "absolute",
-                inset: 0,
-                background: LIGHT_OPENING,
+                top: 0,
+                bottom: 0,
+                left: 0,
+                width: "60%",
+                background: OPEN_SWEEP_BG,
+                filter: "blur(28px)",
                 mixBlendMode: "screen",
                 zIndex: 10,
                 pointerEvents: "none",
+                willChange: "transform, opacity",
               }}
             />
           )}
 
-          {/* Light layer — video -> ending image (warm horizontal sweep, max 0.52) */}
+          {/* Light layer — video -> ending image (warm horizontal sweep, design kept) */}
           {showEndingLight && (
             <motion.div
               initial={{ opacity: 0, x: "-42%" }}
@@ -357,42 +435,52 @@ export default function HeroTransformation() {
             active={stage !== "idle"}
           />
 
-          {/* Opening live button */}
-          {(stage === "idle" || stage === "chaos") && (
+          {/* Opening live button — stays visible (with a subtle loader) until the crossfade begins */}
+          {(stage === "idle" || stage === "chaos" || stage === "opening") && (
             <motion.button
               onClick={onStart}
               initial={{ opacity: 1, y: 0 }}
               animate={{ opacity: buttonGone ? 0 : 1, y: buttonGone ? 10 : 0 }}
-              transition={{ duration: 0.15, ease: "easeOut" }}
+              transition={{ duration: 0.18, ease: "easeOut" }}
               whileHover={{ y: buttonGone ? 10 : -2 }}
+              disabled={stage !== "idle"}
               style={{
                 ...btnBase,
+                position: "absolute",
                 right: "7%",
                 bottom: "10%",
                 width: 230,
                 height: 56,
+                zIndex: 30,
                 pointerEvents: buttonGone ? "none" : "auto",
+                opacity: stage !== "idle" && !loading ? 0.85 : 1,
               }}
             >
+              {loading ? <Spinner /> : <CoralDot />}
               לראות את השדרוג
-              <CoralDot />
             </motion.button>
           )}
 
-          {/* Ending live button — only after the ending image has settled */}
-          {stage === "complete" && (
+          {/* Ending live button (desktop) — positioned in the free text area, clear of the laptop */}
+          {stage === "complete" && !isMobile && (
             <motion.button
-              onClick={scrollToDemo}
+              onClick={scrollToLogos}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35, ease: "easeOut", delay: 0.18 }}
               whileHover={{ y: -2 }}
               style={{
                 ...btnBase,
-                right: "7%",
-                top: "62%",
-                width: 240,
-                height: 54,
+                position: "absolute",
+                right: "5%",
+                top: "30%",
+                width: "auto",
+                minWidth: 250,
+                maxWidth: 300,
+                height: 60,
+                borderRadius: 16,
+                zIndex: 30,
+                fontSize: 19,
               }}
             >
               ומה העובדים מרגישים?
@@ -400,6 +488,31 @@ export default function HeroTransformation() {
             </motion.button>
           )}
         </div>
+
+        {/* Ending live button (mobile) — below the frame, not over the image */}
+        {stage === "complete" && isMobile && (
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, ease: "easeOut", delay: 0.18 }}
+            style={{ display: "flex", justifyContent: "center", marginTop: 18 }}
+          >
+            <button
+              onClick={scrollToLogos}
+              style={{
+                ...btnBase,
+                width: "calc(100% - 40px)",
+                maxWidth: 340,
+                height: 58,
+                borderRadius: 16,
+                fontSize: 18,
+              }}
+            >
+              ומה העובדים מרגישים?
+              <CoralDot />
+            </button>
+          </motion.div>
+        )}
       </div>
     </section>
   );

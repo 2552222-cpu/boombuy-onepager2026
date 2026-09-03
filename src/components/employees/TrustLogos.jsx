@@ -34,6 +34,11 @@ export default function TrustLogos() {
   const sectionRef = useRef(null);
   const firedRef = useRef(false);
 
+  const scrollToEmployee = () =>
+    document
+      .getElementById("ee-title")
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
@@ -66,7 +71,26 @@ export default function TrustLogos() {
           padding:36px 32px 28px;
           box-sizing:border-box;
           font-family:'Heebo','Assistant',sans-serif;
+          scroll-margin-top:90px;
         }
+        .tl-continue{
+          display:inline-flex;
+          align-items:center;
+          gap:10px;
+          background:${CHARCOAL};
+          color:#fff;
+          border:none;
+          cursor:pointer;
+          border-radius:999px;
+          padding:14px 24px;
+          font-family:'Heebo','Assistant',sans-serif;
+          font-weight:600;
+          font-size:16px;
+          box-shadow:0 6px 18px rgba(20,22,26,0.12);
+          transition:transform .18s ease, box-shadow .18s ease;
+        }
+        .tl-continue:hover{ transform:translateY(-2px); box-shadow:0 10px 24px rgba(20,22,26,0.18); }
+        .tl-continue:focus-visible{ outline:3px solid rgba(244,122,90,0.55); outline-offset:3px; }
         .tl-head{
           max-width:900px;
           margin:0 auto 24px;
@@ -146,7 +170,7 @@ export default function TrustLogos() {
         }
 
         @media (max-width:768px){
-          .tl-wall{ padding:28px 20px 24px; }
+          .tl-wall{ padding:28px 20px 24px; scroll-margin-top:72px; }
           .tl-head{ margin:0 auto 18px; }
           .tl-title{ font-size:clamp(22px, 5vw, 26px); line-height:1.3; }
           .tl-rows{ gap:18px; }
@@ -166,6 +190,22 @@ export default function TrustLogos() {
       <div className="tl-rows">
         <Rail items={rowA} dir="left" duration={90} />
         <Rail items={rowB} dir="right" duration={105} />
+      </div>
+
+      <div style={{ display: "flex", justifyContent: "center", marginTop: 22, marginBottom: 20 }}>
+        <button type="button" className="tl-continue" onClick={scrollToEmployee}>
+          <span
+            style={{
+              width: 7,
+              height: 7,
+              borderRadius: "50%",
+              background: CORAL,
+              display: "inline-block",
+              flexShrink: 0,
+            }}
+          />
+          לראות מה העובדים מרגישים
+        </button>
       </div>
     </section>
   );

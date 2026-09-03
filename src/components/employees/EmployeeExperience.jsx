@@ -13,31 +13,45 @@ const VIDEO_SRC =
 const END_IMG =
   "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/7e5be3a0c_END-FRAME-365-VALUE-v3-FLOATING.png";
 
-const OPEN_MS = 650;
-const END_MS = 650;
-const SWEEP_MS = 700;
-const SCALE_MS = 400;
-const PRE_DELAY = 250;
+const EASE_OPEN = [0.22, 1, 0.36, 1];
+const OPEN_CROSSFADE_MS = 700;
+const OPEN_HOLD_MS = 150;
+const OPEN_SWEEP_MS = 750;
+const OPEN_SWEEP_LEAD_MS = 80;
+const END_MS = 950; // ending crossfade duration (effect kept)
 const END_BEFORE = 650; // start ending transition this many ms before the video ends
 
+// Coral light sweep — opening image -> video (subtle, blurred, left -> right)
+const OPEN_SWEEP_BG =
+  "linear-gradient(90deg, rgba(244,122,90,0) 0%, rgba(244,122,90,0.18) 50%, rgba(244,122,90,0) 100%)";
+
+// Coral light sweep — video -> ending image (existing effect, kept)
+const END_SWEEP_BG =
+  "linear-gradient(90deg, rgba(244,122,90,0) 0%, rgba(244,122,90,0.22) 50%, rgba(244,122,90,0) 100%)";
+
+// Shared media layer geometry — identical for all three media layers (no jump on swap)
 const baseMedia = {
   position: "absolute",
   inset: 0,
   width: "100%",
   height: "100%",
   objectFit: "cover",
-  objectPosition: "center",
+  objectPosition: "center center",
+  backfaceVisibility: "hidden",
+  WebkitBackfaceVisibility: "hidden",
 };
 
-const CORAL_SWEEP =
-  "linear-gradient(90deg, rgba(244,122,90,0) 0%, rgba(244,122,90,0.22) 50%, rgba(244,122,90,0) 100%)";
-
 export default function EmployeeExperience() {
-  const [stage, setStage] = useState("idle"); // idle|starting|opening|playing|ending|complete
+  // idle | starting | opening | playing | ending | complete
+  const [stage, setStage] = useState("idle");
   const [isMobile, setIsMobile] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [openingSweep, setOpeningSweep] = useState(false);
   const videoRef = useRef(null);
   const timers = useRef([]);
+  const endedRef = useRef(false);
+  const startedRef = useRef(false);
   const fired = useRef({ started: false, completed: false, platform: false });
 
   const clearTimers = () => {
@@ -60,10 +74,12 @@ export default function EmployeeExperience() {
     };
   }, []);
 
-  // Preload the end image so it is ready beneath the video
+  // Preload both opening and ending images on mount
   useEffect(() => {
-    const img = new Image();
-    img.src = END_IMG;
+    [START_IMG, END_IMG].forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
   }, []);
 
   const waitForPlaying = (v) =>
@@ -80,6 +96,27 @@ export default function EmployeeExperience() {
       v.addEventListener("playing", onPlay);
     });
 
+  // Wait until the video has advanced past its first frame
+  const waitCurrentTime = (v, threshold) =>
+    new Promise((resolve) => {
+      if (v.currentTime > threshold) return resolve();
+      let raf;
+      const fb = setTimeout(() => {
+        cancelAnimationFrame(raf);
+        resolve();
+      }, 2000);
+      const tick = () => {
+        if (v.currentTime > threshold) {
+          cancelAnimationFrame(raf);
+          clearTimeout(fb);
+          resolve();
+          return;
+        }
+        raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+    });
+
   const beginOpening = async () => {
     const v = videoRef.current;
     if (v) {
@@ -88,20 +125,37 @@ export default function EmployeeExperience() {
       v.muted = true;
       try { await v.play(); } catch (e) { /* ignore */ }
       await waitForPlaying(v);
+      // hold the opening image at opacity 1 while the video plays behind it, past its first frame
+      await waitCurrentTime(v, 0.12);
     }
-    setStage("opening");
-    const t = setTimeout(() => setStage("playing"), OPEN_MS);
-    timers.current.push(t);
+    // sweep starts OPEN_SWEEP_LEAD_MS before the crossfade
+    if (!reducedMotion) {
+      const tSweep = setTimeout(() => setOpeningSweep(true), OPEN_HOLD_MS - OPEN_SWEEP_LEAD_MS);
+      timers.current.push(tSweep);
+    }
+    const hold = reducedMotion ? 0 : OPEN_HOLD_MS;
+    const cross = reducedMotion ? 300 : OPEN_CROSSFADE_MS;
+    const tOpen = setTimeout(() => {
+      setLoading(false);
+      setStage("opening");
+    }, hold);
+    timers.current.push(tOpen);
+    const tPlay = setTimeout(() => setStage("playing"), hold + cross);
+    timers.current.push(tPlay);
+    const tSweepOff = setTimeout(() => setOpeningSweep(false), hold + cross + 100);
+    timers.current.push(tSweepOff);
   };
 
   const onStart = () => {
-    if (stage !== "idle") return;
+    if (stage !== "idle" || startedRef.current) return;
+    startedRef.current = true;
     if (!fired.current.started) {
       fired.current.started = true;
       try { base44.analytics.track({ eventName: "employee_transformation_started" }); } catch (e) { /* ignore */ }
     }
+    setLoading(true);
     setStage("starting");
-    const t = setTimeout(beginOpening, PRE_DELAY);
+    const t = setTimeout(beginOpening, 60);
     timers.current.push(t);
   };
 
@@ -113,7 +167,7 @@ export default function EmployeeExperience() {
         fired.current.completed = true;
         try { base44.analytics.track({ eventName: "employee_transformation_completed" }); } catch (e) { /* ignore */ }
       }
-    }, END_MS);
+    }, reducedMotion ? 300 : END_MS);
     timers.current.push(t);
   };
 
@@ -139,20 +193,45 @@ export default function EmployeeExperience() {
   };
 
   // --- Layer opacity targets (framer-motion animates between stages) ---
-  const startTarget = stage === "idle" || stage === "starting" ? 1 : 0;
+  const imageFull = stage === "idle" || stage === "starting";
+  const startTarget = imageFull ? 1 : 0;
   const videoTarget = stage === "opening" || stage === "playing" ? 1 : 0;
   const endTarget = stage === "ending" || stage === "complete" ? 1 : 0;
-  const crossfade = { duration: 0.65, ease: "easeInOut" };
 
-  const frameScale = reducedMotion ? 1 : stage === "idle" ? 1 : 1.015;
-  const showOpeningSweep = !reducedMotion && stage === "opening";
-  const showEndingSweep = !reducedMotion && stage === "ending";
+  const openingIsCross = stage === "opening";
+  const openingOpacity = openingIsCross ? [1, 0] : startTarget;
+  const openingScale = openingIsCross ? [1, 1.008] : 1;
+  const videoOpacity = openingIsCross ? [0, 1] : videoTarget;
+  const openingCfg = {
+    duration: (reducedMotion ? 300 : OPEN_CROSSFADE_MS) / 1000,
+    ease: EASE_OPEN,
+  };
+  const staticCfg = { duration: 0.65, ease: "easeInOut" };
+
+  const inTransition = stage === "opening" || stage === "ending";
+  const mediaWill = inTransition ? "opacity, transform" : "auto";
+  const frameScale = reducedMotion ? 1 : imageFull ? 1 : 1.015;
 
   const frameWidth = isMobile ? "calc(100vw - 40px)" : "min(1180px, calc(100vw - 80px))";
   const radius = isMobile ? 24 : 30;
 
   const btnTopText = stage === "idle" ? "לראות את השינוי" : "השדרוג מתחיל";
   const btnTopDisabled = stage !== "idle";
+
+  const Spinner = () => (
+    <span
+      style={{
+        width: 14,
+        height: 14,
+        borderRadius: "50%",
+        border: "2px solid rgba(255,255,255,0.35)",
+        borderTopColor: "#fff",
+        animation: "ee-spin 0.8s linear infinite",
+        display: "inline-block",
+        flexShrink: 0,
+      }}
+    />
+  );
 
   return (
     <section
@@ -165,6 +244,9 @@ export default function EmployeeExperience() {
       }}
     >
       <style>{`
+        @keyframes ee-spin{to{transform:rotate(360deg)}}
+        #ee-title{ scroll-margin-top:90px; }
+        @media (max-width:768px){ #ee-title{ scroll-margin-top:72px; } }
         .ee-btn{
           cursor:pointer;
           border:none;
@@ -180,7 +262,7 @@ export default function EmployeeExperience() {
         }
         .ee-btn-top{ background:${CHARCOAL}; }
         .ee-btn-top:hover:not(:disabled){ transform:translateY(-2px); box-shadow:0 10px 24px rgba(23,25,29,0.22); }
-        .ee-btn-top:disabled{ cursor:default; opacity:0.92; }
+        .ee-btn-top:disabled{ cursor:default; }
         .ee-btn-end{ background:${CORAL}; }
         .ee-btn-end:hover{ transform:translateY(-2px); box-shadow:0 10px 24px rgba(244,122,90,0.32); }
       `}</style>
@@ -205,6 +287,7 @@ export default function EmployeeExperience() {
         </motion.p>
 
         <motion.h2
+          id="ee-title"
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.6 }}
@@ -251,18 +334,23 @@ export default function EmployeeExperience() {
               minWidth: 200,
               padding: isMobile ? "16px 22px" : "18px 36px",
               fontSize: isMobile ? 17 : 19,
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 10,
             }}
           >
+            {loading ? <Spinner /> : null}
             {btnTopText}
           </button>
         </div>
       </div>
 
-      {/* Media frame — three overlapping layers in one container */}
+      {/* Media frame — three overlapping layers in one container (no conditional render, shared alignment) */}
       <div style={{ marginTop: isMobile ? 32 : 48, display: "flex", justifyContent: "center" }}>
         <motion.div
           animate={{ scale: frameScale }}
-          transition={{ duration: SCALE_MS / 1000, ease: "easeOut" }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
           style={{ width: frameWidth, maxWidth: "100%" }}
         >
           <div
@@ -275,6 +363,7 @@ export default function EmployeeExperience() {
               boxShadow: "0 24px 80px rgba(19,21,25,0.10)",
               border: "1px solid rgba(25,27,31,0.08)",
               background: "#000",
+              transform: "translateZ(0)",
             }}
           >
             {/* Layer 1 — end image (lowest, preloaded beneath the video) */}
@@ -283,8 +372,8 @@ export default function EmployeeExperience() {
               alt="עובד נהנה ממגוון הטבות וחוויות לאורך כל השנה"
               initial={{ opacity: 0 }}
               animate={{ opacity: endTarget }}
-              transition={crossfade}
-              style={{ ...baseMedia, borderRadius: radius, zIndex: 1 }}
+              transition={staticCfg}
+              style={{ ...baseMedia, borderRadius: radius, zIndex: 1, willChange: mediaWill }}
             />
 
             {/* Layer 2 — video (always mounted for preload; no controls, no loop, muted) */}
@@ -293,61 +382,68 @@ export default function EmployeeExperience() {
               src={VIDEO_SRC}
               muted
               playsInline
-              preload="auto"
+              preload={isMobile ? "metadata" : "auto"}
               onTimeUpdate={onTimeUpdate}
               onEnded={onEnded}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: videoTarget }}
-              transition={crossfade}
-              style={{ ...baseMedia, borderRadius: radius, zIndex: 2 }}
+              initial={{ opacity: 0, scale: 1 }}
+              animate={{ opacity: videoOpacity, scale: 1 }}
+              transition={openingIsCross ? openingCfg : staticCfg}
+              style={{ ...baseMedia, borderRadius: radius, zIndex: 2, willChange: mediaWill }}
             />
 
             {/* Layer 3 — start image (top, crossfades out) */}
             <motion.img
               src={START_IMG}
               alt="עובד שחוויית הרווחה שלו מתרכזת ברגעים בודדים בשנה"
-              initial={{ opacity: 1 }}
-              animate={{ opacity: startTarget }}
-              transition={crossfade}
-              style={{ ...baseMedia, borderRadius: radius, zIndex: 3 }}
+              initial={{ opacity: 1, scale: 1 }}
+              animate={{ opacity: openingOpacity, scale: openingScale }}
+              transition={openingIsCross ? openingCfg : staticCfg}
+              style={{ ...baseMedia, borderRadius: radius, zIndex: 3, willChange: mediaWill }}
             />
 
-            {/* Coral light sweep — opening (left → right) */}
-            {showOpeningSweep && (
+            {/* Coral light sweep — opening (left -> right, blurred) */}
+            {openingSweep && !reducedMotion && (
               <motion.div
                 initial={{ x: "-90%", opacity: 0 }}
-                animate={{ x: ["-90%", "190%"], opacity: [0, 1, 0] }}
-                transition={{ duration: SWEEP_MS / 1000, ease: "easeInOut", times: [0, 0.5, 1] }}
+                animate={{ x: ["-90%", "190%"], opacity: [0, 1, 1, 0] }}
+                transition={{
+                  duration: OPEN_SWEEP_MS / 1000,
+                  ease: "easeInOut",
+                  times: [0, 0.12, 0.85, 1],
+                }}
                 style={{
                   position: "absolute",
                   top: 0,
                   bottom: 0,
                   left: 0,
-                  width: "55%",
-                  background: CORAL_SWEEP,
+                  width: "60%",
+                  background: OPEN_SWEEP_BG,
+                  filter: "blur(28px)",
                   mixBlendMode: "screen",
                   zIndex: 10,
                   pointerEvents: "none",
+                  willChange: "transform, opacity",
                 }}
               />
             )}
 
-            {/* Coral light sweep — ending (right → left) */}
-            {showEndingSweep && (
+            {/* Coral light sweep — ending (right -> left, existing effect kept) */}
+            {stage === "ending" && !reducedMotion && (
               <motion.div
                 initial={{ x: "190%", opacity: 0 }}
-                animate={{ x: ["190%", "-90%"], opacity: [0, 1, 0] }}
-                transition={{ duration: SWEEP_MS / 1000, ease: "easeInOut", times: [0, 0.5, 1] }}
+                animate={{ x: ["190%", "-90%"], opacity: [0, 1, 1, 0] }}
+                transition={{ duration: 0.7, ease: "easeInOut", times: [0, 0.12, 0.85, 1] }}
                 style={{
                   position: "absolute",
                   top: 0,
                   bottom: 0,
                   left: 0,
                   width: "55%",
-                  background: CORAL_SWEEP,
+                  background: END_SWEEP_BG,
                   mixBlendMode: "screen",
                   zIndex: 10,
                   pointerEvents: "none",
+                  willChange: "transform, opacity",
                 }}
               />
             )}
