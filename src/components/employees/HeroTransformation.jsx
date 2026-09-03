@@ -461,51 +461,27 @@ export default function HeroTransformation() {
             </motion.button>
           )}
 
-          {/* Ending live button (desktop) — positioned in the free text area, clear of the laptop */}
-          {stage === "complete" && !isMobile && (
-            <motion.button
-              onClick={scrollToLogos}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35, ease: "easeOut", delay: 0.18 }}
-              whileHover={{ y: -2 }}
-              style={{
-                ...btnBase,
-                position: "absolute",
-                right: "5%",
-                top: "30%",
-                width: "auto",
-                minWidth: 250,
-                maxWidth: 300,
-                height: 60,
-                borderRadius: 16,
-                zIndex: 30,
-                fontSize: 19,
-              }}
-            >
-              ומה העובדים מרגישים?
-              <CoralDot />
-            </motion.button>
-          )}
         </div>
 
-        {/* Ending live button (mobile) — below the frame, not over the image */}
-        {stage === "complete" && isMobile && (
+        {/* Ending live button — below the frame, clear of all image content (all viewports) */}
+        {stage === "complete" && (
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35, ease: "easeOut", delay: 0.18 }}
-            style={{ display: "flex", justifyContent: "center", marginTop: 18 }}
+            style={{ display: "flex", justifyContent: "center", marginTop: 16 }}
           >
             <button
               onClick={scrollToLogos}
               style={{
                 ...btnBase,
-                width: "calc(100% - 40px)",
-                maxWidth: 340,
-                height: 58,
-                borderRadius: 16,
-                fontSize: 18,
+                width: "auto",
+                minWidth: 190,
+                maxWidth: 230,
+                height: 50,
+                borderRadius: 14,
+                fontSize: 16,
+                padding: "0 22px",
               }}
             >
               ומה העובדים מרגישים?
