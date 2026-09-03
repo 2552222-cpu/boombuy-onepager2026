@@ -27,10 +27,10 @@ export const logoList = [
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/be9e3de1a_-2026-03-22T184841801.png", name: "דלק" },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ee6b05338_-2026-04-03T180125393.png", name: "רמלאל" },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/5f7a627b6_-2026-04-06T212635319.png", name: "HOT mobile" },
-  { url: "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/d7d065fd0_GreenRetroTreeRootLogoTemplate3.png", name: "הבינלאומי" },
-  { url: "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/4077f88d1_GreenRetroTreeRootLogoTemplate2.png", name: "תדהר" },
-  { url: "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/02de53736_GreenRetroTreeRootLogoTemplate5.png", name: "איחוד הצלה" },
-  { url: "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/92ca0e4b9_GreenRetroTreeRootLogoTemplate4.png", name: "גינדי החזקות" },
+  { url: "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/21b67c2fa_GreenRetroTreeRootLogoTemplate10.png", name: "הבינלאומי" },
+  { url: "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/1b494e55d_GreenRetroTreeRootLogoTemplate8.png", name: "תדהר" },
+  { url: "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/6bfd16a53_GreenRetroTreeRootLogoTemplate11.png", name: "איחוד הצלה" },
+  { url: "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/f68a0b084_GreenRetroTreeRootLogoTemplate9.png", name: "גינדי החזקות" },
 ];
 
 export const allLogos = logoList.map(l => l.url);
