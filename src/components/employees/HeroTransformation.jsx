@@ -444,7 +444,7 @@ export default function HeroTransformation() {
                 position: "absolute",
                 right: "7%",
                 bottom: "10%",
-                width: 230,
+                width: isMobile ? "min(230px, 64vw)" : 230,
                 height: 56,
                 zIndex: 30,
                 pointerEvents: buttonGone ? "none" : "auto",

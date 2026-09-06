@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { rowA, rowB } from "../../utils/logoData";
 
@@ -10,20 +10,34 @@ const BG = "#F7F7F4";
 // dir="right" => content slides left-to-right (bottom rail).
 // Seamless loop: each logo carries its own horizontal margin (no flex gap), so the
 // track is exactly 2x one set and translateX(-50%) aligns the duplicated set perfectly.
+function LogoItem({ src, name }) {
+  const [err, setErr] = useState(false);
+  if (err) {
+    return (
+      <span className="tl-logo tl-fallback" aria-label={name}>
+        {name}
+      </span>
+    );
+  }
+  return (
+    <img
+      src={src}
+      alt={name}
+      loading="lazy"
+      decoding="async"
+      className="tl-logo"
+      onError={() => setErr(true)}
+    />
+  );
+}
+
 function Rail({ items, dir = "left", duration = 90 }) {
   const trackClass = dir === "left" ? "tl-track tl-left" : "tl-track tl-right";
   return (
     <div className="tl-row" data-dir={dir}>
       <div className={trackClass} style={{ ["--tl-dur"]: `${duration}s` }}>
-        {[...items, ...items].map((src, i) => (
-          <img
-            key={`${src}-${i}`}
-            src={src}
-            alt=""
-            loading="lazy"
-            decoding="async"
-            className="tl-logo"
-          />
+        {[...items, ...items].map((it, i) => (
+          <LogoItem key={`${it.name}-${i}`} src={it.url} name={it.name} />
         ))}
       </div>
     </div>
@@ -165,6 +179,17 @@ export default function TrustLogos() {
           display:block;
           flex:0 0 auto;
         }
+        .tl-fallback{
+          height:45px;
+          display:flex;
+          align-items:center;
+          color:#17191D;
+          font-weight:600;
+          font-size:16px;
+          letter-spacing:-0.01em;
+          opacity:0.5;
+          white-space:nowrap;
+        }
         @media (hover:hover) and (pointer:fine){
           .tl-row:hover .tl-track{ animation-play-state:paused; }
         }
@@ -176,6 +201,7 @@ export default function TrustLogos() {
           .tl-rows{ gap:18px; }
           .tl-row{ height:42px; }
           .tl-logo{ height:36px; margin:0 20px; }
+          .tl-fallback{ height:36px; font-size:14px; }
           .tl-row::before, .tl-row::after{ width:64px; }
         }
       `}</style>

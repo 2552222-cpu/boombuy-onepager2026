@@ -4,7 +4,7 @@
 // (in preview) a small "missing link" notice. Never invent a URL here.
 
 // Link to the employee demo / join-kit experience (opened in a new tab).
-export const EMPLOYEE_DEMO_URL = "";
+export const EMPLOYEE_DEMO_URL = "https://preview--value-club-flow.base44.app/join/budget-demo";
 
 // Google Calendar (or other scheduler) booking URL for the 15-minute demo.
 export const GOOGLE_CALENDAR_BOOKING_URL = "";

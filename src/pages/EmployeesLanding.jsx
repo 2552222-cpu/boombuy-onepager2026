@@ -27,8 +27,8 @@ export default function EmployeesLanding() {
       <PlatformExplanation />
       <ComparisonTable />
       <FeaturedOffersSlider />
-      <EmployeeDemoKit />
       <Testimonials />
+      <EmployeeDemoKit />
       <OrganizationFit />
       <BookDemo />
       <GlobalFooter />

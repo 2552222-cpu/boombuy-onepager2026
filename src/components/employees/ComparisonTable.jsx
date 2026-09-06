@@ -112,9 +112,11 @@ export default function ComparisonTable() {
         .ct-side{ flex:1 1 0; min-width:0; display:flex; align-items:center; gap:12px; padding:18px 22px; box-sizing:border-box; }
         .ct-arrow-wrap{ display:flex; align-items:center; }
         @media (max-width:768px){
-          .ct-side{ padding:15px 16px; gap:10px; }
-          .ct-arrow-wrap{ width:30px; }
-          .ct-arrow{ width:30px !important; height:30px !important; }
+          .ct-row{ flex-direction:column; gap:8px; }
+          .ct-side{ padding:15px 18px; }
+          .ct-arrow-wrap{ width:auto; padding:2px 0; }
+          .ct-arrow-wrap span{ width:32px !important; height:32px !important; }
+          .ct-arrow-wrap svg{ transform:rotate(-90deg); }
         }
       `}</style>
 

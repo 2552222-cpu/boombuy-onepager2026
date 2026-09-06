@@ -35,16 +35,22 @@ export const logoList = [
 
 export const allLogos = logoList.map(l => l.url);
 
-// שורה 1: 16 לוגואים (זוגי) — לפי שם
+// שורה 1 — לפי שם (מחזיר אובייקטים עם url ושם, לצורך fallback טקסט אם תמונה שבורה)
 export const rowA = [
   "לאומי", "Teva", "סלקום", "אלקטרה אפיקים", "Estee Lauder", "קרן קיימת",
   "בנק ישראל", "ZIM", "מזרחי טפחות", "ORT", "אלבר", "בזן",
   "HOT mobile", "ONE", "MAX", "AMOT", "הבינלאומי", "תדהר",
-].map(name => logoList.find(l => l.name === name)?.url).filter(Boolean);
+].map(name => {
+  const l = logoList.find(x => x.name === name);
+  return l ? { url: l.url, name: l.name } : null;
+}).filter(Boolean);
 
-// שורה 2: 14 לוגואים (זוגי) — לפי שם
+// שורה 2 — לפי שם
 export const rowB = [
   "ישראייר", "תעש", "מגן דוד אדום", "SAP", "מילגם", "ONE",
   "רשות המסים", "בנק לאומי", "דלק", "רמלאל", "דופלט", "Teva",
   "ZIM", "סלקום", "איחוד הצלה", "גינדי החזקות",
-].map(name => logoList.find(l => l.name === name)?.url).filter(Boolean);
+].map(name => {
+  const l = logoList.find(x => x.name === name);
+  return l ? { url: l.url, name: l.name } : null;
+}).filter(Boolean);
