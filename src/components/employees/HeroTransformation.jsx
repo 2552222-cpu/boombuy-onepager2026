@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { motion } from "framer-motion";
 import { Play, RotateCcw } from "lucide-react";
 import ChaosWordsLayer from "./hero/ChaosWordsLayer";
@@ -11,30 +11,21 @@ import {
   CHAOS_WORDS,
 } from "./hero/heroShared";
 
-const CORAL = "#F07858";
+const CORAL = "#F47A5A";
+const EASE = [0.22, 1, 0.36, 1]; // cubic-bezier(0.22, 1, 0.36, 1)
 
-const EASE = [0.22, 1, 0.36, 1];
-const OPEN_MS = 400; // opening crossfade
-const OPEN_MS_RM = 180; // reduced-motion opening crossfade
-const END_MS = 450; // ending crossfade
-const END_MS_RM = 180;
+const OPEN_MS = 650; // opening transition
+const END_MS = 800; // ending transition
+const RM_MS = 180; // reduced-motion crossfade
+const END_EARLY = 0.8; // start ending transition this many seconds before the video ends
 const LOAD_TIMEOUT_MS = 8000;
-const PREP_DELAY_MS = 1150; // existing word-sequence lead before playback (unchanged)
+const PREP_DELAY_MS = 1150; // existing word-sequence lead before playback
 
-const cardShadow =
-  "0 24px 70px rgba(0,0,0,0.14), 0 8px 24px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(255,255,255,0.3)";
+// Soft light layer — warm white with a faint coral touch, transparent edges (no opaque rect).
+const LIGHT_BG =
+  "linear-gradient(100deg, transparent 16%, rgba(255,247,238,0.9) 47%, rgba(244,122,90,0.12) 52%, rgba(255,247,238,0.9) 57%, transparent 84%)";
 
-// Shared media geometry — identical for all three layers (no jump on swap)
-const baseMedia = {
-  position: "absolute",
-  inset: 0,
-  width: "100%",
-  height: "100%",
-  objectFit: "cover",
-  objectPosition: "center center",
-  backfaceVisibility: "hidden",
-  WebkitBackfaceVisibility: "hidden",
-};
+const BUTTON_AREA_H = 88; // fixed reserve: button(56) + gap(8) + subtitle(~24) — stable, no layout jump
 
 export default function HeroTransformation() {
   // idle | chaos | opening | playing | ending | complete | failed
@@ -43,10 +34,14 @@ export default function HeroTransformation() {
   const [reducedMotion, setReducedMotion] = useState(false);
   const [videoTime, setVideoTime] = useState(0);
   const [enteredWords, setEnteredWords] = useState({});
+  const [mediaSize, setMediaSize] = useState({ w: 800, h: 450 });
 
   const videoRef = useRef(null);
+  const sectionRef = useRef(null);
+  const headingRef = useRef(null);
   const timers = useRef([]);
   const loadTimerRef = useRef(null);
+  const rafRef = useRef(null);
   const startedRef = useRef(false);
   const endedRef = useRef(false);
   const endImgReadyRef = useRef(false);
@@ -64,8 +59,72 @@ export default function HeroTransformation() {
       clearTimeout(loadTimerRef.current);
       loadTimerRef.current = null;
     }
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
   };
 
+  // ── Responsive + reduced motion ───────────────────────────────────────────
+  useEffect(() => {
+    const c = () => setIsMobile(window.innerWidth < 768);
+    c();
+    window.addEventListener("resize", c);
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(mq.matches);
+    const onMq = (e) => setReducedMotion(e.matches);
+    mq.addEventListener?.("change", onMq);
+    return () => {
+      window.removeEventListener("resize", c);
+      mq.removeEventListener?.("change", onMq);
+    };
+  }, []);
+
+  // ── Media sizing: measure actual areas via ResizeObserver ─────────────────
+  useLayoutEffect(() => {
+    const compute = () => {
+      const vh = window.innerHeight;
+      const mob = window.innerWidth < 768;
+      const headerEl = document.querySelector("header");
+      const headerH = headerEl ? headerEl.getBoundingClientRect().height : mob ? 64 : 72;
+      const headingH = headingRef.current
+        ? headingRef.current.getBoundingClientRect().height
+        : 0;
+      const padTop = 10;
+      const padBottom = mob ? 16 : 12;
+      const gap1 = 18; // heading → media
+      const gap2 = 18; // media → button area
+      const availH =
+        vh - headerH - padTop - headingH - gap1 - gap2 - BUTTON_AREA_H - padBottom;
+
+      const padding = mob ? 20 : 32;
+      const contentW = Math.min(window.innerWidth - 2 * padding, 1200);
+      let w = contentW;
+      let h = w * 9 / 16;
+      const maxH = Math.max(availH, 0);
+      if (h > maxH) {
+        h = maxH;
+        w = h * 16 / 9;
+      }
+      setMediaSize({ w: Math.round(w), h: Math.round(h) });
+    };
+
+    compute();
+    const roHead = new ResizeObserver(compute);
+    if (headingRef.current) roHead.observe(headingRef.current);
+    const headerEl = document.querySelector("header");
+    if (headerEl) {
+      const roHeader = new ResizeObserver(compute);
+      roHeader.observe(headerEl);
+    }
+    window.addEventListener("resize", compute);
+    return () => {
+      roHead.disconnect();
+      window.removeEventListener("resize", compute);
+    };
+  }, []);
+
+  // ── Cleanup on unmount ────────────────────────────────────────────────────
   useEffect(
     () => () => {
       clearTimers();
@@ -81,21 +140,7 @@ export default function HeroTransformation() {
     []
   );
 
-  useEffect(() => {
-    const c = () => setIsMobile(window.innerWidth < 768);
-    c();
-    window.addEventListener("resize", c);
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReducedMotion(mq.matches);
-    const onMq = (e) => setReducedMotion(e.matches);
-    mq.addEventListener?.("change", onMq);
-    return () => {
-      window.removeEventListener("resize", c);
-      mq.removeEventListener?.("change", onMq);
-    };
-  }, []);
-
-  // Preload + decode ending image; also preload opening image
+  // ── Preload + decode ending image; also preload opening image ───────────────
   useEffect(() => {
     const endImg = new Image();
     endImg.src = AFTER_IMG;
@@ -128,7 +173,7 @@ export default function HeroTransformation() {
     }
   }, []);
 
-  // Wait for a displayable frame using requestVideoFrameCallback, with fallback
+  // ── Wait for a displayable frame using requestVideoFrameCallback, fallback ─
   const waitForFrame = (v) =>
     new Promise((resolve) => {
       if (typeof v.requestVideoFrameCallback === "function") {
@@ -143,20 +188,21 @@ export default function HeroTransformation() {
         } catch (e) {
           finish();
         }
-        // safety fallback in case rVFC never fires
         const t = setTimeout(finish, 2000);
         timers.current.push(t);
+      } else if (v.readyState >= 2) {
+        resolve();
       } else {
-        if (v.currentTime > 0 && v.readyState >= 2) return resolve();
-        const onTick = () => {
-          if (v.currentTime > 0 || v.readyState >= 2) {
-            v.removeEventListener("timeupdate", onTick);
-            resolve();
-          }
+        const onReady = () => {
+          v.removeEventListener("loadeddata", onReady);
+          v.removeEventListener("canplay", onReady);
+          resolve();
         };
-        v.addEventListener("timeupdate", onTick);
+        v.addEventListener("loadeddata", onReady);
+        v.addEventListener("canplay", onReady);
         const t = setTimeout(() => {
-          v.removeEventListener("timeupdate", onTick);
+          v.removeEventListener("loadeddata", onReady);
+          v.removeEventListener("canplay", onReady);
           resolve();
         }, 2000);
         timers.current.push(t);
@@ -168,6 +214,7 @@ export default function HeroTransformation() {
     setPhase("failed");
   };
 
+  // ── Opening transition ────────────────────────────────────────────────────
   const beginPlayback = async () => {
     const v = videoRef.current;
     if (!v) {
@@ -181,23 +228,24 @@ export default function HeroTransformation() {
       } catch (e) {
         /* ignore */
       }
-      const playPromise = v.play();
-      if (playPromise && typeof playPromise.then === "function") {
-        await playPromise;
-      }
+      const p = v.play();
+      if (p && typeof p.then === "function") await p;
     } catch (e) {
       goFailed();
       return;
     }
-    // only begin crossfade once a real frame is ready and playback has started
+    // start the crossfade only once the video is playing and a frame is ready
     await waitForFrame(v);
     if (loadTimerRef.current) {
       clearTimeout(loadTimerRef.current);
       loadTimerRef.current = null;
     }
-    const ms = reducedMotion ? OPEN_MS_RM : OPEN_MS;
     setPhase("opening");
-    const t = setTimeout(() => setPhase("playing"), ms);
+    const ms = reducedMotion ? RM_MS : OPEN_MS;
+    const t = setTimeout(() => {
+      setPhase("playing");
+      startEndingWatch();
+    }, ms);
     timers.current.push(t);
   };
 
@@ -213,11 +261,9 @@ export default function HeroTransformation() {
       );
       timers.current.push(t);
     });
-    // load timeout — if we never reach "opening" within 8s, fail gracefully
     loadTimerRef.current = setTimeout(() => {
       if (phaseRef.current === "chaos") goFailed();
     }, LOAD_TIMEOUT_MS);
-    // after the existing prep delay, begin playback
     const t = setTimeout(beginPlayback, PREP_DELAY_MS);
     timers.current.push(t);
   };
@@ -245,76 +291,132 @@ export default function HeroTransformation() {
     setVideoTime(v.currentTime || 0);
   };
 
-  const onEnded = () => {
+  // ── Ending transition (early, ~0.8s before the end; ended as fallback) ─────
+  const triggerEnding = () => {
     if (endedRef.current) return;
     endedRef.current = true;
-    // keep last frame; do NOT reset currentTime
-    const startEnding = () => {
-      const ms = reducedMotion ? END_MS_RM : END_MS;
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+    const start = () => {
       setPhase("ending");
+      const ms = reducedMotion ? RM_MS : END_MS;
       const t = setTimeout(() => setPhase("complete"), ms);
       timers.current.push(t);
     };
     if (endImgReadyRef.current) {
-      startEnding();
+      start();
     } else {
+      // keep the video / last frame shown until the image is ready — no black screen
       const img = new Image();
       img.src = AFTER_IMG;
       if (typeof img.decode === "function") {
-        img.decode().then(startEnding).catch(startEnding);
+        img.decode().then(start).catch(start);
       } else {
-        img.onload = startEnding;
-        img.onerror = startEnding;
+        img.onload = start;
+        img.onerror = start;
       }
     }
+  };
+
+  const startEndingWatch = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    const dur = v.duration;
+    if (!dur || !isFinite(dur)) return; // rely on `ended` fallback
+    const triggerAt = Math.max(dur - END_EARLY, 0);
+    const tick = () => {
+      if (endedRef.current) return;
+      const t = v.currentTime || 0;
+      if (t >= triggerAt) {
+        triggerEnding();
+        return;
+      }
+      if (typeof v.requestVideoFrameCallback === "function") {
+        try {
+          v.requestVideoFrameCallback(tick);
+        } catch (e) {
+          rafRef.current = requestAnimationFrame(tick);
+        }
+      } else {
+        rafRef.current = requestAnimationFrame(tick);
+      }
+    };
+    if (typeof v.requestVideoFrameCallback === "function") {
+      try {
+        v.requestVideoFrameCallback(tick);
+      } catch (e) {
+        rafRef.current = requestAnimationFrame(tick);
+      }
+    } else {
+      rafRef.current = requestAnimationFrame(tick);
+    }
+  };
+
+  const onEnded = () => {
+    if (endedRef.current) return;
+    triggerEnding();
   };
 
   const onVideoError = () => {
     if (phaseRef.current === "chaos") goFailed();
   };
 
-  const desktopSize = {
-    width: "min(calc((100svh - 90px) * 16 / 9), calc(100vw - 64px), 1600px)",
-    aspectRatio: "16 / 9",
-    maxHeight: "calc(100svh - 90px)",
-  };
-  const mediaRadius = isMobile ? 18 : 34;
-
+  // ── Derived layer targets ─────────────────────────────────────────────────
   const inTransition = stage === "opening" || stage === "ending";
-  const mediaWill = inTransition ? "opacity" : "auto";
+  const mediaWill = inTransition ? "opacity, filter, transform" : "auto";
+  const lightOn = inTransition && !reducedMotion;
+  const lightDur = stage === "ending" ? END_MS : OPEN_MS;
 
-  // --- Layer opacity targets ---
-  const openImgOpacity =
-    stage === "opening"
-      ? [1, 0]
-      : stage === "idle" || stage === "chaos" || stage === "failed"
-      ? 1
-      : 0;
-  const openImgTransition = {
-    duration:
-      stage === "opening" ? (reducedMotion ? OPEN_MS_RM : OPEN_MS) / 1000 : 0.2,
-    ease: EASE,
-  };
+  const openingImgAnim = (() => {
+    if (reducedMotion) {
+      if (stage === "opening") return { opacity: [1, 0] };
+      if (stage === "idle" || stage === "chaos" || stage === "failed") return { opacity: 1 };
+      return { opacity: 0 };
+    }
+    if (stage === "opening")
+      return { opacity: [1, 0], filter: ["blur(0px)", "blur(5px)"], scale: [1, 1.008] };
+    if (stage === "idle" || stage === "chaos" || stage === "failed")
+      return { opacity: 1, filter: "blur(0px)", scale: 1 };
+    return { opacity: 0, filter: "blur(5px)", scale: 1.008 };
+  })();
+  const openingImgTrans = stage === "opening"
+    ? { duration: (reducedMotion ? RM_MS : OPEN_MS) / 1000, ease: EASE }
+    : { duration: 0.25, ease: EASE };
 
-  const videoOpacity =
-    stage === "opening"
-      ? [0, 1]
-      : stage === "playing" || stage === "ending" || stage === "complete"
-      ? 1
-      : 0;
-  const videoTransition = {
-    duration:
-      stage === "opening" ? (reducedMotion ? OPEN_MS_RM : OPEN_MS) / 1000 : 0.2,
-    ease: EASE,
-  };
+  const videoAnim = (() => {
+    if (reducedMotion) {
+      if (stage === "opening") return { opacity: [0, 1] };
+      if (stage === "playing" || stage === "ending" || stage === "complete") return { opacity: 1 };
+      return { opacity: 0 };
+    }
+    if (stage === "opening")
+      return { opacity: [0, 1], filter: ["blur(4px)", "blur(0px)"], scale: 1 };
+    if (stage === "idle" || stage === "chaos" || stage === "failed")
+      return { opacity: 0, filter: "blur(4px)", scale: 1 };
+    if (stage === "playing") return { opacity: 1, filter: "blur(0px)", scale: 1 };
+    if (stage === "ending") return { opacity: 1, filter: ["blur(0px)", "blur(5px)"], scale: 1 };
+    return { opacity: 1, filter: "blur(5px)", scale: 1 }; // complete
+  })();
+  const videoTrans = inTransition
+    ? { duration: (reducedMotion ? RM_MS : stage === "opening" ? OPEN_MS : END_MS) / 1000, ease: EASE }
+    : { duration: 0.25, ease: EASE };
 
-  const endImgOpacity =
-    stage === "ending" ? [0, 1] : stage === "complete" ? 1 : 0;
-  const endImgTransition = {
-    duration:
-      stage === "ending" ? (reducedMotion ? END_MS_RM : END_MS) / 1000 : 0.2,
-    ease: EASE,
-  };
+  const endImgAnim = (() => {
+    if (reducedMotion) {
+      if (stage === "ending") return { opacity: [0, 1] };
+      if (stage === "complete") return { opacity: 1 };
+      return { opacity: 0 };
+    }
+    if (stage === "ending")
+      return { opacity: [0, 1], filter: ["blur(5px)", "blur(0px)"], scale: [1.008, 1] };
+    if (stage === "complete") return { opacity: 1, filter: "blur(0px)", scale: 1 };
+    return { opacity: 0, filter: "blur(5px)", scale: 1.008 };
+  })();
+  const endImgTrans = stage === "ending"
+    ? { duration: (reducedMotion ? RM_MS : END_MS) / 1000, ease: EASE }
+    : { duration: 0.25, ease: EASE };
 
   const btnBase = {
     background: CHARCOAL,
@@ -358,6 +460,7 @@ export default function HeroTransformation() {
 
   return (
     <section
+      ref={sectionRef}
       id="hero-transformation"
       style={{
         background: WARM_WHITE,
@@ -374,9 +477,9 @@ export default function HeroTransformation() {
         @media (max-width:768px){ #hero-transformation{ scroll-margin-top:72px; } }
       `}</style>
 
-      <div style={{ margin: "0 auto", padding: isMobile ? "0 16px" : "0 32px" }}>
-        {/* HTML fallback heading — readable on every breakpoint, no reliance on baked image text */}
-        <div style={{ textAlign: "center", maxWidth: 760, margin: "0 auto 18px" }}>
+      <div style={{ margin: "0 auto", padding: isMobile ? "0 20px" : "0 32px", maxWidth: 1200 }}>
+        {/* HTML fallback heading — readable on every breakpoint */}
+        <div ref={headingRef} style={{ textAlign: "center", maxWidth: 760, margin: "0 auto 18px" }}>
           <p
             style={{
               color: CORAL,
@@ -404,69 +507,125 @@ export default function HeroTransformation() {
           </h2>
         </div>
 
-        {/* Shared, stable media frame — 16:9 on every breakpoint, same border-radius */}
-        <div
-          style={{
-            position: "relative",
-            zIndex: 1,
-            margin: "0 auto",
-            borderRadius: mediaRadius,
-            overflow: "hidden",
-            boxShadow: cardShadow,
-            background: "#000",
-            transform: "translateZ(0)",
-            ...(isMobile
-              ? { width: "100%", aspectRatio: "16 / 9" }
-              : desktopSize),
-          }}
-        >
-          {/* Layer 1 — video (lowest) */}
-          <motion.video
-            ref={videoRef}
-            src={VIDEO_SRC}
-            muted
-            playsInline
-            preload={isMobile ? "metadata" : "auto"}
-            onTimeUpdate={onTimeUpdate}
-            onEnded={onEnded}
-            onError={onVideoError}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: videoOpacity }}
-            transition={videoTransition}
-            style={{ ...baseMedia, borderRadius: mediaRadius, zIndex: 1, willChange: mediaWill }}
-          />
+        {/* Shared, stable media frame — 16:9, same size across all stages, centered */}
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <div
+            style={{
+              position: "relative",
+              width: mediaSize.w,
+              height: mediaSize.h,
+              borderRadius: isMobile ? 18 : 34,
+              overflow: "hidden",
+              boxShadow:
+                "0 24px 70px rgba(0,0,0,0.14), 0 8px 24px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(255,255,255,0.3)",
+              background: "#000",
+              transform: "translateZ(0)",
+            }}
+          >
+            {/* Layer 1 — video (lowest) */}
+            <motion.video
+              ref={videoRef}
+              src={VIDEO_SRC}
+              muted
+              playsInline
+              preload={isMobile ? "metadata" : "auto"}
+              onTimeUpdate={onTimeUpdate}
+              onEnded={onEnded}
+              onError={onVideoError}
+              initial={{ opacity: 0, filter: "blur(4px)", scale: 1 }}
+              animate={videoAnim}
+              transition={videoTrans}
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                objectPosition: "center center",
+                zIndex: 1,
+                willChange: mediaWill,
+                backfaceVisibility: "hidden",
+                WebkitBackfaceVisibility: "hidden",
+              }}
+            />
 
-          {/* Layer 3 — ending image (above video, fades in at the end) */}
-          <motion.img
-            src={AFTER_IMG}
-            alt=""
-            initial={{ opacity: 0 }}
-            animate={{ opacity: endImgOpacity }}
-            transition={endImgTransition}
-            style={{ ...baseMedia, borderRadius: mediaRadius, zIndex: 3, willChange: mediaWill }}
-          />
+            {/* Layer 3 — ending image (above video, fades in at the end) */}
+            <motion.img
+              src={AFTER_IMG}
+              alt=""
+              initial={{ opacity: 0, filter: "blur(5px)", scale: 1.008 }}
+              animate={endImgAnim}
+              transition={endImgTrans}
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                objectPosition: "center center",
+                zIndex: 3,
+                willChange: mediaWill,
+                backfaceVisibility: "hidden",
+                WebkitBackfaceVisibility: "hidden",
+              }}
+            />
 
-          {/* Layer 4 — opening image (top, crossfades out at the start) */}
-          <motion.img
-            src={BEFORE_IMG}
-            alt="מנהלת רווחה בעומס"
-            initial={{ opacity: 1 }}
-            animate={{ opacity: openImgOpacity }}
-            transition={openImgTransition}
-            style={{ ...baseMedia, borderRadius: mediaRadius, zIndex: 4, willChange: mediaWill }}
-          />
+            {/* Layer 4 — opening image (top, crossfades out at the start) */}
+            <motion.img
+              src={BEFORE_IMG}
+              alt="מנהלת רווחה בעומס"
+              initial={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
+              animate={openingImgAnim}
+              transition={openingImgTrans}
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                objectPosition: "center center",
+                zIndex: 4,
+                willChange: mediaWill,
+                backfaceVisibility: "hidden",
+                WebkitBackfaceVisibility: "hidden",
+              }}
+            />
 
-          {/* Chaos words overlay (kept sequence) */}
-          <ChaosWordsLayer
-            enteredWords={enteredWords}
-            videoTime={videoTime}
-            isMobile={isMobile}
-            reducedMotion={reducedMotion}
-            active={wordsActive}
-          />
+            {/* Soft light layer — only during transitions, no white flash */}
+            {lightOn && (
+              <motion.div
+                key={stage}
+                initial={{ opacity: 0, x: "-10%" }}
+                animate={{ opacity: [0, 0.14, 0], x: ["-10%", "10%"] }}
+                transition={{
+                  duration: lightDur / 1000,
+                  ease: "easeInOut",
+                  times: [0, 0.5, 1],
+                }}
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  background: LIGHT_BG,
+                  mixBlendMode: "screen",
+                  zIndex: 10,
+                  pointerEvents: "none",
+                  willChange: "opacity, transform",
+                }}
+              />
+            )}
+
+            {/* Chaos words overlay (kept sequence) */}
+            <ChaosWordsLayer
+              enteredWords={enteredWords}
+              videoTime={videoTime}
+              isMobile={isMobile}
+              reducedMotion={reducedMotion}
+              active={wordsActive}
+            />
+          </div>
         </div>
 
-        {/* Button area — placed BELOW the media, never covers content; stable height to avoid layout shift */}
+        {/* Button area — fixed reserve so the layout never jumps when the button hides */}
         <div
           style={{
             marginTop: 18,
@@ -474,7 +633,7 @@ export default function HeroTransformation() {
             flexDirection: "column",
             alignItems: "center",
             gap: 8,
-            minHeight: 88,
+            minHeight: BUTTON_AREA_H,
           }}
         >
           {(stage === "idle" || stage === "chaos") && (
