@@ -135,8 +135,8 @@ export default function PersistentCTA() {
             position: "fixed",
             zIndex: 90,
             ...(isMobile
-              ? { left: 12, right: 12, bottom: 18 }
-              : { bottom: 90, left: 24 }),
+              ? { left: 12, right: 12, bottom: "calc(64px + env(safe-area-inset-bottom))" }
+              : { bottom: "calc(96px + env(safe-area-inset-bottom))", left: 24 }),
           }}
         >
           <button

@@ -13,12 +13,18 @@ import BookDemo from "../components/employees/BookDemo";
 import GlobalFooter from "../components/employees/GlobalFooter";
 import FloatingWhatsApp from "../components/employees/FloatingWhatsApp";
 import PersistentCTA from "../components/employees/PersistentCTA";
+import LogoRail from "../components/employees/LogoRail";
 
 export default function EmployeesLanding() {
   return (
     <div
       dir="rtl"
-      style={{ overflowX: "hidden", maxWidth: "100vw", background: "#FBFAF8" }}
+      style={{
+        overflowX: "hidden",
+        maxWidth: "100vw",
+        background: "#FBFAF8",
+        paddingBottom: "calc(88px + env(safe-area-inset-bottom))",
+      }}
     >
       <GlobalHeader />
       <HeroTransformation />
@@ -34,6 +40,7 @@ export default function EmployeesLanding() {
       <GlobalFooter />
       <FloatingWhatsApp />
       <PersistentCTA />
+      <LogoRail />
     </div>
   );
 }

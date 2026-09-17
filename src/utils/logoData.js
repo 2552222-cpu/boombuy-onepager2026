@@ -54,3 +54,17 @@ export const rowB = [
   const l = logoList.find(x => x.name === name);
   return l ? { url: l.url, name: l.name } : null;
 }).filter(Boolean);
+
+// מסילת לוגואים אחת — איחוד rowA ו-rowB, הסרת כפילויות אמיתיות, שמירת כל הארגונים הייחודיים.
+// סדר: rowA תחילה, ואז פריטי rowB שטרם הופיעו.
+export const railLogos = (() => {
+  const seen = new Set();
+  const out = [];
+  [...rowA, ...rowB].forEach((it) => {
+    if (!seen.has(it.name)) {
+      seen.add(it.name);
+      out.push(it);
+    }
+  });
+  return out;
+})();
