@@ -9,7 +9,7 @@ export const BEFORE_IMG =
 export const AFTER_IMG =
   "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/28e2e2a8a_.png";
 export const VIDEO_SRC =
-  "https://media.base44.com/videos/public/69e48538aaee477b09fc7b49/11cdcb0be_boombuy-hero-transformation-CORRECTED.mp4?v=corrected-2";
+  "https://media.base44.com/videos/public/69e48538aaee477b09fc7b49/afda5f493_boombuy-hero-transformation-CARDS-FIXED.mp4";
 
 // Convergence target — laptop / system center
 export const LAPTOP = { x: 50, y: 69 };
