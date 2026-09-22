@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { motion } from "framer-motion";
 import { Play, RotateCcw } from "lucide-react";
 import ChaosWordsLayer from "./hero/ChaosWordsLayer";
+import { scrollToId } from "./uiHelpers";
 import {
   BEFORE_IMG,
   AFTER_IMG,
@@ -11,39 +12,38 @@ import {
   CHAOS_WORDS,
 } from "./hero/heroShared";
 
+const COVER = "#17191D"; // brand dark — the transition cover color
 const CORAL = "#F47A5A";
 
-const OPEN_DUR = 0.7; // opening transition (700ms)
-const END_DUR = 0.9; // ending transition (900ms)
-const RM_DUR = 0.18; // reduced-motion crossfade
-const LINEAR = "linear";
-const TIMES4 = [0, 0.2, 0.8, 1];
-
-const END_EARLY = 0.9; // start ending transition this many seconds before the video ends
 const LOAD_TIMEOUT_MS = 8000;
-const PREP_DELAY_MS = 1150; // existing word-sequence lead before playback
 const FRAME_TIMEOUT_MS = 3000;
-const MIN_MEDIA_H = 180; // don't shrink media to zero on low screens — allow scroll instead
+const MIN_MEDIA_H = 180;
 
-// Soft broad halo — warm white with a faint coral touch, transparent edges (no opaque rect, no blend mode).
-const HALLO_BG =
-  "radial-gradient(ellipse at center, rgba(255,247,238,0.9) 0%, rgba(244,122,90,0.06) 45%, transparent 72%)";
+// Fixed reserves so the media size never changes when the button/heading swap.
+const HEADING_RESERVE_MOBILE = 70; // two lines at the mobile clamp
+const BUTTON_RESERVE_DESKTOP = 100;
+const BUTTON_RESERVE_MOBILE = 116;
+
+const START_HEADING = "כמה ידיים צריך כדי לנהל רווחה?";
+const END_HEADING = "אותו תקציב עובד יותר. את פחות.";
 
 export default function HeroTransformation() {
   // idle | chaos | opening | playing | ending | complete | failed
   const [stage, setStage] = useState("idle");
+  const [coverPhase, setCoverPhase] = useState("none"); // none | open-rise | open-fall | end-rise | end-fall
+  const [beforeHidden, setBeforeHidden] = useState(false);
+  const [afterShown, setAfterShown] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [videoTime, setVideoTime] = useState(0);
   const [enteredWords, setEnteredWords] = useState({});
   const [mediaSize, setMediaSize] = useState({ w: 800, h: 450 });
-  const [buttonAreaH, setButtonAreaH] = useState(88);
+  const [firstPlay, setFirstPlay] = useState(true);
 
   const videoRef = useRef(null);
   const containerRef = useRef(null);
   const headingRef = useRef(null);
   const mediaRowRef = useRef(null);
-  const contentRef = useRef(null);
 
   const timers = useRef([]);
   const loadTimerRef = useRef(null);
@@ -56,7 +56,7 @@ export default function HeroTransformation() {
   const endImgReadyRef = useRef(false);
   const attemptRef = useRef(0);
   const phaseRef = useRef("idle");
-  const buttonAreaHRef = useRef(88);
+  const firstPlayRef = useRef(true);
 
   const setPhase = (s) => {
     phaseRef.current = s;
@@ -108,72 +108,47 @@ export default function HeroTransformation() {
     }
   };
 
-  // ── Media sizing: measure actual areas via ResizeObserver ─────────────────
+  // ── Media sizing: stable across stages; recompute only on resize/breakpoint ─
   useLayoutEffect(() => {
     const compute = () => {
       const vh = window.innerHeight;
       const mob = window.innerWidth < 768;
       const headerEl = document.querySelector("header");
       const headerH = headerEl ? headerEl.getBoundingClientRect().height : mob ? 64 : 72;
-      const headingH = headingRef.current
-        ? headingRef.current.getBoundingClientRect().height
-        : 0;
-      const btnH = buttonAreaHRef.current;
+      const headingH = mob ? HEADING_RESERVE_MOBILE : 0;
+      const gapHeading = mob ? 14 : 0;
+      const btnH = mob ? BUTTON_RESERVE_MOBILE : BUTTON_RESERVE_DESKTOP;
       const padTop = 10;
       const padBottom = mob ? 16 : 12;
-      const gapHeading = headingH > 0 ? 18 : 0;
       const gapButton = 18;
       const availH =
         vh - headerH - padTop - headingH - gapHeading - gapButton - btnH - padBottom;
 
       const availW = mediaRowRef.current
         ? mediaRowRef.current.getBoundingClientRect().width
-        : Math.min(window.innerWidth - 2 * (mob ? 20 : 32), 1200);
+        : Math.min(window.innerWidth - (mob ? 40 : 64), 1200);
 
       let w = Math.min(availW, 1200);
-      let h = w * 9 / 16;
-      // height-constrain only when there is reasonable room; otherwise keep width-based and allow scroll
+      let h = (w * 9) / 16;
       if (availH >= MIN_MEDIA_H && h > availH) {
         h = availH;
-        w = h * 16 / 9;
+        w = (h * 16) / 9;
       }
       setMediaSize({ w: Math.round(w), h: Math.round(h) });
     };
 
-    const measureButton = () => {
-      if (contentRef.current) {
-        const h = contentRef.current.getBoundingClientRect().height;
-        if (h > 0 && h > buttonAreaHRef.current) {
-          buttonAreaHRef.current = h;
-          setButtonAreaH(h);
-        }
-      }
-    };
-
     compute();
-    measureButton();
-
-    const ro = new ResizeObserver(() => {
-      measureButton();
-      compute();
-    });
-    if (mediaRowRef.current) ro.observe(mediaRowRef.current);
-    if (headingRef.current) ro.observe(headingRef.current);
-    if (contentRef.current) ro.observe(contentRef.current);
-
     const headerEl = document.querySelector("header");
     const roHeader = new ResizeObserver(compute);
     if (headerEl) roHeader.observe(headerEl);
-
     window.addEventListener("resize", compute);
     return () => {
-      ro.disconnect();
       roHeader.disconnect();
       window.removeEventListener("resize", compute);
     };
-  }, [stage, isMobile]);
+  }, [isMobile]);
 
-  // ── Preload + decode ending image (failure is NOT success) ──────────────────
+  // ── Preload + decode ending image (no asset editing) ────────────────────────
   useEffect(() => {
     const img = new Image();
     img.src = AFTER_IMG;
@@ -181,9 +156,7 @@ export default function HeroTransformation() {
       if (img.complete && img.naturalWidth > 0) endImgReadyRef.current = true;
     };
     if (typeof img.decode === "function") {
-      img.decode().then(markReady).catch(() => {
-        /* decode failed — NOT ready; last frame will stay if needed */
-      });
+      img.decode().then(markReady).catch(() => {});
     } else {
       img.onload = markReady;
       img.onerror = () => {};
@@ -296,6 +269,7 @@ export default function HeroTransformation() {
     });
 
   const goFailed = () => {
+    attemptRef.current++; // invalidate any in-flight attempt so a late promise can't resume playback
     cancelFrameLoops();
     clearTimers();
     const v = videoRef.current;
@@ -306,10 +280,11 @@ export default function HeroTransformation() {
         /* ignore */
       }
     }
+    setCoverPhase("none");
     setPhase("failed");
   };
 
-  // ── Opening transition ────────────────────────────────────────────────────
+  // ── Start playback under the top image; begin the cover once a frame is shown ─
   const beginPlayback = async (attempt) => {
     if (attemptRef.current !== attempt) return;
     const v = videoRef.current;
@@ -356,39 +331,68 @@ export default function HeroTransformation() {
       clearTimeout(loadTimerRef.current);
       loadTimerRef.current = null;
     }
+    // A decoded + displayed frame exists under the top image → start the cover.
     setPhase("opening");
+    setCoverPhase("open-rise");
   };
 
   const onStart = () => {
     if (phaseRef.current !== "idle" || startedRef.current) return;
     startedRef.current = true;
     const attempt = ++attemptRef.current;
+    const isFirst = firstPlayRef.current;
     setPhase("chaos");
-    CHAOS_WORDS.forEach((w) => {
-      const t = setTimeout(
-        () => {
+    if (isFirst && !reducedMotion) {
+      CHAOS_WORDS.forEach((w) => {
+        const t = setTimeout(() => {
           if (attemptRef.current !== attempt) return;
           setEnteredWords((s) => ({ ...s, [w.word]: true }));
-        },
-        w.enterAt * 1000
-      );
-      timers.current.push(t);
-    });
+        }, w.enterAt * 1000);
+        timers.current.push(t);
+      });
+    }
     loadTimerRef.current = setTimeout(() => {
       if (phaseRef.current === "chaos") goFailed();
     }, LOAD_TIMEOUT_MS);
-    const t = setTimeout(() => beginPlayback(attempt), PREP_DELAY_MS);
-    timers.current.push(t);
+    beginPlayback(attempt);
+  };
+
+  // Replay from the end state — keep the ending image until the cover is opaque.
+  const onReplay = () => {
+    if (phaseRef.current !== "complete") return;
+    attemptRef.current++;
+    cancelFrameLoops();
+    clearTimers();
+    endedRef.current = false;
+    startedRef.current = true;
+    firstPlayRef.current = false;
+    setFirstPlay(false);
+    setVideoTime(0);
+    setEnteredWords({});
+    setCoverPhase("none");
+    // Keep afterShown true (ending image stays as the top image until the cover hides it).
+    setPhase("chaos");
+    const attempt = ++attemptRef.current;
+    loadTimerRef.current = setTimeout(() => {
+      if (phaseRef.current === "chaos") goFailed();
+    }, LOAD_TIMEOUT_MS);
+    beginPlayback(attempt);
   };
 
   const onRetry = () => {
+    if (phaseRef.current !== "failed") return;
+    attemptRef.current++;
     cancelFrameLoops();
     clearTimers();
     startedRef.current = false;
     endedRef.current = false;
+    firstPlayRef.current = true;
+    setFirstPlay(true);
     setVideoTime(0);
     setEnteredWords({});
-    attemptRef.current++; // invalidate any pending attempt
+    setBeforeHidden(false);
+    setAfterShown(false);
+    setCoverPhase("none");
     setPhase("idle");
     const v = videoRef.current;
     if (v) {
@@ -399,7 +403,6 @@ export default function HeroTransformation() {
         /* ignore */
       }
     }
-    onStart();
   };
 
   const onTimeUpdate = () => {
@@ -408,35 +411,22 @@ export default function HeroTransformation() {
     setVideoTime(v.currentTime || 0);
   };
 
-  // ── Ending transition (early, ~0.9s before end; ended as fallback) ─────────
+  // ── Ending: trigger from duration/currentTime, 480ms (or 180ms reduced) before end ─
+  const END_EARLY = reducedMotion ? 0.18 : 0.48;
+
   const triggerEnding = () => {
     if (endedRef.current) return;
     endedRef.current = true;
     cancelFrameLoops();
     const attempt = attemptRef.current;
-    const start = () => {
-      if (attemptRef.current !== attempt) return; // stale
-      if (phaseRef.current !== "playing") return;
-      setPhase("ending");
-    };
+    if (attemptRef.current !== attempt) return;
+    if (phaseRef.current !== "playing") return;
     if (endImgReadyRef.current) {
-      start();
+      setPhase("ending");
+      setCoverPhase("end-rise");
     } else {
-      // try to load + decode now; on failure keep the last frame shown (no overlay)
-      const img = new Image();
-      img.src = AFTER_IMG;
-      const onOk = () => {
-        if (img.complete && img.naturalWidth > 0) {
-          endImgReadyRef.current = true;
-          start();
-        }
-      };
-      if (typeof img.decode === "function") {
-        img.decode().then(onOk).catch(() => {});
-      } else {
-        img.onload = onOk;
-        img.onerror = () => {};
-      }
+      // Ending image not ready: keep the last video frame, don't cover-and-wait.
+      setPhase("complete");
     }
   };
 
@@ -474,126 +464,58 @@ export default function HeroTransformation() {
 
   const onEnded = () => {
     if (endedRef.current) return;
-    triggerEnding();
+    if (phaseRef.current === "playing") triggerEnding();
   };
 
   const onVideoError = () => {
-    if (phaseRef.current === "chaos" || phaseRef.current === "opening") goFailed();
+    if (phaseRef.current === "chaos" || phaseRef.current === "opening" || phaseRef.current === "playing") {
+      goFailed();
+    }
   };
 
-  // Finish opening/ending on animation completion (not a separate setTimeout)
-  const onOpeningAnimComplete = () => {
-    if (phaseRef.current !== "opening") return;
-    setPhase("playing");
-    startEndingWatch();
+  // ── Cover animation completion → advance phases (no separate timers) ────────
+  const onCoverComplete = () => {
+    switch (coverPhase) {
+      case "open-rise":
+        // Cover is opaque: swap the underlying top image away, then reveal.
+        setBeforeHidden(true);
+        setAfterShown(false);
+        setCoverPhase("open-fall");
+        break;
+      case "open-fall":
+        setCoverPhase("none");
+        setPhase("playing");
+        startEndingWatch();
+        break;
+      case "end-rise":
+        // Cover is opaque: swap in the decoded ending image, then reveal it.
+        setAfterShown(true);
+        setCoverPhase("end-fall");
+        break;
+      case "end-fall":
+        setCoverPhase("none");
+        setPhase("complete");
+        break;
+      default:
+        break;
+    }
   };
-  const onEndingAnimComplete = () => {
-    if (phaseRef.current !== "ending") return;
-    setPhase("complete");
-  };
 
-  // ── Derived layer targets ─────────────────────────────────────────────────
-  const inTransition = stage === "opening" || stage === "ending";
-  const mediaWill = inTransition ? "opacity, filter" : "auto";
-  const lightOn = inTransition && !reducedMotion;
-  const lightDur = stage === "ending" ? END_DUR : OPEN_DUR;
+  // ── Derived ────────────────────────────────────────────────────────────────
+  const coverTarget =
+    coverPhase === "open-rise" || coverPhase === "end-rise" ? 1 : 0;
+  const coverDur = reducedMotion
+    ? 0.09
+    : coverPhase === "open-fall"
+    ? 0.24
+    : coverPhase === "end-fall"
+    ? 0.28
+    : coverPhase === "end-rise"
+    ? 0.2
+    : 0.18;
 
-  // Opening image
-  let openingImgAnimate;
-  let openingImgTransition;
-  if (reducedMotion) {
-    if (stage === "opening") {
-      openingImgAnimate = { opacity: [1, 0] };
-      openingImgTransition = { duration: RM_DUR, ease: LINEAR };
-    } else if (stage === "idle" || stage === "chaos" || stage === "failed") {
-      openingImgAnimate = { opacity: 1 };
-      openingImgTransition = { duration: 0.2 };
-    } else {
-      openingImgAnimate = { opacity: 0 };
-      openingImgTransition = { duration: 0.2 };
-    }
-  } else {
-    if (stage === "opening") {
-      openingImgAnimate = {
-        opacity: [1, 1, 0, 0],
-        filter: ["blur(0px)", "blur(6px)", "blur(6px)", "blur(6px)"],
-      };
-      openingImgTransition = { duration: OPEN_DUR, times: TIMES4, ease: LINEAR };
-    } else if (stage === "idle" || stage === "chaos" || stage === "failed") {
-      openingImgAnimate = { opacity: 1, filter: "blur(0px)" };
-      openingImgTransition = { duration: 0.2 };
-    } else {
-      openingImgAnimate = { opacity: 0, filter: "blur(0px)" };
-      openingImgTransition = { duration: 0.2 };
-    }
-  }
-
-  // Video (base layer — stays opaque once playback starts; no fade-in parallel to image fade-out)
-  let videoAnimate;
-  let videoTransition;
-  if (reducedMotion) {
-    if (stage === "opening" || stage === "playing" || stage === "ending" || stage === "complete") {
-      videoAnimate = { opacity: 1 };
-      videoTransition = { opacity: { duration: 0 } };
-    } else {
-      videoAnimate = { opacity: 0 };
-      videoTransition = { opacity: { duration: 0 } };
-    }
-  } else {
-    if (stage === "opening") {
-      videoAnimate = { opacity: 1, filter: ["blur(0px)", "blur(6px)", "blur(6px)", "blur(0px)"] };
-      videoTransition = {
-        opacity: { duration: 0 },
-        filter: { duration: OPEN_DUR, times: TIMES4, ease: LINEAR },
-      };
-    } else if (stage === "idle" || stage === "chaos" || stage === "failed") {
-      videoAnimate = { opacity: 0, filter: "blur(0px)" };
-      videoTransition = { duration: 0.2 };
-    } else if (stage === "playing") {
-      videoAnimate = { opacity: 1, filter: "blur(0px)" };
-      videoTransition = { duration: 0.2 };
-    } else if (stage === "ending") {
-      videoAnimate = { opacity: 1, filter: ["blur(0px)", "blur(6px)", "blur(6px)"] };
-      videoTransition = {
-        opacity: { duration: 0 },
-        filter: { duration: END_DUR, times: [0, 0.2, 1], ease: LINEAR },
-      };
-    } else {
-      // complete — stays opaque + blurred under the sharp ending image
-      videoAnimate = { opacity: 1, filter: "blur(6px)" };
-      videoTransition = { duration: 0.2 };
-    }
-  }
-
-  // Ending image
-  let endImgAnimate;
-  let endImgTransition;
-  if (reducedMotion) {
-    if (stage === "ending") {
-      endImgAnimate = { opacity: [0, 1] };
-      endImgTransition = { duration: RM_DUR, ease: LINEAR };
-    } else if (stage === "complete") {
-      endImgAnimate = { opacity: 1 };
-      endImgTransition = { duration: 0.2 };
-    } else {
-      endImgAnimate = { opacity: 0 };
-      endImgTransition = { duration: 0.2 };
-    }
-  } else {
-    if (stage === "ending") {
-      endImgAnimate = {
-        opacity: [0, 0, 1, 1],
-        filter: ["blur(6px)", "blur(6px)", "blur(6px)", "blur(0px)"],
-      };
-      endImgTransition = { duration: END_DUR, times: TIMES4, ease: LINEAR };
-    } else if (stage === "complete") {
-      endImgAnimate = { opacity: 1, filter: "blur(0px)" };
-      endImgTransition = { duration: 0.2 };
-    } else {
-      endImgAnimate = { opacity: 0, filter: "blur(6px)" };
-      endImgTransition = { duration: 0.2 };
-    }
-  }
+  const wordsActive = stage === "chaos" && firstPlay && !reducedMotion;
+  const showEndHeading = stage === "complete";
 
   const btnBase = {
     background: CHARCOAL,
@@ -629,9 +551,6 @@ export default function HeroTransformation() {
     />
   );
 
-  const wordsActive =
-    stage === "chaos" || stage === "opening" || stage === "playing" || stage === "ending";
-
   return (
     <section
       id="hero-transformation"
@@ -646,6 +565,7 @@ export default function HeroTransformation() {
       <style>{`
         @keyframes ee-spin{to{transform:rotate(360deg)}}
         .ht-btn:focus-visible{ outline:3px solid rgba(240,120,88,0.6); outline-offset:3px; }
+        .ht-replay:focus-visible{ outline:3px solid rgba(240,120,88,0.6); outline-offset:3px; }
         #hero-transformation{ scroll-margin-top:90px; }
         @media (max-width:768px){ #hero-transformation{ scroll-margin-top:72px; } }
       `}</style>
@@ -661,9 +581,13 @@ export default function HeroTransformation() {
           alignItems: "center",
         }}
       >
-        {/* Mobile-only HTML heading for readability (existing message, no new copy) */}
+        {/* Mobile-only heading — swaps from "overload" to "solution" at the end.
+            Fixed reserve keeps the media size stable across the text change. */}
         {isMobile && (
-          <div ref={headingRef} style={{ textAlign: "center", width: "100%" }}>
+          <div
+            ref={headingRef}
+            style={{ textAlign: "center", width: "100%", height: HEADING_RESERVE_MOBILE, display: "flex", alignItems: "center", justifyContent: "center" }}
+          >
             <h2
               style={{
                 color: CHARCOAL,
@@ -674,12 +598,12 @@ export default function HeroTransformation() {
                 margin: 0,
               }}
             >
-              כמה ידיים צריך כדי לנהל רווחה?
+              {showEndHeading ? END_HEADING : START_HEADING}
             </h2>
           </div>
         )}
 
-        {/* Shared, stable media frame — 16:9, same size across all stages, centered */}
+        {/* Shared, stable media frame — 16:9, same size/crop/radius across all stages */}
         <div ref={mediaRowRef} style={{ display: "flex", justifyContent: "center", width: "100%" }}>
           <div
             style={{
@@ -694,8 +618,8 @@ export default function HeroTransformation() {
               transform: "translateZ(0)",
             }}
           >
-            {/* Layer 1 — video (base, stays opaque once playing) */}
-            <motion.video
+            {/* Video (base) — stays opaque; covered by the top image / cover as needed */}
+            <video
               ref={videoRef}
               src={VIDEO_SRC}
               muted
@@ -704,9 +628,6 @@ export default function HeroTransformation() {
               onTimeUpdate={onTimeUpdate}
               onEnded={onEnded}
               onError={onVideoError}
-              initial={{ opacity: 0, filter: "blur(0px)" }}
-              animate={videoAnimate}
-              transition={videoTransition}
               style={{
                 position: "absolute",
                 inset: 0,
@@ -715,20 +636,13 @@ export default function HeroTransformation() {
                 objectFit: "cover",
                 objectPosition: "center center",
                 zIndex: 1,
-                willChange: mediaWill,
-                backfaceVisibility: "hidden",
-                WebkitBackfaceVisibility: "hidden",
               }}
             />
 
-            {/* Layer 3 — ending image (above video, fades in at the end) */}
-            <motion.img
+            {/* Ending image — shown after the ending cover swap */}
+            <img
               src={AFTER_IMG}
               alt=""
-              initial={{ opacity: 0, filter: "blur(6px)" }}
-              animate={endImgAnimate}
-              transition={endImgTransition}
-              onAnimationComplete={onEndingAnimComplete}
               style={{
                 position: "absolute",
                 inset: 0,
@@ -737,20 +651,14 @@ export default function HeroTransformation() {
                 objectFit: "cover",
                 objectPosition: "center center",
                 zIndex: 3,
-                willChange: mediaWill,
-                backfaceVisibility: "hidden",
-                WebkitBackfaceVisibility: "hidden",
+                opacity: afterShown ? 1 : 0,
               }}
             />
 
-            {/* Layer 4 — opening image (top, crossfades out at the start) */}
-            <motion.img
+            {/* Opening (before) image — shown until the opening cover swap */}
+            <img
               src={BEFORE_IMG}
               alt="מנהלת רווחה בעומס"
-              initial={{ opacity: 1, filter: "blur(0px)" }}
-              animate={openingImgAnimate}
-              transition={openingImgTransition}
-              onAnimationComplete={onOpeningAnimComplete}
               style={{
                 position: "absolute",
                 inset: 0,
@@ -759,31 +667,11 @@ export default function HeroTransformation() {
                 objectFit: "cover",
                 objectPosition: "center center",
                 zIndex: 4,
-                willChange: mediaWill,
-                backfaceVisibility: "hidden",
-                WebkitBackfaceVisibility: "hidden",
+                opacity: beforeHidden ? 0 : 1,
               }}
             />
 
-            {/* Soft halo — only during transitions, no blend mode, no flash */}
-            {lightOn && (
-              <motion.div
-                key={stage}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: [0, 0.18, 0] }}
-                transition={{ duration: lightDur, times: [0, 0.5, 0.8], ease: LINEAR }}
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  background: HALLO_BG,
-                  zIndex: 10,
-                  pointerEvents: "none",
-                  willChange: "opacity",
-                }}
-              />
-            )}
-
-            {/* Chaos words overlay (kept sequence) */}
+            {/* Chaos words overlay (above images, below the cover) */}
             <ChaosWordsLayer
               enteredWords={enteredWords}
               videoTime={videoTime}
@@ -791,58 +679,101 @@ export default function HeroTransformation() {
               reducedMotion={reducedMotion}
               active={wordsActive}
             />
+
+            {/* Brand-color cover transition — above all content, inside the frame only */}
+            <motion.div
+              animate={{ opacity: coverTarget }}
+              transition={{ duration: coverDur, ease: "easeInOut" }}
+              onAnimationComplete={onCoverComplete}
+              style={{
+                position: "absolute",
+                inset: 0,
+                background: COVER,
+                zIndex: 25,
+                pointerEvents: "none",
+                willChange: "opacity",
+              }}
+            />
           </div>
         </div>
 
-        {/* Button area — fixed reserve (measured) so the layout never jumps when the button hides */}
+        {/* Button area — fixed reserve so the layout never jumps when content swaps */}
         <div
           style={{
             marginTop: 18,
-            minHeight: buttonAreaH,
+            minHeight: isMobile ? BUTTON_RESERVE_MOBILE : BUTTON_RESERVE_DESKTOP,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            gap: 8,
           }}
         >
           {(stage === "idle" || stage === "chaos") && (
-            <div
-              ref={contentRef}
-              style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}
-            >
+            <>
               <button
                 type="button"
                 className="ht-btn"
                 onClick={onStart}
                 disabled={stage !== "idle"}
                 aria-label="לראות את השדרוג"
-                style={{
-                  ...btnBase,
-                  opacity: stage === "chaos" ? 0.78 : 1,
-                  cursor: stage === "idle" ? "pointer" : "default",
-                }}
+                style={{ ...btnBase, opacity: stage === "chaos" ? 0.85 : 1, cursor: stage === "idle" ? "pointer" : "default" }}
               >
                 {stage === "chaos" ? <Spinner /> : <Play size={18} color="#fff" strokeWidth={2.5} />}
-                לראות את השדרוג
+                {stage === "chaos" ? "מכין את ההדגמה…" : "לראות את השדרוג"}
               </button>
-              <p style={{ color: "#5A5C62", fontSize: 15, fontWeight: 500, margin: 0 }}>
-                10 שניות שממחישות את ההבדל
-              </p>
-            </div>
+              {stage === "idle" && (
+                <p style={{ color: "#5A5C62", fontSize: 15, fontWeight: 500, margin: 0 }}>
+                  10 שניות שממחישות את ההבדל
+                </p>
+              )}
+            </>
           )}
 
           {stage === "failed" && (
-            <div ref={contentRef} style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <button
+              type="button"
+              className="ht-btn"
+              onClick={onRetry}
+              aria-label="לנסות שוב"
+              style={{ ...btnBase, background: CORAL }}
+            >
+              <RotateCcw size={18} color="#fff" strokeWidth={2.5} />
+              לנסות שוב
+            </button>
+          )}
+
+          {stage === "complete" && (
+            <>
               <button
                 type="button"
                 className="ht-btn"
-                onClick={onRetry}
-                aria-label="לנסות שוב"
-                style={{ ...btnBase, background: CORAL }}
+                onClick={() => scrollToId("organization-fit")}
+                aria-label="בדיקת התאמה"
+                style={btnBase}
               >
-                <RotateCcw size={18} color="#fff" strokeWidth={2.5} />
-                לנסות שוב
+                <span style={{ width: 8, height: 8, borderRadius: "50%", background: CORAL, display: "inline-block", flexShrink: 0 }} />
+                בדיקת התאמה
               </button>
-            </div>
+              <button
+                type="button"
+                className="ht-replay"
+                onClick={onReplay}
+                aria-label="לצפייה חוזרת"
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "#5A5C62",
+                  fontFamily: "inherit",
+                  fontSize: 15,
+                  fontWeight: 500,
+                  cursor: "pointer",
+                  padding: "4px 8px",
+                  textDecoration: "underline",
+                }}
+              >
+                לצפייה חוזרת
+              </button>
+            </>
           )}
         </div>
       </div>

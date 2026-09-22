@@ -52,7 +52,7 @@ export default function OperationSteps() {
         scrollMarginTop: 90,
       }}
     >
-      <style>{`@media (max-width:768px){ #operation-steps{ scroll-margin-top:72px; padding:64px 16px 72px; } }`}</style>
+      <style>{`@media (max-width:768px){ #operation-steps{ scroll-margin-top:72px; padding:48px 16px 56px !important; } }`}</style>
 
       <div style={{ maxWidth: 1000, margin: "0 auto", textAlign: "center" }}>
         <motion.h2

@@ -116,8 +116,9 @@ export default function PlatformExplanation() {
                 maxWidth: 820,
               }}
             >
-              בום ביי מקימה ומפעילה עבורכם מועדון רווחה והטבות במותג הארגון. משדרגים את הערך של
-              תקציב הרווחה והמתנות הקיים, ומעניקים לעובדים הטבות וחוויות לאורך כל השנה.
+              בום ביי מקימה ומפעילה עבורכם מועדון רווחה והטבות במותג הארגון. הפלטפורמה מחברת את
+              תקציב הרווחה והמתנות הקיים להטבות, מתנות וחוויות לאורך השנה. אנחנו מטפלים בהקמה,
+              בהטמעה ובשירות לעובדים.
             </motion.p>
           </div>
 
@@ -171,7 +172,8 @@ export default function PlatformExplanation() {
           .pe-wrap{ padding-left:12px !important; padding-right:12px !important; }
           .pe-panel{ border-radius:24px !important; padding-top:48px !important; padding-bottom:48px !important; padding-right:20px !important; padding-left:20px !important; }
           .pe-cards{ flex-direction:column !important; gap:14px !important; }
-          .pe-card{ padding:22px !important; }
+          #platform-explanation{ padding:40px 0 !important; }
+          .pe-card{ padding:22px !important; flex:none !important; width:100% !important; max-width:none !important; }
         }
       `}</style>
     </section>

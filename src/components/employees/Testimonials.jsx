@@ -7,16 +7,15 @@ const CHARCOAL = "#17191D";
 const CORAL = "#F47A5A";
 const EASE = [0.22, 1, 0.36, 1];
 
-// Primary testimonial — large, on its own.
+// Primary testimonial — large, on its own. Quotes kept verbatim.
 const PRIMARY = {
   name: "יניב דוד",
   role: "מזכיר כללי, ארגון העובדים בבנק לאומי",
   logo: "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/333366c6f_.png",
-  logoScale: 0.55,
   text: "ההשקעה הטובה ביותר שעשינו למען העובדים. העובדים מדברים על זה יום יום.",
 };
 
-// Additional testimonials — swipeable row.
+// Additional testimonials — navigable row (arrows + dots). No swipe gesture claim.
 const OTHERS = [
   {
     name: "יחזקאל מזרחי",
@@ -42,6 +41,7 @@ export default function Testimonials() {
   const sectionRef = useRef(null);
   const firedView = useRef(false);
   const [index, setIndex] = useState(0);
+  const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -66,7 +66,19 @@ export default function Testimonials() {
     return () => io.disconnect();
   }, []);
 
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(mq.matches);
+    const onMq = (e) => setReducedMotion(e.matches);
+    mq.addEventListener?.("change", onMq);
+    return () => mq.removeEventListener?.("change", onMq);
+  }, []);
+
   const go = (dir) => setIndex((p) => (p + dir + OTHERS.length) % OTHERS.length);
+
+  const secondaryAnim = reducedMotion
+    ? { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 } }
+    : { initial: { opacity: 0, x: 30 }, animate: { opacity: 1, x: 0 }, exit: { opacity: 0, x: -30 } };
 
   return (
     <section
@@ -80,9 +92,7 @@ export default function Testimonials() {
         scrollMarginTop: 90,
       }}
     >
-      <style>{`
-        @media (max-width:768px){ #testimonials{ scroll-margin-top:72px; padding:64px 16px 72px; } }
-      `}</style>
+      <style>{`@media (max-width:768px){ #testimonials{ scroll-margin-top:72px; padding:48px 16px 56px !important; } }`}</style>
 
       <div style={{ maxWidth: 1080, margin: "0 auto", textAlign: "center" }}>
         <motion.p
@@ -132,11 +142,11 @@ export default function Testimonials() {
             textAlign: "right",
           }}
         >
-          <div style={{ height: 48, display: "flex", alignItems: "center", marginBottom: 20 }}>
+          <div style={{ height: 52, display: "flex", alignItems: "center", marginBottom: 20 }}>
             <img
               src={PRIMARY.logo}
               alt={PRIMARY.name}
-              style={{ height: 38, maxWidth: 140, objectFit: "contain", objectPosition: "right", transform: PRIMARY.logoScale ? `scale(${PRIMARY.logoScale})` : "none", transformOrigin: "right center" }}
+              style={{ height: 44, maxWidth: 170, objectFit: "contain", objectPosition: "right" }}
             />
           </div>
           <p style={{ fontSize: "clamp(20px,2.4vw,30px)", color: CHARCOAL, fontWeight: 600, lineHeight: 1.4, letterSpacing: "-0.02em", margin: "0 0 24px" }}>
@@ -148,15 +158,15 @@ export default function Testimonials() {
           </div>
         </motion.div>
 
-        {/* Secondary testimonials — swipeable */}
+        {/* Secondary testimonials — navigable */}
         <div style={{ marginTop: 36, position: "relative" }}>
           <AnimatePresence mode="wait">
             <motion.div
               key={index}
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -30 }}
-              transition={{ duration: 0.4, ease: EASE }}
+              initial={secondaryAnim.initial}
+              animate={secondaryAnim.animate}
+              exit={secondaryAnim.exit}
+              transition={{ duration: reducedMotion ? 0.01 : 0.4, ease: EASE }}
               style={{
                 background: "#fff",
                 borderRadius: 22,
@@ -168,8 +178,8 @@ export default function Testimonials() {
                 textAlign: "right",
               }}
             >
-              <div style={{ height: 40, display: "flex", alignItems: "center", marginBottom: 14 }}>
-                <img src={OTHERS[index].logo} alt={OTHERS[index].name} style={{ height: 32, maxWidth: 120, objectFit: "contain", objectPosition: "right" }} />
+              <div style={{ height: 44, display: "flex", alignItems: "center", marginBottom: 14 }}>
+                <img src={OTHERS[index].logo} alt={OTHERS[index].name} style={{ height: 36, maxWidth: 130, objectFit: "contain", objectPosition: "right" }} />
               </div>
               <p style={{ fontSize: "clamp(16px,1.4vw,19px)", color: "#3A3C42", lineHeight: 1.7, margin: "0 0 18px" }}>
                 ״{OTHERS[index].text}״
@@ -181,24 +191,30 @@ export default function Testimonials() {
             </motion.div>
           </AnimatePresence>
 
-          {/* controls */}
+          {/* controls — 44px touch targets */}
           <div style={{ marginTop: 24, display: "flex", alignItems: "center", justifyContent: "center", gap: 16 }}>
-            <button type="button" onClick={() => go(-1)} aria-label="הקודם" style={navBtn}>›</button>
-            <div style={{ display: "flex", gap: 6 }}>
+            <button type="button" onClick={() => go(-1)} aria-label="המלצה קודמת" style={navBtn}>
+              ›
+            </button>
+            <div style={{ display: "flex", gap: 4 }}>
               {OTHERS.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => setIndex(i)}
-                  aria-label={`המלצה ${i + 1}`}
+                  aria-label={`מלצה ${i + 1}`}
+                  aria-current={i === index}
                   style={{
-                    width: i === index ? 20 : 7, height: 7, borderRadius: 999,
-                    background: i === index ? CORAL : "rgba(19,21,25,0.18)",
-                    border: "none", padding: 0, cursor: "pointer", transition: "all .25s ease",
+                    width: 44, height: 44, border: "none", background: "transparent",
+                    padding: 0, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
                   }}
-                />
+                >
+                  <span style={{ width: i === index ? 20 : 7, height: 7, borderRadius: 999, background: i === index ? CORAL : "rgba(19,21,25,0.18)", transition: "all .25s ease" }} />
+                </button>
               ))}
             </div>
-            <button type="button" onClick={() => go(1)} aria-label="הבא" style={navBtn}>‹</button>
+            <button type="button" onClick={() => go(1)} aria-label="מלצה הבאה" style={navBtn}>
+              ‹
+            </button>
           </div>
         </div>
       </div>
@@ -207,8 +223,8 @@ export default function Testimonials() {
 }
 
 const navBtn = {
-  width: 40,
-  height: 40,
+  width: 44,
+  height: 44,
   borderRadius: "50%",
   border: "1px solid rgba(19,21,25,0.12)",
   background: "#fff",

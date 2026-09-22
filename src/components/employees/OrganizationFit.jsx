@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { base44 } from "@/api/base44Client";
+import { scrollToId } from "./uiHelpers";
 
 const BG = "#F7F7F4";
 const CHARCOAL = "#17191D";
@@ -75,16 +76,28 @@ export default function OrganizationFit() {
   const sectionRef = useRef(null);
   const firedView = useRef(false);
   const firedStarted = useRef(false);
+  const successRef = useRef(null);
+
   const [step, setStep] = useState(0); // 0..2 questions, 3 = details form
   const [answers, setAnswers] = useState({});
   const [form, setForm] = useState({ fullName: "", orgName: "", phone: "", email: "", consent: false });
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const lockRef = useRef(false); // prevents skipping a question on double-click
-  const submittedRef = useRef(false); // prevents double submission
+  const [reducedMotion, setReducedMotion] = useState(false);
 
-  // organization_fit_started fires on the user's first real answer (exactly once)
+  // Lock that lasts the WHOLE step transition (not a short timer). Cleared only when
+  // the entering element's animation completes — see onEnterDone.
+  const lockRef = useRef(false);
+  const submittedRef = useRef(false); // prevents double submission
+  const submittingRef = useRef(false); // synchronous submit lock
+  // Stable submit id per lead — reused on retry of the SAME lead (lets a server-side
+  // dedup work). Not a browser-only idempotency lock.
+  const sessionIdRef = useRef("");
+  // The key of whichever step is currently rendered (so the entering element's
+  // onAnimationComplete — not the exiting one's — clears the lock).
+  const currentKeyRef = useRef("q-0");
+
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
@@ -108,12 +121,28 @@ export default function OrganizationFit() {
     return () => io.disconnect();
   }, []);
 
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(mq.matches);
+    const onMq = (e) => setReducedMotion(e.matches);
+    mq.addEventListener?.("change", onMq);
+    return () => mq.removeEventListener?.("change", onMq);
+  }, []);
+
+  const qDur = reducedMotion ? 0.01 : 0.4;
+  const isQuestion = step < 3;
+  const isForm = step === 3;
+  const currentKey = submitted ? "success" : isForm ? "form" : `q-${step}`;
+  currentKeyRef.current = currentKey;
+
+  // Clear the transition lock only when the ENTERING element finishes animating.
+  const onEnterDone = (key) => {
+    if (key === currentKeyRef.current) lockRef.current = false;
+  };
+
   const choose = (key, value) => {
-    if (lockRef.current) return; // ignore rapid double-clicks
+    if (lockRef.current) return; // ignore clicks during a transition
     lockRef.current = true;
-    window.setTimeout(() => {
-      lockRef.current = false;
-    }, 300);
     if (!firedStarted.current) {
       firedStarted.current = true;
       try {
@@ -128,39 +157,44 @@ export default function OrganizationFit() {
     } catch (err) {
       /* ignore */
     }
-    setStep((s) => s + 1);
+    const next = step + 1;
+    setStep(next);
   };
 
   const back = () => {
     if (lockRef.current) return;
     lockRef.current = true;
-    window.setTimeout(() => {
-      lockRef.current = false;
-    }, 200);
     setError("");
-    setStep((s) => Math.max(0, s - 1));
+    const prev = Math.max(0, step - 1);
+    setStep(prev);
   };
 
   const submit = async () => {
-    if (submitting || submittedRef.current) return;
+    if (submittingRef.current || submittedRef.current) return;
+    submittingRef.current = true;
+    setSubmitting(true);
     setError("");
     if (!form.fullName.trim() || !form.orgName.trim() || !form.phone.trim() || !form.email.trim()) {
+      submittingRef.current = false;
+      setSubmitting(false);
       setError("נא למלא את כל השדות.");
       return;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      submittingRef.current = false;
+      setSubmitting(false);
       setError("כתובת האימייל אינה תקינה.");
       return;
     }
     if (!form.consent) {
+      submittingRef.current = false;
+      setSubmitting(false);
       setError("נא לאשר את תיבת ההסכמה.");
       return;
     }
-    setSubmitting(true);
-    // Fresh id per submission — never overwrite a previous lead via a fixed browser id.
-    const sessionId = genSessionId();
+    if (!sessionIdRef.current) sessionIdRef.current = genSessionId();
     const payload = {
-      sessionId,
+      sessionId: sessionIdRef.current,
       orgSize: answers.orgSize,
       welfareState: answers.welfareState,
       upgradeGoal: answers.upgradeGoal,
@@ -174,13 +208,15 @@ export default function OrganizationFit() {
     try {
       await base44.entities.OrganizationFitLead.create(payload);
     } catch (err) {
-      // Save failed: keep the details, surface a clear retry, do NOT report success or advance.
+      // Save failed: keep the details, surface a clear retry. Do NOT report success,
+      // do NOT advance, and keep the same sessionId for a stable retry.
+      submittingRef.current = false;
       setSubmitting(false);
       setError("שמירת הפרטים נכשלה. נא לנסות שוב בעוד רגע.");
       return;
     }
-    // Only on a successful save: report events and advance.
     submittedRef.current = true;
+    submittingRef.current = false;
     setSubmitting(false);
     setSubmitted(true);
     try {
@@ -201,13 +237,13 @@ export default function OrganizationFit() {
       /* ignore */
     }
     window.dispatchEvent(new CustomEvent("boom_fit_submitted"));
+    // Move focus to the confirmation, then scroll to the booking/confirmation area.
     window.setTimeout(() => {
-      document.getElementById("book-demo")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      successRef.current?.focus?.();
+      scrollToId("book-demo");
     }, 120);
   };
 
-  const isQuestion = step < 3;
-  const isForm = step === 3;
   const progress = Math.min(step + 1, TOTAL_STEPS);
 
   return (
@@ -223,7 +259,7 @@ export default function OrganizationFit() {
       }}
     >
       <style>{`
-        @media (max-width:768px){ #organization-fit{ scroll-margin-top:72px; padding:64px 16px 72px; } }
+        @media (max-width:768px){ #organization-fit{ scroll-margin-top:72px; padding:48px 16px 56px !important; } }
         .of-option:hover{ border-color:rgba(244,122,90,0.6) !important; transform:translateY(-2px); box-shadow:0 10px 26px rgba(244,122,90,0.12); }
         .of-option:focus-visible{ outline:3px solid rgba(244,122,90,0.55); outline-offset:2px; }
         .of-input:focus{ border-color:rgba(244,122,90,0.6); box-shadow:0 0 0 3px rgba(244,122,90,0.12); }
@@ -235,14 +271,7 @@ export default function OrganizationFit() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.55, ease: EASE }}
-          style={{
-            color: CHARCOAL,
-            fontSize: "clamp(30px,4vw,52px)",
-            fontWeight: 700,
-            lineHeight: 1.06,
-            letterSpacing: "-0.025em",
-            margin: 0,
-          }}
+          style={{ color: CHARCOAL, fontSize: "clamp(30px,4vw,52px)", fontWeight: 700, lineHeight: 1.06, letterSpacing: "-0.025em", margin: 0 }}
         >
           בדיקת <span style={{ color: CORAL }}>התאמה</span>
         </motion.h2>
@@ -257,23 +286,47 @@ export default function OrganizationFit() {
           3 שאלות קצרות לקראת הדגמה של 15 דקות.
         </motion.p>
 
-        <div style={{ marginTop: 30, maxWidth: 360, margin: "30px auto 0", height: 6, borderRadius: 999, background: "rgba(19,21,25,0.10)", overflow: "hidden" }}>
-          <motion.div
-            animate={{ width: `${(progress / TOTAL_STEPS) * 100}%` }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            style={{ height: "100%", background: CORAL, borderRadius: 999 }}
-          />
-        </div>
+        {!submitted && (
+          <div style={{ maxWidth: 360, margin: "30px auto 0", height: 6, borderRadius: 999, background: "rgba(19,21,25,0.10)", overflow: "hidden" }}>
+            <motion.div
+              animate={{ width: `${(progress / TOTAL_STEPS) * 100}%` }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              style={{ height: "100%", background: CORAL, borderRadius: 999 }}
+            />
+          </div>
+        )}
 
         <div style={{ marginTop: 34 }}>
           <AnimatePresence mode="wait">
-            {isQuestion && (
+            {submitted ? (
+              <motion.div
+                key="success"
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -14 }}
+                transition={{ duration: qDur, ease: EASE }}
+                onAnimationComplete={() => onEnterDone("success")}
+                style={{ maxWidth: 480, margin: "0 auto" }}
+              >
+                <h3
+                  ref={successRef}
+                  tabIndex={-1}
+                  style={{ color: CHARCOAL, fontSize: "clamp(22px,2.6vw,30px)", fontWeight: 700, lineHeight: 1.2, letterSpacing: "-0.02em", margin: "0 0 10px", textAlign: "center", outline: "none" }}
+                >
+                  תודה! הפרטים נשמרו.
+                </h3>
+                <p style={{ color: "#6E7177", fontSize: 16, margin: 0, textAlign: "center" }}>
+                  ניצור איתכם קשר לתיאום הדגמה של 15 דקות.
+                </p>
+              </motion.div>
+            ) : isQuestion ? (
               <motion.div
                 key={`q-${step}`}
                 initial={{ opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -14 }}
-                transition={{ duration: 0.4, ease: EASE }}
+                transition={{ duration: qDur, ease: EASE }}
+                onAnimationComplete={() => onEnterDone(`q-${step}`)}
               >
                 <h3 style={{ color: CHARCOAL, fontSize: "clamp(22px,2.6vw,30px)", fontWeight: 700, lineHeight: 1.2, letterSpacing: "-0.02em", margin: "0 0 22px" }}>
                   {QUESTIONS[step].prompt}
@@ -319,15 +372,14 @@ export default function OrganizationFit() {
                   </button>
                 )}
               </motion.div>
-            )}
-
-            {isForm && (
+            ) : (
               <motion.div
                 key="form"
                 initial={{ opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -14 }}
-                transition={{ duration: 0.45, ease: EASE }}
+                transition={{ duration: qDur, ease: EASE }}
+                onAnimationComplete={() => onEnterDone("form")}
                 style={{ maxWidth: 480, margin: "0 auto", textAlign: "right" }}
               >
                 <h3 style={{ color: CHARCOAL, fontSize: "clamp(22px,2.6vw,30px)", fontWeight: 700, lineHeight: 1.2, letterSpacing: "-0.02em", margin: "0 0 6px", textAlign: "center" }}>
@@ -348,11 +400,11 @@ export default function OrganizationFit() {
                   </div>
                   <div>
                     <label htmlFor="of-phone" style={labelStyle}>טלפון</label>
-                    <input id="of-phone" name="phone" type="tel" autoComplete="tel" className="of-input" style={inputStyle} placeholder="טלפון" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
+                    <input id="of-phone" name="phone" type="tel" autoComplete="tel" dir="ltr" style={{ ...inputStyle, textAlign: "right" }} placeholder="טלפון" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
                   </div>
                   <div>
                     <label htmlFor="of-email" style={labelStyle}>אימייל</label>
-                    <input id="of-email" name="email" type="email" autoComplete="email" className="of-input" style={inputStyle} placeholder="אימייל" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+                    <input id="of-email" name="email" type="email" autoComplete="email" dir="ltr" style={{ ...inputStyle, textAlign: "right" }} placeholder="אימייל" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
                   </div>
 
                   <label style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 15, color: "#3A3C42", cursor: "pointer", lineHeight: 1.5, marginTop: 4 }}>

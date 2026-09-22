@@ -8,9 +8,13 @@ import Testimonials from "../components/employees/Testimonials";
 import OrganizationFit from "../components/employees/OrganizationFit";
 import BookDemo from "../components/employees/BookDemo";
 import GlobalFooter from "../components/employees/GlobalFooter";
-import FloatingWhatsApp from "../components/employees/FloatingWhatsApp";
 import PersistentCTA from "../components/employees/PersistentCTA";
 import LogoRail from "../components/employees/LogoRail";
+import { LAYOUT } from "../components/employees/layoutTokens";
+
+// Bottom reserve = rail + CTA + gap, so the footer can always scroll above the fixed stack.
+const BOTTOM_RESERVE =
+  LAYOUT.RAIL_HEIGHT_DESKTOP + LAYOUT.CTA_H_DESKTOP + LAYOUT.CTA_BOTTOM_MARGIN;
 
 export default function EmployeesLanding() {
   return (
@@ -20,8 +24,7 @@ export default function EmployeesLanding() {
         overflowX: "hidden",
         maxWidth: "100vw",
         background: "#FBFAF8",
-        // reserve space for the fixed bottom logo rail + safe area
-        paddingBottom: "calc(96px + env(safe-area-inset-bottom))",
+        paddingBottom: `calc(${BOTTOM_RESERVE}px + env(safe-area-inset-bottom))`,
       }}
     >
       <GlobalHeader />
@@ -33,7 +36,6 @@ export default function EmployeesLanding() {
       <OrganizationFit />
       <BookDemo />
       <GlobalFooter />
-      <FloatingWhatsApp />
       <PersistentCTA />
       <LogoRail />
     </div>

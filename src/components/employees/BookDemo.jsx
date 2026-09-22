@@ -27,15 +27,7 @@ export default function BookDemo() {
     return () => window.removeEventListener("boom_fit_submitted", onFit);
   }, []);
 
-  // calendar_opened only when a real calendar is actually presented.
-  useEffect(() => {
-    if (!revealed || !configured) return;
-    try {
-      base44.analytics.track({ eventName: "calendar_opened" });
-    } catch (err) {
-      /* ignore */
-    }
-  }, [revealed, configured]);
+  // calendar_opened is fired on actual open (iframe load / link click), not on reveal.
 
   if (!revealed) return null;
 
@@ -50,7 +42,7 @@ export default function BookDemo() {
         scrollMarginTop: 90,
       }}
     >
-      <style>{`@media (max-width:768px){ #book-demo{ scroll-margin-top:72px; padding:64px 16px 72px; } }`}</style>
+      <style>{`@media (max-width:768px){ #book-demo{ scroll-margin-top:72px; padding:48px 16px 56px !important; } }`}</style>
 
       <div style={{ maxWidth: 1180, margin: "0 auto", textAlign: "center" }}>
         <motion.h2
@@ -89,7 +81,7 @@ export default function BookDemo() {
               <iframe
                 src={GOOGLE_CALENDAR_BOOKING_URL}
                 title="קביעת הדגמה"
-                onLoad={() => setIframeLoading(false)}
+                onLoad={() => { setIframeLoading(false); try { base44.analytics.track({ eventName: "calendar_opened" }); } catch (e) {} }}
                 style={{
                   width: "100%",
                   minWidth: "100%",
@@ -112,7 +104,7 @@ export default function BookDemo() {
             >
               <button
                 type="button"
-                onClick={() => window.open(GOOGLE_CALENDAR_BOOKING_URL, "_blank", "noopener,noreferrer")}
+                onClick={() => { try { base44.analytics.track({ eventName: "calendar_opened" }); } catch (e) {} window.open(GOOGLE_CALENDAR_BOOKING_URL, "_blank", "noopener,noreferrer"); }}
                 style={{
                   background: CHARCOAL,
                   color: "#fff",

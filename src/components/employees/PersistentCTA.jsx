@@ -1,23 +1,21 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useBottomUIVisibility } from "./useBottomUIVisibility";
+import { scrollToId } from "./uiHelpers";
+import { railHeight, ctaHeight, LAYOUT } from "./layoutTokens";
 
 const CHARCOAL = "#17191D";
 const CORAL = "#F47A5A";
-const RAIL_H_DESKTOP = 64;
-const RAIL_H_MOBILE = 52;
 
 // Persistent CTA → "בדיקת התאמה".
-// Available after the opening section (no dependency on the employee video or
-// boom_employee_completed). Hidden over the form/booking area, while a benefit
-// modal is open, or while the mobile keyboard is up. Never covers the logo rail.
+// Available as soon as the opening has scrolled out of view (no dependency on
+// scrolling past the whole explanation section). Removed from the tab order and
+// the DOM entirely when hidden, so there is never a focusable invisible button.
+// Stacked directly above the logo rail using shared layout tokens.
 export default function PersistentCTA() {
   const [isMobile, setIsMobile] = useState(false);
-  const [passedPlatform, setPassedPlatform] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const { hidden } = useBottomUIVisibility();
-
-  const passedPlatformRef = useRef(false);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
@@ -26,37 +24,17 @@ export default function PersistentCTA() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  // Show after the platform explanation has scrolled past (covers "after the opening").
-  useEffect(() => {
-    const el = document.getElementById("platform-explanation");
-    if (!el) return;
-    let seen = false;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) seen = true;
-        if (seen && !entry.isIntersecting && entry.boundingClientRect.top < 0) {
-          passedPlatformRef.current = true;
-          setPassedPlatform(true);
-        }
-      },
-      { threshold: 0.2 }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
-  // Hide permanently after the fit details were saved.
+  // Hide permanently after the fit details were saved (confirmation follows).
   useEffect(() => {
     const onSubmitted = () => setSubmitted(true);
     window.addEventListener("boom_fit_submitted", onSubmitted);
     return () => window.removeEventListener("boom_fit_submitted", onSubmitted);
   }, []);
 
-  const railH = isMobile ? RAIL_H_MOBILE : RAIL_H_DESKTOP;
-  const visible = passedPlatform && !hidden && !submitted;
-
-  const scrollToFit = () =>
-    document.getElementById("organization-fit")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  const railH = railHeight(isMobile);
+  const ctaH = ctaHeight(isMobile);
+  const bottom = `calc(${railH}px + ${LAYOUT.CTA_BOTTOM_MARGIN}px + env(safe-area-inset-bottom))`;
+  const visible = !hidden && !submitted;
 
   return (
     <AnimatePresence>
@@ -69,14 +47,15 @@ export default function PersistentCTA() {
           style={{
             position: "fixed",
             zIndex: 90,
+            bottom,
             ...(isMobile
-              ? { left: 12, right: 12, bottom: `calc(${railH}px + env(safe-area-inset-bottom) + 10px)` }
-              : { bottom: `calc(${railH}px + env(safe-area-inset-bottom) + 10px)`, left: 24 }),
+              ? { left: 12, right: 12 }
+              : { left: 24 }),
           }}
         >
           <button
             type="button"
-            onClick={scrollToFit}
+            onClick={() => scrollToId("organization-fit")}
             aria-label="בדיקת התאמה לארגון"
             style={{
               width: isMobile ? "100%" : "auto",
@@ -84,7 +63,7 @@ export default function PersistentCTA() {
               color: "#fff",
               border: "none",
               borderRadius: isMobile ? 16 : 999,
-              height: isMobile ? 54 : 48,
+              height: ctaH,
               padding: isMobile ? "0 18px" : "0 22px",
               fontFamily: "var(--font-heebo), Heebo, Arial, sans-serif",
               fontWeight: 700,
