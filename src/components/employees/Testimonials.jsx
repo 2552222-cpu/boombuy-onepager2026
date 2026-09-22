@@ -88,7 +88,7 @@ export default function Testimonials() {
         <motion.p
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.5, ease: EASE }}
           style={{ color: CORAL, fontWeight: 600, fontSize: "clamp(15px,1.2vw,18px)", margin: 0, letterSpacing: "-0.01em" }}
         >
@@ -98,7 +98,7 @@ export default function Testimonials() {
         <motion.h2
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.55, ease: EASE, delay: 0.06 }}
           style={{
             color: CHARCOAL,
@@ -118,7 +118,7 @@ export default function Testimonials() {
         <motion.div
           initial={{ opacity: 0, y: 22 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.55, ease: EASE, delay: 0.12 }}
           style={{
             marginTop: 44,

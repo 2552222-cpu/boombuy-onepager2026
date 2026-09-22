@@ -1,44 +1,32 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useBottomUIVisibility } from "./useBottomUIVisibility";
 
 const CHARCOAL = "#17191D";
 const CORAL = "#F47A5A";
+const RAIL_H_DESKTOP = 64;
+const RAIL_H_MOBILE = 52;
 
-// Persistent CTA: a small fixed button on desktop (after platform-explanation)
-// and a sticky bottom bar on mobile (after the employee video ends).
-// Hidden during videos, over organization-fit/book-demo, after a meeting is booked,
-// and never alongside the floating WhatsApp button.
+// Persistent CTA → "בדיקת התאמה".
+// Available after the opening section (no dependency on the employee video or
+// boom_employee_completed). Hidden over the form/booking area, while a benefit
+// modal is open, or while the mobile keyboard is up. Never covers the logo rail.
 export default function PersistentCTA() {
   const [isMobile, setIsMobile] = useState(false);
-  const [visible, setVisible] = useState(false);
-  const [booked, setBooked] = useState(false);
-  const [employeeCompleted, setEmployeeCompleted] = useState(false);
-
-  const videoMap = useRef({});
-  const fitMap = useRef({});
-  // re-render triggers derived from refs
-  const [, force] = useState(0);
-  const tick = () => force((n) => n + 1);
-
-  const computeVisible = () => {
-    if (booked) return false;
-    const overVideo = Object.values(videoMap.current).some(Boolean);
-    const overFitOrBook = Object.values(fitMap.current).some(Boolean);
-    if (overVideo || overFitOrBook) return false;
-    if (isMobile) return employeeCompleted;
-    return passedPlatformRef.current;
-  };
+  const [passedPlatform, setPassedPlatform] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const { hidden } = useBottomUIVisibility();
 
   const passedPlatformRef = useRef(false);
 
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 1024);
+    const check = () => setIsMobile(window.innerWidth < 768);
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  // Track whether we've scrolled past the platform-explanation section
+  // Show after the platform explanation has scrolled past (covers "after the opening").
   useEffect(() => {
     const el = document.getElementById("platform-explanation");
     if (!el) return;
@@ -48,7 +36,7 @@ export default function PersistentCTA() {
         if (entry.isIntersecting) seen = true;
         if (seen && !entry.isIntersecting && entry.boundingClientRect.top < 0) {
           passedPlatformRef.current = true;
-          tick();
+          setPassedPlatform(true);
         }
       },
       { threshold: 0.2 }
@@ -57,75 +45,22 @@ export default function PersistentCTA() {
     return () => io.disconnect();
   }, []);
 
-  // Hide while a video section is on screen
+  // Hide permanently after the fit details were saved.
   useEffect(() => {
-    const ids = ["hero-transformation", "employee-experience"];
-    const observers = [];
-    ids.forEach((id) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const io = new IntersectionObserver(
-        ([entry]) => {
-          videoMap.current[id] = entry.isIntersecting && entry.intersectionRatio > 0.15;
-          tick();
-        },
-        { threshold: [0, 0.15, 0.3] }
-      );
-      io.observe(el);
-      observers.push(io);
-    });
-    return () => observers.forEach((o) => o.disconnect());
+    const onSubmitted = () => setSubmitted(true);
+    window.addEventListener("boom_fit_submitted", onSubmitted);
+    return () => window.removeEventListener("boom_fit_submitted", onSubmitted);
   }, []);
 
-  // Hide while organization-fit / book-demo are on screen
-  useEffect(() => {
-    const ids = ["organization-fit", "book-demo"];
-    const observers = [];
-    ids.forEach((id) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const io = new IntersectionObserver(
-        ([entry]) => {
-          fitMap.current[id] = entry.isIntersecting && entry.intersectionRatio > 0.1;
-          tick();
-        },
-        { threshold: [0, 0.1, 0.3] }
-      );
-      io.observe(el);
-      observers.push(io);
-    });
-    return () => observers.forEach((o) => o.disconnect());
-  }, []);
-
-  // Mobile: only after the employee video has completed
-  useEffect(() => {
-    const onDone = () => {
-      setEmployeeCompleted(true);
-    };
-    window.addEventListener("boom_employee_completed", onDone);
-    return () => window.removeEventListener("boom_employee_completed", onDone);
-  }, []);
-
-  // Hide permanently after a meeting is booked
-  useEffect(() => {
-    const onBooked = () => setBooked(true);
-    window.addEventListener("boom_meeting_booked", onBooked);
-    return () => window.removeEventListener("boom_meeting_booked", onBooked);
-  }, []);
-
-  const visibleNow = computeVisible();
-
-  // Coordinate with the floating WhatsApp button — hide it while this CTA is visible
-  useEffect(() => {
-    window.dispatchEvent(new CustomEvent("boom_persistent_cta", { detail: { visible: visibleNow } }));
-  }, [visibleNow]);
+  const railH = isMobile ? RAIL_H_MOBILE : RAIL_H_DESKTOP;
+  const visible = passedPlatform && !hidden && !submitted;
 
   const scrollToFit = () =>
     document.getElementById("organization-fit")?.scrollIntoView({ behavior: "smooth", block: "start" });
 
   return (
     <AnimatePresence>
-      {visibleNow && (
+      {visible && (
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -135,14 +70,14 @@ export default function PersistentCTA() {
             position: "fixed",
             zIndex: 90,
             ...(isMobile
-              ? { left: 12, right: 12, bottom: "calc(64px + env(safe-area-inset-bottom))" }
-              : { bottom: "calc(96px + env(safe-area-inset-bottom))", left: 24 }),
+              ? { left: 12, right: 12, bottom: `calc(${railH}px + env(safe-area-inset-bottom) + 10px)` }
+              : { bottom: `calc(${railH}px + env(safe-area-inset-bottom) + 10px)`, left: 24 }),
           }}
         >
           <button
             type="button"
             onClick={scrollToFit}
-            aria-label="לבדוק התאמה לארגון"
+            aria-label="בדיקת התאמה לארגון"
             style={{
               width: isMobile ? "100%" : "auto",
               background: CHARCOAL,
@@ -164,7 +99,7 @@ export default function PersistentCTA() {
             }}
           >
             <span style={{ width: 8, height: 8, borderRadius: "50%", background: CORAL, display: "inline-block", flexShrink: 0 }} />
-            לבדוק התאמה לארגון
+            בדיקת התאמה
           </button>
         </motion.div>
       )}

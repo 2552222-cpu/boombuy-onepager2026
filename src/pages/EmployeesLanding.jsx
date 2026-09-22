@@ -1,12 +1,9 @@
 import React from "react";
 import GlobalHeader from "../components/employees/GlobalHeader";
 import HeroTransformation from "../components/employees/HeroTransformation";
-import TrustLogos from "../components/employees/TrustLogos";
-import EmployeeExperience from "../components/employees/EmployeeExperience";
 import PlatformExplanation from "../components/employees/PlatformExplanation";
-import ComparisonTable from "../components/employees/ComparisonTable";
 import FeaturedOffersSlider from "../components/employees/FeaturedOffersSlider";
-import EmployeeDemoKit from "../components/employees/EmployeeDemoKit";
+import OperationSteps from "../components/employees/OperationSteps";
 import Testimonials from "../components/employees/Testimonials";
 import OrganizationFit from "../components/employees/OrganizationFit";
 import BookDemo from "../components/employees/BookDemo";
@@ -23,18 +20,16 @@ export default function EmployeesLanding() {
         overflowX: "hidden",
         maxWidth: "100vw",
         background: "#FBFAF8",
-        paddingBottom: "calc(88px + env(safe-area-inset-bottom))",
+        // reserve space for the fixed bottom logo rail + safe area
+        paddingBottom: "calc(96px + env(safe-area-inset-bottom))",
       }}
     >
       <GlobalHeader />
       <HeroTransformation />
-      <TrustLogos />
-      <EmployeeExperience />
       <PlatformExplanation />
-      <ComparisonTable />
       <FeaturedOffersSlider />
+      <OperationSteps />
       <Testimonials />
-      <EmployeeDemoKit />
       <OrganizationFit />
       <BookDemo />
       <GlobalFooter />

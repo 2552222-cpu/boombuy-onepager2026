@@ -1,9 +1,9 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 
-// ─── OFFERS DATA (9 items, single source of truth) ───────────────────────────
+// ─── OFFERS DATA (single source of truth — kept unchanged) ──────────────────
 const OFFERS = [
   {
     id: "samba",
@@ -124,61 +124,71 @@ const OFFERS = [
   },
 ];
 
-// ─── PRICE TAG ────────────────────────────────────────────────────────────────
+const GAP = 16;
+
+function perViewFor(width) {
+  if (width >= 1024) return 3;
+  if (width >= 640) return 2;
+  return 1;
+}
+
+function cardWidthFor(containerWidth, pv) {
+  if (pv === 1) return Math.round(containerWidth * 0.82);
+  return Math.round((containerWidth - (pv - 1) * GAP) / pv);
+}
+
 function PriceTag({ label, amount, color = "#1D1D1F", bg = "#F5F5F7", strike = false }) {
   return (
-    <div style={{
-      flex: 1,
-      minWidth: 0,
-      background: bg,
-      borderRadius: 16,
-      border: "1px solid rgba(0,0,0,0.06)",
-      padding: "10px 6px",
-      textAlign: "center",
-    }}>
-      <p style={{ fontSize: 10, fontWeight: 700, color: "#86868B", marginBottom: 5, letterSpacing: "0.02em", lineHeight: 1.2 }}>{label}</p>
+    <div style={{ flex: 1, minWidth: 0, background: bg, borderRadius: 14, border: "1px solid rgba(0,0,0,0.06)", padding: "10px 6px", textAlign: "center", boxSizing: "border-box" }}>
+      <p style={{ fontSize: 11, fontWeight: 700, color: "#86868B", marginBottom: 5, letterSpacing: "0.02em", lineHeight: 1.2 }}>{label}</p>
       <span style={{ display: "inline-flex", flexDirection: "row", alignItems: "baseline", gap: 2, textDecoration: strike ? "line-through" : "none" }}>
         <span style={{ fontSize: 18, fontWeight: 900, color, lineHeight: 1 }}>{amount}</span>
-        <span style={{ fontSize: 14, fontWeight: 700, color }}>₪</span>
+        <span style={{ fontSize: 13, fontWeight: 700, color }}>₪</span>
       </span>
     </div>
   );
 }
 
-// ─── DOT INDICATOR ────────────────────────────────────────────────────────────
-function Dots({ active, onSelect }) {
-  return (
-    <div style={{ display: "flex", justifyContent: "center", gap: 6, marginTop: 20 }}>
-      {OFFERS.map((_, i) => (
-        <button
-          key={i}
-          onClick={() => onSelect(i)}
-          style={{
-            width: i === active ? 20 : 7,
-            height: 7,
-            borderRadius: 100,
-            background: i === active ? "#0055CC" : "rgba(0,0,0,0.15)",
-            border: "none",
-            padding: 0,
-            cursor: "pointer",
-            transition: "all 0.25s ease",
-          }}
-        />
-      ))}
-    </div>
-  );
-}
+// ─── MODAL (focus management, Escape, restore focus) ──────────────────────────
+function OfferModal({ offer, isMobile, onClose, onPrev, onNext, onSelectIdx, openerEl }) {
+  const panelRef = useRef(null);
+  const closeBtnRef = useRef(null);
 
-// ─── MODAL ────────────────────────────────────────────────────────────────────
-function OfferModal({ offer, isMobile, onClose, onPrev, onNext, onSelectIdx }) {
   useEffect(() => {
     document.body.style.overflow = "hidden";
     window.dispatchEvent(new CustomEvent("offersModalChange", { detail: { open: true } }));
+    closeBtnRef.current?.focus();
+    const onKey = (e) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        onClose();
+      } else if (e.key === "Tab" && panelRef.current) {
+        const focusable = panelRef.current.querySelectorAll('button, [href], input, [tabindex]:not([tabindex="-1"])');
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+    document.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = "";
       window.dispatchEvent(new CustomEvent("offersModalChange", { detail: { open: false } }));
+      document.removeEventListener("keydown", onKey);
+      try {
+        openerEl?.focus?.();
+      } catch (e) {
+        /* ignore */
+      }
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [offer.id]);
 
   return (
     <motion.div
@@ -189,7 +199,6 @@ function OfferModal({ offer, isMobile, onClose, onPrev, onNext, onSelectIdx }) {
       style={{
         position: "fixed", inset: 0,
         background: "rgba(0,0,0,0.8)",
-        backdropFilter: "blur(20px)",
         zIndex: 2000,
         display: "flex",
         alignItems: isMobile ? "flex-end" : "center",
@@ -198,12 +207,16 @@ function OfferModal({ offer, isMobile, onClose, onPrev, onNext, onSelectIdx }) {
       }}
     >
       <motion.div
-        initial={{ opacity: 0, y: isMobile ? 60 : 0, scale: isMobile ? 1 : 0.95 }}
+        ref={panelRef}
+        initial={{ opacity: 0, y: isMobile ? 60 : 0, scale: isMobile ? 1 : 0.96 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: isMobile ? 60 : 0, scale: isMobile ? 1 : 0.95 }}
+        exit={{ opacity: 0, y: isMobile ? 60 : 0, scale: isMobile ? 1 : 0.96 }}
         transition={{ duration: 0.28, ease: "easeOut" }}
         onClick={(e) => e.stopPropagation()}
         dir="rtl"
+        role="dialog"
+        aria-modal="true"
+        aria-label={`פרטי הטבה: ${offer.productName}`}
         style={{
           width: isMobile ? "100%" : 900,
           maxHeight: isMobile ? "92dvh" : "88vh",
@@ -216,117 +229,44 @@ function OfferModal({ offer, isMobile, onClose, onPrev, onNext, onSelectIdx }) {
           overflowY: "auto",
         }}
       >
-        {/* Close */}
         <button
+          ref={closeBtnRef}
           onClick={onClose}
-          style={{
-            position: "absolute", top: 16, left: 16,
-            background: "rgba(0,0,0,0.15)", border: "none",
-            width: 36, height: 36, borderRadius: "50%",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            cursor: "pointer", zIndex: 10,
-          }}
+          aria-label="סגירה"
+          style={{ position: "absolute", top: 16, left: 16, background: "rgba(0,0,0,0.15)", border: "none", width: 40, height: 40, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", zIndex: 10 }}
         >
           <X size={18} color="#fff" />
         </button>
 
-        {/* LEFT: IMAGE + THUMBNAILS */}
-        <div style={{
-          flex: isMobile ? "none" : "1.2",
-          background: "#F5F5F7",
-          display: "flex",
-          flexDirection: "column",
-          overflow: "hidden",
-          minHeight: isMobile ? 280 : "auto",
-        }}>
-          {/* Main image with arrows */}
+        <div style={{ flex: isMobile ? "none" : "1.2", background: "#F5F5F7", display: "flex", flexDirection: "column", overflow: "hidden", minHeight: isMobile ? 280 : "auto" }}>
           <div style={{ flex: 1, position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <button onClick={(e) => { e.stopPropagation(); onPrev(); }}
-              style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", background: "rgba(0,0,0,0.06)", border: "none", width: 48, height: 48, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", zIndex: 5, boxShadow: "0 2px 10px rgba(0,0,0,0.12)" }}>
+            <button onClick={onPrev} aria-label="הטבה הקודמת" style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", background: "rgba(0,0,0,0.06)", border: "none", width: 48, height: 48, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", zIndex: 5 }}>
               <ChevronRight size={22} color="#1D1D1F" />
             </button>
-            <button onClick={(e) => { e.stopPropagation(); onNext(); }}
-              style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)", background: "rgba(0,0,0,0.06)", border: "none", width: 48, height: 48, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", zIndex: 5, boxShadow: "0 2px 10px rgba(0,0,0,0.12)" }}>
+            <button onClick={onNext} aria-label="הטבה הבאה" style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)", background: "rgba(0,0,0,0.06)", border: "none", width: 48, height: 48, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", zIndex: 5 }}>
               <ChevronLeft size={22} color="#1D1D1F" />
             </button>
-
-            <AnimatePresence mode="wait">
-              <motion.img
-                key={offer.id}
-                src={offer.img}
-                initial={{ opacity: 0, scale: 0.94 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.94 }}
-                transition={{ duration: 0.22 }}
-                style={{ maxWidth: "80%", maxHeight: isMobile ? 200 : 340, objectFit: "contain" }}
-                alt={offer.productName}
-              />
-            </AnimatePresence>
+            <img src={offer.img} alt={offer.productName} style={{ maxWidth: "82%", maxHeight: isMobile ? 220 : 360, objectFit: "contain" }} />
           </div>
-
-          {/* Thumbnails */}
-          <div style={{
-            display: "flex",
-            justifyContent: "center",
-            gap: 6,
-            padding: "10px 12px",
-            overflowX: "auto",
-            flexWrap: "nowrap",
-            scrollbarWidth: "none",
-            background: "#F5F5F7",
-            flexShrink: 0,
-          }}>
+          <div style={{ display: "flex", justifyContent: "center", gap: 6, padding: "10px 12px", overflowX: "auto", flexWrap: "nowrap", scrollbarWidth: "none", background: "#F5F5F7", flexShrink: 0 }}>
             {OFFERS.map((o) => (
-              <button key={o.id}
-                onClick={(e) => { e.stopPropagation(); onSelectIdx(OFFERS.indexOf(o)); }}
-                style={{
-                  width: 44, height: 44, borderRadius: 10, flexShrink: 0,
-                  border: o.id === offer.id ? "2px solid #0055CC" : "2px solid transparent",
-                  background: "#fff", padding: 2, cursor: "pointer",
-                  boxShadow: o.id === offer.id ? "0 2px 8px rgba(0,85,204,0.3)" : "0 1px 4px rgba(0,0,0,0.1)",
-                  overflow: "hidden",
-                }}
-              >
+              <button key={o.id} onClick={() => onSelectIdx(OFFERS.indexOf(o))} aria-label={`עבור ל${o.productName}`} aria-current={o.id === offer.id} style={{ width: 44, height: 44, borderRadius: 10, flexShrink: 0, border: o.id === offer.id ? "2px solid #17191D" : "2px solid transparent", background: "#fff", padding: 2, cursor: "pointer", overflow: "hidden" }}>
                 <img src={o.img} style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: 8 }} alt={o.productName} />
               </button>
             ))}
           </div>
         </div>
 
-        {/* RIGHT: CONTENT */}
-        <div style={{
-          flex: 1,
-          padding: isMobile ? "20px 20px 28px" : "48px 40px",
-          display: "flex", flexDirection: "column", justifyContent: "space-between",
-          overflowY: "auto",
-        }}>
+        <div style={{ flex: 1, padding: isMobile ? "20px 20px 28px" : "48px 40px", display: "flex", flexDirection: "column", justifyContent: "space-between", overflowY: "auto" }}>
           <div>
-            <p style={{ fontSize: 12, fontWeight: 700, color: "#0055CC", marginBottom: 6, letterSpacing: "0.05em" }}>
-              {offer.brand}
-            </p>
-            <AnimatePresence mode="wait">
-              <motion.h3
-                key={offer.id}
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={{ duration: 0.2 }}
-                style={{ fontSize: isMobile ? 22 : 32, fontWeight: 900, color: "#15172A", lineHeight: 1.2, marginBottom: 10 }}
-              >
-                {offer.productName}
-              </motion.h3>
-            </AnimatePresence>
-            <p style={{ fontSize: 14, color: "#6E6E73", lineHeight: 1.55, marginBottom: 24 }}>
-              {offer.desc}
-            </p>
+            <p style={{ fontSize: 12, fontWeight: 700, color: "#F47A5A", marginBottom: 6, letterSpacing: "0.05em" }}>{offer.brand}</p>
+            <h3 style={{ fontSize: isMobile ? 22 : 32, fontWeight: 900, color: "#15172A", lineHeight: 1.2, marginBottom: 10 }}>{offer.productName}</h3>
+            <p style={{ fontSize: 15, color: "#6E6E73", lineHeight: 1.6, marginBottom: 24 }}>{offer.desc}</p>
           </div>
-
-          <div>
-            <div style={{ display: "flex", flexDirection: "row", gap: 8, marginBottom: 28 }}>
-              <PriceTag label={offer.labelOld} amount={offer.priceOld} color="#86868B" bg="rgba(0,0,0,0.04)" strike />
-              <PriceTag label="מחיר לעובדים" amount={offer.priceNew} color="#0055CC" bg="#EEF4FF" />
-              <PriceTag label="חיסכון" amount={offer.saving} color="#1A7A43" bg="rgba(52,199,89,0.09)" />
-            </div>
+          <div style={{ display: "flex", flexDirection: "row", gap: 8 }}>
+            <PriceTag label={offer.labelOld} amount={offer.priceOld} color="#86868B" bg="rgba(0,0,0,0.04)" strike />
+            <PriceTag label="מחיר לעובדים" amount={offer.priceNew} color="#17191D" bg="#FBFAF8" />
+            <PriceTag label="חיסכון" amount={offer.saving} color="#1A7A43" bg="rgba(52,199,89,0.10)" />
           </div>
         </div>
       </motion.div>
@@ -339,15 +279,46 @@ export default function FeaturedOffersSlider() {
   const [selectedIdx, setSelectedIdx] = useState(null);
   const [index, setIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-  const touchStart = useRef(0);
+  const [pv, setPv] = useState(3);
+  const [cardW, setCardW] = useState(320);
+  const [dragDelta, setDragDelta] = useState(0);
   const secRef = useRef(null);
+  const viewportRef = useRef(null);
   const firedBenefitsView = useRef(false);
+  const openerRef = useRef(null);
+
+  const draggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const lastDxRef = useRef(0);
+  const pointerIdRef = useRef(null);
+  const suppressClickRef = useRef(false);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
+  }, []);
+
+  // Measure the actual viewport width → cards per view + card width (after mount + resize)
+  useEffect(() => {
+    const measure = () => {
+      const el = viewportRef.current;
+      if (!el) return;
+      const w = el.clientWidth;
+      if (w <= 0) return;
+      const nextPv = perViewFor(w);
+      setPv(nextPv);
+      setCardW(cardWidthFor(w, nextPv));
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (viewportRef.current) ro.observe(viewportRef.current);
+    window.addEventListener("resize", measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+    };
   }, []);
 
   useEffect(() => {
@@ -373,104 +344,208 @@ export default function FeaturedOffersSlider() {
     return () => io.disconnect();
   }, []);
 
-  const go = (dir) => setIndex((p) => (p + dir + OFFERS.length) % OFFERS.length);
+  const maxIndex = Math.max(0, OFFERS.length - pv);
+  const step = cardW + GAP;
+  const baseTranslate = Math.min(index, maxIndex) * step;
+  const translate = draggingRef.current ? baseTranslate + lastDxRef.current : baseTranslate;
 
-  const openModal = (i) => {
+  // Keep index within bounds when the viewport (pv) changes
+  useEffect(() => {
+    setIndex((i) => Math.min(i, Math.max(0, OFFERS.length - pv)));
+  }, [pv]);
+
+  const go = useCallback(
+    (dir) => {
+      setIndex((p) => Math.max(0, Math.min(OFFERS.length - pv, p + dir)));
+    },
+    [pv]
+  );
+
+  // ── Pointer drag (horizontal). touch-action: pan-y keeps vertical page scroll working.
+  const onPointerDown = (e) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    draggingRef.current = true;
+    startXRef.current = e.clientX;
+    lastDxRef.current = 0;
+    pointerIdRef.current = e.pointerId;
+    suppressClickRef.current = false;
+    try {
+      viewportRef.current?.setPointerCapture(e.pointerId);
+    } catch (err) {
+      /* ignore */
+    }
+  };
+  const onPointerMove = (e) => {
+    if (!draggingRef.current || e.pointerId !== pointerIdRef.current) return;
+    const dx = e.clientX - startXRef.current;
+    if (Math.abs(dx) > 6) suppressClickRef.current = true;
+    // clamp translate within [0, maxIndex*step]
+    const maxT = maxIndex * step;
+    let t = baseTranslate + dx;
+    if (t < 0) t = 0;
+    if (t > maxT) t = maxT;
+    lastDxRef.current = t - baseTranslate;
+    setDragDelta(t - baseTranslate);
+  };
+  const endDrag = (e) => {
+    if (!draggingRef.current) return;
+    draggingRef.current = false;
+    try {
+      viewportRef.current?.releasePointerCapture?.(e?.pointerId);
+    } catch (err) {
+      /* ignore */
+    }
+    const dx = lastDxRef.current;
+    setDragDelta(0);
+    if (Math.abs(dx) < step * 0.2) return; // snap back, no change
+    setIndex((p) => {
+      const next = dx > 0 ? p + 1 : p - 1; // drag right (dx>0) → next in RTL
+      return Math.max(0, Math.min(maxIndex, next));
+    });
+  };
+  const onPointerUp = (e) => endDrag(e);
+  const onPointerCancel = (e) => {
+    draggingRef.current = false;
+    setDragDelta(0);
+  };
+
+  const openModal = (i, btnEl) => {
+    if (suppressClickRef.current) {
+      suppressClickRef.current = false;
+      return;
+    }
     try {
       base44.analytics.track({ eventName: "benefit_opened" });
     } catch (err) {
       /* ignore */
     }
+    openerRef.current = btnEl;
     setSelectedIdx(i);
   };
   const closeModal = () => setSelectedIdx(null);
-
   const modalPrev = () => setSelectedIdx((p) => (p - 1 + OFFERS.length) % OFFERS.length);
   const modalNext = () => setSelectedIdx((p) => (p + 1) % OFFERS.length);
 
   return (
-    <section id="benefits" ref={secRef} style={{ background: "#FFFFFF", padding: "80px 0", direction: "rtl", overflowX: "hidden" }}>
-      <div style={{ maxWidth: 1100, margin: "0 auto", textAlign: "center", padding: "0 16px" }}>
-        <p style={{ fontSize: "clamp(15px, 1.4vw, 18px)", fontWeight: 600, color: "#F47A5A", letterSpacing: "-0.01em", margin: "0 0 12px" }}>
-          לא רק בחגים
-        </p>
-        <h2 style={{ fontSize: "clamp(28px, 5vw, 48px)", fontWeight: 900, color: "#15172A", letterSpacing: "-0.03em", lineHeight: 1.08, margin: "0 0 18px" }}>
-          ערך שהעובדים באמת משתמשים בו.
-        </h2>
-        <p style={{ fontSize: "clamp(16px, 1.4vw, 19px)", color: "#6E6E73", lineHeight: 1.6, maxWidth: 640, margin: "0 auto 48px" }}>
-          סופר, חשמל, מותגים, חופשות, תרבות וולנס - חיסכון וחוויות שפוגשות את העובדים לאורך כל השנה.
-        </p>
-
-        {/* ── CAROUSEL ── */}
-        <div
-          onTouchStart={(e) => { touchStart.current = e.touches[0].clientX; }}
-          onTouchEnd={(e) => {
-            const diff = touchStart.current - e.changedTouches[0].clientX;
-            if (Math.abs(diff) > 40) go(diff > 0 ? 1 : -1);
-          }}
-          style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: 440, perspective: "1500px", position: "relative" }}
+    <section id="benefits" ref={secRef} dir="rtl" style={{ background: "#FFFFFF", padding: "80px 0", fontFamily: "var(--font-heebo), Heebo, Arial, sans-serif" }}>
+      <div style={{ maxWidth: 1180, margin: "0 auto", padding: "0 16px", textAlign: "center" }}>
+        <motion.h2
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          style={{ fontSize: "clamp(28px,4.6vw,46px)", fontWeight: 800, color: "#17191D", letterSpacing: "-0.03em", lineHeight: 1.08, margin: "0 0 14px" }}
         >
-          <button
-            onClick={() => go(-1)}
-            style={{ position: "absolute", right: isMobile ? 2 : -16, zIndex: 50, width: 44, height: 44, borderRadius: "50%", background: "#fff", border: "1.5px solid rgba(0,0,0,0.1)", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", boxShadow: "0 4px 16px rgba(0,0,0,0.12)", outline: "none" }}
-          >
-            <ChevronRight size={22} color="#1D1D1F" />
+          הטבות שמתחלפות. <span style={{ color: "#F47A5A" }}>ערך שמתחדש.</span>
+        </motion.h2>
+        <p style={{ fontSize: "clamp(16px,1.4vw,20px)", color: "#3A3C42", lineHeight: 1.5, maxWidth: 640, margin: "0 auto 10px" }}>
+          דוגמאות אמיתיות להטבות לעובדים מהתקופה האחרונה.
+        </p>
+        <p style={{ fontSize: 15, color: "#6E6E73", lineHeight: 1.55, maxWidth: 600, margin: "0 auto 36px" }}>
+          הפלטפורמה מתעדכנת בהזדמנויות חדשות לאורך השנה.
+        </p>
+
+        {/* Controls */}
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 12, marginBottom: 18 }}>
+          <button type="button" onClick={() => go(-1)} disabled={index <= 0} aria-label="הטבה הקודמת" style={navBtn(index <= 0)}>
+            <ChevronRight size={22} color="#17191D" />
           </button>
-          <button
-            onClick={() => go(1)}
-            style={{ position: "absolute", left: isMobile ? 2 : -16, zIndex: 50, width: 44, height: 44, borderRadius: "50%", background: "#fff", border: "1.5px solid rgba(0,0,0,0.1)", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", boxShadow: "0 4px 16px rgba(0,0,0,0.12)", outline: "none" }}
-          >
-            <ChevronLeft size={22} color="#1D1D1F" />
+          <div style={{ display: "flex", gap: 6 }}>
+            {OFFERS.map((_, i) => (
+              <button key={i} onClick={() => setIndex(Math.min(i, maxIndex))} aria-label={`עבור להטבה ${i + 1}`} style={{ width: i === index ? 22 : 8, height: 8, borderRadius: 999, background: i === index ? "#F47A5A" : "rgba(19,21,29,0.16)", border: "none", padding: 0, cursor: "pointer", transition: "all .25s ease" }} />
+            ))}
+          </div>
+          <button type="button" onClick={() => go(1)} disabled={index >= maxIndex} aria-label="הטבה הבאה" style={navBtn(index >= maxIndex)}>
+            <ChevronLeft size={22} color="#17191D" />
           </button>
-
-          {OFFERS.map((offer, i) => {
-            const offset = i - index;
-            const n = OFFERS.length;
-            const circOffset = offset > n / 2 ? offset - n : offset < -n / 2 ? offset + n : offset;
-            const circAbs = Math.abs(circOffset);
-            if (circAbs > 4) return null;
-            const isCenter = circOffset === 0;
-
-            return (
-              <motion.div
-                key={offer.id}
-                onClick={() => isCenter ? openModal(i) : setIndex(i)}
-                animate={{
-                  x: circOffset * (isMobile ? 200 : 230),
-                  scale: isCenter ? 1.1 : 0.8,
-                  rotateY: circOffset * -24,
-                  z: isCenter ? 150 : -80,
-                  filter: isCenter ? "none" : `blur(${Math.min(circAbs * 1.5, 4)}px) brightness(${0.8 - circAbs * 0.1})`,
-                }}
-                transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
-                style={{ position: "absolute", width: 260, cursor: "pointer", zIndex: 10 - circAbs, display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}
-              >
-                <div style={{ width: "100%", height: 340, background: "#F5F5F7", borderRadius: 28, overflow: "hidden", boxShadow: isCenter ? "0 28px 70px rgba(0,0,0,0.14)" : "0 6px 20px rgba(0,0,0,0.06)", position: "relative" }}>
-  
-                  <img src={offer.img} loading={i === 0 ? "eager" : "lazy"} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} alt={offer.productName} />
-                </div>
-
-                {isCenter && (
-                  <motion.div
-                    animate={{ boxShadow: ["0 0 0px rgba(37,99,235,0)", "0 0 12px rgba(37,99,235,0.5)", "0 0 0px rgba(37,99,235,0)"] }}
-                    transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-                    style={{ width: "90%", background: "rgba(255,255,255,0.55)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", border: "1px solid rgba(37,99,235,0.25)", borderRadius: 14, height: 36, display: "flex", alignItems: "center", justifyContent: "center" }}
-                  >
-                    <p style={{ fontSize: 13, fontWeight: 700, color: "#0055CC", margin: 0 }}>לחצו לגלות את פרטי ההטבה</p>
-                  </motion.div>
-                )}
-              </motion.div>
-            );
-          })}
         </div>
 
-        <Dots active={index} onSelect={setIndex} />
-        <p style={{ fontSize: 12, color: "#AEAEB2", marginTop: 16 }}>החליקו ימינה/שמאלה או לחצו על החיצים</p>
+        {/* Viewport (overflow hidden; track translated) */}
+        <div
+          ref={viewportRef}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onPointerCancel={onPointerCancel}
+          style={{
+            overflow: "hidden",
+            touchAction: "pan-y",
+            cursor: draggingRef.current ? "grabbing" : "grab",
+            paddingBottom: 6,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              gap: GAP,
+              transform: `translateX(${translate}px)`,
+              transition: draggingRef.current ? "none" : "transform .42s cubic-bezier(0.22,1,0.36,1)",
+              willChange: "transform",
+            }}
+          >
+            {OFFERS.map((offer, i) => (
+              <div
+                key={offer.id}
+                style={{
+                  flex: `0 0 ${cardW}px`,
+                  background: "#FBFAF8",
+                  borderRadius: 22,
+                  border: "1px solid rgba(19,21,25,0.07)",
+                  boxShadow: "0 8px 26px rgba(19,21,25,0.06)",
+                  overflow: "hidden",
+                  display: "flex",
+                  flexDirection: "column",
+                  boxSizing: "border-box",
+                }}
+              >
+                <div style={{ width: "100%", height: isMobile ? 190 : 210, background: "#F5F5F7", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <img src={offer.img} loading={i < 3 ? "eager" : "lazy"} alt={offer.productName} style={{ maxWidth: "86%", maxHeight: "92%", objectFit: "contain" }} draggable={false} />
+                </div>
+                <div style={{ padding: "16px 18px 18px", display: "flex", flexDirection: "column", gap: 10, textAlign: "right", flex: 1 }}>
+                  <p style={{ fontSize: 12, fontWeight: 700, color: "#F47A5A", margin: 0, letterSpacing: "0.04em" }}>{offer.brand}</p>
+                  <h3 style={{ fontSize: isMobile ? 18 : 20, fontWeight: 800, color: "#17191D", lineHeight: 1.25, margin: 0, minHeight: 46 }}>{offer.productName}</h3>
+                  <div style={{ display: "flex", flexDirection: "row", gap: 8 }}>
+                    <PriceTag label="שוק" amount={offer.priceOld} color="#86868B" bg="rgba(0,0,0,0.04)" strike />
+                    <PriceTag label="לעובדים" amount={offer.priceNew} color="#17191D" bg="#fff" />
+                    <PriceTag label="חיסכון" amount={offer.saving} color="#1A7A43" bg="rgba(52,199,89,0.10)" />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={(e) => openModal(i, e.currentTarget)}
+                    aria-label={`פרטי ההטבה: ${offer.productName}`}
+                    style={{
+                      marginTop: "auto",
+                      background: "#17191D",
+                      color: "#fff",
+                      border: "none",
+                      borderRadius: 12,
+                      height: 46,
+                      fontFamily: "inherit",
+                      fontWeight: 700,
+                      fontSize: 15,
+                      cursor: "pointer",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 8,
+                    }}
+                  >
+                    פרטי ההטבה
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
-        <div style={{ marginTop: 40, display: "flex", justifyContent: "center" }}>
+        <p style={{ fontSize: 13, color: "#9AA0A6", lineHeight: 1.5, maxWidth: 620, margin: "18px auto 0" }}>
+          הדוגמאות ממחישות הטבות שהוצעו לאחרונה. הזמינות והתנאים משתנים.
+        </p>
+
+        <div style={{ marginTop: 36, display: "flex", justifyContent: "center" }}>
           <button
             type="button"
-            onClick={() => document.getElementById("employee-demo-kit")?.scrollIntoView({ behavior: "smooth", block: "start" })}
+            onClick={() => document.getElementById("organization-fit")?.scrollIntoView({ behavior: "smooth", block: "start" })}
             style={{
               background: "#17191D",
               color: "#fff",
@@ -482,7 +557,7 @@ export default function FeaturedOffersSlider() {
               padding: "0 30px",
               fontFamily: "inherit",
               fontWeight: 700,
-              fontSize: "clamp(16px, 1.1vw, 18px)",
+              fontSize: "clamp(16px,1.1vw,18px)",
               cursor: "pointer",
               display: "inline-flex",
               alignItems: "center",
@@ -492,7 +567,7 @@ export default function FeaturedOffersSlider() {
             }}
           >
             <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#F47A5A", display: "inline-block", flexShrink: 0 }} />
-            לראות את זה דרך העיניים של העובד
+            בדיקת התאמה לארגון
           </button>
         </div>
       </div>
@@ -506,9 +581,26 @@ export default function FeaturedOffersSlider() {
             onPrev={modalPrev}
             onNext={modalNext}
             onSelectIdx={setSelectedIdx}
+            openerEl={openerRef.current}
           />
         )}
       </AnimatePresence>
     </section>
   );
+}
+
+function navBtn(disabled) {
+  return {
+    width: 48,
+    height: 48,
+    borderRadius: "50%",
+    background: "#fff",
+    border: "1.5px solid rgba(0,0,0,0.10)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: disabled ? "default" : "pointer",
+    opacity: disabled ? 0.4 : 1,
+    boxShadow: "0 4px 16px rgba(0,0,0,0.10)",
+  };
 }
