@@ -8,6 +8,9 @@ import Testimonials from "../components/employees/Testimonials";
 import OrganizationFit from "../components/employees/OrganizationFit";
 import BookDemo from "../components/employees/BookDemo";
 import GlobalFooter from "../components/employees/GlobalFooter";
+import PromiseBand from "../components/employees/PromiseBand";
+import OfferPaths from "../components/employees/OfferPaths";
+import FAQ from "../components/employees/FAQ";
 import PersistentCTA from "../components/employees/PersistentCTA";
 import LogoRail from "../components/employees/LogoRail";
 import { LAYOUT } from "../components/employees/layoutTokens";
@@ -29,10 +32,13 @@ export default function EmployeesLanding() {
     >
       <GlobalHeader />
       <HeroTransformation />
+      <PromiseBand />
       <PlatformExplanation />
+      <OfferPaths />
       <FeaturedOffersSlider />
       <OperationSteps />
       <Testimonials />
+      <FAQ />
       <OrganizationFit />
       <BookDemo />
       <GlobalFooter />

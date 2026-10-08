@@ -13,8 +13,9 @@ export default function GlobalFooter() {
           {/* Right (RTL start): Copyright & site */}
           <div className="text-center md:text-right space-y-2">
             <p className="text-xs md:text-sm font-medium text-foreground">
-              BoomBuy © {year}
+              boombuy © {year}
             </p>
+            <p className="text-xs md:text-sm text-muted-foreground">experience. every day.</p>
             <p className="text-xs md:text-sm text-muted-foreground">
               לארגונים:{" "}
               <a

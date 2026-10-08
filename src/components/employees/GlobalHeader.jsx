@@ -16,7 +16,7 @@ export default function GlobalHeader() {
         <div className="flex items-center">
           <img
             src="https://media.base44.com/images/public/69e48538aaee477b09fc7b49/4cebf7412_15.png"
-            alt="BoomBuy"
+            alt="boombuy"
             className="h-10 md:h-12 w-auto object-contain"
           />
         </div>

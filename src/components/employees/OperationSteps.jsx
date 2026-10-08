@@ -8,9 +8,9 @@ const CORAL = "#F47A5A";
 const EASE = [0.22, 1, 0.36, 1];
 
 const STEPS = [
-  { n: "1", title: "מתאימים", text: "בונים איתך תוכנית שמתאימה לארגון ולעובדים." },
-  { n: "2", title: "מקימים ומשיקים", text: "מטפלים במיתוג, בהקמה ובהטמעה." },
-  { n: "3", title: "מפעילים לאורך השנה", text: "מטפלים בהטבות, בתוכן ובשירות לעובדים." },
+  { n: "1", title: "מסכמים תוכנית וכללים", text: "מגדירים יחד את התוכנית, הזכאות, התקציב והאישורים." },
+  { n: "2", title: "מקימים ומשיקים", text: "אנחנו מטפלים במיתוג, בספקים ובהשקה." },
+  { n: "3", title: "מפעילים ותומכים לאורך השנה", text: "מטפלים בהזמנות, בתקשורת, בשירות ובדיווח, ככל שנכלל." },
 ];
 
 export default function OperationSteps() {
@@ -69,8 +69,18 @@ export default function OperationSteps() {
             margin: 0,
           }}
         >
-          את מאשרת את התוכנית. <span style={{ color: CORAL }}>אנחנו דואגים לביצוע.</span>
+          אתם מחליטים. <span style={{ color: CORAL }}>אנחנו מבצעים.</span>
         </motion.h2>
+
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.55, ease: EASE, delay: 0.08 }}
+          style={{ color: "#3A3C42", fontSize: "clamp(16px,1.4vw,20px)", fontWeight: 400, lineHeight: 1.6, margin: "16px auto 0", maxWidth: 640 }}
+        >
+          הארגון קובע מדיניות, זכאות, תקציב ואישורים. אנחנו מקימים ומפעילים את ההיקף שסוכם.
+        </motion.p>
 
         <div style={{ display: "flex", flexWrap: "wrap", gap: 18, marginTop: 44, justifyContent: "center" }}>
           {STEPS.map((s, i) => (
