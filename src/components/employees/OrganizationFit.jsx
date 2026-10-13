@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { base44 } from "@/api/base44Client";
 import { scrollToId } from "./uiHelpers";
+import { RevealHeading } from "./motion";
 import { readLeadSource } from "@/lib/leadSource";
 import { trackLinkedInConversion } from "@/lib/linkedin";
 import { LINKEDIN_CONV_LEAD } from "@/lib/siteConfig";
@@ -288,15 +289,13 @@ export default function OrganizationFit() {
       `}</style>
 
       <div style={{ maxWidth: 760, margin: "0 auto", textAlign: "center" }}>
-        <motion.h2
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.55, ease: EASE }}
+        <RevealHeading
+          as="h2"
+          amount={0.5}
           style={{ color: CHARCOAL, fontSize: "clamp(30px,4vw,52px)", fontWeight: 700, lineHeight: 1.06, letterSpacing: "-0.025em", margin: 0 }}
         >
           בדיקת <span style={{ color: "#C24A2C" }}>התאמה</span>
-        </motion.h2>
+        </RevealHeading>
 
         <motion.p
           initial={{ opacity: 0, y: 16 }}
@@ -444,6 +443,7 @@ export default function OrganizationFit() {
 
                   <button
                     type="button"
+                    className="bb-pulse-btn"
                     onClick={submit}
                     disabled={submitting}
                     style={{
@@ -465,7 +465,7 @@ export default function OrganizationFit() {
                       marginTop: 6,
                     }}
                   >
-                    <span style={{ width: 8, height: 8, borderRadius: "50%", background: CORAL, display: "inline-block", flexShrink: 0 }} />
+                    <span className="bb-pulse-dot" style={{ width: 8, height: 8, borderRadius: "50%", background: CORAL, display: "inline-block", flexShrink: 0 }} />
                     {submitting ? "שומר…" : "שליחה ותיאום הדגמה"}
                   </button>
 

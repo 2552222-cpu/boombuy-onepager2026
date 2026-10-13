@@ -55,6 +55,7 @@ export default function PersistentCTA() {
         >
           <button
             type="button"
+            className="bb-pulse-btn"
             onClick={() => scrollToId("organization-fit")}
             aria-label="בדיקת התאמה לארגון"
             style={{
@@ -77,7 +78,7 @@ export default function PersistentCTA() {
               maxWidth: isMobile ? "100%" : 260,
             }}
           >
-            <span style={{ width: 8, height: 8, borderRadius: "50%", background: CORAL, display: "inline-block", flexShrink: 0 }} />
+            <span className="bb-pulse-dot" style={{ width: 8, height: 8, borderRadius: "50%", background: CORAL, display: "inline-block", flexShrink: 0 }} />
             בדיקת התאמה
           </button>
         </motion.div>

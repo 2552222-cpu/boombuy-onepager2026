@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { Play, RotateCcw, Calendar, Sparkles } from "lucide-react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { scrollToId } from "./uiHelpers";
 import {
   BEFORE_IMG,
@@ -11,6 +12,7 @@ import {
 import { photo } from "@/lib/img";
 
 const CORAL = "#F47A5A";
+const EASE = [0.22, 1, 0.36, 1];
 const LOAD_TIMEOUT_MS = 8000;
 const FRAME_TIMEOUT_MS = 3000;
 const MIN_MEDIA_H = 180;
@@ -56,6 +58,22 @@ export default function HeroTransformation() {
   const [reducedMotion, setReducedMotion] = useState(false);
   const [mediaSize, setMediaSize] = useState({ w: 800, h: 450 });
   const [videoPreload, setVideoPreload] = useState("none");
+
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
+  const headingY = useTransform(scrollYProgress, [0, 1], [0, 60]);
+  const headingOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.3]);
+  const mediaY = useTransform(scrollYProgress, [0, 1], [0, 40]);
+  const mediaScale = useTransform(scrollYProgress, [0, 1], [1, 1.04]);
+
+  const headingWords = [
+    { t: "מועדון", c: false },
+    { t: "העובדים", c: false },
+    { t: "שלכם.", c: false, br: true },
+    { t: "אנחנו", c: true },
+    { t: "מפעילים", c: true },
+    { t: "אותו.", c: true },
+  ];
 
   const videoRef = useRef(null);
   const beforeRef = useRef(null);
@@ -334,6 +352,7 @@ export default function HeroTransformation() {
   return (
     <section
       id="hero-transformation"
+      ref={sectionRef}
       style={{ background: WARM_WHITE, direction: "rtl", paddingTop: isMobile ? 0 : 8, paddingBottom: isMobile ? 16 : 12, fontFamily: "var(--font-heebo)" }}
     >
       <style>{`
@@ -345,15 +364,36 @@ export default function HeroTransformation() {
       `}</style>
 
       <div style={{ margin: "0 auto", padding: isMobile ? "0 16px" : "0 32px", maxWidth: 1200, display: "flex", flexDirection: "column", alignItems: "center" }}>
-        <div style={{ marginTop: isMobile ? 20 : 18, marginBottom: 24, textAlign: "center", width: "100%" }}>
-          <h1 style={{ color: CHARCOAL, fontSize: isMobile ? 30 : "clamp(34px,5.4vw,68px)", fontWeight: 800, lineHeight: isMobile ? 1.12 : 1.04, letterSpacing: isMobile ? "-0.02em" : "-0.03em", margin: 0 }}>
-            מועדון העובדים שלכם. {isMobile ? <br /> : " "}<span style={{ color: "#C24A2C" }}>אנחנו מפעילים אותו.</span>
-          </h1>
+        <motion.div style={{ marginTop: isMobile ? 20 : 18, marginBottom: 24, textAlign: "center", width: "100%", y: reducedMotion ? 0 : headingY, opacity: reducedMotion ? 1 : headingOpacity }}>
+          <motion.h1
+            initial="hidden"
+            animate="show"
+            variants={{ hidden: {}, show: { transition: { staggerChildren: reducedMotion ? 0 : 0.06, delayChildren: 0.1 } } }}
+            style={{ color: CHARCOAL, fontSize: isMobile ? 30 : "clamp(34px,5.4vw,68px)", fontWeight: 800, lineHeight: isMobile ? 1.12 : 1.04, letterSpacing: isMobile ? "-0.02em" : "-0.03em", margin: 0 }}
+          >
+            {headingWords.map((w, i) => (
+              <React.Fragment key={i}>
+                <motion.span
+                  variants={{ hidden: { opacity: 0, y: reducedMotion ? 0 : 14 }, show: { opacity: 1, y: 0, transition: { duration: reducedMotion ? 0.15 : 0.5, ease: EASE } } }}
+                  style={{ display: "inline-block", color: w.c ? "#C24A2C" : CHARCOAL, willChange: "transform, opacity" }}
+                >
+                  {w.t}
+                </motion.span>
+                {w.br && isMobile ? <br /> : " "}
+              </React.Fragment>
+            ))}
+          </motion.h1>
           <p style={{ color: "#3A3C42", fontSize: isMobile ? 15 : "clamp(15px,1.8vw,20px)", fontWeight: 500, lineHeight: 1.5, margin: isMobile ? "8px auto 16px" : "12px auto 0", maxWidth: isMobile ? 320 : 640 }}>
             הטבה חדשה לעובדים כל בוקר, בשם הארגון. אתם מחליטים, אנחנו מבצעים.
           </p>
-        </div>
+        </motion.div>
         <div ref={mediaRowRef} style={{ display: "flex", justifyContent: "center", width: "100%" }}>
+          <motion.div style={{ y: reducedMotion ? 0 : mediaY, scale: reducedMotion ? 1 : mediaScale }}>
+            <motion.div
+              initial={reducedMotion ? false : { opacity: 0, scale: 0.97 }}
+              animate={reducedMotion ? {} : { opacity: 1, scale: 1 }}
+              transition={reducedMotion ? { duration: 0.15 } : { duration: 0.7, ease: EASE, delay: 0.45 }}
+            >
           <div
             style={{
               position: "relative",
@@ -442,12 +482,14 @@ export default function HeroTransformation() {
               </button>
             )}
           </div>
+            </motion.div>
+          </motion.div>
         </div>
 
         {/* Below-image CTAs */}
         <div style={{ marginTop: isMobile ? 16 : 20, display: "flex", flexDirection: isMobile ? "column" : "row", flexWrap: "wrap", gap: isMobile ? 0 : 12, justifyContent: "center", alignItems: "center", width: "100%" }}>
-          <button type="button" className="bb-btn" onClick={() => scrollToId("organization-fit")} style={{ ...btnDark, width: isMobile ? "100%" : undefined, height: isMobile ? 52 : 56, fontSize: isMobile ? 16 : "clamp(15px,1.1vw,17px)" }}>
-            <span style={{ width: 8, height: 8, borderRadius: "50%", background: CORAL, display: "inline-block", flexShrink: 0 }} />
+          <button type="button" className="bb-btn bb-pulse-btn" onClick={() => scrollToId("organization-fit")} style={{ ...btnDark, width: isMobile ? "100%" : undefined, height: isMobile ? 52 : 56, fontSize: isMobile ? 16 : "clamp(15px,1.1vw,17px)" }}>
+            <span className="bb-pulse-dot" style={{ width: 8, height: 8, borderRadius: "50%", background: CORAL, display: "inline-block", flexShrink: 0 }} />
             <Calendar size={18} color="#fff" strokeWidth={2.4} />
             לתיאום הדגמה של 15 דקות
           </button>

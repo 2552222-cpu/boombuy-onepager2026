@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { RevealHeading } from "./motion";
 
 const WARM_WHITE = "#FBFAF8";
 const CHARCOAL = "#17191D";
@@ -23,11 +24,9 @@ export default function PromiseBand() {
       <style>{`@media (max-width:768px){ #promise{ padding:44px 18px 52px !important; } }`}</style>
 
       <div style={{ maxWidth: 960, margin: "0 auto", textAlign: "center" }}>
-        <motion.h2
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, ease: EASE }}
+        <RevealHeading
+          as="h2"
+          amount={0.3}
           style={{
             color: CHARCOAL,
             fontSize: "clamp(30px,4.8vw,58px)",
@@ -41,7 +40,7 @@ export default function PromiseBand() {
           }}
         >
           הופכים תקציב רווחה קיים לחוויית עובד שעובדת בכל יום.
-        </motion.h2>
+        </RevealHeading>
 
         <motion.p
           initial={{ opacity: 0, y: 16 }}

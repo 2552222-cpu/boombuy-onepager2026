@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { base44 } from "@/api/base44Client";
 
 const PANEL_BG = "#15171B";
@@ -29,6 +29,10 @@ const CARDS = [
 export default function PlatformExplanation() {
   const sectionRef = useRef(null);
   const firedView = useRef(false);
+  const reduce = typeof window !== "undefined" && typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "start 0.35"] });
+  const panelScale = useTransform(scrollYProgress, [0, 1], [0.92, 1]);
+  const panelRadius = useTransform(scrollYProgress, [0, 1], [48, 32]);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -53,7 +57,7 @@ export default function PlatformExplanation() {
     return () => io.disconnect();
   }, []);
 
-  const hiddenY = 22;
+  const hiddenY = 30;
   const itemTransition = { duration: 0.6, ease: EASE };
 
   return (
@@ -67,14 +71,15 @@ export default function PlatformExplanation() {
       }}
     >
       <div className="pe-wrap" style={{ maxWidth: 1240, margin: "0 auto", paddingLeft: 48, paddingRight: 48 }}>
-        <div
+        <motion.div
           ref={sectionRef}
           className="pe-panel"
           style={{
             position: "relative",
             background: PANEL_BG,
             backgroundImage: PANEL_GRADIENT,
-            borderRadius: 32,
+            borderRadius: reduce ? 32 : panelRadius,
+            scale: reduce ? 1 : panelScale,
             overflow: "hidden",
             paddingTop: "clamp(56px, 7vw, 96px)",
             paddingBottom: "clamp(56px, 7vw, 96px)",
@@ -126,7 +131,7 @@ export default function PlatformExplanation() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.15 }}
-            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
+            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.09 } } }}
             className="pe-cards"
             style={{
               display: "flex",
@@ -164,7 +169,7 @@ export default function PlatformExplanation() {
               </motion.div>
             ))}
           </motion.div>
-        </div>
+        </motion.div>
       </div>
 
       <style>{`

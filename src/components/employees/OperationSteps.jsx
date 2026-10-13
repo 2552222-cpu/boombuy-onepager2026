@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { base44 } from "@/api/base44Client";
+import { RevealHeading } from "./motion";
 
 const BG = "#F7F7F4";
 const CHARCOAL = "#17191D";
@@ -16,6 +17,9 @@ const STEPS = [
 export default function OperationSteps() {
   const ref = useRef(null);
   const fired = useRef(false);
+  const reduce = typeof window !== "undefined" && typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start center", "end center"] });
+  const lineScale = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   useEffect(() => {
     const el = ref.current;
@@ -55,11 +59,9 @@ export default function OperationSteps() {
       <style>{`@media (max-width:768px){ #operation-steps{ scroll-margin-top:72px; padding:48px 16px 56px !important; } }`}</style>
 
       <div style={{ maxWidth: 1000, margin: "0 auto", textAlign: "center" }}>
-        <motion.h2
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.55, ease: EASE }}
+        <RevealHeading
+          as="h2"
+          amount={0.2}
           style={{
             color: CHARCOAL,
             fontSize: "clamp(28px,4vw,46px)",
@@ -70,7 +72,7 @@ export default function OperationSteps() {
           }}
         >
           אתם מחליטים. <span style={{ color: "#C24A2C" }}>אנחנו מבצעים.</span>
-        </motion.h2>
+        </RevealHeading>
 
         <motion.p
           initial={{ opacity: 0, y: 16 }}
@@ -81,6 +83,10 @@ export default function OperationSteps() {
         >
           הארגון קובע מדיניות, זכאות, תקציב ואישורים. אנחנו מקימים ומפעילים את ההיקף שסוכם.
         </motion.p>
+
+        <div style={{ position: "relative", width: "70%", maxWidth: 600, height: 2, margin: "0 auto 30px", background: "rgba(244,122,90,0.15)", borderRadius: 999 }}>
+          <motion.div style={{ position: "absolute", inset: 0, background: CORAL, transformOrigin: "right", scaleX: reduce ? 1 : lineScale, borderRadius: 999 }} />
+        </div>
 
         <div style={{ display: "flex", flexWrap: "wrap", gap: 18, marginTop: 44, justifyContent: "center" }}>
           {STEPS.map((s, i) => (

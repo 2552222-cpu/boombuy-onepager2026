@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
+import { RevealHeading } from "./motion";
 
 const BG = "#FBFAF8";
 const CHARCOAL = "#17191D";
@@ -58,11 +59,9 @@ export default function FAQ() {
       `}</style>
 
       <div style={{ maxWidth: 820, margin: "0 auto" }}>
-        <motion.h2
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.55, ease: EASE }}
+        <RevealHeading
+          as="h2"
+          amount={0.2}
           style={{
             color: CHARCOAL,
             fontSize: "clamp(28px,4vw,46px)",
@@ -74,7 +73,7 @@ export default function FAQ() {
           }}
         >
           שאלות <span style={{ color: "#C24A2C" }}>נפוצות</span>
-        </motion.h2>
+        </RevealHeading>
 
         <div style={{ marginTop: 24 }}>
           {featured.map((item) => (

@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { base44 } from "@/api/base44Client";
 import { fitImg } from "@/lib/img";
+import { RevealHeading } from "./motion";
 
 const BG = "#F7F7F4";
 const CHARCOAL = "#17191D";
@@ -88,11 +89,9 @@ export default function Testimonials() {
           מה אומרים מי שכבר שדרגו?
         </motion.p>
 
-        <motion.h2
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.55, ease: EASE, delay: 0.06 }}
+        <RevealHeading
+          as="h2"
+          amount={0.2}
           style={{
             color: CHARCOAL,
             fontSize: "clamp(30px,4vw,52px)",
@@ -105,7 +104,7 @@ export default function Testimonials() {
           העובדים מרגישים את ההבדל.
           <br />
           וגם <span style={{ color: "#C24A2C" }}>הארגון</span>.
-        </motion.h2>
+        </RevealHeading>
 
         <div
           style={{
