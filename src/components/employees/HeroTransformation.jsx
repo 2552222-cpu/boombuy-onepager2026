@@ -288,20 +288,20 @@ export default function HeroTransformation() {
 
   const inImageBtn = {
     position: "absolute",
-    bottom: 16,
+    bottom: isMobile ? 12 : 16,
     left: "50%",
     transform: "translateX(-50%)",
     zIndex: 20,
-    background: "rgba(255,255,255,0.9)",
+    background: isMobile ? "rgba(255,255,255,0.92)" : "rgba(255,255,255,0.9)",
     backdropFilter: "blur(10px)",
     WebkitBackdropFilter: "blur(10px)",
     border: "1px solid rgba(23,25,29,0.10)",
     borderRadius: 999,
-    height: 48,
-    padding: "0 22px",
+    height: isMobile ? 38 : 48,
+    padding: isMobile ? "0 14px" : "0 22px",
     fontFamily: "var(--font-heebo)",
     fontWeight: 700,
-    fontSize: 16,
+    fontSize: isMobile ? 13 : 16,
     color: CHARCOAL,
     cursor: "pointer",
     display: "inline-flex",
@@ -309,7 +309,7 @@ export default function HeroTransformation() {
     justifyContent: "center",
     gap: 8,
     whiteSpace: "nowrap",
-    boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
+    boxShadow: isMobile ? "0 4px 14px rgba(0,0,0,0.14)" : "0 8px 24px rgba(0,0,0,0.18)",
     transition: "opacity .35s ease",
   };
 
@@ -334,7 +334,7 @@ export default function HeroTransformation() {
   return (
     <section
       id="hero-transformation"
-      style={{ background: WARM_WHITE, direction: "rtl", paddingTop: 8, paddingBottom: isMobile ? 16 : 12, fontFamily: "var(--font-heebo)" }}
+      style={{ background: WARM_WHITE, direction: "rtl", paddingTop: isMobile ? 0 : 8, paddingBottom: isMobile ? 16 : 12, fontFamily: "var(--font-heebo)" }}
     >
       <style>{`
         @keyframes ht-zoom { from{transform:scale(1)} to{transform:scale(1.035)} }
@@ -344,12 +344,12 @@ export default function HeroTransformation() {
         @media (max-width:768px){ #hero-transformation{ scroll-margin-top:72px; } }
       `}</style>
 
-      <div style={{ margin: "0 auto", padding: isMobile ? "0 20px" : "0 32px", maxWidth: 1200, display: "flex", flexDirection: "column", alignItems: "center" }}>
-        <div style={{ marginTop: 18, marginBottom: 24, textAlign: "center", width: "100%" }}>
-          <h1 style={{ color: CHARCOAL, fontSize: "clamp(34px,5.4vw,68px)", fontWeight: 800, lineHeight: 1.04, letterSpacing: "-0.03em", margin: 0 }}>
-            מועדון העובדים שלכם. <span style={{ color: "#C24A2C" }}>אנחנו מפעילים אותו.</span>
+      <div style={{ margin: "0 auto", padding: isMobile ? "0 16px" : "0 32px", maxWidth: 1200, display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <div style={{ marginTop: isMobile ? 20 : 18, marginBottom: 24, textAlign: "center", width: "100%" }}>
+          <h1 style={{ color: CHARCOAL, fontSize: isMobile ? 30 : "clamp(34px,5.4vw,68px)", fontWeight: 800, lineHeight: isMobile ? 1.12 : 1.04, letterSpacing: isMobile ? "-0.02em" : "-0.03em", margin: 0 }}>
+            מועדון העובדים שלכם. {isMobile ? <br /> : " "}<span style={{ color: "#C24A2C" }}>אנחנו מפעילים אותו.</span>
           </h1>
-          <p style={{ color: "#3A3C42", fontSize: "clamp(15px,1.8vw,20px)", fontWeight: 500, lineHeight: 1.5, margin: "12px auto 0", maxWidth: 640 }}>
+          <p style={{ color: "#3A3C42", fontSize: isMobile ? 15 : "clamp(15px,1.8vw,20px)", fontWeight: 500, lineHeight: 1.5, margin: isMobile ? "8px auto 16px" : "12px auto 0", maxWidth: isMobile ? 320 : 640 }}>
             הטבה חדשה לעובדים כל בוקר, בשם הארגון. אתם מחליטים, אנחנו מבצעים.
           </p>
         </div>
@@ -357,9 +357,10 @@ export default function HeroTransformation() {
           <div
             style={{
               position: "relative",
-              width: mediaSize.w,
-              height: mediaSize.h,
-              borderRadius: isMobile ? 18 : 34,
+              width: isMobile ? "100%" : mediaSize.w,
+              height: isMobile ? undefined : mediaSize.h,
+              aspectRatio: isMobile ? "4 / 3" : undefined,
+              borderRadius: isMobile ? 22 : 34,
               overflow: "hidden",
               boxShadow: "0 24px 70px rgba(0,0,0,0.14), 0 8px 24px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(255,255,255,0.3)",
               background: "#000",
@@ -378,7 +379,7 @@ export default function HeroTransformation() {
               loading="eager"
               decoding="async"
               onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = BEFORE_IMG; }}
-              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center center", zIndex: 1, willChange: "transform" }}
+              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: isMobile ? "100% 50%" : "center center", zIndex: 1, willChange: "transform" }}
             />
 
             {/* Video sits above BEFORE_IMG, fades in on first frame */}
@@ -394,7 +395,7 @@ export default function HeroTransformation() {
               onError={onVideoError}
               style={{
                 position: "absolute", inset: 0, width: "100%", height: "100%",
-                objectFit: "cover", objectPosition: "center center", zIndex: 2,
+                objectFit: "cover", objectPosition: isMobile ? "100% 50%" : "center center", zIndex: 2,
                 opacity: videoShown ? 1 : 0,
                 transition: `opacity ${fadeDur}ms cubic-bezier(.4,0,.2,1)`,
               }}
@@ -415,7 +416,7 @@ export default function HeroTransformation() {
               onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = AFTER_IMG; }}
               style={{
                 position: "absolute", inset: 0, width: "100%", height: "100%",
-                objectFit: "cover", objectPosition: "center center", zIndex: 3,
+                objectFit: "cover", objectPosition: isMobile ? "100% 50%" : "center center", zIndex: 3,
                 opacity: afterShown ? 1 : 0,
                 transition: `opacity ${afterDur}ms cubic-bezier(.4,0,.2,1)`,
               }}
@@ -424,19 +425,19 @@ export default function HeroTransformation() {
             {/* In-image CTA — bottom center */}
             {stage === "idle" && (
               <button type="button" onClick={onStart} onMouseEnter={primeNow} onTouchStart={primeNow} style={inImageBtn} aria-label="לראות את השדרוג">
-                <Play size={16} color={CHARCOAL} strokeWidth={2.5} />
-                לראות את השדרוג · 10 שניות
+                <Play size={isMobile ? 14 : 16} color={CHARCOAL} strokeWidth={2.5} />
+                {isMobile ? "לראות · 10 שנ׳" : "לראות את השדרוג · 10 שניות"}
               </button>
             )}
             {stage === "complete" && (
               <button type="button" onClick={onReplay} style={inImageBtn} aria-label="לצפייה חוזרת">
-                <RotateCcw size={16} color={CHARCOAL} strokeWidth={2.5} />
+                <RotateCcw size={isMobile ? 14 : 16} color={CHARCOAL} strokeWidth={2.5} />
                 לצפייה חוזרת
               </button>
             )}
             {stage === "failed" && (
               <button type="button" onClick={onRetry} style={{ ...inImageBtn, background: "rgba(255,255,255,0.95)" }} aria-label="לנסות שוב">
-                <RotateCcw size={16} color={CORAL} strokeWidth={2.5} />
+                <RotateCcw size={isMobile ? 14 : 16} color={CORAL} strokeWidth={2.5} />
                 לנסות שוב
               </button>
             )}
@@ -444,26 +445,32 @@ export default function HeroTransformation() {
         </div>
 
         {/* Below-image CTAs */}
-        <div style={{ marginTop: 20, display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center", width: "100%" }}>
-          <button type="button" className="bb-btn" onClick={() => scrollToId("organization-fit")} style={btnDark}>
+        <div style={{ marginTop: isMobile ? 16 : 20, display: "flex", flexDirection: isMobile ? "column" : "row", flexWrap: "wrap", gap: isMobile ? 0 : 12, justifyContent: "center", alignItems: "center", width: "100%" }}>
+          <button type="button" className="bb-btn" onClick={() => scrollToId("organization-fit")} style={{ ...btnDark, width: isMobile ? "100%" : undefined, height: isMobile ? 52 : 56, fontSize: isMobile ? 16 : "clamp(15px,1.1vw,17px)" }}>
             <span style={{ width: 8, height: 8, borderRadius: "50%", background: CORAL, display: "inline-block", flexShrink: 0 }} />
             <Calendar size={18} color="#fff" strokeWidth={2.4} />
             לתיאום הדגמה של 15 דקות
           </button>
-          <button type="button" className="bb-btn" onClick={() => scrollToId("benefits")} style={btnLight}>
-            <Sparkles size={18} color={CORAL} strokeWidth={2.4} />
-            לראות הטבות אמיתיות
-          </button>
+          {isMobile ? (
+            <button type="button" onClick={() => scrollToId("benefits")} style={{ marginTop: 10, background: "none", border: "none", padding: 0, fontFamily: "inherit", fontSize: 15, fontWeight: 600, color: "#17191D", textDecoration: "underline", cursor: "pointer" }}>
+              לראות הטבות אמיתיות
+            </button>
+          ) : (
+            <button type="button" className="bb-btn" onClick={() => scrollToId("benefits")} style={btnLight}>
+              <Sparkles size={18} color={CORAL} strokeWidth={2.4} />
+              לראות הטבות אמיתיות
+            </button>
+          )}
         </div>
 
         {/* Proof row */}
-        <div style={{ marginTop: 22, display: "flex", flexWrap: "wrap", justifyContent: "center", gap: isMobile ? 10 : 28, width: "100%" }}>
+        <div style={{ marginTop: isMobile ? 18 : 22, display: "flex", flexWrap: isMobile ? "nowrap" : "wrap", justifyContent: "center", gap: isMobile ? 10 : 28, width: "100%" }}>
           {proof.map((p) => (
-            <div key={p.small} style={{ textAlign: "center", flex: "1 1 90px", maxWidth: 260 }}>
-              <div style={{ color: CHARCOAL, fontSize: "clamp(20px,2.4vw,28px)", fontWeight: 800, lineHeight: 1.1 }} dir={p.ltr ? "ltr" : undefined}>
+            <div key={p.small} style={{ textAlign: "center", flex: isMobile ? "1 1 0" : "1 1 90px", maxWidth: 260, minWidth: 0 }}>
+              <div style={{ color: CHARCOAL, fontSize: isMobile ? 22 : "clamp(20px,2.4vw,28px)", fontWeight: 800, lineHeight: 1.1 }} dir={p.ltr ? "ltr" : undefined}>
                 <CountUp to={p.num} suffix={p.suffix} reducedMotion={reducedMotion} />
               </div>
-              <div style={{ color: "#5A5C62", fontSize: "clamp(12px,1.1vw,14px)", fontWeight: 500, marginTop: 2 }}>
+              <div style={{ color: "#5A5C62", fontSize: isMobile ? 12 : "clamp(12px,1.1vw,14px)", fontWeight: 500, marginTop: 2, lineHeight: 1.3, display: isMobile ? "-webkit-box" : undefined, WebkitLineClamp: isMobile ? 2 : undefined, WebkitBoxOrient: isMobile ? "vertical" : undefined, overflow: isMobile ? "hidden" : undefined }}>
                 {p.small}
               </div>
             </div>
