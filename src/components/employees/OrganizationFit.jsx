@@ -7,7 +7,7 @@ import { readLeadSource } from "@/lib/leadSource";
 import { trackLinkedInConversion } from "@/lib/linkedin";
 import { LINKEDIN_CONV_LEAD } from "@/lib/siteConfig";
 
-const BG = "#F7F7F4";
+const BG = "#FFFFFF";
 const CHARCOAL = "#17191D";
 const CORAL = "#F47A5A";
 const WHITE = "#FFFFFF";
@@ -274,15 +274,17 @@ export default function OrganizationFit() {
       id="organization-fit"
       ref={sectionRef}
       dir="rtl"
+      className="bb-section"
       style={{
         background: BG,
-        padding: "84px 20px 88px",
+        paddingLeft: 20,
+        paddingRight: 20,
         fontFamily: "var(--font-heebo), Heebo, Arial, sans-serif",
         scrollMarginTop: 90,
       }}
     >
       <style>{`
-        @media (max-width:768px){ #organization-fit{ scroll-margin-top:72px; padding:48px 16px 56px !important; } }
+        @media (max-width:768px){ #organization-fit{ scroll-margin-top:72px; padding-left:16px !important; padding-right:16px !important; } }
         .of-option:hover{ border-color:rgba(244,122,90,0.6) !important; transform:translateY(-2px); box-shadow:0 10px 26px rgba(244,122,90,0.12); }
         .of-option:focus-visible{ outline:3px solid rgba(244,122,90,0.55); outline-offset:2px; }
         .of-input:focus{ border-color:rgba(244,122,90,0.6); box-shadow:0 0 0 3px rgba(244,122,90,0.12); }
@@ -352,7 +354,7 @@ export default function OrganizationFit() {
                 <h3 style={{ color: CHARCOAL, fontSize: "clamp(22px,2.6vw,30px)", fontWeight: 700, lineHeight: 1.2, letterSpacing: "-0.02em", margin: "0 0 22px" }}>
                   {QUESTIONS[step].prompt}
                 </h3>
-                <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 480, margin: "0 auto" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 10, maxWidth: 480, margin: "0 auto" }}>
                   {QUESTIONS[step].options.map((opt) => {
                     const selected = answers[QUESTIONS[step].key] === opt;
                     return (
@@ -366,13 +368,13 @@ export default function OrganizationFit() {
                           background: WHITE,
                           border: selected ? "1.5px solid rgba(244,122,90,0.7)" : "1px solid rgba(19,21,25,0.12)",
                           borderRadius: 16,
-                          padding: "18px 20px",
+                          padding: "0 20px",
                           fontFamily: "inherit",
-                          fontSize: "clamp(17px,1.3vw,19px)",
+                          fontSize: 16,
                           fontWeight: 600,
                           color: CHARCOAL,
                           cursor: "pointer",
-                          minHeight: 56,
+                          height: 52,
                           textAlign: "right",
                           transition: "transform .18s ease, border-color .18s ease, box-shadow .18s ease",
                           display: "flex",
@@ -435,7 +437,7 @@ export default function OrganizationFit() {
                       onChange={(e) => setForm({ ...form, consent: e.target.checked })}
                       style={{ width: 20, height: 20, marginTop: 2, accentColor: CORAL, flex: "0 0 auto" }}
                     />
-                    <span>אני מאשר/ת לבום ביי ליצור איתי קשר בנוגע להדגמת המערכת.</span>
+                    <span>אני מאשר/ת ל-boombuy ליצור איתי קשר בנוגע להדגמת המערכת.</span>
                   </label>
                   <a href="/privacy" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", fontSize: 13, color: "#6E7177", textDecoration: "underline", marginTop: 2 }}>מדיניות הפרטיות</a>
 

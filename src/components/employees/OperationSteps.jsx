@@ -1,17 +1,17 @@
 import React, { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { base44 } from "@/api/base44Client";
-import { RevealHeading } from "./motion";
+import { RevealHeading, RevealBlock, EASE } from "./motion";
+import { SECTION } from "./layoutTokens";
 
-const BG = "#F7F7F4";
-const CHARCOAL = "#17191D";
-const CORAL = "#F47A5A";
-const EASE = [0.22, 1, 0.36, 1];
+const BG = SECTION.BG_WHITE;
+const CHARCOAL = SECTION.CHARCOAL;
+const CORAL = SECTION.BTN_CORAL;
 
 const STEPS = [
   { n: "1", title: "מסכמים תוכנית וכללים", text: "מגדירים יחד את התוכנית, הזכאות, התקציב והאישורים." },
   { n: "2", title: "מקימים ומשיקים", text: "אנחנו מטפלים במיתוג, בספקים ובהשקה." },
-  { n: "3", title: "מפעילים ותומכים לאורך השנה", text: "מטפלים בהזמנות, בתקשורת, בשירות ובדיווח, ככל שנכלל." },
+  { n: "3", title: "מפעילים ותומכים לאורך השנה", text: "מטפלים בהזמנות, בתקשורת ובשירות לעובדים, ומדווחים לכם." },
 ];
 
 export default function OperationSteps() {
@@ -29,11 +29,7 @@ export default function OperationSteps() {
         entries.forEach((e) => {
           if (e.isIntersecting && !fired.current) {
             fired.current = true;
-            try {
-              base44.analytics.track({ eventName: "operation_steps_viewed" });
-            } catch (err) {
-              /* analytics must never break the UI */
-            }
+            try { base44.analytics.track({ eventName: "operation_steps_viewed" }); } catch (err) { /* ignore */ }
             io.disconnect();
           }
         });
@@ -47,55 +43,46 @@ export default function OperationSteps() {
   return (
     <section
       id="operation-steps"
+      className="bb-section"
       ref={ref}
       dir="rtl"
-      style={{
-        background: BG,
-        padding: "84px 20px 92px",
-        fontFamily: "var(--font-heebo), Heebo, Arial, sans-serif",
-        scrollMarginTop: 90,
-      }}
+      style={{ background: BG, fontFamily: "var(--font-heebo), Heebo, Arial, sans-serif", scrollMarginTop: 90 }}
     >
-      <style>{`@media (max-width:768px){ #operation-steps{ scroll-margin-top:72px; padding:48px 16px 56px !important; } }`}</style>
+      <style>{`
+        @media (max-width:768px){ #operation-steps{ scroll-margin-top:72px; }
+          .os-list{ position:relative; }
+          .os-line{ position:absolute; right:15px; top:16px; bottom:16px; width:2px; background:rgba(244,122,90,0.25); }
+        }
+      `}</style>
 
-      <div style={{ maxWidth: 1000, margin: "0 auto", textAlign: "center" }}>
+      <div style={{ maxWidth: 1000, margin: "0 auto", textAlign: "center", padding: "0 16px" }}>
         <RevealHeading
           as="h2"
-          amount={0.2}
-          style={{
-            color: CHARCOAL,
-            fontSize: "clamp(28px,4vw,46px)",
-            fontWeight: 700,
-            lineHeight: 1.12,
-            letterSpacing: "-0.025em",
-            margin: 0,
-          }}
+          style={{ color: CHARCOAL, fontSize: `clamp(${SECTION.H2_MOBILE}px,4vw,48px)`, fontWeight: SECTION.H2_WEIGHT, lineHeight: SECTION.H2_LH, letterSpacing: "-0.025em", margin: 0 }}
         >
-          אתם מחליטים. <span style={{ color: "#C24A2C" }}>אנחנו מבצעים.</span>
+          אתם מחליטים. <span style={{ color: SECTION.CORAL_TEXT }}>אנחנו מבצעים.</span>
         </RevealHeading>
 
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.55, ease: EASE, delay: 0.08 }}
-          style={{ color: "#3A3C42", fontSize: "clamp(16px,1.4vw,20px)", fontWeight: 400, lineHeight: 1.6, margin: "16px auto 0", maxWidth: 640 }}
+        <RevealBlock
+          delay={0.08}
+          style={{ color: SECTION.BODY_COLOR, fontSize: `clamp(${SECTION.BODY_MOBILE}px,1.4vw,${SECTION.BODY_DESKTOP}px)`, lineHeight: SECTION.BODY_LH, margin: "14px auto 0", maxWidth: 640 }}
         >
-          הארגון קובע מדיניות, זכאות, תקציב ואישורים. אנחנו מקימים ומפעילים את ההיקף שסוכם.
-        </motion.p>
+          אתם קובעים את הכללים. אנחנו עושים את כל השאר.
+        </RevealBlock>
 
-        <div style={{ position: "relative", width: "70%", maxWidth: 600, height: 2, margin: "0 auto 30px", background: "rgba(244,122,90,0.15)", borderRadius: 999 }}>
-          <motion.div style={{ position: "absolute", inset: 0, background: CORAL, transformOrigin: "right", scaleX: reduce ? 1 : lineScale, borderRadius: 999 }} />
+        {/* Desktop progress line */}
+        <div className="os-desktop-line">
+          <div style={{ position: "relative", width: "70%", maxWidth: 600, height: 2, margin: "0 auto 30px", background: "rgba(244,122,90,0.15)", borderRadius: 999 }}>
+            <motion.div style={{ position: "absolute", inset: 0, background: CORAL, transformOrigin: "right", scaleX: reduce ? 1 : lineScale, borderRadius: 999 }} />
+          </div>
         </div>
 
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 18, marginTop: 44, justifyContent: "center" }}>
+        {/* Desktop: 3 cards */}
+        <div className="os-desktop" style={{ display: "flex", flexWrap: "wrap", gap: 18, marginTop: 44, justifyContent: "center" }}>
           {STEPS.map((s, i) => (
-            <motion.div
+            <RevealBlock
               key={s.n}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 0.5, ease: EASE, delay: i * 0.08 }}
+              delay={i * 0.08}
               style={{
                 flex: "1 1 260px",
                 maxWidth: 300,
@@ -108,31 +95,36 @@ export default function OperationSteps() {
                 boxSizing: "border-box",
               }}
             >
-              <div
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: "50%",
-                  background: CORAL,
-                  color: "#fff",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontWeight: 800,
-                  fontSize: 18,
-                  marginBottom: 16,
-                }}
-              >
-                {s.n}
-              </div>
-              <h3 style={{ color: CHARCOAL, fontSize: "clamp(19px,1.6vw,22px)", fontWeight: 700, margin: "0 0 8px", letterSpacing: "-0.01em" }}>
-                {s.title}
-              </h3>
+              <div style={{ width: 40, height: 40, borderRadius: "50%", background: CORAL, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 18, marginBottom: 16 }}>{s.n}</div>
+              <h3 style={{ color: CHARCOAL, fontSize: "clamp(19px,1.6vw,22px)", fontWeight: 700, margin: "0 0 8px", letterSpacing: "-0.01em" }}>{s.title}</h3>
               <p style={{ color: "#3A3C42", fontSize: "clamp(15px,1.2vw,17px)", lineHeight: 1.6, margin: 0 }}>{s.text}</p>
-            </motion.div>
+            </RevealBlock>
+          ))}
+        </div>
+
+        {/* Mobile: vertical compact list with connecting line */}
+        <div className="os-list" style={{ position: "relative", marginTop: 28, textAlign: "right" }}>
+          <div className="os-line" />
+          {STEPS.map((s, i) => (
+            <RevealBlock
+              key={s.n}
+              delay={i * 0.06}
+              style={{ position: "relative", display: "flex", gap: 14, alignItems: "flex-start", padding: "12px 0", paddingRight: 0 }}
+            >
+              <div style={{ width: 32, height: 32, borderRadius: "50%", background: CORAL, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 15, flex: "0 0 auto", zIndex: 1, marginTop: 2 }}>{s.n}</div>
+              <div>
+                <h3 style={{ color: CHARCOAL, fontSize: 17, fontWeight: 700, margin: "0 0 4px", letterSpacing: "-0.01em" }}>{s.title}</h3>
+                <p style={{ color: "#3A3C42", fontSize: 15, lineHeight: 1.55, margin: 0 }}>{s.text}</p>
+              </div>
+            </RevealBlock>
           ))}
         </div>
       </div>
+
+      <style>{`
+        @media (min-width:769px){ .os-list{ display:none !important; } }
+        @media (max-width:768px){ .os-desktop, .os-desktop-line{ display:none !important; } }
+      `}</style>
     </section>
   );
 }

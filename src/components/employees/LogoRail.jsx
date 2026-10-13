@@ -80,7 +80,7 @@ function SlotLogo({ src, name, alt, slotW, area, minH, maxH, scale = 1, hovered,
 
 export default function LogoRail() {
   const trackRef = useRef(null);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== "undefined" && window.innerWidth < 768);
   const [isWide, setIsWide] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [paused, setPaused] = useState(false);
@@ -90,7 +90,7 @@ export default function LogoRail() {
   const { hidden } = useBottomUIVisibility();
   const firedView = useRef(false);
 
-  const railH = isMobile ? LAYOUT.RAIL_HEIGHT_MOBILE : LAYOUT.RAIL_HEIGHT_DESKTOP;
+  const railH = LAYOUT.RAIL_HEIGHT_DESKTOP;
   const slotW = isMobile ? LAYOUT.LOGO_SLOT_MOBILE : LAYOUT.LOGO_SLOT_DESKTOP;
   const area = isMobile ? 4200 : 7200;
   const minH = isMobile ? 24 : 30;
@@ -144,6 +144,9 @@ export default function LogoRail() {
     }
   }, [hidden]);
 
+  // Mobile: logos live inline in the hero, so no fixed rail here.
+  if (isMobile) return null;
+
   const running = !hidden && !docHidden && !paused && !reducedMotion;
 
   const wrapStyle = {
@@ -169,7 +172,7 @@ export default function LogoRail() {
 
   if (reducedMotion) {
     return (
-      <div role="region" aria-label="לקוחות בום ביי" dir="rtl" aria-hidden={hidden} style={wrapStyle}>
+      <div role="region" aria-label="לקוחות boombuy" dir="rtl" aria-hidden={hidden} style={wrapStyle}>
         <div style={{ flex: 1, minHeight: 0, display: "flex", alignItems: "center", overflowX: "auto", overflowY: "hidden", scrollbarWidth: "thin", padding: "0 12px", paddingBottom: "env(safe-area-inset-bottom)", WebkitMaskImage: "linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent)", maskImage: "linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent)" }}>
           {railLogos.map((l) => (
             <SlotLogo key={l.name} {...logoProps(l)} />
@@ -180,7 +183,7 @@ export default function LogoRail() {
   }
 
   return (
-    <div className={`lr-rail${running ? "" : " lr-stopped"}`} role="region" aria-label="לקוחות בום ביי" dir="rtl" aria-hidden={hidden} style={wrapStyle}>
+    <div className={`lr-rail${running ? "" : " lr-stopped"}`} role="region" aria-label="לקוחות boombuy" dir="rtl" aria-hidden={hidden} style={wrapStyle}>
       <style>{`
         .lr-rail .lr-label{ flex:0 0 auto; display:flex; align-items:center; justify-content:center; width:120px; background:${THEME.bg}; border-left:1px solid rgba(23,25,29,0.06); }
         .lr-rail .lr-label span{ font-size:13px; font-weight:700; color:${THEME.charcoal}; line-height:1.25; text-align:center; opacity:0.82; letter-spacing:-0.01em; }

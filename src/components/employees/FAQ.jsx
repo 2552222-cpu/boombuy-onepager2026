@@ -35,17 +35,19 @@ export default function FAQ() {
     <section
       id="faq"
       dir="rtl"
+      className="bb-section"
       style={{
         background: BG,
-        padding: "84px 20px 92px",
+        paddingLeft: 20,
+        paddingRight: 20,
         fontFamily: "var(--font-heebo), Heebo, Arial, sans-serif",
         scrollMarginTop: 90,
       }}
     >
       <style>{`
-        @media (max-width:768px){ #faq{ scroll-margin-top:72px; padding:48px 16px 56px !important; } }
+        @media (max-width:768px){ #faq{ scroll-margin-top:72px; padding-left:16px !important; padding-right:16px !important; } }
         .faq-item{ border-bottom:1px solid rgba(19,21,25,0.10); }
-        .faq-item summary{ list-style:none; cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:22px 4px; font-weight:700; color:${CHARCOAL}; font-size:clamp(17px,1.5vw,20px); }
+        .faq-item summary{ list-style:none; cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 4px; font-weight:700; color:${CHARCOAL}; font-size:clamp(17px,1.5vw,20px); }
         .faq-item summary::-webkit-details-marker{ display:none; }
         .faq-item summary:focus-visible{ outline:3px solid rgba(244,122,90,0.55); outline-offset:2px; border-radius:10px; }
         .faq-chev{ transition:transform .25s ease; flex:0 0 auto; color:${CORAL}; }

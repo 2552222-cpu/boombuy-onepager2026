@@ -111,6 +111,10 @@ html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
 .lenis.lenis-stopped { overflow: hidden; }
 
+/* Unified section padding (all landing sections share this) */
+.bb-section{ padding-top:88px; padding-bottom:92px; }
+@media (max-width:768px){ .bb-section{ padding-top:40px; padding-bottom:44px; } }
+
 /* Coral dot pulse on dark-button hover (one beat) */
 @keyframes bb-pulse { 0%{transform:scale(1)} 50%{transform:scale(1.6)} 100%{transform:scale(1)} }
 .bb-pulse-btn:hover .bb-pulse-dot { animation: bb-pulse .4s cubic-bezier(.22,1,.36,1); }

@@ -106,8 +106,8 @@ export default function BookDemo() {
   const baseBtn = { borderRadius: 16, height: 54, fontFamily: "inherit", fontWeight: 700, fontSize: 15, cursor: "pointer" };
 
   return (
-    <section id="book-demo" dir="rtl" style={{ background: BG, padding: "84px 20px 96px", fontFamily: "var(--font-heebo), Heebo, Arial, sans-serif", scrollMarginTop: 90 }}>
-      <style>{`@media (max-width:768px){ #book-demo{ scroll-margin-top:72px; padding:48px 16px 56px !important; } } @keyframes bd-spin{to{transform:rotate(360deg)}}`}</style>
+    <section id="book-demo" dir="rtl" className="bb-section" style={{ background: BG, paddingLeft: 20, paddingRight: 20, fontFamily: "var(--font-heebo), Heebo, Arial, sans-serif", scrollMarginTop: 90 }}>
+      <style>{`@media (max-width:768px){ #book-demo{ scroll-margin-top:72px; padding-left:16px !important; padding-right:16px !important; } } @keyframes bd-spin{to{transform:rotate(360deg)}}`}</style>
       <div style={{ maxWidth: 620, margin: "0 auto" }}>
         <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: EASE }} style={{ background: WHITE, borderRadius: 28, padding: "36px 28px", boxShadow: "0 18px 50px rgba(19,21,25,0.10)", border: "1px solid rgba(19,21,25,0.06)" }}>
           <h2 style={{ color: CHARCOAL, fontSize: "clamp(24px,3vw,32px)", fontWeight: 700, textAlign: "center", margin: "0 0 6px", letterSpacing: "-0.02em" }}>

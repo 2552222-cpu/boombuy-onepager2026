@@ -348,7 +348,7 @@ export default function FeaturedOffersSlider() {
   const imgH = Math.round(cardW * 1.22);
   const spacing = isMobile ? Math.round(cardW * 0.78) : 250;
   const maxVisible = isMobile ? 2 : 3;
-  const stageH = imgH + 70; // room for float + hover lift, so nothing is clipped top/bottom
+  const stageH = imgH + (isMobile ? 50 : 70); // room for float + hover lift, so nothing is clipped top/bottom
 
   // ── Drag (mouse + touch) via framer pan: works with a finger and a mouse, vertical page scroll stays native
   const dragStartRef = useRef(0);
@@ -411,10 +411,10 @@ export default function FeaturedOffersSlider() {
       id="benefits"
       ref={secRef}
       dir="rtl"
-      style={{ background: "#FFFFFF", padding: "84px 0 92px", fontFamily: "var(--font-heebo), Heebo, Arial, sans-serif", overflow: "hidden" }}
+      className="bb-section"
+      style={{ background: "#FFFFFF", fontFamily: "var(--font-heebo), Heebo, Arial, sans-serif", overflow: "hidden" }}
     >
       <style>{`
-        @media (max-width:768px){ #benefits{ padding:48px 0 56px !important; } }
         .fo-stage{ -webkit-mask-image:linear-gradient(to right, transparent 0, #000 9%, #000 91%, transparent 100%); mask-image:linear-gradient(to right, transparent 0, #000 9%, #000 91%, transparent 100%); }
         @media (max-width:768px){ .fo-stage{ -webkit-mask-image:linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%); mask-image:linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%); } }
         .fo-cta{ transition: transform .18s ease, box-shadow .18s ease; }

@@ -9,7 +9,8 @@ import {
   CHARCOAL,
   WARM_WHITE,
 } from "./hero/heroShared";
-import { photo } from "@/lib/img";
+import { photo, fitImg } from "@/lib/img";
+import { railLogos } from "@/utils/logoData";
 
 const CORAL = "#F47A5A";
 const EASE = [0.22, 1, 0.36, 1];
@@ -47,6 +48,21 @@ function CountUp({ to, suffix, reducedMotion }) {
     return () => io.disconnect();
   }, [to, reducedMotion]);
   return <span ref={ref}>{val}{suffix}</span>;
+}
+
+function InlineLogoRail() {
+  return (
+    <div dir="rtl" style={{ marginTop: 24, overflow: "hidden", WebkitMaskImage: "linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent)", maskImage: "linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent)" }}>
+      <style>{`@keyframes ht-marq{from{transform:translateX(0)}to{transform:translateX(-50%)}} .ht-marq-track{display:flex;align-items:center;width:max-content;animation:ht-marq 42s linear infinite} .ht-marq-track:hover{animation-play-state:paused} @media (prefers-reduced-motion: reduce){ .ht-marq-track{ animation:none; } }`}</style>
+      <div className="ht-marq-track">
+        {[...railLogos, ...railLogos].map((l, i) => (
+          <span key={i} style={{ flex: "0 0 auto", display: "flex", alignItems: "center", justifyContent: "center", width: 132, padding: "0 8px" }}>
+            <img src={fitImg(l.url, 240, 96)} alt={l.name} height={40} loading="lazy" decoding="async" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = l.url; }} style={{ height: 40, maxWidth: 116, objectFit: "contain", filter: "grayscale(1) opacity(0.7)" }} />
+          </span>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export default function HeroTransformation() {
@@ -388,15 +404,17 @@ export default function HeroTransformation() {
           </p>
         </motion.div>
         <div ref={mediaRowRef} style={{ display: "flex", justifyContent: "center", width: "100%" }}>
-          <motion.div style={{ y: reducedMotion ? 0 : mediaY, scale: reducedMotion ? 1 : mediaScale }}>
+          <motion.div style={{ width: "100%", y: reducedMotion ? 0 : mediaY, scale: reducedMotion ? 1 : mediaScale }}>
             <motion.div
               initial={reducedMotion ? false : { opacity: 0, scale: 0.97 }}
               animate={reducedMotion ? {} : { opacity: 1, scale: 1 }}
               transition={reducedMotion ? { duration: 0.15 } : { duration: 0.7, ease: EASE, delay: 0.45 }}
+              style={{ width: "100%" }}
             >
           <div
             style={{
               position: "relative",
+              margin: "0 auto",
               width: isMobile ? "100%" : mediaSize.w,
               height: isMobile ? undefined : mediaSize.h,
               aspectRatio: isMobile ? "4 / 3" : undefined,
@@ -518,6 +536,8 @@ export default function HeroTransformation() {
             </div>
           ))}
         </div>
+
+        {isMobile && <InlineLogoRail />}
       </div>
     </section>
   );
