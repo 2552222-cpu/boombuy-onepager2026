@@ -55,12 +55,12 @@ export default async function(req) {
     await base44.asServiceRole.entities.OrganizationFitLead.update(lead.id, {
       status: "meeting_booked",
       meetingAt: new Date(startMs).toISOString(),
-      assignedTo,
+      assignedTo: assignTo,
     });
 
     try { await sendMeetingEmail(base44, lead, assignTo, new Date(startMs).toISOString(), ev.hangoutLink); } catch (e) { /* email best-effort */ }
 
-    return Response.json({ ok: true, assignedTo, meetingAt: new Date(startMs).toISOString() });
+    return Response.json({ ok: true, assignedTo: assignTo, meetingAt: new Date(startMs).toISOString() });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
   }

@@ -53,13 +53,14 @@ export default function HeroTransformation() {
       const headerEl = document.querySelector("header");
       const headerH = headerEl ? headerEl.getBoundingClientRect().height : mob ? 64 : 72;
       const padTop = 8;
+      const headingReserve = mob ? 130 : 150;
       // Below the image: two CTAs (stack on mobile) + proof row + padding.
       const btnH = mob ? 116 : 60;
       const proofH = mob ? 70 : 48;
       const padBottom = mob ? 16 : 12;
       const gaps = 36;
       const belowReserve = btnH + proofH + padBottom + gaps;
-      const availH = vh - headerH - padTop - belowReserve;
+      const availH = vh - headerH - padTop - headingReserve - belowReserve;
       const availW = mediaRowRef.current
         ? mediaRowRef.current.getBoundingClientRect().width
         : Math.min(window.innerWidth - (mob ? 40 : 64), 1200);
@@ -293,6 +294,14 @@ export default function HeroTransformation() {
       `}</style>
 
       <div style={{ margin: "0 auto", padding: isMobile ? "0 20px" : "0 32px", maxWidth: 1200, display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <div style={{ marginTop: 18, marginBottom: 24, textAlign: "center", width: "100%" }}>
+          <h1 style={{ color: CHARCOAL, fontSize: "clamp(34px,5.4vw,68px)", fontWeight: 800, lineHeight: 1.04, letterSpacing: "-0.03em", margin: 0 }}>
+            מועדון העובדים שלכם. <span style={{ color: CORAL }}>אנחנו מפעילים אותו.</span>
+          </h1>
+          <p style={{ color: "#3A3C42", fontSize: "clamp(15px,1.8vw,20px)", fontWeight: 500, lineHeight: 1.5, margin: "12px auto 0", maxWidth: 640 }}>
+            הטבה חדשה לעובדים כל בוקר, בשם הארגון. אתם מחליטים, אנחנו מבצעים.
+          </p>
+        </div>
         <div ref={mediaRowRef} style={{ display: "flex", justifyContent: "center", width: "100%" }}>
           <div
             style={{
@@ -305,9 +314,6 @@ export default function HeroTransformation() {
               background: "#000",
             }}
           >
-            {/* Scrim for heading legibility */}
-            <div style={{ position: "absolute", inset: 0, zIndex: 10, pointerEvents: "none", background: "linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.15) 38%, rgba(0,0,0,0) 60%)" }} />
-
             {/* BEFORE image (kept, never hidden) — slow zoom from click */}
             <img
               ref={beforeRef}
@@ -346,16 +352,6 @@ export default function HeroTransformation() {
                 transition: `opacity ${afterDur}ms cubic-bezier(.4,0,.2,1)`,
               }}
             />
-
-            {/* Heading overlay — on all screens */}
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 12, padding: isMobile ? "22px 18px 0" : "30px 32px 0", textAlign: "center", pointerEvents: "none" }}>
-              <h1 style={{ color: "#fff", fontSize: "clamp(34px,5.4vw,68px)", fontWeight: 800, lineHeight: 1.04, letterSpacing: "-0.03em", margin: 0, textShadow: "0 2px 14px rgba(0,0,0,0.35)" }}>
-                מועדון העובדים שלכם. <span style={{ color: CORAL }}>אנחנו מפעילים אותו.</span>
-              </h1>
-              <p style={{ color: "rgba(255,255,255,0.94)", fontSize: "clamp(15px,1.8vw,20px)", fontWeight: 500, lineHeight: 1.5, margin: "12px auto 0", maxWidth: 640, textShadow: "0 1px 8px rgba(0,0,0,0.4)" }}>
-                הטבה חדשה לעובדים כל בוקר, בשם הארגון. אתם מחליטים, אנחנו מבצעים.
-              </p>
-            </div>
 
             {/* In-image CTA — bottom center */}
             {stage === "idle" && (

@@ -22,7 +22,7 @@ export default function Privacy() {
 
           <section>
             <h2 style={{ color: CHARCOAL, fontSize: 20, fontWeight: 700, margin: "0 0 10px" }}>מטרת השימוש</h2>
-            <p style={{ margin: 0 }}>הפרטים נאספים כדי ליצור איתכם קשר ולתאם שיחת הדגמה. אנו לא מוסרים את הפרטים שלכם לצדדים שלישיים לצורך שיווק מטעם עצמם.</p>
+            <p style={{ margin: 0 }}>הפרטים נאספים כדי ליצור איתכם קשר ולתאם שיחת הדגמה. הפרטים נשמרים במערכות שלנו ובספקים שמשמשים אותנו לתפעול (כמו Google לתיאום פגישות), ולא נמסרים לגורם אחר לשיווק מטעמו.</p>
           </section>
 
           <section>
@@ -32,7 +32,7 @@ export default function Privacy() {
 
           <section>
             <h2 style={{ color: CHARCOAL, fontSize: 20, fontWeight: 700, margin: "0 0 10px" }}>כלי מדידה ופרסום</h2>
-            <p style={{ margin: 0 }}>אנו משתמשים בכלי מדידה ופרסום של LinkedIn, כדי למדוד את הגעת הגולשים מהקמפיינים שלנו ולשפר אותם. זיהוי הגולש מתבצע באמצעות עוגיית li_fat_id, ומחוץ ל־LinkedIn איננו מזהים אתכם באופן אישי.</p>
+            <p style={{ margin: 0 }}>אנו משתמשים בכלי מדידה ופרסום של LinkedIn, כדי למדוד את הגעת הגולשים מהקמפיינים שלנו ולשפר אותם. זיהוי הגולש מתבצע באמצעות עוגיית li_fat_id.</p>
           </section>
 
           <section>

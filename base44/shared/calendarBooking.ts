@@ -53,7 +53,7 @@ function jerTimeLabel(utcMs) {
 
 export function jerDayLabel(y, mo, d) {
   const weekday = ["א׳", "ב׳", "ג׳", "ד׳", "ה׳", "ו׳", "ש׳"];
-  const dow = new Date(jerMidnightUTC(y, mo, d)).getUTCDay();
+  const dow = new Date(Date.UTC(y, mo - 1, d)).getUTCDay();
   return `${weekday[dow]} ${pad(d)}/${pad(mo)}`;
 }
 
@@ -68,7 +68,36 @@ export async function getBusyFor(accessToken, calendarId, timeMin, timeMax) {
   if (!res.ok) throw new Error("freebusy_failed");
   const data = await res.json();
   const cal = data.calendars?.[calendarId] || {};
+  if (cal.errors) {
+    console.error("calendar_not_accessible", calendarId, JSON.stringify(cal.errors));
+    throw new Error("calendar_not_accessible");
+  }
   return Array.isArray(cal.busy) ? cal.busy : [];
+}
+
+// freebusy for multiple calendars in one call. A calendar that returns `errors`
+// is logged and treated as fully busy (so the caller falls back to the other
+// calendar) rather than appearing free all day.
+export async function getBusyMap(accessToken, calendarIds, timeMin, timeMax) {
+  const res = await fetch("https://www.googleapis.com/calendar/v3/freeBusy", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${accessToken}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ timeMin, timeMax, items: calendarIds.map((id) => ({ id })) }),
+    signal: AbortSignal.timeout(10000),
+  });
+  if (!res.ok) throw new Error("freebusy_failed");
+  const data = await res.json();
+  const out = {};
+  for (const id of calendarIds) {
+    const cal = data.calendars?.[id] || {};
+    if (cal.errors) {
+      console.error("calendar_not_accessible", id, JSON.stringify(cal.errors));
+      out[id] = [{ start: timeMin, end: timeMax }];
+    } else {
+      out[id] = Array.isArray(cal.busy) ? cal.busy : [];
+    }
+  }
+  return out;
 }
 
 function isFree(busy, startMs, endMs) {
@@ -99,25 +128,20 @@ export async function getDaySlotsForDate(accessToken, y, mo, d, nowMs) {
   const timeMin = new Date(Math.min(nowMs, midnight)).toISOString();
   const timeMax = new Date(dayEnd).toISOString();
   const minStart = nowMs + 3 * 3600000;
+  let busyMap;
+  try {
+    busyMap = await getBusyMap(accessToken, SALES_CALENDARS, timeMin, timeMax);
+  } catch (e) {
+    return [];
+  }
+  const primaryBusy = busyMap[PRIMARY_CALENDAR] || [];
+  const secBusy = busyMap[SALES_CALENDARS[1]] || [];
   const slots = [];
   for (const period of PERIODS) {
     const pStart = midnight + period.startHour * 3600000;
     const pEnd = midnight + period.endHour * 3600000;
-    let startMs = null;
-    try {
-      const primaryBusy = await getBusyFor(accessToken, PRIMARY_CALENDAR, timeMin, timeMax);
-      startMs = findWindow(primaryBusy, pStart, pEnd, minStart);
-    } catch (e) {
-      startMs = null;
-    }
-    if (startMs == null) {
-      try {
-        const secBusy = await getBusyFor(accessToken, SALES_CALENDARS[1], timeMin, timeMax);
-        startMs = findWindow(secBusy, pStart, pEnd, minStart);
-      } catch (e) {
-        startMs = null;
-      }
-    }
+    let startMs = findWindow(primaryBusy, pStart, pEnd, minStart);
+    if (startMs == null) startMs = findWindow(secBusy, pStart, pEnd, minStart);
     if (startMs != null) {
       slots.push({ start: new Date(startMs).toISOString(), label: jerTimeLabel(startMs) });
     }
@@ -128,18 +152,35 @@ export async function getDaySlotsForDate(accessToken, y, mo, d, nowMs) {
 // Next 5 working days (Sun–Thu) with at least one free window.
 export async function getAvailableDays(accessToken) {
   const nowMs = Date.now();
+  const rangeEnd = nowMs + 21 * 86400000;
+  const timeMin = new Date(nowMs).toISOString();
+  const timeMax = new Date(rangeEnd).toISOString();
+  let busyMap;
+  try {
+    busyMap = await getBusyMap(accessToken, SALES_CALENDARS, timeMin, timeMax);
+  } catch (e) {
+    return [];
+  }
+  const primaryBusy = busyMap[PRIMARY_CALENDAR] || [];
+  const secBusy = busyMap[SALES_CALENDARS[1]] || [];
   const out = [];
   for (let i = 0; i < 21 && out.length < 5; i++) {
     const t = nowMs + i * 86400000;
     const { y, mo, d } = jerDateParts(t);
-    const dow = new Date(jerMidnightUTC(y, mo, d)).getUTCDay();
+    const dow = new Date(Date.UTC(y, mo - 1, d)).getUTCDay();
     if (dow > 4) continue; // Fri(5)/Sat(6)
-    try {
-      const slots = await getDaySlotsForDate(accessToken, y, mo, d, nowMs);
-      if (slots.length > 0) out.push({ date: `${y}-${pad(mo)}-${pad(d)}`, label: jerDayLabel(y, mo, d) });
-    } catch (e) {
-      /* skip this day */
+    const midnight = jerMidnightUTC(y, mo, d);
+    const minStart = nowMs + 3 * 3600000;
+    let hasWindow = false;
+    for (const period of PERIODS) {
+      const pStart = midnight + period.startHour * 3600000;
+      const pEnd = midnight + period.endHour * 3600000;
+      if (pEnd <= minStart) continue;
+      let startMs = findWindow(primaryBusy, pStart, pEnd, minStart);
+      if (startMs == null) startMs = findWindow(secBusy, pStart, pEnd, minStart);
+      if (startMs != null) { hasWindow = true; break; }
     }
+    if (hasWindow) out.push({ date: `${y}-${pad(mo)}-${pad(d)}`, label: jerDayLabel(y, mo, d) });
   }
   return out;
 }
