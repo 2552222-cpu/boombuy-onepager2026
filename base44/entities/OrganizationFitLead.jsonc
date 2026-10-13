@@ -48,6 +48,39 @@
       ],
       "default": "fit_completed",
       "description": "\u05e1\u05d8\u05d8\u05d5\u05e1 \u05d4\u05dc\u05d9\u05d3"
+    },
+    "utm_source": {
+      "type": "string",
+      "description": "\u05de\u05e7\u05d5\u05e8 \u05ea\u05e0\u05d5\u05e2\u05d4 - utm_source"
+    },
+    "utm_medium": {
+      "type": "string",
+      "description": "\u05de\u05e7\u05d5\u05e8 \u05ea\u05e0\u05d5\u05e2\u05d4 - utm_medium"
+    },
+    "utm_campaign": {
+      "type": "string",
+      "description": "\u05de\u05e7\u05d5\u05e8 \u05ea\u05e0\u05d5\u05e2\u05d4 - utm_campaign"
+    },
+    "utm_content": {
+      "type": "string",
+      "description": "\u05de\u05e7\u05d5\u05e8 \u05ea\u05e0\u05d5\u05e2\u05d4 - utm_content"
+    },
+    "li_fat_id": {
+      "type": "string",
+      "description": "LinkedIn li_fat_id (first-party)"
+    },
+    "landing_url": {
+      "type": "string",
+      "description": "URL \u05d4\u05e0\u05d7\u05d9\u05ea\u05d4 \u05e9\u05de\u05de\u05e0\u05d5 \u05d4\u05d2\u05d9\u05e2 \u05d4\u05dc\u05d9\u05d3"
+    },
+    "meetingAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "\u05de\u05d5\u05e2\u05d3 \u05d4\u05e4\u05d2\u05d9\u05e9\u05d4 \u05e9\u05e0\u05e7\u05d1\u05e2\u05d4"
+    },
+    "assignedTo": {
+      "type": "string",
+      "description": "\u05db\u05ea\u05d5\u05d1\u05ea \u05d4\u05d9\u05d5\u05de\u05df \u05e9\u05e7\u05d9\u05d1\u05dc\u05d4 \u05d0\u05ea \u05d4\u05e4\u05d2\u05d9\u05e9\u05d4"
     }
   },
   "required": [

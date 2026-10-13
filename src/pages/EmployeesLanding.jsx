@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import GlobalHeader from "../components/employees/GlobalHeader";
 import HeroTransformation from "../components/employees/HeroTransformation";
 import PlatformExplanation from "../components/employees/PlatformExplanation";
@@ -11,6 +11,8 @@ import GlobalFooter from "../components/employees/GlobalFooter";
 import PromiseBand from "../components/employees/PromiseBand";
 import OfferPaths from "../components/employees/OfferPaths";
 import FAQ from "../components/employees/FAQ";
+import { captureLeadSource } from "../lib/leadSource";
+import { initLinkedIn } from "../lib/linkedin";
 import PersistentCTA from "../components/employees/PersistentCTA";
 import LogoRail from "../components/employees/LogoRail";
 import { LAYOUT } from "../components/employees/layoutTokens";
@@ -20,6 +22,10 @@ const BOTTOM_RESERVE =
   LAYOUT.RAIL_HEIGHT_DESKTOP + LAYOUT.CTA_H_DESKTOP + LAYOUT.CTA_BOTTOM_MARGIN;
 
 export default function EmployeesLanding() {
+  useEffect(() => {
+    captureLeadSource();
+    initLinkedIn();
+  }, []);
   return (
     <div
       dir="rtl"
@@ -33,9 +39,9 @@ export default function EmployeesLanding() {
       <GlobalHeader />
       <HeroTransformation />
       <PromiseBand />
+      <FeaturedOffersSlider />
       <PlatformExplanation />
       <OfferPaths />
-      <FeaturedOffersSlider />
       <OperationSteps />
       <Testimonials />
       <FAQ />

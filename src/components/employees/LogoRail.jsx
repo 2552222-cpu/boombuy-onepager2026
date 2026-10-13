@@ -44,7 +44,7 @@ function SlotLogo({ src, name, alt, slotW, logoH }) {
         onError={() => setErr(true)}
         style={{
           height: logoH,
-          maxWidth: `calc(${slotW}px - 28px)`,
+          maxWidth: `calc(${slotW}px - 20px)`,
           width: "auto",
           objectFit: "contain",
           display: "block",

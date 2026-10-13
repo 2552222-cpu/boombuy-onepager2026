@@ -54,7 +54,7 @@ export default function OfferPaths() {
             margin: 0,
           }}
         >
-          שני מסלולים. <span style={{ color: CORAL }}>היקף שנבנה יחד.</span>
+          למי זה מתאים
         </motion.h2>
 
         <motion.p

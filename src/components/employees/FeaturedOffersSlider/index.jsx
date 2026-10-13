@@ -270,6 +270,16 @@ function OfferModal({ offer, isMobile, onClose, onPrev, onNext, onSelectIdx, ope
             <PriceTag label="מחיר לעובדים" amount={offer.priceNew} color={CHARCOAL} bg="#FBFAF8" />
             <PriceTag label="חיסכון" amount={offer.saving} color="#1A7A43" bg="rgba(52,199,89,0.10)" />
           </div>
+
+          <div style={{ marginTop: 22, textAlign: "right" }}>
+            <p style={{ fontSize: 14, fontWeight: 700, color: "#3A3C42", margin: "0 0 10px" }}>ככה זה הגיע לעובדים, בשם הארגון:</p>
+            <div style={{ background: "#E7F6E3", borderRadius: "18px 18px 4px 18px", padding: "14px 16px", position: "relative", maxWidth: 460 }}>
+              <p style={{ fontSize: 15, color: "#1A1A1A", lineHeight: 1.55, margin: 0 }}>
+                ☀️ ההטבה של הבוקר ממועדון ההטבות של [שם הארגון]: {offer.productName} ב־₪{offer.priceNew} במקום ₪{offer.priceOld}. היום בלבד.
+              </p>
+              <span style={{ display: "block", fontSize: 11, color: "#5A7A4A", marginTop: 6, textAlign: "left" }}>07:30 ✓✓</span>
+            </div>
+          </div>
         </div>
       </motion.div>
     </motion.div>
@@ -455,13 +465,10 @@ export default function FeaturedOffersSlider() {
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
           style={{ fontSize: "clamp(28px,4.6vw,46px)", fontWeight: 800, color: "#17191D", letterSpacing: "-0.03em", lineHeight: 1.08, margin: "0 0 14px" }}
         >
-          הטבות שמתחלפות. <span style={{ color: CORAL }}>ערך שמתחדש.</span>
+          כל בוקר משהו חדש. <span style={{ color: CORAL }}>ותמיד במחיר הכי נמוך בישראל.</span>
         </motion.h2>
-        <p style={{ fontSize: "clamp(16px,1.4vw,20px)", color: "#3A3C42", lineHeight: 1.5, maxWidth: 640, margin: "0 auto 10px" }}>
-          דוגמאות אמיתיות להטבות לעובדים מהתקופה האחרונה.
-        </p>
-        <p style={{ fontSize: 15, color: "#6E6E73", lineHeight: 1.55, maxWidth: 600, margin: "0 auto 36px" }}>
-          ההזדמנויות מתחדשות לאורך השנה. הזמינות והתנאים משתנים.
+        <p style={{ fontSize: "clamp(16px,1.4vw,20px)", color: "#3A3C42", lineHeight: 1.5, maxWidth: 680, margin: "0 auto 36px" }}>
+          ככה נראו ההטבות היומיות של העובדים בשבועות האחרונים. לחצו על הטבה כדי לראות את הפרטים.
         </p>
 
         {/* Controls */}
@@ -507,7 +514,7 @@ export default function FeaturedOffersSlider() {
           tabIndex={0}
           role="group"
           aria-label="קרוסלת הטבות"
-          style={{ position: "relative", height: imgH + 56, perspective: "1500px", touchAction: "pan-y", outline: "none" }}
+          style={{ position: "relative", height: imgH + 170, perspective: "1500px", touchAction: "pan-y", outline: "none" }}
         >
           {reducedMotion ? (
             // Flat, no 3D / no blur — full content, all 9 reachable via controls.
@@ -537,7 +544,7 @@ export default function FeaturedOffersSlider() {
                     top: "50%",
                     left: "50%",
                     marginLeft: -cardW / 2,
-                    marginTop: -(imgH + 56) / 2,
+                    marginTop: -(imgH + 170) / 2,
                     width: cardW,
                     zIndex: 10 - circAbs,
                     cursor: "pointer",
@@ -550,8 +557,8 @@ export default function FeaturedOffersSlider() {
           )}
         </div>
 
-        <p style={{ fontSize: 13, color: "#9AA0A6", lineHeight: 1.5, maxWidth: 620, margin: "18px auto 0" }}>
-          הדוגמאות ממחישות הטבות שהוצעו לאחרונה. הזמינות והתנאים משתנים.
+        <p style={{ fontSize: 13, color: "#9AA0A6", lineHeight: 1.5, maxWidth: 660, margin: "18px auto 0" }}>
+          דוגמאות מהתקופה האחרונה. ההבטחה למחיר הנמוך בישראל חלה על ההטבה היומית ביום שלה.
         </p>
 
         <div style={{ marginTop: 36, display: "flex", justifyContent: "center" }}>
@@ -607,32 +614,24 @@ function Card({ offer, index, cardW, imgH, isCenter, onCardClick, openFromButton
     <div style={{ width: cardW, display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }} onClick={(e) => onCardClick(index, e.currentTarget)}>
       <div style={{ width: "100%", height: imgH, background: "#F5F5F7", borderRadius: 28, overflow: "hidden", boxShadow: isCenter ? "0 28px 70px rgba(0,0,0,0.14)" : "0 6px 20px rgba(0,0,0,0.06)", position: "relative" }}>
         <img src={offer.img} loading={index === 0 ? "eager" : "lazy"} alt={offer.productName} style={{ width: "100%", height: "100%", objectFit: "contain", background: "#F5F5F7", display: "block" }} draggable={false} />
+        {isCenter && (
+          <span style={{ position: "absolute", top: 12, right: 12, background: "#E6F4EC", color: "#1A7A43", fontWeight: 800, fontSize: 13, padding: "6px 10px", borderRadius: 999, boxShadow: "0 2px 8px rgba(0,0,0,0.08)" }}>
+            חוסכים ₪{offer.saving}
+          </span>
+        )}
       </div>
       {isCenter && (
-        <button
-          type="button"
-          onClick={(e) => { e.stopPropagation(); openFromButton(e.currentTarget); }}
-          aria-label={`פרטי ההטבה: ${offer.productName}`}
-          style={{
-            width: "90%",
-            background: "rgba(255,255,255,0.55)",
-            backdropFilter: "blur(8px)",
-            WebkitBackdropFilter: "blur(8px)",
-            border: "1px solid rgba(23,25,29,0.14)",
-            borderRadius: 14,
-            height: 44,
-            fontFamily: "inherit",
-            fontWeight: 700,
-            fontSize: 14,
-            color: "#17191D",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          פרטי ההטבה
-        </button>
+        <div style={{ width: "100%", background: "#fff", borderRadius: 22, margin: "0 8px 8px", padding: 16, boxSizing: "border-box", textAlign: "right", boxShadow: "0 6px 20px rgba(0,0,0,0.06)" }}>
+          <p style={{ fontSize: 12, fontWeight: 700, color: "#C24A2C", margin: "0 0 2px" }}>{offer.brand}</p>
+          <p style={{ fontSize: 17, fontWeight: 700, color: "#15172A", margin: "0 0 8px", lineHeight: 1.25 }}>{offer.productName}</p>
+          <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 6 }}>
+            <span style={{ fontSize: 26, fontWeight: 900, color: "#15172A", lineHeight: 1 }}>₪{offer.priceNew}</span>
+            <span style={{ fontSize: 15, color: "#9AA0A6", textDecoration: "line-through" }}>₪{offer.priceOld}</span>
+          </div>
+          <button type="button" onClick={(e) => { e.stopPropagation(); openFromButton(e.currentTarget); }} style={{ background: "none", border: "none", color: CORAL, fontFamily: "inherit", fontWeight: 700, fontSize: 13, cursor: "pointer", padding: 0 }}>
+            לפרטי ההטבה ←
+          </button>
+        </div>
       )}
     </div>
   );

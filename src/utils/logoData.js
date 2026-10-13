@@ -1,7 +1,6 @@
 // כל הלוגואים שמורים במקום אחד עם שמות
 // לוגו 3 = תעש (index 2), לוגו 25 = Check Point (index 24)
 export const logoList = [
-  { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/2f10b2609_17.png", name: "לאומי" },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/f26a5145d_-2026-02-18T184914549.png", name: "ישראייר" },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8003c0d5a_62.png", name: "תעש" },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/dff369112_61.png", name: "קרן קיימת" },
@@ -37,7 +36,7 @@ export const allLogos = logoList.map(l => l.url);
 
 // שורה 1 — לפי שם (מחזיר אובייקטים עם url ושם, לצורך fallback טקסט אם תמונה שבורה)
 export const rowA = [
-  "לאומי", "Teva", "סלקום", "אלקטרה אפיקים", "Estee Lauder", "קרן קיימת",
+  "Teva", "סלקום", "אלקטרה אפיקים", "Estee Lauder", "קרן קיימת",
   "בנק ישראל", "ZIM", "מזרחי טפחות", "ORT", "אלבר", "בזן",
   "HOT mobile", "ONE", "MAX", "AMOT", "הבינלאומי", "תדהר",
 ].map(name => {

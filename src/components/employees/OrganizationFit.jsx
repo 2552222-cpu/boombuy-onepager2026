@@ -2,6 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { base44 } from "@/api/base44Client";
 import { scrollToId } from "./uiHelpers";
+import { readLeadSource } from "@/lib/leadSource";
+import { trackLinkedInConversion } from "@/lib/linkedin";
+import { LINKEDIN_CONV_LEAD } from "@/lib/siteConfig";
 
 const BG = "#F7F7F4";
 const CHARCOAL = "#17191D";
@@ -193,6 +196,7 @@ export default function OrganizationFit() {
       return;
     }
     if (!sessionIdRef.current) sessionIdRef.current = genSessionId();
+    const source = readLeadSource();
     const payload = {
       sessionId: sessionIdRef.current,
       orgSize: answers.orgSize,
@@ -204,6 +208,12 @@ export default function OrganizationFit() {
       email: form.email.trim(),
       consent: true,
       status: "fit_completed",
+      utm_source: source.utm_source || "",
+      utm_medium: source.utm_medium || "",
+      utm_campaign: source.utm_campaign || "",
+      utm_content: source.utm_content || "",
+      li_fat_id: source.li_fat_id || "",
+      landing_url: source.landing_url || "",
     };
     try {
       await base44.entities.OrganizationFitLead.create(payload);
@@ -236,7 +246,19 @@ export default function OrganizationFit() {
     } catch (err) {
       /* ignore */
     }
-    window.dispatchEvent(new CustomEvent("boom_fit_submitted"));
+    try {
+      base44.functions.invoke("notifyNewLead", { sessionId: sessionIdRef.current });
+    } catch (err) {
+      /* best-effort */
+    }
+    try {
+      trackLinkedInConversion(LINKEDIN_CONV_LEAD);
+    } catch (err) {
+      /* ignore */
+    }
+    window.dispatchEvent(
+      new CustomEvent("boom_fit_submitted", { detail: { sessionId: sessionIdRef.current, orgName: payload.orgName, fullName: payload.fullName, email: payload.email, phone: payload.phone } })
+    );
     // Move focus to the confirmation, then scroll to the booking/confirmation area.
     window.setTimeout(() => {
       successRef.current?.focus?.();
@@ -416,6 +438,7 @@ export default function OrganizationFit() {
                     />
                     <span>אני מאשר/ת לבום ביי ליצור איתי קשר בנוגע להדגמת המערכת.</span>
                   </label>
+                  <a href="/privacy" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", fontSize: 13, color: "#6E7177", textDecoration: "underline", marginTop: 2 }}>מדיניות הפרטיות</a>
 
                   {error && <p role="alert" style={{ color: "#C0392B", fontSize: 15, margin: "4px 0 0" }}>{error}</p>}
 

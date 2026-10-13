@@ -20,3 +20,11 @@ export const isEmployeeDemoConfigured = () =>
 
 export const isCalendarConfigured = () =>
   Boolean(GOOGLE_CALENDAR_BOOKING_URL && GOOGLE_CALENDAR_BOOKING_URL.trim());
+
+// LinkedIn Insight Tag — empty means disabled (no tag loaded, no conversions sent).
+export const LINKEDIN_PARTNER_ID = "";
+export const LINKEDIN_CONV_LEAD = "";
+export const LINKEDIN_CONV_MEETING = "";
+
+export const isLinkedInEnabled = () =>
+  Boolean(LINKEDIN_PARTNER_ID && LINKEDIN_PARTNER_ID.trim());

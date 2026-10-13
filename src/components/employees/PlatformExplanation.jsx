@@ -97,9 +97,9 @@ export default function PlatformExplanation() {
                 margin: 0,
               }}
             >
-              מועדון העובדים שלכם.
+              כל מה שהעובדים צריכים.
               <br />
-              <span style={{ color: CORAL }}>אנחנו מפעילים אותו.</span>
+              <span style={{ color: CORAL }}>בלי שתרימי טלפון.</span>
             </motion.h2>
 
             <motion.p

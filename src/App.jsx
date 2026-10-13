@@ -10,6 +10,7 @@ import EmployeesLanding from './pages/EmployeesLanding.jsx';
 import AdminDashboard from './pages/AdminDashboard';
 import ResultsPage from './pages/ResultsPage';
 import OrgPage from './pages/OrgPage';
+import Privacy from './pages/Privacy';
 // Add page imports here
 
 const AuthenticatedApp = () => {
@@ -48,6 +49,7 @@ const AuthenticatedApp = () => {
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/results" element={<ResultsPage />} />
           <Route path="/join/:orgSlug" element={<OrgPage />} />
+          <Route path="/privacy" element={<Privacy />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </motion.div>
