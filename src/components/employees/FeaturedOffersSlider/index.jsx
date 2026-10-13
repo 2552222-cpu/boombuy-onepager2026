@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useInView, useMotionValue, useSpring } from "framer-motion";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import { scrollToId } from "../uiHelpers";
@@ -285,7 +285,8 @@ function OfferModal({ offer, isMobile, onClose, onPrev, onNext, onSelectIdx, ope
   );
 }
 
-const SPRING = { type: "spring", stiffness: 260, damping: 32, mass: 0.9 };
+const SPRING = { type: "spring", stiffness: 240, damping: 30, mass: 0.9 };
+const EASE = [0.22, 1, 0.36, 1];
 
 // ─── MAIN ─────────────────────────────────────────────────────────────────────
 export default function FeaturedOffersSlider() {
@@ -294,23 +295,19 @@ export default function FeaturedOffersSlider() {
   const [isMobile, setIsMobile] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [frameW, setFrameW] = useState(0);
-  const [dragOffset, setDragOffset] = useState(0);
+  const [dragX, setDragX] = useState(0);
   const [dragging, setDragging] = useState(false);
   const secRef = useRef(null);
   const viewportRef = useRef(null);
   const firedBenefitsView = useRef(false);
   const openerRef = useRef(null);
-
-  // drag state
-  const dragRef = useRef({ active: false, startX: 0, startY: 0, axis: null, lastDx: 0, lastT: 0 });
-  // suppress the click that follows a real horizontal drag (don't open the modal)
   const suppressClickRef = useRef(false);
   const wheelLockRef = useRef(0);
+  const inView = useInView(viewportRef, { amount: 0.25 });
+  const [entered, setEntered] = useState(false);
 
   useEffect(() => {
-    const check = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
+    const check = () => setIsMobile(window.innerWidth < 768);
     check();
     window.addEventListener("resize", check);
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -331,118 +328,66 @@ export default function FeaturedOffersSlider() {
     measure();
     const ro = new ResizeObserver(measure);
     if (viewportRef.current) ro.observe(viewportRef.current);
-    window.addEventListener("resize", measure);
-    return () => {
-      ro.disconnect();
-      window.removeEventListener("resize", measure);
-    };
+    return () => ro.disconnect();
   }, []);
 
   useEffect(() => {
-    const el = secRef.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting && !firedBenefitsView.current) {
-            firedBenefitsView.current = true;
-            try {
-              base44.analytics.track({ eventName: "benefits_viewed" });
-            } catch (err) {
-              /* ignore */
-            }
-            io.disconnect();
-          }
-        });
-      },
-      { threshold: 0.4 }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
+    if (inView && !entered) setEntered(true);
+    if (inView && !firedBenefitsView.current) {
+      firedBenefitsView.current = true;
+      try { base44.analytics.track({ eventName: "benefits_viewed" }); } catch (err) { /* ignore */ }
+    }
+  }, [inView, entered]);
 
-  const go = useCallback((dir) => {
-    setIndex((p) => (p + dir + OFFERS.length) % OFFERS.length);
-  }, []);
+  const n = OFFERS.length;
+  const go = useCallback((dir) => setIndex((p) => (p + dir + n) % n), [n]);
 
-  // ── Pointer drag: lock only when horizontal dominates; vertical page scroll works ─
-  const onPointerDown = (e) => {
-    if (e.pointerType === "mouse" && e.button !== 0) return;
-    dragRef.current = { active: true, startX: e.clientX, startY: e.clientY, axis: null, lastDx: 0, lastT: e.timeStamp };
+  // ── Geometry ────────────────────────────────────────────────────────────────
+  const cardW = isMobile ? Math.round(Math.min(Math.max(frameW * 0.72, 230), 300)) : 280;
+  const imgH = Math.round(cardW * 1.22);
+  const spacing = isMobile ? Math.round(cardW * 0.78) : 250;
+  const maxVisible = isMobile ? 2 : 3;
+  const stageH = imgH + 70; // room for float + hover lift, so nothing is clipped top/bottom
+
+  // ── Drag (mouse + touch) via framer pan: works with a finger and a mouse, vertical page scroll stays native
+  const onPanStart = () => {
     setDragging(true);
-    try {
-      viewportRef.current?.setPointerCapture?.(e.pointerId);
-    } catch (err) {
-      /* ignore */
-    }
+    suppressClickRef.current = false;
   };
-  const onPointerMove = (e) => {
-    const d = dragRef.current;
-    if (!d.active) return;
-    const dx = d.startX - e.clientX;
-    const dy = d.startY - e.clientY;
-    if (!d.axis && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) {
-      d.axis = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
-    }
-    if (d.axis === "x") {
-      if (Math.abs(dx) > 8) suppressClickRef.current = true;
-      setDragOffset(dx);
-      d.lastDx = dx;
-      d.lastT = e.timeStamp;
-    }
+  const onPan = (e, info) => {
+    if (Math.abs(info.offset.x) > 6) suppressClickRef.current = true;
+    setDragX(info.offset.x);
   };
-  const endDrag = (e) => {
-    const d = dragRef.current;
-    if (!d.active) return;
-    const dx = d.startX - (e?.clientX ?? d.startX);
-    const dt = Math.max(1, e?.timeStamp - d.lastT || 0);
-    const velocity = (dx - d.lastDx) / dt; // px/ms
-    dragRef.current = { active: false, startX: 0, startY: 0, axis: null, lastDx: 0, lastT: 0 };
+  const onPanEnd = (e, info) => {
+    const dx = info.offset.x;
+    const vx = info.velocity.x;
+    // finger moves left (dx < 0) → next card, matching the "next" arrow
+    let shift = Math.round(-dx / spacing);
+    if (shift === 0 && Math.abs(vx) > 400) shift = vx < 0 ? 1 : -1;
+    shift = Math.max(-3, Math.min(3, shift));
+    if (shift !== 0) setIndex((p) => (p + shift + n) % n);
+    setDragX(0);
     setDragging(false);
-    try {
-      viewportRef.current?.releasePointerCapture?.(e?.pointerId);
-    } catch (err) {
-      /* ignore */
-    }
-    if (d.axis !== "x") {
-      setDragOffset(0);
-      return;
-    }
-    let shift = Math.round(dx / spacing);
-    if (Math.abs(velocity) > 0.5 && shift === 0) shift = dx > 0 ? 1 : -1;
-    if (shift !== 0) setIndex((p) => (p + shift + OFFERS.length) % OFFERS.length);
-    setDragOffset(0);
-    window.setTimeout(() => { suppressClickRef.current = false; }, 60);
-  };
-  const onPointerCancel = () => {
-    dragRef.current = { active: false, startX: 0, startY: 0, axis: null, lastDx: 0, lastT: 0 };
-    setDragging(false);
-    setDragOffset(0);
+    window.setTimeout(() => { suppressClickRef.current = false; }, 80);
   };
 
-  // ── Wheel: horizontal wheel or shift+wheel moves one card, throttled 380ms. Vertical page scroll untouched.
+  // ── Trackpad / horizontal wheel: one card per gesture, vertical page scroll untouched
   const onWheel = (e) => {
-    const horizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY) || e.shiftKey;
+    const horizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY) * 1.2 || e.shiftKey;
     if (!horizontal) return;
     const d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+    if (Math.abs(d) < 8) return;
     const now = Date.now();
-    if (now - wheelLockRef.current < 380) return;
+    if (now - wheelLockRef.current < 420) return;
     wheelLockRef.current = now;
     go(d > 0 ? 1 : -1);
   };
 
-  const onCardClick = (i, btnEl) => {
-    if (suppressClickRef.current) {
-      suppressClickRef.current = false;
-      return; // suppress the click that follows a drag
-    }
+  const onCardClick = (i, el) => {
+    if (suppressClickRef.current) return;
     if (i === index) {
-      try {
-        base44.analytics.track({ eventName: "benefit_opened" });
-      } catch (err) {
-        /* ignore */
-      }
-      openerRef.current = btnEl;
+      try { base44.analytics.track({ eventName: "benefit_opened" }); } catch (err) { /* ignore */ }
+      openerRef.current = el;
       setSelectedIdx(i);
     } else {
       setIndex(i);
@@ -450,194 +395,185 @@ export default function FeaturedOffersSlider() {
   };
 
   const closeModal = () => setSelectedIdx(null);
-  const modalPrev = () => setSelectedIdx((p) => (p - 1 + OFFERS.length) % OFFERS.length);
-  const modalNext = () => setSelectedIdx((p) => (p + 1) % OFFERS.length);
+  const modalPrev = () => setSelectedIdx((p) => (p - 1 + n) % n);
+  const modalNext = () => setSelectedIdx((p) => (p + 1 + n) % n);
 
-  // ── Geometry ────────────────────────────────────────────────────────────────
-  const cardW = isMobile ? Math.min(Math.max(frameW * 0.8, 240), 320) : 260;
-  const imgH = isMobile ? Math.round(cardW * 1.22) : 340;
-  const spacing = isMobile ? Math.round(cardW * 0.82) : 230;
-  const sideScale = 0.86;
-  const rotateYAmt = isMobile ? 16 : 24;
-  const maxVisible = isMobile ? 3 : 4;
-
-  const n = OFFERS.length;
-  const cardTransition = (dragging || reducedMotion) ? { duration: 0 } : SPRING;
+  const offer = OFFERS[index];
 
   return (
     <section
       id="benefits"
       ref={secRef}
       dir="rtl"
-      style={{ background: "#FFFFFF", padding: "84px 20px 92px", fontFamily: "var(--font-heebo), Heebo, Arial, sans-serif", overflowX: "hidden" }}
+      style={{ background: "#FFFFFF", padding: "84px 0 92px", fontFamily: "var(--font-heebo), Heebo, Arial, sans-serif", overflow: "hidden" }}
     >
       <style>{`
-        @media (max-width:768px){ #benefits{ padding:48px 16px 56px !important; } }
-        .fo-card-inner{ transition: transform .25s ease, box-shadow .25s ease; will-change: transform; }
-        .fo-card-inner.fo-center:hover{ transform: translateY(-4px); }
-        .fo-card-inner.fo-center:hover .fo-card-img{ box-shadow: 0 36px 90px rgba(0,0,0,0.20); }
+        @media (max-width:768px){ #benefits{ padding:48px 0 56px !important; } }
+        .fo-stage{ -webkit-mask-image:linear-gradient(to right, transparent 0, #000 9%, #000 91%, transparent 100%); mask-image:linear-gradient(to right, transparent 0, #000 9%, #000 91%, transparent 100%); }
+        @media (max-width:768px){ .fo-stage{ -webkit-mask-image:linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%); mask-image:linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%); } }
         .fo-cta{ transition: transform .18s ease, box-shadow .18s ease; }
         .fo-cta:hover{ transform: translateY(-1px); box-shadow: 0 12px 30px rgba(23,25,29,0.24); }
         .fo-cta:active{ transform: scale(0.98); }
         .fo-nav{ transition: transform .18s ease, box-shadow .18s ease; }
         .fo-nav:hover{ transform: translateY(-1px); box-shadow: 0 8px 22px rgba(0,0,0,0.14); }
-        .fo-nav:active{ transform: scale(0.98); }
-        @media (prefers-reduced-motion: reduce){ .fo-card-inner{ transition:none; } .fo-cta,.fo-nav{ transition:none; } }
+        .fo-nav:active{ transform: scale(0.96); }
+        .fo-stage:focus-visible{ outline:3px solid rgba(244,122,90,0.55); outline-offset:4px; border-radius:24px; }
+        @keyframes fo-sheen{ from{ transform:translateX(-120%) skewX(-18deg); } to{ transform:translateX(220%) skewX(-18deg); } }
+        @media (prefers-reduced-motion: reduce){ .fo-cta,.fo-nav{ transition:none; } }
       `}</style>
 
-      <div style={{ maxWidth: 1100, margin: "0 auto", textAlign: "center" }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto", textAlign: "center", padding: "0 20px" }}>
         <motion.h2
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          style={{ fontSize: "clamp(28px,4.6vw,46px)", fontWeight: 800, color: "#17191D", letterSpacing: "-0.03em", lineHeight: 1.08, margin: "0 0 14px" }}
+          transition={{ duration: 0.55, ease: EASE }}
+          style={{ fontSize: "clamp(28px,4.6vw,46px)", fontWeight: 800, color: "#17191D", letterSpacing: "-0.03em", lineHeight: 1.08, margin: "0 0 14px", textWrap: "balance" }}
         >
           כל בוקר משהו חדש. <span style={{ color: "#C24A2C" }}>ותמיד במחיר הכי נמוך בישראל.</span>
         </motion.h2>
-        <p style={{ fontSize: "clamp(16px,1.4vw,20px)", color: "#3A3C42", lineHeight: 1.5, maxWidth: 680, margin: "0 auto 36px" }}>
-          ככה נראו ההטבות היומיות של העובדים בשבועות האחרונים. לחצו על הטבה כדי לראות את הפרטים.
-        </p>
-
-        {/* Controls */}
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 12, marginBottom: 18 }}>
-          <button type="button" onClick={() => go(-1)} aria-label="הטבה הקודמת" style={navBtn()}>
-            <ChevronRight size={22} color="#17191D" />
-          </button>
-          {isMobile ? (
-            <span aria-live="polite" style={{ fontSize: 14, fontWeight: 600, color: "#17191D", minWidth: 64 }}>
-              {index + 1} מתוך {n}
-            </span>
-          ) : (
-            <div style={{ display: "flex", gap: 6 }}>
-              {OFFERS.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setIndex(i)}
-                  aria-label={`עבור להטבה ${i + 1}`}
-                  aria-current={i === index}
-                  style={{ width: 44, height: 44, border: "none", background: "transparent", padding: 0, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
-                >
-                  <span style={{ width: i === index ? 22 : 8, height: 8, borderRadius: 999, background: i === index ? CORAL : "rgba(19,21,29,0.16)", transition: "all .25s ease" }} />
-                </button>
-              ))}
-            </div>
-          )}
-          <button type="button" onClick={() => go(1)} aria-label="הטבה הבאה" style={navBtn()}>
-            <ChevronLeft size={22} color="#17191D" />
-          </button>
-        </div>
-
-        {/* Carousel viewport */}
-        <div
-          ref={viewportRef}
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={endDrag}
-          onPointerCancel={onPointerCancel}
-          onWheel={onWheel}
-          onKeyDown={(e) => {
-            if (e.key === "ArrowLeft") { e.preventDefault(); go(1); }
-            else if (e.key === "ArrowRight") { e.preventDefault(); go(-1); }
-          }}
-          tabIndex={0}
-          role="group"
-          aria-label="קרוסלת הטבות"
-          style={{ position: "relative", height: imgH + 40, perspective: "1500px", touchAction: "pan-y", outline: "none", cursor: dragging ? "grabbing" : "grab", userSelect: dragging ? "none" : "auto" }}
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.55, ease: EASE, delay: 0.08 }}
+          style={{ fontSize: "clamp(16px,1.4vw,20px)", color: "#3A3C42", lineHeight: 1.5, maxWidth: 680, margin: "0 auto 26px", textWrap: "pretty" }}
         >
-          {reducedMotion ? (
-            // Flat, no 3D / no blur — full content, all 9 reachable via controls.
-            <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <Card offer={OFFERS[index]} index={index} cardW={cardW} imgH={imgH} isCenter onCardClick={onCardClick} />
-            </div>
-          ) : (
-            OFFERS.map((offer, i) => {
-              const offset = i - index;
-              const circOffset = offset > n / 2 ? offset - n : offset < -n / 2 ? offset + n : offset;
-              const circAbs = Math.abs(circOffset);
-              if (circAbs > maxVisible) return null;
-              const isCenter = circOffset === 0;
-              return (
-                <motion.div
-                  key={offer.id}
-                  initial={{ opacity: 0 }}
-                  animate={{
-                    opacity: isCenter ? 1 : 0.55,
-                    x: circOffset * spacing - dragOffset,
-                    y: 0,
-                    scale: isCenter ? 1.0 : sideScale,
-                    rotateY: circOffset * -rotateYAmt,
-                    z: isCenter ? 150 : -80,
-                  }}
-                  transition={cardTransition}
-                  style={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    marginLeft: -cardW / 2,
-                    marginTop: -(imgH + 40) / 2,
-                    width: cardW,
-                    zIndex: 10 - circAbs,
-                    cursor: "pointer",
-                  }}
-                >
-                  <Card offer={offer} index={i} cardW={cardW} imgH={imgH} isCenter={isCenter} onCardClick={onCardClick} />
-                </motion.div>
-              );
-            })
-          )}
-        </div>
+          ככה נראו ההטבות היומיות של העובדים בשבועות האחרונים. גוללים, ולוחצים על הטבה כדי לראות את הפרטים.
+        </motion.p>
+      </div>
 
-        <div style={{ display: "flex", justifyContent: "center", marginTop: 18 }}>
-          <div style={{ width: cardW, minHeight: 150, textAlign: "right", boxSizing: "border-box" }}>
-            <AnimatePresence mode="wait">
+      {/* Stage */}
+      <motion.div
+        ref={viewportRef}
+        className="fo-stage"
+        onPanStart={onPanStart}
+        onPan={onPan}
+        onPanEnd={onPanEnd}
+        onWheel={onWheel}
+        onKeyDown={(e) => {
+          if (e.key === "ArrowLeft") { e.preventDefault(); go(1); }
+          else if (e.key === "ArrowRight") { e.preventDefault(); go(-1); }
+        }}
+        tabIndex={0}
+        role="group"
+        aria-roledescription="קרוסלה"
+        aria-label="קרוסלת הטבות"
+        data-lenis-prevent
+        style={{ position: "relative", height: stageH, perspective: 1400, touchAction: "pan-y", cursor: dragging ? "grabbing" : "grab", userSelect: "none", WebkitUserSelect: "none" }}
+      >
+        {OFFERS.map((o, i) => {
+          const offset = i - index;
+          const circ = offset > n / 2 ? offset - n : offset < -n / 2 ? offset + n : offset;
+          const abs = Math.abs(circ);
+          if (abs > maxVisible) return null;
+          const isCenter = circ === 0;
+          // RTL reading order: the next card sits to the left
+          const x = -circ * spacing + dragX;
+          const show = entered || reducedMotion;
+          return (
+            <motion.div
+              key={o.id}
+              initial={false}
+              animate={{
+                x: show ? x : x + (circ <= 0 ? 90 : -90),
+                opacity: show ? 1 : 0,
+                scale: isCenter ? 1 : abs === 1 ? 0.86 : 0.74,
+                rotateY: reducedMotion ? 0 : circ * 22,
+              }}
+              transition={
+                dragging
+                  ? { type: "tween", duration: 0 }
+                  : reducedMotion
+                  ? { duration: 0.15 }
+                  : { ...SPRING, opacity: { duration: 0.5, delay: entered ? 0 : abs * 0.08 } }
+              }
+              style={{
+                position: "absolute",
+                top: 30,
+                left: "50%",
+                marginLeft: -cardW / 2,
+                width: cardW,
+                zIndex: 20 - abs,
+                transformStyle: "preserve-3d",
+              }}
+            >
+              <Card
+                offer={o}
+                index={i}
+                cardW={cardW}
+                imgH={imgH}
+                isCenter={isCenter}
+                depth={abs}
+                floating={!reducedMotion && inView && !dragging}
+                tilt={!isMobile && !reducedMotion && isCenter && !dragging}
+                onCardClick={onCardClick}
+              />
+            </motion.div>
+          );
+        })}
+      </motion.div>
+
+      <div style={{ maxWidth: 1100, margin: "0 auto", textAlign: "center", padding: "0 20px" }}>
+        {/* Details of the centered offer */}
+        <div style={{ display: "flex", justifyContent: "center", marginTop: 6 }}>
+          <div style={{ width: Math.max(cardW, 280), minHeight: 104, textAlign: "right", boxSizing: "border-box" }} aria-live="polite">
+            {/* Keyed re-mount: the new offer fades in immediately (no exit wait, never gets stuck) */}
               <motion.div
-                key={OFFERS[index].id}
-                initial={{ opacity: 0, y: 6 }}
+                key={offer.id}
+                initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={{ duration: 0.22, ease: "easeOut" }}
+                transition={{ duration: 0.28, ease: "easeOut" }}
               >
-                <p style={{ fontSize: 12, fontWeight: 700, color: "#C24A2C", margin: "0 0 2px", letterSpacing: "0.02em" }}>{OFFERS[index].brand}</p>
-                <p style={{ fontSize: 17, fontWeight: 700, color: "#15172A", margin: "0 0 8px", lineHeight: 1.25 }}>{OFFERS[index].productName}</p>
-                <div style={{ display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap" }}>
-                  <span style={{ fontSize: 26, fontWeight: 900, color: "#15172A", lineHeight: 1 }}>₪{OFFERS[index].priceNew}</span>
-                  <span style={{ fontSize: 15, color: STRIKE, textDecoration: "line-through" }}>₪{OFFERS[index].priceOld}</span>
-                  <span style={{ marginRight: "auto", background: "#E6F4EC", color: "#1A7A43", fontWeight: 800, fontSize: 13, padding: "6px 10px", borderRadius: 999 }}>חוסכים ₪{OFFERS[index].saving}</span>
+                <p style={{ fontSize: 12, fontWeight: 700, color: "#C24A2C", margin: "0 0 2px", letterSpacing: "0.02em" }}>{offer.brand}</p>
+                <p style={{ fontSize: 17, fontWeight: 700, color: "#15172A", margin: "0 0 8px", lineHeight: 1.25 }}>{offer.productName}</p>
+                <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "nowrap" }}>
+                  <span style={{ fontSize: 26, fontWeight: 900, color: "#15172A", lineHeight: 1, whiteSpace: "nowrap" }}>₪{offer.priceNew}</span>
+                  <span style={{ fontSize: 15, color: STRIKE, textDecoration: "line-through", whiteSpace: "nowrap" }}>₪{offer.priceOld}</span>
+                  <span style={{ marginRight: "auto", background: "#E6F4EC", color: "#1A7A43", fontWeight: 800, fontSize: 13, padding: "6px 10px", borderRadius: 999, whiteSpace: "nowrap" }}>חוסכים ₪{offer.saving}</span>
                 </div>
               </motion.div>
-            </AnimatePresence>
           </div>
+        </div>
+
+        {/* Controls */}
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 12, marginTop: 18 }}>
+          <button type="button" className="fo-nav" onClick={() => go(-1)} aria-label="הטבה הקודמת" style={navBtn()}>
+            <ChevronRight size={22} color="#17191D" />
+          </button>
+          <div style={{ display: "flex", gap: 2 }}>
+            {OFFERS.map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => setIndex(i)}
+                aria-label={`עבור להטבה ${i + 1}`}
+                aria-current={i === index}
+                style={{ width: isMobile ? 26 : 32, height: 44, border: "none", background: "transparent", padding: 0, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+              >
+                <motion.span
+                  animate={{ width: i === index ? 22 : 8, backgroundColor: i === index ? CORAL : "rgba(19,21,29,0.18)" }}
+                  transition={{ duration: 0.25 }}
+                  style={{ height: 8, borderRadius: 999, display: "block" }}
+                />
+              </button>
+            ))}
+          </div>
+          <button type="button" className="fo-nav" onClick={() => go(1)} aria-label="הטבה הבאה" style={navBtn()}>
+            <ChevronLeft size={22} color="#17191D" />
+          </button>
         </div>
 
         <p style={{ fontSize: 13, color: "#6E7177", lineHeight: 1.5, maxWidth: 660, margin: "16px auto 0" }}>
           דוגמאות מהתקופה האחרונה. ההבטחה למחיר הנמוך בישראל חלה על ההטבה היומית ביום שלה.
         </p>
 
-        <div style={{ marginTop: 36, display: "flex", justifyContent: "center" }}>
+        <div style={{ marginTop: 30, display: "flex", justifyContent: "center" }}>
           <button
             type="button"
             className="fo-cta"
             onClick={() => scrollToId("organization-fit")}
-            style={{
-              background: CHARCOAL,
-              color: "#fff",
-              border: "none",
-              borderRadius: 999,
-              height: 56,
-              minWidth: 240,
-              maxWidth: 360,
-              padding: "0 30px",
-              fontFamily: "inherit",
-              fontWeight: 700,
-              fontSize: "clamp(16px,1.1vw,18px)",
-              cursor: "pointer",
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 10,
-              boxShadow: "0 8px 24px rgba(23,25,29,0.18)",
-            }}
+            style={{ background: CHARCOAL, color: "#fff", border: "none", borderRadius: 999, height: 56, minWidth: 240, maxWidth: 360, padding: "0 30px", fontFamily: "inherit", fontWeight: 700, fontSize: "clamp(16px,1.1vw,18px)", cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 10, boxShadow: "0 8px 24px rgba(23,25,29,0.18)" }}
           >
             <span style={{ width: 8, height: 8, borderRadius: "50%", background: CORAL, display: "inline-block", flexShrink: 0 }} />
             בדיקת התאמה
@@ -662,15 +598,86 @@ export default function FeaturedOffersSlider() {
   );
 }
 
-// ─── Card (visual carousel item) ──────────────────────────────────────────────
-function Card({ offer, index, cardW, imgH, isCenter, onCardClick }) {
-  return (
-    <div className={`fo-card-inner${isCenter ? " fo-center" : ""}`} style={{ width: cardW, display: "flex", flexDirection: "column", alignItems: "center" }} onClick={(e) => onCardClick(index, e.currentTarget)}>
-      <div className="fo-card-img" style={{ width: "100%", height: imgH, background: "#F5F5F7", borderRadius: 28, overflow: "hidden", boxShadow: isCenter ? "0 28px 70px rgba(0,0,0,0.14)" : "0 6px 20px rgba(0,0,0,0.06)", position: "relative" }}>
-        <img src={fitImg(offer.img, 640, 780)} loading={index === 0 ? "eager" : "lazy"} decoding="async" width={640} height={780} alt={offer.productName} draggable={false} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = offer.img; }} style={{ width: "100%", height: "100%", objectFit: "contain", background: "#F5F5F7", display: "block" }} />
-      </div>
+// ─── Card: full-colour image, depth shading instead of fading, gentle float, light sheen on the centre card
+function Card({ offer, index, cardW, imgH, isCenter, depth, floating, tilt, onCardClick }) {
+  const rx = useMotionValue(0);
+  const ry = useMotionValue(0);
+  const srx = useSpring(rx, { stiffness: 200, damping: 20 });
+  const sry = useSpring(ry, { stiffness: 200, damping: 20 });
 
-    </div>
+  const onMove = (e) => {
+    if (!tilt) return;
+    const r = e.currentTarget.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width - 0.5;
+    const py = (e.clientY - r.top) / r.height - 0.5;
+    ry.set(px * 10);
+    rx.set(-py * 8);
+  };
+  const onLeave = () => { rx.set(0); ry.set(0); };
+
+  const floatDur = 5.2 + (index % 3) * 0.7;
+
+  return (
+    <motion.div
+      animate={floating ? { y: [0, -8, 0] } : { y: 0 }}
+      transition={floating ? { duration: floatDur, repeat: Infinity, ease: "easeInOut", delay: index * 0.35 } : { duration: 0.4 }}
+    >
+      <motion.div
+        onMouseMove={onMove}
+        onMouseLeave={onLeave}
+        onClick={(e) => onCardClick(index, e.currentTarget)}
+        whileHover={isCenter ? { y: -6 } : undefined}
+        style={{
+          width: cardW,
+          height: imgH,
+          borderRadius: 28,
+          overflow: "hidden",
+          position: "relative",
+          cursor: "pointer",
+          rotateX: srx,
+          rotateY: sry,
+          background: "#DCE9F7",
+          boxShadow: isCenter
+            ? "0 30px 70px rgba(14,42,79,0.28), 0 10px 24px rgba(0,0,0,0.10)"
+            : "0 14px 34px rgba(14,42,79,0.16)",
+          transition: "box-shadow .35s ease",
+        }}
+      >
+        <img
+          src={fitImg(offer.img, 640, 780)}
+          loading={index < 3 ? "eager" : "lazy"}
+          decoding="async"
+          width={640}
+          height={780}
+          alt={offer.productName}
+          draggable={false}
+          onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = offer.img; }}
+          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", pointerEvents: "none" }}
+        />
+        {/* Depth shading: side cards get darker (keeps the blue, no washed-out look) */}
+        <motion.div
+          aria-hidden="true"
+          animate={{ opacity: isCenter ? 0 : depth === 1 ? 0.42 : 0.62 }}
+          transition={{ duration: 0.45, ease: "easeOut" }}
+          style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(6,18,40,0.35) 0%, rgba(6,18,40,0.75) 100%)", pointerEvents: "none" }}
+        />
+        {/* Soft top light on the centre card */}
+        <motion.div
+          aria-hidden="true"
+          animate={{ opacity: isCenter ? 1 : 0 }}
+          transition={{ duration: 0.45 }}
+          style={{ position: "absolute", inset: 0, background: "radial-gradient(120% 60% at 50% 0%, rgba(255,255,255,0.22), rgba(255,255,255,0) 60%)", pointerEvents: "none" }}
+        />
+        {/* One light sweep each time a card becomes the centre */}
+        {isCenter && (
+          <span
+            key={`sheen-${index}`}
+            aria-hidden="true"
+            style={{ position: "absolute", top: 0, bottom: 0, left: 0, width: "40%", background: "linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.28) 50%, rgba(255,255,255,0) 100%)", animation: "fo-sheen 1.1s cubic-bezier(.22,1,.36,1) 0.15s both", pointerEvents: "none" }}
+          />
+        )}
+      </motion.div>
+    </motion.div>
   );
 }
 
