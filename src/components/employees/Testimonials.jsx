@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { base44 } from "@/api/base44Client";
+import { fitImg } from "@/lib/img";
 
 const BG = "#F7F7F4";
 const CHARCOAL = "#17191D";
@@ -82,7 +83,7 @@ export default function Testimonials() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.5, ease: EASE }}
-          style={{ color: CORAL, fontWeight: 600, fontSize: "clamp(15px,1.2vw,18px)", margin: 0, letterSpacing: "-0.01em" }}
+          style={{ color: "#C24A2C", fontWeight: 600, fontSize: "clamp(15px,1.2vw,18px)", margin: 0, letterSpacing: "-0.01em" }}
         >
           מה אומרים מי שכבר שדרגו?
         </motion.p>
@@ -103,7 +104,7 @@ export default function Testimonials() {
         >
           העובדים מרגישים את ההבדל.
           <br />
-          וגם <span style={{ color: CORAL }}>הארגון</span>.
+          וגם <span style={{ color: "#C24A2C" }}>הארגון</span>.
         </motion.h2>
 
         <div
@@ -133,7 +134,7 @@ export default function Testimonials() {
               }}
             >
               <div style={{ height: 44, display: "flex", alignItems: "center", marginBottom: 14 }}>
-                <img src={t.logo} alt={t.name} style={{ height: 38, maxWidth: 140, objectFit: "contain", objectPosition: "right" }} />
+                <img src={fitImg(t.logo, 400, 160)} alt={t.name} width={400} height={160} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = t.logo; }} style={{ height: 38, maxWidth: 140, objectFit: "contain", objectPosition: "right" }} />
               </div>
               <p style={{ fontSize: "clamp(16px,1.35vw,19px)", color: "#3A3C42", lineHeight: 1.7, margin: "0 0 18px", flexGrow: 1 }}>
                 ״{t.text}״

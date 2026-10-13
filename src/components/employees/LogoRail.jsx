@@ -5,6 +5,7 @@ import { railLogos } from "../../utils/logoData";
 import { THEME } from "./designTokens";
 import { LAYOUT } from "./layoutTokens";
 import { useBottomUIVisibility } from "./useBottomUIVisibility";
+import { fitImg } from "@/lib/img";
 
 function SlotLogo({ src, name, alt, slotW, area, minH, maxH, scale = 1, hovered, onHover }) {
   const [err, setErr] = useState(false);
@@ -44,11 +45,16 @@ function SlotLogo({ src, name, alt, slotW, area, minH, maxH, scale = 1, hovered,
       onMouseLeave={() => onHover?.(null)}
     >
       <img
-        src={src}
+        src={fitImg(src, 400, 160)}
         alt={alt}
         loading="lazy"
         decoding="async"
-        onError={() => setErr(true)}
+        width={400}
+        height={160}
+        onError={(e) => {
+          if (e.currentTarget.src !== src) { e.currentTarget.onerror = null; e.currentTarget.src = src; }
+          else { setErr(true); }
+        }}
         onLoad={(e) => {
           const nw = e.currentTarget.naturalWidth || 1;
           const nh = e.currentTarget.naturalHeight || 1;

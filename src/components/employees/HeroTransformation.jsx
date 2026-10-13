@@ -8,6 +8,7 @@ import {
   CHARCOAL,
   WARM_WHITE,
 } from "./hero/heroShared";
+import { photo } from "@/lib/img";
 
 const CORAL = "#F47A5A";
 const LOAD_TIMEOUT_MS = 8000;
@@ -117,19 +118,26 @@ export default function HeroTransformation() {
   }, [isMobile]);
 
   useEffect(() => {
-    // Lazy-load the hero video after the page is idle, so it never blocks the LCP.
+    // Lazy-load the hero video only after window.load + idle, so it never blocks the LCP.
     const prime = () => {
       setVideoPreload("auto");
       const v = videoRef.current;
       if (v) { try { v.load(); } catch (e) { /* ignore */ } }
     };
-    const ric = window.requestIdleCallback ? window.requestIdleCallback(prime, { timeout: 3000 }) : null;
-    if (ric == null) {
-      const t = window.setTimeout(prime, 1200);
-      return () => window.clearTimeout(t);
-    }
-    return () => { if (window.cancelIdleCallback) try { window.cancelIdleCallback(ric); } catch (e) {} };
+    const schedule = () => {
+      if (window.requestIdleCallback) window.requestIdleCallback(prime, { timeout: 3000 });
+      else window.setTimeout(prime, 1200);
+    };
+    if (document.readyState === "complete") { schedule(); return; }
+    window.addEventListener("load", schedule, { once: true });
+    return () => window.removeEventListener("load", schedule);
   }, []);
+
+  const primeNow = () => {
+    if (videoPreload !== "auto") setVideoPreload("auto");
+    const v = videoRef.current;
+    if (v) { try { v.load(); } catch (e) { /* ignore */ } }
+  };
 
   useEffect(
     () => () => {
@@ -339,7 +347,7 @@ export default function HeroTransformation() {
       <div style={{ margin: "0 auto", padding: isMobile ? "0 20px" : "0 32px", maxWidth: 1200, display: "flex", flexDirection: "column", alignItems: "center" }}>
         <div style={{ marginTop: 18, marginBottom: 24, textAlign: "center", width: "100%" }}>
           <h1 style={{ color: CHARCOAL, fontSize: "clamp(34px,5.4vw,68px)", fontWeight: 800, lineHeight: 1.04, letterSpacing: "-0.03em", margin: 0 }}>
-            מועדון העובדים שלכם. <span style={{ color: CORAL }}>אנחנו מפעילים אותו.</span>
+            מועדון העובדים שלכם. <span style={{ color: "#C24A2C" }}>אנחנו מפעילים אותו.</span>
           </h1>
           <p style={{ color: "#3A3C42", fontSize: "clamp(15px,1.8vw,20px)", fontWeight: 500, lineHeight: 1.5, margin: "12px auto 0", maxWidth: 640 }}>
             הטבה חדשה לעובדים כל בוקר, בשם הארגון. אתם מחליטים, אנחנו מבצעים.
@@ -360,11 +368,16 @@ export default function HeroTransformation() {
             {/* BEFORE image (kept, never hidden) — slow zoom from click */}
             <img
               ref={beforeRef}
-              src={BEFORE_IMG}
+              src={photo(BEFORE_IMG, 1600, 900)}
+              srcSet={`${photo(BEFORE_IMG, 960, 540)} 960w, ${photo(BEFORE_IMG, 1600, 900)} 1600w`}
+              sizes="(max-width:768px) 100vw, 1200px"
               alt="מנהלת רווחה בעומס"
+              width={1600}
+              height={900}
               fetchpriority="high"
               loading="eager"
               decoding="async"
+              onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = BEFORE_IMG; }}
               style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center center", zIndex: 1, willChange: "transform" }}
             />
 
@@ -372,7 +385,7 @@ export default function HeroTransformation() {
             <video
               ref={videoRef}
               src={VIDEO_SRC}
-              poster={BEFORE_IMG}
+              poster={photo(BEFORE_IMG, 1280, 720)}
               muted
               playsInline
               preload={videoPreload}
@@ -385,12 +398,21 @@ export default function HeroTransformation() {
                 opacity: videoShown ? 1 : 0,
                 transition: `opacity ${fadeDur}ms cubic-bezier(.4,0,.2,1)`,
               }}
-            />
+            >
+              <track kind="captions" srclang="he" label="עברית" src="/hero-captions.vtt" />
+            </video>
 
             {/* AFTER image — fades in 1s before the video ends */}
             <img
-              src={AFTER_IMG}
+              src={photo(AFTER_IMG, 1600, 900)}
+              srcSet={`${photo(AFTER_IMG, 960, 540)} 960w, ${photo(AFTER_IMG, 1600, 900)} 1600w`}
+              sizes="(max-width:768px) 100vw, 1200px"
               alt=""
+              width={1600}
+              height={900}
+              loading="lazy"
+              decoding="async"
+              onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = AFTER_IMG; }}
               style={{
                 position: "absolute", inset: 0, width: "100%", height: "100%",
                 objectFit: "cover", objectPosition: "center center", zIndex: 3,
@@ -401,7 +423,7 @@ export default function HeroTransformation() {
 
             {/* In-image CTA — bottom center */}
             {stage === "idle" && (
-              <button type="button" onClick={onStart} style={inImageBtn} aria-label="לראות את השדרוג">
+              <button type="button" onClick={onStart} onMouseEnter={primeNow} onTouchStart={primeNow} style={inImageBtn} aria-label="לראות את השדרוג">
                 <Play size={16} color={CHARCOAL} strokeWidth={2.5} />
                 לראות את השדרוג · 10 שניות
               </button>

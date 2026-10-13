@@ -1,4 +1,5 @@
 import React from "react";
+import { fitImg } from "@/lib/img";
 
 export default function GlobalHeader() {
   const scrollToSection = (sectionId) => {
@@ -15,9 +16,12 @@ export default function GlobalHeader() {
         {/* Logo - Right Side */}
         <div className="flex items-center">
           <img
-            src="https://media.base44.com/images/public/69e48538aaee477b09fc7b49/4cebf7412_15.png"
+            src={fitImg("https://media.base44.com/images/public/69e48538aaee477b09fc7b49/4cebf7412_15.png", 360, 120)}
             alt="boombuy"
-            className="h-10 md:h-12 w-auto object-contain"
+            width={360}
+            height={120}
+            className="h-12 md:h-16 w-auto object-contain"
+            onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/4cebf7412_15.png"; }}
           />
         </div>
 

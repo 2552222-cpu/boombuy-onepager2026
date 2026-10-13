@@ -6,11 +6,12 @@ import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-route
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
+import { lazy, Suspense } from 'react';
 import EmployeesLanding from './pages/EmployeesLanding.jsx';
-import AdminDashboard from './pages/AdminDashboard';
-import ResultsPage from './pages/ResultsPage';
-import OrgPage from './pages/OrgPage';
 import Privacy from './pages/Privacy';
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
+const ResultsPage = lazy(() => import('./pages/ResultsPage'));
+const OrgPage = lazy(() => import('./pages/OrgPage'));
 // Add page imports here
 
 const PUBLIC_ROUTES = new Set(['/', '/privacy']);
@@ -49,6 +50,7 @@ const AuthenticatedApp = () => {
         transition={{ duration: 0.38, ease: 'easeOut' }}
         style={{ minHeight: '100vh' }}
       >
+        <Suspense fallback={null}>
         <Routes location={location}>
           <Route path="/" element={<EmployeesLanding />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
@@ -57,6 +59,7 @@ const AuthenticatedApp = () => {
           <Route path="/privacy" element={<Privacy />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
+        </Suspense>
       </motion.div>
     </AnimatePresence>
   );

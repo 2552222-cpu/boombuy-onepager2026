@@ -73,7 +73,7 @@ export default function FAQ() {
             textAlign: "center",
           }}
         >
-          שאלות <span style={{ color: CORAL }}>נפוצות</span>
+          שאלות <span style={{ color: "#C24A2C" }}>נפוצות</span>
         </motion.h2>
 
         <div style={{ marginTop: 24 }}>

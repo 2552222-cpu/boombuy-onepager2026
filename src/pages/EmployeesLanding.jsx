@@ -37,6 +37,7 @@ export default function EmployeesLanding() {
       }}
     >
       <GlobalHeader />
+      <main>
       <HeroTransformation />
       <PromiseBand />
       <FeaturedOffersSlider />
@@ -47,6 +48,7 @@ export default function EmployeesLanding() {
       <FAQ />
       <OrganizationFit />
       <BookDemo />
+      </main>
       <GlobalFooter />
       <PersistentCTA />
       <LogoRail />

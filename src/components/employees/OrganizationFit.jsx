@@ -295,7 +295,7 @@ export default function OrganizationFit() {
           transition={{ duration: 0.55, ease: EASE }}
           style={{ color: CHARCOAL, fontSize: "clamp(30px,4vw,52px)", fontWeight: 700, lineHeight: 1.06, letterSpacing: "-0.025em", margin: 0 }}
         >
-          בדיקת <span style={{ color: CORAL }}>התאמה</span>
+          בדיקת <span style={{ color: "#C24A2C" }}>התאמה</span>
         </motion.h2>
 
         <motion.p

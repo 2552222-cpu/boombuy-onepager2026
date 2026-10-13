@@ -69,7 +69,7 @@ export default function OperationSteps() {
             margin: 0,
           }}
         >
-          אתם מחליטים. <span style={{ color: CORAL }}>אנחנו מבצעים.</span>
+          אתם מחליטים. <span style={{ color: "#C24A2C" }}>אנחנו מבצעים.</span>
         </motion.h2>
 
         <motion.p
