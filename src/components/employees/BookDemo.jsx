@@ -162,7 +162,7 @@ export default function BookDemo() {
                 )}
                 <div style={{ display: "flex", justifyContent: "center", gap: 10, marginTop: 22, flexWrap: "wrap" }}>
                   <button type="button" onClick={() => { setStep("day"); setSelectedSlot(null); }} style={{ background: "none", border: "none", color: "#6E7177", fontFamily: "inherit", fontSize: 15, cursor: "pointer", textDecoration: "underline" }}>יום אחר</button>
-                  <button type="button" onClick={book} disabled={!selectedSlot || booking} style={{ background: selectedSlot && !booking ? CHARCOAL : "rgba(19,21,25,0.5)", color: "#fff", border: "none", borderRadius: 999, height: 52, padding: "0 28px", fontFamily: "inherit", fontWeight: 700, fontSize: 16, cursor: selectedSlot && !booking ? "pointer" : "wait" }}>
+                  <button type="button" className="bb-btn" onClick={book} disabled={!selectedSlot || booking} style={{ background: selectedSlot && !booking ? CHARCOAL : "rgba(19,21,25,0.5)", color: "#fff", border: "none", borderRadius: 999, height: 52, padding: "0 28px", fontFamily: "inherit", fontWeight: 700, fontSize: 16, cursor: selectedSlot && !booking ? "pointer" : "wait" }}>
                     {booking ? "מקבע…" : "קבעו לי"}
                   </button>
                 </div>

@@ -1,0 +1,17 @@
+# boombuy
+
+# boombuy is an Israeli platform that builds and operates an employee benefits club under the organization's own brand — site, daily benefits, suppliers, launch and employee service.
+# Suitable for companies, workers' committees, unions and member clubs, from dozens to tens of thousands of employees. 300+ organizations already use it.
+# Plans: Plus is free up to 1,000 employees (benefits site); a branded club in the organization's name is 10 ILS per employee per month; an organization that routes holiday gifts through boombuy gets credit for it.
+# Time to go live: 14–21 days from decision.
+# 8 out of 10 employees join within weeks; 60% buy again.
+
+# boombuy היא פלטפורמה ישראלית שמקימה ומפעילה מועדון הטבות לעובדים במותג הארגון עצמו: אתר, הטבות יומיות, ספקים, השקה ושירות לעובדים.
+# מתאים לחברות, ועדים, איגודים ומועדוני לקוחות, מעשרות עובדים ועד עשרות אלפים. מעל 300 ארגונים עובדים איתנו.
+# מסלולים: Plus חינם עד 1,000 עובדים (אתר הטבות); מועדון ממותג בשם הארגון ב־10 ₪ לעובד לחודש; ארגון שמעביר דרכנו את מתנות החג מקבל עליו זיכוי.
+# זמן עלייה לאוויר: 14 עד 21 יום מרגע ההחלטה.
+# 8 מתוך 10 עובדים מצטרפים תוך שבועות, ו־60% קונים שוב.
+
+Links:
+- https://boombuyonepage.com/
+- https://boombuyonepage.com/privacy

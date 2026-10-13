@@ -13,11 +13,16 @@ import OrgPage from './pages/OrgPage';
 import Privacy from './pages/Privacy';
 // Add page imports here
 
+const PUBLIC_ROUTES = new Set(['/', '/privacy']);
+
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
   const location = useLocation();
+  const isPublic = PUBLIC_ROUTES.has(location.pathname);
 
-  if (isLoadingPublicSettings || isLoadingAuth) {
+  // Public pages (landing + privacy) render immediately — no auth spinner, so the
+  // main content (LCP) paints at once. Auth gating stays only for protected routes.
+  if (!isPublic && (isLoadingPublicSettings || isLoadingAuth)) {
     return (
       <div className="fixed inset-0 flex items-center justify-center">
         <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin"></div>
@@ -25,7 +30,7 @@ const AuthenticatedApp = () => {
     );
   }
 
-  if (authError) {
+  if (!isPublic && authError) {
     if (authError.type === 'user_not_registered') {
       return <UserNotRegisteredError />;
     } else if (authError.type === 'auth_required') {

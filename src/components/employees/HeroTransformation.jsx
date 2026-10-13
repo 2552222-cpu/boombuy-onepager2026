@@ -14,6 +14,38 @@ const LOAD_TIMEOUT_MS = 8000;
 const FRAME_TIMEOUT_MS = 3000;
 const MIN_MEDIA_H = 180;
 
+function CountUp({ to, suffix, reducedMotion }) {
+  const ref = useRef(null);
+  const [val, setVal] = useState(reducedMotion ? to : 0);
+  const done = useRef(reducedMotion);
+  useEffect(() => {
+    if (reducedMotion) { setVal(to); return; }
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting && !done.current) {
+          done.current = true;
+          const start = performance.now();
+          const dur = 1200;
+          const tick = (now) => {
+            const t = Math.min(1, (now - start) / dur);
+            const eased = 1 - Math.pow(1 - t, 3);
+            setVal(Math.round(to * eased));
+            if (t < 1) requestAnimationFrame(tick);
+            else setVal(to);
+          };
+          requestAnimationFrame(tick);
+          io.disconnect();
+        }
+      });
+    }, { threshold: 0.5 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [to, reducedMotion]);
+  return <span ref={ref}>{val}{suffix}</span>;
+}
+
 export default function HeroTransformation() {
   // idle | playing | complete | failed
   const [stage, setStage] = useState("idle");
@@ -22,6 +54,7 @@ export default function HeroTransformation() {
   const [isMobile, setIsMobile] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [mediaSize, setMediaSize] = useState({ w: 800, h: 450 });
+  const [videoPreload, setVideoPreload] = useState("none");
 
   const videoRef = useRef(null);
   const beforeRef = useRef(null);
@@ -84,9 +117,18 @@ export default function HeroTransformation() {
   }, [isMobile]);
 
   useEffect(() => {
-    if (videoRef.current) {
-      try { videoRef.current.load(); } catch (e) { /* ignore */ }
+    // Lazy-load the hero video after the page is idle, so it never blocks the LCP.
+    const prime = () => {
+      setVideoPreload("auto");
+      const v = videoRef.current;
+      if (v) { try { v.load(); } catch (e) { /* ignore */ } }
+    };
+    const ric = window.requestIdleCallback ? window.requestIdleCallback(prime, { timeout: 3000 }) : null;
+    if (ric == null) {
+      const t = window.setTimeout(prime, 1200);
+      return () => window.clearTimeout(t);
     }
+    return () => { if (window.cancelIdleCallback) try { window.cancelIdleCallback(ric); } catch (e) {} };
   }, []);
 
   useEffect(
@@ -180,6 +222,7 @@ export default function HeroTransformation() {
 
   const onStart = () => {
     if (stage !== "idle") return;
+    if (videoPreload !== "auto") { setVideoPreload("auto"); }
     const attempt = ++attemptRef.current;
     setStage("playing");
     setAfterShown(false);
@@ -275,9 +318,9 @@ export default function HeroTransformation() {
   };
 
   const proof = [
-    { big: "300+", small: "ארגונים כבר איתנו", ltr: true },
-    { big: "8 מתוך 10", small: "עובדים מצטרפים תוך שבועות" },
-    { big: "0", small: "ארגונים עזבו" },
+    { num: 300, suffix: "+", small: "ארגונים כבר איתנו", ltr: true },
+    { num: 8, suffix: " מתוך 10", small: "עובדים מצטרפים תוך שבועות" },
+    { num: 0, suffix: "", small: "ארגונים עזבו" },
   ];
 
   return (
@@ -319,6 +362,9 @@ export default function HeroTransformation() {
               ref={beforeRef}
               src={BEFORE_IMG}
               alt="מנהלת רווחה בעומס"
+              fetchpriority="high"
+              loading="eager"
+              decoding="async"
               style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center center", zIndex: 1, willChange: "transform" }}
             />
 
@@ -329,7 +375,7 @@ export default function HeroTransformation() {
               poster={BEFORE_IMG}
               muted
               playsInline
-              preload="auto"
+              preload={videoPreload}
               onTimeUpdate={onTimeUpdate}
               onEnded={onEnded}
               onError={onVideoError}
@@ -377,12 +423,12 @@ export default function HeroTransformation() {
 
         {/* Below-image CTAs */}
         <div style={{ marginTop: 20, display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center", width: "100%" }}>
-          <button type="button" onClick={() => scrollToId("organization-fit")} style={btnDark}>
+          <button type="button" className="bb-btn" onClick={() => scrollToId("organization-fit")} style={btnDark}>
             <span style={{ width: 8, height: 8, borderRadius: "50%", background: CORAL, display: "inline-block", flexShrink: 0 }} />
             <Calendar size={18} color="#fff" strokeWidth={2.4} />
             לתיאום הדגמה של 15 דקות
           </button>
-          <button type="button" onClick={() => scrollToId("benefits")} style={btnLight}>
+          <button type="button" className="bb-btn" onClick={() => scrollToId("benefits")} style={btnLight}>
             <Sparkles size={18} color={CORAL} strokeWidth={2.4} />
             לראות הטבות אמיתיות
           </button>
@@ -393,7 +439,7 @@ export default function HeroTransformation() {
           {proof.map((p) => (
             <div key={p.small} style={{ textAlign: "center", flex: "1 1 90px", maxWidth: 260 }}>
               <div style={{ color: CHARCOAL, fontSize: "clamp(20px,2.4vw,28px)", fontWeight: 800, lineHeight: 1.1 }} dir={p.ltr ? "ltr" : undefined}>
-                {p.big}
+                <CountUp to={p.num} suffix={p.suffix} reducedMotion={reducedMotion} />
               </div>
               <div style={{ color: "#5A5C62", fontSize: "clamp(12px,1.1vw,14px)", fontWeight: 500, marginTop: 2 }}>
                 {p.small}

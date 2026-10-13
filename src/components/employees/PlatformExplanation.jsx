@@ -117,8 +117,8 @@ export default function PlatformExplanation() {
               }}
             >
               בום ביי מקימה ומפעילה עבורכם מועדון רווחה והטבות במותג הארגון. הפלטפורמה מחברת את
-              תקציב הרווחה והמתנות הקיים להטבות, מתנות וחוויות לאורך השנה. אנחנו מטפלים בהקמה,
-              בהטמעה ובשירות לעובדים.
+              תקציב הרווחה והמתנות הקיים להטבות, מתנות וחוויות לאורך השנה: קניות, הטבות יומיות, וולנס,
+              תרבות וחופשות. אנחנו מטפלים בהקמה, בהטמעה ובשירות לעובדים.
             </motion.p>
           </div>
 
@@ -126,7 +126,7 @@ export default function PlatformExplanation() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.15 }}
-            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }}
+            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
             className="pe-cards"
             style={{
               display: "flex",

@@ -93,7 +93,14 @@
     overflow-x: hidden;
     max-width: 100vw;
   }
+  h1, h2, h3 { text-wrap: balance; }
+  p, li { text-wrap: pretty; }
 }
+
+.bb-btn{ transition: transform .18s ease, box-shadow .18s ease; }
+.bb-btn:hover{ transform: translateY(-1px); }
+.bb-btn:active{ transform: scale(0.98); }
+@media (prefers-reduced-motion: reduce){ .bb-btn{ transition:none; } .bb-btn:hover{ transform:none; } }
 
 @media (prefers-reduced-motion: reduce) {
   html {

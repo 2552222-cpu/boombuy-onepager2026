@@ -127,6 +127,7 @@ const OFFERS = [
 
 const CHARCOAL = "#17191D";
 const CORAL = "#F47A5A";
+const STRIKE = "#6E7177";
 
 function PriceTag({ label, amount, color = "#1D1D1F", bg = "#F5F5F7", strike = false }) {
   return (
@@ -145,9 +146,6 @@ function OfferModal({ offer, isMobile, onClose, onPrev, onNext, onSelectIdx, ope
   const panelRef = useRef(null);
   const closeBtnRef = useRef(null);
 
-  // Mount/unmount only — body scroll lock + offersModalChange. Does NOT re-run on
-  // offer switch, so focus is not returned to the page and scroll is not released
-  // while navigating between offers inside the modal.
   useEffect(() => {
     document.body.style.overflow = "hidden";
     window.dispatchEvent(new CustomEvent("offersModalChange", { detail: { open: true } }));
@@ -248,12 +246,12 @@ function OfferModal({ offer, isMobile, onClose, onPrev, onNext, onSelectIdx, ope
             <button onClick={(e) => { e.stopPropagation(); onNext(); }} aria-label="הטבה הבאה" style={{ position: "absolute", left: 8, top: "50%", transform: "translateY(-50%)", background: "rgba(0,0,0,0.06)", border: "none", width: 44, height: 44, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", zIndex: 5 }}>
               <ChevronLeft size={22} color="#1D1D1F" />
             </button>
-            <img src={offer.img} alt={offer.productName} style={{ maxWidth: "82%", maxHeight: isMobile ? 200 : 340, objectFit: "contain" }} />
+            <img src={offer.img} alt={offer.productName} width={480} height={360} decoding="async" loading="lazy" style={{ maxWidth: "82%", maxHeight: isMobile ? 200 : 340, objectFit: "contain" }} />
           </div>
           <div style={{ display: "flex", justifyContent: "center", gap: 6, padding: "10px 12px", overflowX: "auto", flexWrap: "nowrap", scrollbarWidth: "none", background: "#F5F5F7", flexShrink: 0 }}>
             {OFFERS.map((o) => (
               <button key={o.id} onClick={(e) => { e.stopPropagation(); onSelectIdx(OFFERS.indexOf(o)); }} aria-label={`עבור ל${o.productName}`} aria-current={o.id === offer.id} style={{ width: 44, height: 44, borderRadius: 10, flexShrink: 0, border: o.id === offer.id ? "2px solid #17191D" : "2px solid transparent", background: "#fff", padding: 2, cursor: "pointer", overflow: "hidden" }}>
-                <img src={o.img} style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: 8 }} alt={o.productName} />
+                <img src={o.img} width={40} height={40} alt={o.productName} loading="lazy" decoding="async" style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: 8 }} />
               </button>
             ))}
           </div>
@@ -263,10 +261,10 @@ function OfferModal({ offer, isMobile, onClose, onPrev, onNext, onSelectIdx, ope
           <div>
             <p style={{ fontSize: 12, fontWeight: 700, color: CORAL, marginBottom: 6, letterSpacing: "0.05em" }}>{offer.brand}</p>
             <h3 style={{ fontSize: isMobile ? 22 : 32, fontWeight: 900, color: "#15172A", lineHeight: 1.2, marginBottom: 10 }}>{offer.productName}</h3>
-            <p style={{ fontSize: 15, color: "#6E6E73", lineHeight: 1.6, marginBottom: 24 }}>{offer.desc}</p>
+            <p style={{ fontSize: 15, color: "#6E7177", lineHeight: 1.6, marginBottom: 24 }}>{offer.desc}</p>
           </div>
           <div style={{ display: "flex", flexDirection: "row", gap: 8 }}>
-            <PriceTag label={offer.labelOld} amount={offer.priceOld} color="#86868B" bg="rgba(0,0,0,0.04)" strike />
+            <PriceTag label={offer.labelOld} amount={offer.priceOld} color={STRIKE} bg="rgba(0,0,0,0.04)" strike />
             <PriceTag label="מחיר לעובדים" amount={offer.priceNew} color={CHARCOAL} bg="#FBFAF8" />
             <PriceTag label="חיסכון" amount={offer.saving} color="#1A7A43" bg="rgba(52,199,89,0.10)" />
           </div>
@@ -286,6 +284,8 @@ function OfferModal({ offer, isMobile, onClose, onPrev, onNext, onSelectIdx, ope
   );
 }
 
+const SPRING = { type: "spring", stiffness: 260, damping: 32, mass: 0.9 };
+
 // ─── MAIN ─────────────────────────────────────────────────────────────────────
 export default function FeaturedOffersSlider() {
   const [selectedIdx, setSelectedIdx] = useState(null);
@@ -293,15 +293,18 @@ export default function FeaturedOffersSlider() {
   const [isMobile, setIsMobile] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [frameW, setFrameW] = useState(0);
+  const [dragOffset, setDragOffset] = useState(0);
+  const [dragging, setDragging] = useState(false);
   const secRef = useRef(null);
   const viewportRef = useRef(null);
   const firedBenefitsView = useRef(false);
   const openerRef = useRef(null);
 
   // drag state
-  const dragRef = useRef({ active: false, startX: 0, startY: 0, axis: null });
+  const dragRef = useRef({ active: false, startX: 0, startY: 0, axis: null, lastDx: 0, lastT: 0 });
   // suppress the click that follows a real horizontal drag (don't open the modal)
   const suppressClickRef = useRef(false);
+  const wheelLockRef = useRef(0);
 
   useEffect(() => {
     const check = () => {
@@ -364,7 +367,8 @@ export default function FeaturedOffersSlider() {
   // ── Pointer drag: lock only when horizontal dominates; vertical page scroll works ─
   const onPointerDown = (e) => {
     if (e.pointerType === "mouse" && e.button !== 0) return;
-    dragRef.current = { active: true, startX: e.clientX, startY: e.clientY, axis: null, moved: false };
+    dragRef.current = { active: true, startX: e.clientX, startY: e.clientY, axis: null, lastDx: 0, lastT: e.timeStamp };
+    setDragging(true);
     try {
       viewportRef.current?.setPointerCapture?.(e.pointerId);
     } catch (err) {
@@ -379,26 +383,51 @@ export default function FeaturedOffersSlider() {
     if (!d.axis && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) {
       d.axis = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
     }
-    if (d.axis === "x" && Math.abs(dx) > 8) suppressClickRef.current = true;
+    if (d.axis === "x") {
+      if (Math.abs(dx) > 8) suppressClickRef.current = true;
+      setDragOffset(dx);
+      d.lastDx = dx;
+      d.lastT = e.timeStamp;
+    }
   };
   const endDrag = (e) => {
     const d = dragRef.current;
     if (!d.active) return;
-    dragRef.current = { active: false, startX: 0, startY: 0, axis: null, moved: false };
+    const dx = d.startX - (e?.clientX ?? d.startX);
+    const dt = Math.max(1, e?.timeStamp - d.lastT || 0);
+    const velocity = (dx - d.lastDx) / dt; // px/ms
+    dragRef.current = { active: false, startX: 0, startY: 0, axis: null, lastDx: 0, lastT: 0 };
+    setDragging(false);
     try {
       viewportRef.current?.releasePointerCapture?.(e?.pointerId);
     } catch (err) {
       /* ignore */
     }
-    if (d.axis !== "x") return;
-    const dx = d.startX - e.clientX;
-    if (Math.abs(dx) > 40) go(dx > 0 ? 1 : -1); // drag left (dx>0) → next, matches arrows
-    // Fallback: if no click follows the drag (pointer released off a card),
-    // clear the suppression shortly after so the next real tap works.
+    if (d.axis !== "x") {
+      setDragOffset(0);
+      return;
+    }
+    let shift = Math.round(dx / spacing);
+    if (Math.abs(velocity) > 0.5 && shift === 0) shift = dx > 0 ? 1 : -1;
+    if (shift !== 0) setIndex((p) => (p + shift + OFFERS.length) % OFFERS.length);
+    setDragOffset(0);
     window.setTimeout(() => { suppressClickRef.current = false; }, 60);
   };
   const onPointerCancel = () => {
-    dragRef.current = { active: false, startX: 0, startY: 0, axis: null, moved: false };
+    dragRef.current = { active: false, startX: 0, startY: 0, axis: null, lastDx: 0, lastT: 0 };
+    setDragging(false);
+    setDragOffset(0);
+  };
+
+  // ── Wheel: horizontal wheel or shift+wheel moves one card, throttled 380ms. Vertical page scroll untouched.
+  const onWheel = (e) => {
+    const horizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY) || e.shiftKey;
+    if (!horizontal) return;
+    const d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+    const now = Date.now();
+    if (now - wheelLockRef.current < 380) return;
+    wheelLockRef.current = now;
+    go(d > 0 ? 1 : -1);
   };
 
   const onCardClick = (i, btnEl) => {
@@ -419,20 +448,6 @@ export default function FeaturedOffersSlider() {
     }
   };
 
-  const openFromButton = (btnEl) => {
-    if (suppressClickRef.current) {
-      suppressClickRef.current = false;
-      return;
-    }
-    try {
-      base44.analytics.track({ eventName: "benefit_opened" });
-    } catch (err) {
-      /* ignore */
-    }
-    openerRef.current = btnEl;
-    setSelectedIdx(index);
-  };
-
   const closeModal = () => setSelectedIdx(null);
   const modalPrev = () => setSelectedIdx((p) => (p - 1 + OFFERS.length) % OFFERS.length);
   const modalNext = () => setSelectedIdx((p) => (p + 1) % OFFERS.length);
@@ -443,10 +458,11 @@ export default function FeaturedOffersSlider() {
   const spacing = isMobile ? Math.round(cardW * 0.82) : 230;
   const sideScale = isMobile ? 0.82 : 0.8;
   const rotateYAmt = isMobile ? 16 : 24;
-  const maxBlur = isMobile ? 2.5 : 4;
+  const maxBlur = 2;
   const maxVisible = isMobile ? 3 : 4;
 
   const n = OFFERS.length;
+  const cardTransition = (dragging || reducedMotion) ? { duration: 0 } : SPRING;
 
   return (
     <section
@@ -455,7 +471,19 @@ export default function FeaturedOffersSlider() {
       dir="rtl"
       style={{ background: "#FFFFFF", padding: "84px 20px 92px", fontFamily: "var(--font-heebo), Heebo, Arial, sans-serif", overflowX: "hidden" }}
     >
-      <style>{`@media (max-width:768px){ #benefits{ padding:48px 16px 56px !important; } }`}</style>
+      <style>{`
+        @media (max-width:768px){ #benefits{ padding:48px 16px 56px !important; } }
+        .fo-card-inner{ transition: transform .25s ease, box-shadow .25s ease; will-change: transform; }
+        .fo-card-inner.fo-center:hover{ transform: translateY(-4px); }
+        .fo-card-inner.fo-center:hover .fo-card-img{ box-shadow: 0 36px 90px rgba(0,0,0,0.20); }
+        .fo-cta{ transition: transform .18s ease, box-shadow .18s ease; }
+        .fo-cta:hover{ transform: translateY(-1px); box-shadow: 0 12px 30px rgba(23,25,29,0.24); }
+        .fo-cta:active{ transform: scale(0.98); }
+        .fo-nav{ transition: transform .18s ease, box-shadow .18s ease; }
+        .fo-nav:hover{ transform: translateY(-1px); box-shadow: 0 8px 22px rgba(0,0,0,0.14); }
+        .fo-nav:active{ transform: scale(0.98); }
+        @media (prefers-reduced-motion: reduce){ .fo-card-inner{ transition:none; } .fo-cta,.fo-nav{ transition:none; } }
+      `}</style>
 
       <div style={{ maxWidth: 1100, margin: "0 auto", textAlign: "center" }}>
         <motion.h2
@@ -507,6 +535,7 @@ export default function FeaturedOffersSlider() {
           onPointerMove={onPointerMove}
           onPointerUp={endDrag}
           onPointerCancel={onPointerCancel}
+          onWheel={onWheel}
           onKeyDown={(e) => {
             if (e.key === "ArrowLeft") { e.preventDefault(); go(1); }
             else if (e.key === "ArrowRight") { e.preventDefault(); go(-1); }
@@ -514,12 +543,12 @@ export default function FeaturedOffersSlider() {
           tabIndex={0}
           role="group"
           aria-label="קרוסלת הטבות"
-          style={{ position: "relative", height: imgH + 170, perspective: "1500px", touchAction: "pan-y", outline: "none" }}
+          style={{ position: "relative", height: imgH + 170, perspective: "1500px", touchAction: "pan-y", outline: "none", cursor: dragging ? "grabbing" : "grab", userSelect: dragging ? "none" : "auto" }}
         >
           {reducedMotion ? (
             // Flat, no 3D / no blur — full content, all 9 reachable via controls.
             <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <Card offer={OFFERS[index]} index={index} cardW={cardW} imgH={imgH} isCenter onCardClick={onCardClick} openFromButton={openFromButton} />
+              <Card offer={OFFERS[index]} index={index} cardW={cardW} imgH={imgH} isCenter onCardClick={onCardClick} />
             </div>
           ) : (
             OFFERS.map((offer, i) => {
@@ -531,14 +560,17 @@ export default function FeaturedOffersSlider() {
               return (
                 <motion.div
                   key={offer.id}
+                  initial={{ opacity: 0 }}
                   animate={{
-                    x: circOffset * spacing,
+                    opacity: 1,
+                    x: circOffset * spacing - dragOffset,
+                    y: 0,
                     scale: isCenter ? 1.1 : sideScale,
                     rotateY: circOffset * -rotateYAmt,
                     z: isCenter ? 150 : -80,
-                    filter: isCenter ? "none" : `blur(${Math.min(circAbs * 1.5, maxBlur)}px) brightness(${0.82 - circAbs * 0.08})`,
+                    filter: isCenter ? "none" : `blur(${Math.min(circAbs * 1.2, maxBlur)}px) brightness(${Math.max(0.88, 0.92 - circAbs * 0.04)})`,
                   }}
-                  transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
+                  transition={cardTransition}
                   style={{
                     position: "absolute",
                     top: "50%",
@@ -550,20 +582,21 @@ export default function FeaturedOffersSlider() {
                     cursor: "pointer",
                   }}
                 >
-                  <Card offer={offer} index={i} cardW={cardW} imgH={imgH} isCenter={isCenter} onCardClick={onCardClick} openFromButton={openFromButton} />
+                  <Card offer={offer} index={i} cardW={cardW} imgH={imgH} isCenter={isCenter} onCardClick={onCardClick} />
                 </motion.div>
               );
             })
           )}
         </div>
 
-        <p style={{ fontSize: 13, color: "#9AA0A6", lineHeight: 1.5, maxWidth: 660, margin: "18px auto 0" }}>
+        <p style={{ fontSize: 13, color: "#6E7177", lineHeight: 1.5, maxWidth: 660, margin: "18px auto 0" }}>
           דוגמאות מהתקופה האחרונה. ההבטחה למחיר הנמוך בישראל חלה על ההטבה היומית ביום שלה.
         </p>
 
         <div style={{ marginTop: 36, display: "flex", justifyContent: "center" }}>
           <button
             type="button"
+            className="fo-cta"
             onClick={() => scrollToId("organization-fit")}
             style={{
               background: CHARCOAL,
@@ -609,30 +642,32 @@ export default function FeaturedOffersSlider() {
 }
 
 // ─── Card (visual carousel item) ──────────────────────────────────────────────
-function Card({ offer, index, cardW, imgH, isCenter, onCardClick, openFromButton }) {
+function Card({ offer, index, cardW, imgH, isCenter, onCardClick }) {
   return (
-    <div style={{ width: cardW, display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }} onClick={(e) => onCardClick(index, e.currentTarget)}>
-      <div style={{ width: "100%", height: imgH, background: "#F5F5F7", borderRadius: 28, overflow: "hidden", boxShadow: isCenter ? "0 28px 70px rgba(0,0,0,0.14)" : "0 6px 20px rgba(0,0,0,0.06)", position: "relative" }}>
-        <img src={offer.img} loading={index === 0 ? "eager" : "lazy"} alt={offer.productName} style={{ width: "100%", height: "100%", objectFit: "contain", background: "#F5F5F7", display: "block" }} draggable={false} />
-        {isCenter && (
-          <span style={{ position: "absolute", top: 12, right: 12, background: "#E6F4EC", color: "#1A7A43", fontWeight: 800, fontSize: 13, padding: "6px 10px", borderRadius: 999, boxShadow: "0 2px 8px rgba(0,0,0,0.08)" }}>
-            חוסכים ₪{offer.saving}
-          </span>
-        )}
+    <div className={`fo-card-inner${isCenter ? " fo-center" : ""}`} style={{ width: cardW, display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }} onClick={(e) => onCardClick(index, e.currentTarget)}>
+      <div className="fo-card-img" style={{ width: "100%", height: imgH, background: "#F5F5F7", borderRadius: 28, overflow: "hidden", boxShadow: isCenter ? "0 28px 70px rgba(0,0,0,0.14)" : "0 6px 20px rgba(0,0,0,0.06)", position: "relative" }}>
+        <img src={offer.img} loading={index === 0 ? "eager" : "lazy"} decoding="async" width={cardW} height={imgH} alt={offer.productName} style={{ width: "100%", height: "100%", objectFit: "contain", background: "#F5F5F7", display: "block" }} draggable={false} />
       </div>
-      {isCenter && (
-        <div style={{ width: "100%", background: "#fff", borderRadius: 22, margin: "0 8px 8px", padding: 16, boxSizing: "border-box", textAlign: "right", boxShadow: "0 6px 20px rgba(0,0,0,0.06)" }}>
-          <p style={{ fontSize: 12, fontWeight: 700, color: "#C24A2C", margin: "0 0 2px" }}>{offer.brand}</p>
-          <p style={{ fontSize: 17, fontWeight: 700, color: "#15172A", margin: "0 0 8px", lineHeight: 1.25 }}>{offer.productName}</p>
-          <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 6 }}>
-            <span style={{ fontSize: 26, fontWeight: 900, color: "#15172A", lineHeight: 1 }}>₪{offer.priceNew}</span>
-            <span style={{ fontSize: 15, color: "#9AA0A6", textDecoration: "line-through" }}>₪{offer.priceOld}</span>
-          </div>
-          <button type="button" onClick={(e) => { e.stopPropagation(); openFromButton(e.currentTarget); }} style={{ background: "none", border: "none", color: CORAL, fontFamily: "inherit", fontWeight: 700, fontSize: 13, cursor: "pointer", padding: 0 }}>
-            לפרטי ההטבה ←
-          </button>
-        </div>
-      )}
+      <AnimatePresence mode="wait">
+        {isCenter && (
+          <motion.div
+            key={offer.id}
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.28, ease: "easeOut", delay: 0.08 }}
+            style={{ width: "100%", background: "#fff", borderRadius: 22, margin: "0 8px 8px", padding: 16, boxSizing: "border-box", textAlign: "right", boxShadow: "0 6px 20px rgba(0,0,0,0.06)" }}
+          >
+            <p style={{ fontSize: 12, fontWeight: 700, color: "#C24A2C", margin: "0 0 2px" }}>{offer.brand}</p>
+            <p style={{ fontSize: 17, fontWeight: 700, color: "#15172A", margin: "0 0 8px", lineHeight: 1.25 }}>{offer.productName}</p>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 6, flexWrap: "wrap" }}>
+              <span style={{ fontSize: 26, fontWeight: 900, color: "#15172A", lineHeight: 1 }}>₪{offer.priceNew}</span>
+              <span style={{ fontSize: 15, color: STRIKE, textDecoration: "line-through" }}>₪{offer.priceOld}</span>
+              <span style={{ marginRight: "auto", background: "#E6F4EC", color: "#1A7A43", fontWeight: 800, fontSize: 13, padding: "6px 10px", borderRadius: 999 }}>חוסכים ₪{offer.saving}</span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
