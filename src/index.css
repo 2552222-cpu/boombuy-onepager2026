@@ -105,3 +105,16 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Lenis smooth scroll */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* Coral dot pulse on dark-button hover (one beat) */
+@keyframes bb-pulse { 0%{transform:scale(1)} 50%{transform:scale(1.6)} 100%{transform:scale(1)} }
+.bb-pulse-btn:hover .bb-pulse-dot { animation: bb-pulse .4s cubic-bezier(.22,1,.36,1); }
+@media (prefers-reduced-motion: reduce) {
+  .bb-pulse-btn:hover .bb-pulse-dot { animation: none; }
+}

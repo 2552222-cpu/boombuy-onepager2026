@@ -1,12 +1,10 @@
 import React from "react";
 import { fitImg } from "@/lib/img";
+import { scrollToId } from "./uiHelpers";
 
 export default function GlobalHeader() {
   const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
+    scrollToId(sectionId);
   };
 
   return (

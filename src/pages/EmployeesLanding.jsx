@@ -16,12 +16,14 @@ import { initLinkedIn } from "../lib/linkedin";
 import PersistentCTA from "../components/employees/PersistentCTA";
 import LogoRail from "../components/employees/LogoRail";
 import { LAYOUT } from "../components/employees/layoutTokens";
+import { useLenis } from "@/hooks/useLenis";
 
 // Bottom reserve = rail + CTA + gap, so the footer can always scroll above the fixed stack.
 const BOTTOM_RESERVE =
   LAYOUT.RAIL_HEIGHT_DESKTOP + LAYOUT.CTA_H_DESKTOP + LAYOUT.CTA_BOTTOM_MARGIN;
 
 export default function EmployeesLanding() {
+  useLenis();
   useEffect(() => {
     captureLeadSource();
     initLinkedIn();

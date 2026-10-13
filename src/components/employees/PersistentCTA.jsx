@@ -40,10 +40,10 @@ export default function PersistentCTA() {
     <AnimatePresence>
       {visible && (
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 16 }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
+          exit={{ opacity: 0, y: 24 }}
+          transition={{ type: "spring", stiffness: 260, damping: 26 }}
           style={{
             position: "fixed",
             zIndex: 90,
