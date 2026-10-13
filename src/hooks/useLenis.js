@@ -3,11 +3,11 @@ import Lenis from "lenis";
 import { setLenis } from "@/lib/lenisScroll";
 
 // Initialise Lenis smooth scroll on the landing page.
-// - lerp 0.1, smoothWheel true, syncTouch false (mobile stays native).
+// - lerp 0.12, smoothWheel true, syncTouch false (mobile stays native).
+// - `prevent` keeps wheel/pan native inside any [role="dialog"] (the offer modal),
+//   so no manual data-lenis-prevent tagging is needed.
 // - Skipped entirely when the user prefers reduced motion.
 // - The raf loop pauses while the tab is hidden.
-// - The offer modal broadcasts `offersModalChange`; we stop/start Lenis and tag
-//   the dialog with data-lenis-prevent so its inner content scrolls natively.
 export function useLenis() {
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -16,7 +16,12 @@ export function useLenis() {
       return;
     }
 
-    const lenis = new Lenis({ lerp: 0.1, smoothWheel: true, syncTouch: false });
+    const lenis = new Lenis({
+      lerp: 0.12,
+      smoothWheel: true,
+      syncTouch: false,
+      prevent: (node) => !!(node.closest && node.closest('[role="dialog"]')),
+    });
     setLenis(lenis, true);
 
     let rafId;
@@ -28,17 +33,8 @@ export function useLenis() {
 
     const onModal = (e) => {
       const open = !!e?.detail?.open;
-      if (open) {
-        lenis.stop();
-        // Defer to next frame so the dialog is in the DOM, then let it scroll.
-        requestAnimationFrame(() => {
-          document.querySelectorAll('[role="dialog"]').forEach((d) => {
-            d.setAttribute("data-lenis-prevent", "");
-          });
-        });
-      } else {
-        lenis.start();
-      }
+      if (open) lenis.stop();
+      else lenis.start();
     };
     window.addEventListener("offersModalChange", onModal);
 

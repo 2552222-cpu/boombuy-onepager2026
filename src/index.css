@@ -81,14 +81,13 @@
     @apply border-border outline-ring/50;
   }
   html {
-    scroll-behavior: smooth;
-    overflow-x: hidden;
+    overflow-x: clip;
     max-width: 100vw;
   }
   body {
     @apply bg-background text-foreground font-heebo;
     direction: rtl;
-    overflow-x: hidden;
+    overflow-x: clip;
     max-width: 100vw;
   }
   h1, h2, h3 { text-wrap: balance; }

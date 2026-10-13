@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { motion, AnimatePresence, useInView, useMotionValue, useSpring } from "framer-motion";
+import { motion, AnimatePresence, useInView, useMotionValue, useSpring, animate } from "framer-motion";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import { scrollToId } from "../uiHelpers";
@@ -295,7 +295,8 @@ export default function FeaturedOffersSlider() {
   const [isMobile, setIsMobile] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [frameW, setFrameW] = useState(0);
-  const [dragX, setDragX] = useState(0);
+  // Drag offset lives in a motion value on a shared track, so dragging never re-renders the cards
+  const dragX = useMotionValue(0);
   const [dragging, setDragging] = useState(false);
   const secRef = useRef(null);
   const viewportRef = useRef(null);
@@ -350,23 +351,28 @@ export default function FeaturedOffersSlider() {
   const stageH = imgH + 70; // room for float + hover lift, so nothing is clipped top/bottom
 
   // ── Drag (mouse + touch) via framer pan: works with a finger and a mouse, vertical page scroll stays native
+  const dragStartRef = useRef(0);
   const onPanStart = () => {
+    dragX.stop();
+    dragStartRef.current = dragX.get();
     setDragging(true);
     suppressClickRef.current = false;
   };
   const onPan = (e, info) => {
     if (Math.abs(info.offset.x) > 6) suppressClickRef.current = true;
-    setDragX(info.offset.x);
+    // light resistance so it feels physical, not loose
+    dragX.set(dragStartRef.current + info.offset.x * 0.9);
   };
   const onPanEnd = (e, info) => {
     const dx = info.offset.x;
     const vx = info.velocity.x;
     // finger moves left (dx < 0) → next card, matching the "next" arrow
     let shift = Math.round(-dx / spacing);
-    if (shift === 0 && Math.abs(vx) > 400) shift = vx < 0 ? 1 : -1;
+    if (shift === 0 && Math.abs(vx) > 350) shift = vx < 0 ? 1 : -1;
     shift = Math.max(-3, Math.min(3, shift));
+    // Cards spring to their new slots while the track springs back to 0: the sum is continuous, no jump
     if (shift !== 0) setIndex((p) => (p + shift + n) % n);
-    setDragX(0);
+    animate(dragX, 0, SPRING);
     setDragging(false);
     window.setTimeout(() => { suppressClickRef.current = false; }, 80);
   };
@@ -396,7 +402,7 @@ export default function FeaturedOffersSlider() {
 
   const closeModal = () => setSelectedIdx(null);
   const modalPrev = () => setSelectedIdx((p) => (p - 1 + n) % n);
-  const modalNext = () => setSelectedIdx((p) => (p + 1 + n) % n);
+  const modalNext = () => setSelectedIdx((p) => (p + 1) % n);
 
   const offer = OFFERS[index];
 
@@ -443,7 +449,18 @@ export default function FeaturedOffersSlider() {
         </motion.p>
       </div>
 
-      {/* Stage */}
+      {/* Stage wrapper: side arrows live outside the edge-fade mask so they stay crisp */}
+      <div style={{ position: "relative" }}>
+      {!isMobile && (
+        <>
+          <button type="button" className="fo-nav" onClick={() => go(-1)} aria-label="הטבה הקודמת" style={{ ...navBtn(), position: "absolute", top: "50%", right: "max(20px, calc(50% - 560px))", marginTop: -26, zIndex: 40, width: 52, height: 52 }}>
+            <ChevronRight size={24} color="#17191D" />
+          </button>
+          <button type="button" className="fo-nav" onClick={() => go(1)} aria-label="הטבה הבאה" style={{ ...navBtn(), position: "absolute", top: "50%", left: "max(20px, calc(50% - 560px))", marginTop: -26, zIndex: 40, width: 52, height: 52 }}>
+            <ChevronLeft size={24} color="#17191D" />
+          </button>
+        </>
+      )}
       <motion.div
         ref={viewportRef}
         className="fo-stage"
@@ -459,9 +476,9 @@ export default function FeaturedOffersSlider() {
         role="group"
         aria-roledescription="קרוסלה"
         aria-label="קרוסלת הטבות"
-        data-lenis-prevent
         style={{ position: "relative", height: stageH, perspective: 1400, touchAction: "pan-y", cursor: dragging ? "grabbing" : "grab", userSelect: "none", WebkitUserSelect: "none" }}
       >
+        <motion.div style={{ position: "absolute", inset: 0, x: dragX, transformStyle: "preserve-3d" }}>
         {OFFERS.map((o, i) => {
           const offset = i - index;
           const circ = offset > n / 2 ? offset - n : offset < -n / 2 ? offset + n : offset;
@@ -469,7 +486,7 @@ export default function FeaturedOffersSlider() {
           if (abs > maxVisible) return null;
           const isCenter = circ === 0;
           // RTL reading order: the next card sits to the left
-          const x = -circ * spacing + dragX;
+          const x = -circ * spacing;
           const show = entered || reducedMotion;
           return (
             <motion.div
@@ -482,9 +499,7 @@ export default function FeaturedOffersSlider() {
                 rotateY: reducedMotion ? 0 : circ * 22,
               }}
               transition={
-                dragging
-                  ? { type: "tween", duration: 0 }
-                  : reducedMotion
+                reducedMotion
                   ? { duration: 0.15 }
                   : { ...SPRING, opacity: { duration: 0.5, delay: entered ? 0 : abs * 0.08 } }
               }
@@ -512,7 +527,9 @@ export default function FeaturedOffersSlider() {
             </motion.div>
           );
         })}
+        </motion.div>
       </motion.div>
+      </div>
 
       <div style={{ maxWidth: 1100, margin: "0 auto", textAlign: "center", padding: "0 20px" }}>
         {/* Details of the centered offer */}
@@ -538,9 +555,11 @@ export default function FeaturedOffersSlider() {
 
         {/* Controls */}
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 12, marginTop: 18 }}>
-          <button type="button" className="fo-nav" onClick={() => go(-1)} aria-label="הטבה הקודמת" style={navBtn()}>
-            <ChevronRight size={22} color="#17191D" />
-          </button>
+          {isMobile && (
+            <button type="button" className="fo-nav" onClick={() => go(-1)} aria-label="הטבה הקודמת" style={navBtn()}>
+              <ChevronRight size={22} color="#17191D" />
+            </button>
+          )}
           <div style={{ display: "flex", gap: 2 }}>
             {OFFERS.map((_, i) => (
               <button
@@ -559,9 +578,11 @@ export default function FeaturedOffersSlider() {
               </button>
             ))}
           </div>
-          <button type="button" className="fo-nav" onClick={() => go(1)} aria-label="הטבה הבאה" style={navBtn()}>
-            <ChevronLeft size={22} color="#17191D" />
-          </button>
+          {isMobile && (
+            <button type="button" className="fo-nav" onClick={() => go(1)} aria-label="הטבה הבאה" style={navBtn()}>
+              <ChevronLeft size={22} color="#17191D" />
+            </button>
+          )}
         </div>
 
         <p style={{ fontSize: 13, color: "#6E7177", lineHeight: 1.5, maxWidth: 660, margin: "16px auto 0" }}>

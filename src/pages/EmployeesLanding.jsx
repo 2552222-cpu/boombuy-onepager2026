@@ -32,7 +32,7 @@ export default function EmployeesLanding() {
     <div
       dir="rtl"
       style={{
-        overflowX: "hidden",
+        overflowX: "clip",
         maxWidth: "100vw",
         background: "#FBFAF8",
         paddingBottom: `calc(${BOTTOM_RESERVE}px + env(safe-area-inset-bottom))`,
