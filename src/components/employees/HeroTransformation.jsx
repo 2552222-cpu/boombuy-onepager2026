@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { Play, RotateCcw, Calendar, Sparkles } from "lucide-react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { scrollToId } from "./uiHelpers";
 import {
   BEFORE_IMG,
@@ -99,6 +99,10 @@ export default function HeroTransformation() {
   const rafRef = useRef(null);
   const rvfcIdRef = useRef(null);
   const attemptRef = useRef(0);
+  const frameRef = useRef(null);
+  const stageRef = useRef("idle");
+  const autoTriedRef = useRef(false);
+  const frameInView = useInView(frameRef, { amount: 0.6, once: true });
 
   useEffect(() => {
     const c = () => setIsMobile(window.innerWidth < 768);
@@ -173,6 +177,21 @@ export default function HeroTransformation() {
     if (v) { try { v.load(); } catch (e) { /* ignore */ } }
   };
 
+  useEffect(() => { stageRef.current = stage; }, [stage]);
+
+  // Mobile only: when the hero frame first scrolls into view, auto-play the
+  // transformation video once (muted, after a 1.2s beat). If the browser blocks
+  // autoplay, revert to idle so the "לראות" button stays. Desktop = click-to-play.
+  useEffect(() => {
+    if (!isMobile || reducedMotion) return;
+    if (!frameInView) return;
+    if (autoTriedRef.current) return;
+    autoTriedRef.current = true;
+    const t = setTimeout(() => { if (stageRef.current === "idle") autoStart(); }, 1200);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [frameInView, isMobile, reducedMotion]);
+
   useEffect(
     () => () => {
       if (loadTimerRef.current) clearTimeout(loadTimerRef.current);
@@ -241,7 +260,18 @@ export default function HeroTransformation() {
     setStage("failed");
   };
 
-  const beginPlayback = async (attempt) => {
+  const revertToIdle = () => {
+    attemptRef.current++;
+    cancelFrameLoops();
+    if (loadTimerRef.current) { clearTimeout(loadTimerRef.current); loadTimerRef.current = null; }
+    const v = videoRef.current;
+    if (v) { try { v.pause(); } catch (e) {} }
+    setVideoShown(false);
+    setAfterShown(false);
+    setStage("idle");
+  };
+
+  const beginPlayback = async (attempt, autoMode = false) => {
     if (attemptRef.current !== attempt) return;
     const v = videoRef.current;
     if (!v) { goFailed(); return; }
@@ -251,7 +281,7 @@ export default function HeroTransformation() {
       const p = v.play();
       if (p && typeof p.then === "function") await p;
     } catch (e) {
-      if (attemptRef.current === attempt) goFailed();
+      if (attemptRef.current === attempt) { if (autoMode) revertToIdle(); else goFailed(); }
       return;
     }
     if (attemptRef.current !== attempt) { try { v.pause(); } catch (e) {} return; }
@@ -260,6 +290,17 @@ export default function HeroTransformation() {
     if (attemptRef.current !== attempt) { try { v.pause(); } catch (e) {} return; }
     if (loadTimerRef.current) { clearTimeout(loadTimerRef.current); loadTimerRef.current = null; }
     setVideoShown(true);
+  };
+
+  const autoStart = () => {
+    if (stageRef.current !== "idle") return;
+    if (videoPreload !== "auto") setVideoPreload("auto");
+    const attempt = ++attemptRef.current;
+    setStage("playing");
+    setAfterShown(false);
+    applyZoom();
+    loadTimerRef.current = setTimeout(() => { if (attemptRef.current === attempt) goFailed(); }, LOAD_TIMEOUT_MS);
+    beginPlayback(attempt, true);
   };
 
   const onStart = () => {
@@ -412,6 +453,7 @@ export default function HeroTransformation() {
               style={{ width: "100%" }}
             >
           <div
+            ref={frameRef}
             style={{
               position: "relative",
               margin: "0 auto",
@@ -433,7 +475,7 @@ export default function HeroTransformation() {
               alt="מנהלת רווחה בעומס"
               width={1600}
               height={900}
-              fetchpriority="high"
+              fetchPriority="high"
               loading="eager"
               decoding="async"
               onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = BEFORE_IMG; }}
@@ -458,7 +500,7 @@ export default function HeroTransformation() {
                 transition: `opacity ${fadeDur}ms cubic-bezier(.4,0,.2,1)`,
               }}
             >
-              <track kind="captions" srclang="he" label="עברית" src="/hero-captions.vtt" />
+              <track kind="captions" srcLang="he" label="עברית" src="/hero-captions.vtt" />
             </video>
 
             {/* AFTER image — fades in 1s before the video ends */}

@@ -50,8 +50,11 @@ function Card({ t }) {
         textAlign: "right",
         boxSizing: "border-box",
         height: "100%",
+        position: "relative",
+        overflow: "hidden",
       }}
     >
+      <span aria-hidden="true" style={{ position: "absolute", top: -10, right: 16, fontSize: 72, lineHeight: 1, fontFamily: "Georgia, serif", color: CORAL, opacity: 0.25, pointerEvents: "none", userSelect: "none" }}>״</span>
       <div style={{ height: 32, display: "flex", alignItems: "center", marginBottom: 12 }}>
         <img src={fitImg(t.logo, 400, 160)} alt={t.name} width={400} height={160} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = t.logo; }} style={{ height: 32, maxWidth: 130, objectFit: "contain", objectPosition: "right" }} />
       </div>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
-import { RevealHeading } from "./motion";
+import { RevealHeading, RevealBlock } from "./motion";
 
 const BG = "#FBFAF8";
 const CHARCOAL = "#17191D";
@@ -50,17 +50,18 @@ export default function FAQ() {
         .faq-item summary{ list-style:none; cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 4px; font-weight:700; color:${CHARCOAL}; font-size:clamp(17px,1.5vw,20px); }
         .faq-item summary::-webkit-details-marker{ display:none; }
         .faq-item summary:focus-visible{ outline:3px solid rgba(244,122,90,0.55); outline-offset:2px; border-radius:10px; }
-        .faq-chev{ transition:transform .25s ease; flex:0 0 auto; color:${CORAL}; }
+        .faq-chev{ transition:transform .4s cubic-bezier(.34,1.56,.64,1); flex:0 0 auto; color:${CORAL}; }
         .faq-item[open] .faq-chev{ transform:rotate(180deg); }
         .faq-a{ color:${BODY}; font-size:clamp(15px,1.25vw,18px); line-height:1.7; margin:0; padding:0 4px 22px; }
         .faq-more{ display:flex; align-items:center; gap:8px; margin:24px auto 0; height:48px; padding:0 22px; border-radius:999; border:1.5px solid rgba(19,21,25,0.16); background:#fff; color:${CHARCOAL}; font-family:inherit; font-weight:700; font-size:16px; cursor:pointer; transition: transform .18s ease, box-shadow .18s ease; }
         .faq-more:hover{ transform: translateY(-1px); box-shadow:0 8px 20px rgba(19,21,25,0.10); }
         .faq-more:active{ transform: scale(0.98); }
-        .faq-more .faq-chev{ transition: transform .25s ease; }
+        .faq-more .faq-chev{ transition: transform .4s cubic-bezier(.34,1.56,.64,1); }
         @media (prefers-reduced-motion: reduce){ .faq-chev, .faq-more{ transition:none; } }
       `}</style>
 
       <div style={{ maxWidth: 820, margin: "0 auto" }}>
+        <RevealBlock style={{ color: "#C24A2C", fontWeight: 700, fontSize: 13, letterSpacing: "-0.01em", margin: "0 0 8px", textAlign: "center" }}>לפני ששואלים</RevealBlock>
         <RevealHeading
           as="h2"
           amount={0.2}

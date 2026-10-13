@@ -11,7 +11,7 @@ const prefersReducedMotion = () =>
 // useReveal: an element is "shown" once it scrolls into view (once, amount 0.15).
 // A 1s fallback forces it visible if the IntersectionObserver never fires, so
 // content can never get stuck at opacity 0.
-export function useReveal(amount = 0.15, timeout = 1000) {
+export function useReveal(amount = 0.15, timeout = 1200) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, amount });
   const [shown, setShown] = useState(false);

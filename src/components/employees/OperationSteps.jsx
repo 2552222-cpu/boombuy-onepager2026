@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { base44 } from "@/api/base44Client";
-import { RevealHeading, RevealBlock, EASE } from "./motion";
+import { RevealHeading, RevealBlock } from "./motion";
 import { SECTION } from "./layoutTokens";
 
 const BG = SECTION.BG_WHITE;
@@ -56,6 +56,7 @@ export default function OperationSteps() {
       `}</style>
 
       <div style={{ maxWidth: 1000, margin: "0 auto", textAlign: "center", padding: "0 16px" }}>
+        <RevealBlock style={{ color: SECTION.CORAL_TEXT, fontWeight: SECTION.KICKER_WEIGHT, fontSize: SECTION.KICKER_SIZE, letterSpacing: "-0.01em", margin: "0 0 8px" }}>איך זה עובד</RevealBlock>
         <RevealHeading
           as="h2"
           style={{ color: CHARCOAL, fontSize: `clamp(${SECTION.H2_MOBILE}px,4vw,48px)`, fontWeight: SECTION.H2_WEIGHT, lineHeight: SECTION.H2_LH, letterSpacing: "-0.025em", margin: 0 }}

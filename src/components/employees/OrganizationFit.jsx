@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { base44 } from "@/api/base44Client";
 import { scrollToId } from "./uiHelpers";
-import { RevealHeading } from "./motion";
+import { RevealHeading, RevealBlock } from "./motion";
 import { readLeadSource } from "@/lib/leadSource";
 import { trackLinkedInConversion } from "@/lib/linkedin";
 import { LINKEDIN_CONV_LEAD } from "@/lib/siteConfig";
@@ -286,11 +286,13 @@ export default function OrganizationFit() {
       <style>{`
         @media (max-width:768px){ #organization-fit{ scroll-margin-top:72px; padding-left:16px !important; padding-right:16px !important; } }
         .of-option:hover{ border-color:rgba(244,122,90,0.6) !important; transform:translateY(-2px); box-shadow:0 10px 26px rgba(244,122,90,0.12); }
+        .of-option:active{ transform:scale(0.97); }
         .of-option:focus-visible{ outline:3px solid rgba(244,122,90,0.55); outline-offset:2px; }
         .of-input:focus{ border-color:rgba(244,122,90,0.6); box-shadow:0 0 0 3px rgba(244,122,90,0.12); }
       `}</style>
 
       <div style={{ maxWidth: 760, margin: "0 auto", textAlign: "center" }}>
+        <RevealBlock style={{ color: "#C24A2C", fontWeight: 700, fontSize: 13, letterSpacing: "-0.01em", margin: "0 0 8px" }}>בואו נתאים</RevealBlock>
         <RevealHeading
           as="h2"
           amount={0.5}
@@ -313,7 +315,7 @@ export default function OrganizationFit() {
           <div style={{ maxWidth: 360, margin: "30px auto 0", height: 6, borderRadius: 999, background: "rgba(19,21,25,0.10)", overflow: "hidden" }}>
             <motion.div
               animate={{ width: `${(progress / TOTAL_STEPS) * 100}%` }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
+              transition={{ type: "spring", stiffness: 200, damping: 26 }}
               style={{ height: "100%", background: CORAL, borderRadius: 999 }}
             />
           </div>
@@ -380,7 +382,7 @@ export default function OrganizationFit() {
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "flex-start",
-                          gap: 12,
+                          gap: 10,
                         }}
                       >
                         <span style={{ width: 8, height: 8, borderRadius: "50%", background: CORAL, flex: "0 0 auto" }} />

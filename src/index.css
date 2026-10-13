@@ -121,3 +121,8 @@ html.lenis, html.lenis body { height: auto; }
 @media (prefers-reduced-motion: reduce) {
   .bb-pulse-btn:hover .bb-pulse-dot { animation: none; }
 }
+
+/* Idle coral-dot pulse for the persistent CTA (gentle beat every 3s) */
+@keyframes bb-pulse-idle { 0%,100%{transform:scale(1)} 50%{transform:scale(1.5)} }
+.bb-pulse-idle{ animation: bb-pulse-idle 3s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce){ .bb-pulse-idle{ animation:none; } }

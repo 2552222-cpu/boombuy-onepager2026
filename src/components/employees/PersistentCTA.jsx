@@ -78,7 +78,7 @@ export default function PersistentCTA() {
               maxWidth: isMobile ? "100%" : 260,
             }}
           >
-            <span className="bb-pulse-dot" style={{ width: 8, height: 8, borderRadius: "50%", background: CORAL, display: "inline-block", flexShrink: 0 }} />
+            <span className="bb-pulse-dot bb-pulse-idle" style={{ width: 8, height: 8, borderRadius: "50%", background: CORAL, display: "inline-block", flexShrink: 0 }} />
             בדיקת התאמה
           </button>
         </motion.div>

@@ -4,6 +4,7 @@ import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import { scrollToId } from "../uiHelpers";
 import { fitImg } from "@/lib/img";
+import WhatsAppMoment from "../WhatsAppMoment";
 
 // ─── OFFERS DATA (9 items — preserved exactly, per-item labelOld) ────────────
 const OFFERS = [
@@ -429,6 +430,15 @@ export default function FeaturedOffersSlider() {
       `}</style>
 
       <div style={{ maxWidth: 1100, margin: "0 auto", textAlign: "center", padding: "0 20px" }}>
+        <motion.p
+          initial={{ opacity: 0, y: 8 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.5, ease: EASE }}
+          style={{ color: "#C24A2C", fontWeight: 700, fontSize: 13, letterSpacing: "-0.01em", margin: "0 0 10px" }}
+        >
+          הטבה יומית
+        </motion.p>
         <motion.h2
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -448,6 +458,8 @@ export default function FeaturedOffersSlider() {
           ככה נראו ההטבות היומיות של העובדים בשבועות האחרונים. גוללים, ולוחצים על הטבה כדי לראות את הפרטים.
         </motion.p>
       </div>
+
+      <WhatsAppMoment offer={offer} isMobile={isMobile} />
 
       {/* Stage wrapper: side arrows live outside the edge-fade mask so they stay crisp */}
       <div style={{ position: "relative" }}>
