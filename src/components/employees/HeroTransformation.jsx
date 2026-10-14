@@ -462,8 +462,8 @@ export default function HeroTransformation() {
         @media (max-width:768px){ #hero-transformation{ scroll-margin-top:72px; } }
       `}</style>
 
-      <div style={{ margin: "0 auto", padding: isMobile ? "0 16px" : "0 32px", maxWidth: 1200, display: "flex", flexDirection: "column", alignItems: "center" }}>
-        <motion.div style={{ marginTop: isMobile ? 20 : 18, marginBottom: 24, textAlign: "center", width: "100%", y: reducedMotion ? 0 : headingY, opacity: reducedMotion ? 1 : headingOpacity }}>
+      <div style={{ margin: "0 auto", padding: isMobile ? "0 12px" : "0 32px", maxWidth: 1200, display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <motion.div style={{ marginTop: isMobile ? 20 : 18, marginBottom: 24, textAlign: "center", width: "100%", y: (reducedMotion || isMobile) ? 0 : headingY, opacity: (reducedMotion || isMobile) ? 1 : headingOpacity }}>
           <motion.h1
             initial="hidden"
             animate="show"
@@ -501,8 +501,8 @@ export default function HeroTransformation() {
               margin: "0 auto",
               width: isMobile ? "100%" : mediaSize.w,
               height: isMobile ? undefined : mediaSize.h,
-              aspectRatio: isMobile ? "4 / 3" : undefined,
-              borderRadius: isMobile ? 22 : 34,
+              aspectRatio: isMobile ? "16 / 10" : undefined,
+              borderRadius: isMobile ? 20 : 34,
               overflow: "hidden",
               boxShadow: "0 24px 70px rgba(0,0,0,0.14), 0 8px 24px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(255,255,255,0.3)",
               background: "#000",
@@ -521,7 +521,7 @@ export default function HeroTransformation() {
               loading="eager"
               decoding="async"
               onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = BEFORE_IMG; }}
-              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: isMobile ? "100% 50%" : "center center", zIndex: 1, willChange: "transform" }}
+              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "50% 50%", zIndex: 1, willChange: "transform" }}
             />
 
             {/* Video sits above BEFORE_IMG, fades in on first frame */}
@@ -536,7 +536,7 @@ export default function HeroTransformation() {
               onError={onVideoError}
               style={{
                 position: "absolute", inset: 0, width: "100%", height: "100%",
-                objectFit: "cover", objectPosition: isMobile ? "100% 50%" : "center center", zIndex: 2,
+                objectFit: "cover", objectPosition: "50% 50%", zIndex: 2,
                 opacity: videoShown ? 1 : 0,
                 transition: `opacity ${fadeDur}ms cubic-bezier(.4,0,.2,1)`,
               }}
@@ -557,7 +557,7 @@ export default function HeroTransformation() {
               onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = AFTER_IMG; }}
               style={{
                 position: "absolute", inset: 0, width: "100%", height: "100%",
-                objectFit: "cover", objectPosition: isMobile ? "100% 50%" : "center center", zIndex: 3,
+                objectFit: "cover", objectPosition: "50% 50%", zIndex: 3,
                 opacity: afterShown ? 1 : 0,
                 transition: `opacity ${afterDur}ms cubic-bezier(.4,0,.2,1)`,
               }}

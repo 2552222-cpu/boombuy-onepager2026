@@ -7,7 +7,6 @@ import { SECTION } from "./layoutTokens";
 const BG = SECTION.BG_MIST;
 const CHARCOAL = SECTION.CHARCOAL;
 const CORAL = SECTION.BTN_CORAL;
-const EASE = [0.22, 1, 0.36, 1];
 
 const ITEMS = [
   {
@@ -36,34 +35,39 @@ const ITEMS = [
   },
 ];
 
-function Card({ t }) {
+function Card({ t, isMobile }) {
   return (
     <div
       style={{
         background: "#fff",
-        borderRadius: 22,
-        border: "1px solid rgba(19,21,25,0.07)",
+        borderRadius: 24,
+        border: "1px solid rgba(19,21,25,0.06)",
         boxShadow: "0 10px 30px rgba(19,21,25,0.06)",
-        padding: "24px",
+        padding: 22,
         display: "flex",
         flexDirection: "column",
         textAlign: "right",
         boxSizing: "border-box",
         height: "100%",
-        position: "relative",
-        overflow: "hidden",
       }}
     >
-      <span aria-hidden="true" style={{ position: "absolute", top: -10, right: 16, fontSize: 72, lineHeight: 1, fontFamily: "Georgia, serif", color: CORAL, opacity: 0.25, pointerEvents: "none", userSelect: "none" }}>״</span>
-      <div style={{ height: 32, display: "flex", alignItems: "center", marginBottom: 12 }}>
-        <img src={fitImg(t.logo, 400, 160)} alt={t.name} width={400} height={160} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = t.logo; }} style={{ height: 32, maxWidth: 130, objectFit: "contain", objectPosition: "right" }} />
+      <div style={{ height: 28, display: "flex", alignItems: "center", justifyContent: "flex-end", marginBottom: 16 }}>
+        <img
+          src={fitImg(t.logo, 400, 160)}
+          alt={t.name}
+          width={400}
+          height={160}
+          onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = t.logo; }}
+          style={{ height: 28, maxWidth: 130, objectFit: "contain", objectPosition: "right" }}
+        />
       </div>
-      <p style={{ fontSize: 16, color: "#3A3C42", lineHeight: 1.65, margin: "0 0 14px", flexGrow: 1 }}>
+      <p style={{ fontSize: isMobile ? 19 : 22, fontWeight: 600, color: "#17191D", lineHeight: 1.45, letterSpacing: "-0.01em", margin: 0 }}>
         ״{t.text}״
       </p>
-      <div>
-        <p style={{ fontSize: 16, fontWeight: 800, color: CHARCOAL, margin: "0 0 2px" }}>{t.name}</p>
-        <p style={{ fontSize: 13, color: "#5A5D63", margin: 0 }}>{t.role}</p>
+      <div style={{ height: 1, background: "rgba(19,21,25,0.08)", margin: "18px 0" }} />
+      <div style={{ marginTop: "auto" }}>
+        <p style={{ fontSize: 15, fontWeight: 700, color: "#17191D", margin: 0 }}>{t.name}</p>
+        <p style={{ fontSize: 13, fontWeight: 500, color: "#5A5D63", margin: 0 }}>{t.role}</p>
       </div>
     </div>
   );
@@ -127,7 +131,7 @@ export default function Testimonials() {
 
       <div style={{ maxWidth: 1040, margin: "0 auto", textAlign: "center", padding: "0 16px" }}>
         <RevealBlock
-          style={{ color: SECTION.CORAL_TEXT, fontWeight: SECTION.KICKER_WEIGHT, fontSize: SECTION.KICKER_SIZE, margin: 0, letterSpacing: "-0.01em" }}
+          style={{ color: SECTION.CORAL_TEXT, fontWeight: SECTION.KICKER_WEIGHT, fontSize: SECTION.KICKER_SIZE, letterSpacing: "-0.01em", margin: "0 0 8px" }}
         >
           מה אומרים מי שכבר שדרגו?
         </RevealBlock>
@@ -135,9 +139,9 @@ export default function Testimonials() {
         <RevealHeading
           as="h2"
           amount={0.2}
-          style={{ color: CHARCOAL, fontSize: `clamp(${SECTION.H2_MOBILE}px,4vw,52px)`, fontWeight: SECTION.H2_WEIGHT, lineHeight: 1.06, letterSpacing: "-0.025em", margin: "10px 0 0" }}
+          style={{ color: CHARCOAL, fontSize: "clamp(26px,4vw,52px)", fontWeight: 800, lineHeight: 1.12, letterSpacing: "-0.025em", margin: 0, textWrap: "balance" }}
         >
-          העובדים מרגישים את ההבדל.<br />וגם <span style={{ color: SECTION.CORAL_TEXT }}>הארגון</span>.
+          העובדים מרגישים את ההבדל. וגם <span style={{ color: SECTION.CORAL_TEXT }}>הארגון</span>.
         </RevealHeading>
 
         {isMobile ? (
@@ -148,27 +152,29 @@ export default function Testimonials() {
               className="tm-scroller"
               style={{
                 display: "flex",
-                gap: 14,
+                alignItems: "flex-start",
+                gap: 12,
                 marginTop: 30,
                 overflowX: "auto",
                 scrollSnapType: "x mandatory",
+                scrollPadding: "0 16px",
                 WebkitOverflowScrolling: "touch",
                 scrollbarWidth: "none",
-                padding: "0 4px",
+                padding: 0,
               }}
             >
               {ITEMS.map((t, i) => (
                 <div
                   key={t.name}
                   style={{
-                    scrollSnapAlign: "center",
-                    flex: "0 0 86%",
+                    scrollSnapAlign: "start",
+                    flex: "0 0 84%",
                     transform: i === active ? "scale(1)" : "scale(0.96)",
                     opacity: 1,
                     transition: "transform .25s ease",
                   }}
                 >
-                  <Card t={t} />
+                  <Card t={t} isMobile={isMobile} />
                 </div>
               ))}
             </div>
@@ -179,10 +185,10 @@ export default function Testimonials() {
                   type="button"
                   onClick={() => {
                     const el = scrollerRef.current;
-                    if (el) el.scrollTo({ left: i * (el.clientWidth * 0.86 + 14), behavior: "smooth" });
+                    if (el) el.scrollTo({ left: i * (el.clientWidth * 0.84 + 12), behavior: "smooth" });
                   }}
                   aria-label={`עבור להמלצה ${i + 1}`}
-                  style={{ width: i === active ? 22 : 8, height: 8, borderRadius: 999, border: "none", background: i === active ? CORAL : "rgba(19,21,29,0.18)", padding: 0, cursor: "pointer", transition: "width .25s ease, background .25s ease" }}
+                  style={{ width: i === active ? 18 : 6, height: 6, borderRadius: 999, border: "none", background: i === active ? CORAL : "rgba(19,21,29,0.18)", padding: 0, cursor: "pointer", transition: "width .25s ease, background .25s ease" }}
                 />
               ))}
             </div>
@@ -191,7 +197,7 @@ export default function Testimonials() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20, marginTop: 44, textAlign: "right" }}>
             {ITEMS.map((t, i) => (
               <RevealBlock key={t.name} delay={i * 0.07} style={{ height: "100%" }}>
-                <Card t={t} />
+                <Card t={t} isMobile={isMobile} />
               </RevealBlock>
             ))}
           </div>

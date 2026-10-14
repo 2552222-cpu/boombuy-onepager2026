@@ -435,7 +435,7 @@ export default function FeaturedOffersSlider() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.5, ease: EASE }}
-          style={{ color: "#C24A2C", fontWeight: 700, fontSize: 13, letterSpacing: "-0.01em", margin: "0 0 10px" }}
+          style={{ color: "#C24A2C", fontWeight: 700, fontSize: 13, letterSpacing: "-0.01em", margin: "0 0 8px" }}
         >
           הטבה יומית
         </motion.p>
@@ -444,7 +444,7 @@ export default function FeaturedOffersSlider() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.55, ease: EASE }}
-          style={{ fontSize: "clamp(28px,4.6vw,46px)", fontWeight: 800, color: "#17191D", letterSpacing: "-0.03em", lineHeight: 1.08, margin: "0 0 14px", textWrap: "balance" }}
+          style={{ fontSize: "clamp(28px,4.6vw,46px)", fontWeight: 800, color: "#17191D", letterSpacing: "-0.03em", lineHeight: 1.12, margin: "0 0 14px", textWrap: "balance" }}
         >
           כל בוקר משהו חדש. <span style={{ color: "#C24A2C" }}>ותמיד במחיר הכי נמוך בישראל.</span>
         </motion.h2>

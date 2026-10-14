@@ -123,10 +123,10 @@ export default function PlatformExplanation() {
           }}
         >
           <div style={{ maxWidth: 980, margin: "0 auto", textAlign: "center" }}>
-            <RevealBlock style={{ color: CORAL, fontWeight: SECTION.KICKER_WEIGHT, fontSize: SECTION.KICKER_SIZE, letterSpacing: "-0.01em", margin: "0 0 10px" }}>מה אנחנו עושים</RevealBlock>
+            <RevealBlock style={{ color: CORAL, fontWeight: SECTION.KICKER_WEIGHT, fontSize: SECTION.KICKER_SIZE, letterSpacing: "-0.01em", margin: "0 0 8px" }}>מה אנחנו עושים</RevealBlock>
             <RevealHeading
               as="h2"
-              style={{ color: WHITE, fontSize: `clamp(28px,4.4vw,60px)`, fontWeight: SECTION.H2_WEIGHT, lineHeight: 1.06, letterSpacing: "-0.025em", margin: 0 }}
+              style={{ color: WHITE, fontSize: `clamp(28px,4.4vw,60px)`, fontWeight: SECTION.H2_WEIGHT, lineHeight: 1.12, letterSpacing: "-0.025em", margin: 0 }}
             >
               הופכים תקציב רווחה קיים<br />לחוויית עובד שעובדת בכל יום.
             </RevealHeading>

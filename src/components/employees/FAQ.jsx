@@ -68,7 +68,7 @@ export default function FAQ() {
           style={{
             color: CHARCOAL,
             fontSize: "clamp(28px,4vw,46px)",
-            fontWeight: 700,
+            fontWeight: 800,
             lineHeight: 1.12,
             letterSpacing: "-0.025em",
             margin: "0 0 12px",

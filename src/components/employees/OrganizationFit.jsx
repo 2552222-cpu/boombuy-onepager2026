@@ -296,7 +296,7 @@ export default function OrganizationFit() {
         <RevealHeading
           as="h2"
           amount={0.5}
-          style={{ color: CHARCOAL, fontSize: "clamp(30px,4vw,52px)", fontWeight: 700, lineHeight: 1.06, letterSpacing: "-0.025em", margin: 0 }}
+          style={{ color: CHARCOAL, fontSize: "clamp(28px,4vw,52px)", fontWeight: 800, lineHeight: 1.12, letterSpacing: "-0.025em", margin: 0 }}
         >
           בדיקת <span style={{ color: "#C24A2C" }}>התאמה</span>
         </RevealHeading>
