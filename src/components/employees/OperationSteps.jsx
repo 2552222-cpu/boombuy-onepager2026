@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { base44 } from "@/api/base44Client";
-import { RevealHeading, RevealBlock } from "./motion";
+import { RevealBlock } from "./motion";
 import { SECTION } from "./layoutTokens";
 
 const BG = SECTION.BG_WHITE;
@@ -57,12 +57,15 @@ export default function OperationSteps() {
 
       <div style={{ maxWidth: 1000, margin: "0 auto", textAlign: "center", padding: "0 16px" }}>
         <RevealBlock style={{ color: SECTION.CORAL_TEXT, fontWeight: SECTION.KICKER_WEIGHT, fontSize: SECTION.KICKER_SIZE, letterSpacing: "-0.01em", margin: "0 0 8px" }}>איך זה עובד</RevealBlock>
-        <RevealHeading
-          as="h2"
+        <motion.h2
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           style={{ color: CHARCOAL, fontSize: `clamp(${SECTION.H2_MOBILE}px,4vw,48px)`, fontWeight: SECTION.H2_WEIGHT, lineHeight: SECTION.H2_LH, letterSpacing: "-0.025em", margin: 0 }}
         >
           אתם מחליטים. <span style={{ color: SECTION.CORAL_TEXT }}>אנחנו מבצעים.</span>
-        </RevealHeading>
+        </motion.h2>
 
         <RevealBlock
           delay={0.08}

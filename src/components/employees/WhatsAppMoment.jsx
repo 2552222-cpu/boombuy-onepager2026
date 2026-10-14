@@ -26,9 +26,9 @@ export default function WhatsAppMoment({ offer, isMobile }) {
   const showBubble = typed || reduce;
 
   return (
-    <div ref={ref} dir="rtl" style={{ display: "flex", justifyContent: "center", marginTop: isMobile ? 18 : 22, marginBottom: isMobile ? 6 : 10 }}>
+    <div ref={ref} dir="rtl" style={{ display: "flex", justifyContent: "center", marginTop: isMobile ? 18 : 22, marginBottom: isMobile ? 12 : 10 }}>
       <style>{`@keyframes wa-bounce{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-4px);opacity:1}} @media (prefers-reduced-motion: reduce){ .wa-dot{ animation:none !important; } }`}</style>
-      <div style={{ width: "100%", maxWidth: 340, background: "#fff", borderRadius: 20, border: "1px solid rgba(19,21,25,0.08)", boxShadow: "0 10px 30px rgba(19,21,25,0.06)", padding: "14px 16px", boxSizing: "border-box" }}>
+      <div style={{ width: "100%", maxWidth: isMobile ? 320 : 340, background: "#fff", borderRadius: 20, border: "1px solid rgba(19,21,25,0.08)", boxShadow: "0 10px 30px rgba(19,21,25,0.06)", padding: "14px 16px", boxSizing: "border-box" }}>
         {/* Header */}
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
           <span style={{ width: 28, height: 28, borderRadius: "50%", background: "#17191D", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 14, flex: "0 0 auto" }}>B</span>
@@ -59,7 +59,7 @@ export default function WhatsAppMoment({ offer, isMobile }) {
                 transition={{ duration: 0.25, ease: EASE }}
                 style={{ background: "#E7F6E3", borderRadius: "18px 18px 4px 18px", padding: "12px 14px", maxWidth: 320 }}
               >
-                <p style={{ fontSize: 15, color: "#1A1A1A", lineHeight: 1.5, margin: 0 }}>
+                <p style={{ fontSize: isMobile ? 14 : 15, color: "#1A1A1A", lineHeight: 1.5, margin: 0 }}>
                   ☀️ בוקר טוב! ההטבה של היום: {offer.productName} ב-₪{offer.priceNew} במקום ₪{offer.priceOld}. היום בלבד.
                 </p>
                 <span style={{ display: "block", fontSize: 11, color: "#3B7DD2", marginTop: 6, textAlign: "left" }}>✓✓</span>

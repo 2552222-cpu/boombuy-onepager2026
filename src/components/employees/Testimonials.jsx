@@ -63,7 +63,7 @@ function Card({ t }) {
       </p>
       <div>
         <p style={{ fontSize: 16, fontWeight: 800, color: CHARCOAL, margin: "0 0 2px" }}>{t.name}</p>
-        <p style={{ fontSize: 13, color: "#6E7177", margin: 0 }}>{t.role}</p>
+        <p style={{ fontSize: 13, color: "#5A5D63", margin: 0 }}>{t.role}</p>
       </div>
     </div>
   );
@@ -164,8 +164,8 @@ export default function Testimonials() {
                     scrollSnapAlign: "center",
                     flex: "0 0 86%",
                     transform: i === active ? "scale(1)" : "scale(0.96)",
-                    opacity: i === active ? 1 : 0.8,
-                    transition: "transform .25s ease, opacity .25s ease",
+                    opacity: 1,
+                    transition: "transform .25s ease",
                   }}
                 >
                   <Card t={t} />

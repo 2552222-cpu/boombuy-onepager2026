@@ -102,6 +102,7 @@ export default function HeroTransformation() {
   const frameRef = useRef(null);
   const stageRef = useRef("idle");
   const autoTriedRef = useRef(false);
+  const autoTimerRef = useRef(null);
   const frameInView = useInView(frameRef, { amount: 0.6, once: true });
 
   useEffect(() => {
@@ -156,16 +157,15 @@ export default function HeroTransformation() {
   }, [isMobile]);
 
   useEffect(() => {
-    // Lazy-load the hero video only after window.load + idle, so it never blocks the LCP.
+    // Preload the hero video only after window.load + 3s so it never competes
+    // with the first paint. hover/touchstart on the button (primeNow) and
+    // auto-play (autoStart) also prime it. preload stays "none" until then.
     const prime = () => {
       setVideoPreload("auto");
       const v = videoRef.current;
-      if (v) { try { v.load(); } catch (e) { /* ignore */ } }
+      if (v) { try { v.preload = "auto"; v.load(); } catch (e) { /* ignore */ } }
     };
-    const schedule = () => {
-      if (window.requestIdleCallback) window.requestIdleCallback(prime, { timeout: 3000 });
-      else window.setTimeout(prime, 1200);
-    };
+    const schedule = () => { window.setTimeout(prime, 3000); };
     if (document.readyState === "complete") { schedule(); return; }
     window.addEventListener("load", schedule, { once: true });
     return () => window.removeEventListener("load", schedule);
@@ -174,21 +174,34 @@ export default function HeroTransformation() {
   const primeNow = () => {
     if (videoPreload !== "auto") setVideoPreload("auto");
     const v = videoRef.current;
-    if (v) { try { v.load(); } catch (e) { /* ignore */ } }
+    if (v) { try { v.preload = "auto"; v.load(); } catch (e) { /* ignore */ } }
   };
 
   useEffect(() => { stageRef.current = stage; }, [stage]);
 
-  // Mobile only: when the hero frame first scrolls into view, auto-play the
-  // transformation video once (muted, after a 1.2s beat). If the browser blocks
-  // autoplay, revert to idle so the "לראות" button stays. Desktop = click-to-play.
+  // Mobile only: auto-play the transformation video once (muted) — but only after
+  // window.load + 2.5s, and only on a fast connection (saveData off, effectiveType
+  // 4g or unknown). We prime preload=auto and wait for canplay before play(). If
+  // the browser blocks autoplay or the connection is slow, the "לראות" button
+  // stays. Desktop = click-to-play.
   useEffect(() => {
     if (!isMobile || reducedMotion) return;
     if (!frameInView) return;
     if (autoTriedRef.current) return;
+    const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    if (conn && conn.saveData) return;
+    const et = conn && conn.effectiveType;
+    if (et && et !== "4g") return;
     autoTriedRef.current = true;
-    const t = setTimeout(() => { if (stageRef.current === "idle") autoStart(); }, 1200);
-    return () => clearTimeout(t);
+    const start = () => {
+      autoTimerRef.current = setTimeout(() => { if (stageRef.current === "idle") autoStart(); }, 2500);
+    };
+    if (document.readyState === "complete") { start(); return; }
+    window.addEventListener("load", start, { once: true });
+    return () => {
+      if (autoTimerRef.current) clearTimeout(autoTimerRef.current);
+      window.removeEventListener("load", start);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [frameInView, isMobile, reducedMotion]);
 
@@ -196,6 +209,7 @@ export default function HeroTransformation() {
     () => () => {
       if (loadTimerRef.current) clearTimeout(loadTimerRef.current);
       if (frameTimeoutRef.current) clearTimeout(frameTimeoutRef.current);
+      if (autoTimerRef.current) clearTimeout(autoTimerRef.current);
       cancelFrameLoops();
       const v = videoRef.current;
       if (v) { try { v.pause(); } catch (e) { /* ignore */ } }
@@ -251,6 +265,28 @@ export default function HeroTransformation() {
       }, FRAME_TIMEOUT_MS);
     });
 
+  // Wait for the video to be buffered enough to play (canplay). Used by the
+  // mobile auto-play path so we never call play() on an empty buffer.
+  const waitForCanPlay = (v, attempt) =>
+    new Promise((resolve, reject) => {
+      if (v.readyState >= 3) { resolve(); return; }
+      let done = false;
+      const to = setTimeout(() => {
+        if (done) return; done = true; cleanup();
+        if (attemptRef.current !== attempt) { reject(); return; }
+        if (v.readyState >= 2) resolve(); else reject();
+      }, 7000);
+      const cleanup = () => {
+        v.removeEventListener("canplay", onCan);
+        v.removeEventListener("error", onErr);
+        if (to) clearTimeout(to);
+      };
+      const onCan = () => { if (done) return; done = true; cleanup(); resolve(); };
+      const onErr = () => { if (done) return; done = true; cleanup(); reject(); };
+      v.addEventListener("canplay", onCan);
+      v.addEventListener("error", onErr);
+    });
+
   const goFailed = () => {
     attemptRef.current++;
     cancelFrameLoops();
@@ -292,14 +328,20 @@ export default function HeroTransformation() {
     setVideoShown(true);
   };
 
-  const autoStart = () => {
+  const autoStart = async () => {
     if (stageRef.current !== "idle") return;
     if (videoPreload !== "auto") setVideoPreload("auto");
+    const v = videoRef.current;
+    if (v) { try { v.preload = "auto"; v.load(); } catch (e) { /* ignore */ } }
     const attempt = ++attemptRef.current;
     setStage("playing");
     setAfterShown(false);
     applyZoom();
     loadTimerRef.current = setTimeout(() => { if (attemptRef.current === attempt) goFailed(); }, LOAD_TIMEOUT_MS);
+    if (v) {
+      try { await waitForCanPlay(v, attempt); }
+      catch (e) { if (attemptRef.current === attempt) revertToIdle(); return; }
+    }
     beginPlayback(attempt, true);
   };
 
@@ -431,8 +473,8 @@ export default function HeroTransformation() {
             {headingWords.map((w, i) => (
               <React.Fragment key={i}>
                 <motion.span
-                  variants={{ hidden: { opacity: 0, y: reducedMotion ? 0 : 14 }, show: { opacity: 1, y: 0, transition: { duration: reducedMotion ? 0.15 : 0.5, ease: EASE } } }}
-                  style={{ display: "inline-block", color: w.c ? "#C24A2C" : CHARCOAL, willChange: "transform, opacity" }}
+                  variants={{ hidden: { opacity: 1, y: reducedMotion ? 0 : 14 }, show: { opacity: 1, y: 0, transition: { duration: reducedMotion ? 0.15 : 0.5, ease: EASE } } }}
+                  style={{ display: "inline-block", color: w.c ? "#C24A2C" : CHARCOAL, willChange: "transform" }}
                 >
                   {w.t}
                 </motion.span>
@@ -447,8 +489,8 @@ export default function HeroTransformation() {
         <div ref={mediaRowRef} style={{ display: "flex", justifyContent: "center", width: "100%" }}>
           <motion.div style={{ width: "100%", y: reducedMotion ? 0 : mediaY, scale: reducedMotion ? 1 : mediaScale }}>
             <motion.div
-              initial={reducedMotion ? false : { opacity: 0, scale: 0.97 }}
-              animate={reducedMotion ? {} : { opacity: 1, scale: 1 }}
+              initial={reducedMotion ? false : { scale: 0.985 }}
+              animate={reducedMotion ? {} : { scale: 1 }}
               transition={reducedMotion ? { duration: 0.15 } : { duration: 0.7, ease: EASE, delay: 0.45 }}
               style={{ width: "100%" }}
             >
@@ -469,8 +511,8 @@ export default function HeroTransformation() {
             {/* BEFORE image (kept, never hidden) — slow zoom from click */}
             <img
               ref={beforeRef}
-              src={photo(BEFORE_IMG, 1600, 900)}
-              srcSet={`${photo(BEFORE_IMG, 960, 540)} 960w, ${photo(BEFORE_IMG, 1600, 900)} 1600w`}
+              src={photo(BEFORE_IMG, 1280, 720, 76)}
+              srcSet={`${photo(BEFORE_IMG, 800, 450, 72)} 800w, ${photo(BEFORE_IMG, 1280, 720, 76)} 1280w, ${photo(BEFORE_IMG, 1600, 900, 78)} 1600w`}
               sizes="(max-width:768px) 100vw, 1200px"
               alt="מנהלת רווחה בעומס"
               width={1600}
@@ -486,7 +528,6 @@ export default function HeroTransformation() {
             <video
               ref={videoRef}
               src={VIDEO_SRC}
-              poster={photo(BEFORE_IMG, 1280, 720)}
               muted
               playsInline
               preload={videoPreload}

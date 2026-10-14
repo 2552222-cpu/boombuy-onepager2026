@@ -601,6 +601,7 @@ export default function FeaturedOffersSlider() {
           דוגמאות מהתקופה האחרונה. ההבטחה למחיר הנמוך בישראל חלה על ההטבה היומית ביום שלה.
         </p>
 
+        {!isMobile && (
         <div style={{ marginTop: 30, display: "flex", justifyContent: "center" }}>
           <button
             type="button"
@@ -612,6 +613,7 @@ export default function FeaturedOffersSlider() {
             בדיקת התאמה
           </button>
         </div>
+        )}
       </div>
 
       <AnimatePresence>
