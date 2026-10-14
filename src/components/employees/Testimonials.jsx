@@ -185,7 +185,8 @@ export default function Testimonials() {
                   type="button"
                   onClick={() => {
                     const el = scrollerRef.current;
-                    if (el) el.scrollTo({ left: i * (el.clientWidth * 0.84 + 12), behavior: "smooth" });
+                    const child = el && el.children[i];
+                    if (child) child.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
                   }}
                   aria-label={`עבור להמלצה ${i + 1}`}
                   style={{ width: i === active ? 18 : 6, height: 6, borderRadius: 999, border: "none", background: i === active ? CORAL : "rgba(19,21,29,0.18)", padding: 0, cursor: "pointer", transition: "width .25s ease, background .25s ease" }}

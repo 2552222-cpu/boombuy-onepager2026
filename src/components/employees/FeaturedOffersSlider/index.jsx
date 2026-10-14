@@ -356,7 +356,7 @@ export default function FeaturedOffersSlider() {
   const dragState = useRef(null);
   const onPointerDown = (e) => {
     if (e.pointerType === "mouse" && e.button !== 0) return;
-    dragState.current = { startX: e.clientX, baseX: dragX.get(), id: e.pointerId, moved: false };
+    dragState.current = { startX: e.clientX, baseX: dragX.get(), id: e.pointerId, moved: false, axis: null };
     setDragging(true);
     suppressClickRef.current = false;
   };
@@ -365,6 +365,15 @@ export default function FeaturedOffersSlider() {
       const s = dragState.current;
       if (!s || s.id !== e.pointerId) return;
       const dx = e.clientX - s.startX;
+      const dy = e.clientY - s.startY;
+      // Lock the gesture to one axis only after a clear intent. A mostly-vertical
+      // movement is left to native page scroll (touch-action: pan-y) and never
+      // switches offers or opens a modal.
+      if (!s.axis) {
+        if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+        s.axis = Math.abs(dx) >= Math.abs(dy) ? "x" : "y";
+      }
+      if (s.axis === "y") return;
       if (Math.abs(dx) > 6) { s.moved = true; suppressClickRef.current = true; }
       dragX.set(s.baseX + dx * 0.9);
     };
@@ -373,15 +382,18 @@ export default function FeaturedOffersSlider() {
       if (!s || s.id !== e.pointerId) return;
       dragState.current = null;
       setDragging(false);
-      if (!cancelled) {
+      if (!cancelled && s.axis === "x") {
         const dx = e.clientX - s.startX;
-        let shift = Math.round(-dx / spacing);
-        if (shift === 0 && Math.abs(dx) > 40) shift = dx < 0 ? 1 : -1;
+        // RTL layout: the next card sits to the LEFT, so a rightward drag (dx > 0)
+        // pulls that next card toward the centre → advance to next (index + 1).
+        // The sign follows dx directly (previously inverted).
+        let shift = Math.round(dx / spacing);
+        if (shift === 0 && Math.abs(dx) > 40) shift = dx > 0 ? 1 : -1;
         shift = Math.max(-3, Math.min(3, shift));
         if (shift !== 0) setIndex((p) => (p + shift + n) % n);
       }
       animate(dragX, 0, SPRING);
-      window.setTimeout(() => { suppressClickRef.current = false; }, 80);
+      // Click suppression is cleared on the next pointerdown, not by an arbitrary timer.
     };
     const up = (e) => end(e, false);
     const cancel = (e) => end(e, true);
@@ -596,10 +608,10 @@ export default function FeaturedOffersSlider() {
                 onClick={() => setIndex(i)}
                 aria-label={`עבור להטבה ${i + 1}`}
                 aria-current={i === index}
-                style={{ width: isMobile ? 26 : 32, height: 44, border: "none", background: "transparent", padding: 0, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+                style={{ width: isMobile ? 20 : 32, height: 44, border: "none", background: "transparent", padding: 0, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
               >
                 <motion.span
-                  animate={{ width: i === index ? 22 : 8, backgroundColor: i === index ? CORAL : "rgba(19,21,29,0.18)" }}
+                  animate={{ width: i === index ? (isMobile ? 16 : 22) : 8, backgroundColor: i === index ? CORAL : "rgba(19,21,29,0.18)" }}
                   transition={{ duration: 0.25 }}
                   style={{ height: 8, borderRadius: 999, display: "block" }}
                 />

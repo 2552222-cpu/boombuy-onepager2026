@@ -3,7 +3,7 @@
 
 export const SALES_CALENDARS = ["talorsmile@gmail.com", "shiri@boombuy.co.il"];
 export const PRIMARY_CALENDAR = SALES_CALENDARS[0]; // tal or
-export const SLOT_MINUTES = 30;
+export const SLOT_MINUTES = 15;
 export const BOOKING_TZ = "Asia/Jerusalem";
 
 // Working periods in Jerusalem wall-clock hours. One slot returned per period.
@@ -109,7 +109,7 @@ function isFree(busy, startMs, endMs) {
   return true;
 }
 
-// First 30-min free window in [periodStartMs, periodEndMs] with start >= minStartMs (15-min steps).
+// First 15-min free window in [periodStartMs, periodEndMs] with start >= minStartMs (15-min steps).
 function findWindow(busy, periodStartMs, periodEndMs, minStartMs) {
   const step = 15 * 60000;
   const dur = SLOT_MINUTES * 60000;
@@ -190,7 +190,7 @@ export async function checkFree(accessToken, calendarId, startMs, endMs) {
   return isFree(busy, startMs, endMs);
 }
 
-// Creates a 30-min event with Google Meet on the given calendar.
+// Creates a 15-min event with Google Meet on the given calendar.
 export async function createMeetingEvent(accessToken, calendarId, opts) {
   const { title, startMs, endMs, attendees, description } = opts;
   const body = {

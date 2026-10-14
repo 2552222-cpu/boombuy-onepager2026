@@ -1,15 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { Play, Pause } from "lucide-react";
-import { RevealHeading, RevealBlock, EASE } from "./motion";
+import { RevealHeading, RevealBlock } from "./motion";
+import { EXPERIENCES_VIDEO } from "@/lib/videoAssets";
 import { SECTION } from "./layoutTokens";
 import { scrollToId } from "./uiHelpers";
 
 // Experience film — a short, muted clip that shows the wider world of the
 // club (sport, shows, wellness, trips). Sits right below the offers slider.
 // Captions are an HTML layer synced to currentTime (not burned in, not a timer).
-const VIDEO_SRC =
-  "https://media.base44.com/videos/public/69e48538aaee477b09fc7b49/3dae91cde_gemini_generated_video_74de224c.mp4";
+const VIDEO_SRC = EXPERIENCES_VIDEO.src;
+const VIDEO_POSTER = EXPERIENCES_VIDEO.poster;
 
 const CHARCOAL = SECTION.CHARCOAL;
 const CORAL_TEXT = SECTION.CORAL_TEXT;
@@ -35,56 +35,38 @@ function sceneAt(t) {
 const ARIA_DESC =
   "סרטון קצר ללא קול. מציג ארבע חוויות לעובדים: משחק כדורגל בחו״ל, הופעה בינלאומית, בריכת ספא וחופשה משפחתית.";
 
-function CaptionContent({ scene, reducedMotion, strip }) {
-  const initial = reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 };
-  const enter = { opacity: 1, y: 0 };
-  const enterTrans = reducedMotion
-    ? { duration: 0.01 }
-    : { duration: 0.6, ease: EASE };
-  const exitState = reducedMotion
-    ? { opacity: 1 }
-    : { opacity: 0, transition: { duration: 0.18 } };
-
+// Captions crossfade inside a single grid cell. All scenes render stacked in
+// the same cell, so the tallest title / sub-line sets the row height — no jump
+// when line count or length changes between scenes. 180ms opacity-only, no y
+// movement on mobile; reduced-motion disables the transition.
+function CaptionContent({ activeScene, reducedMotion, strip }) {
+  const titleSize = strip ? "clamp(24px,6vw,28px)" : "clamp(28px,3vw,40px)";
+  const smallSize = strip ? 17 : "clamp(16px,1.4vw,20px)";
+  const fade = reducedMotion ? "none" : "opacity 180ms ease-out";
+  const layer = (text, i, style) => (
+    <div aria-hidden={i !== activeScene} style={{ gridArea: "1 / 1", opacity: i === activeScene ? 1 : 0, transition: fade, pointerEvents: "none", ...style }}>{text}</div>
+  );
   return (
     <div dir="rtl" style={{ textAlign: "right" }}>
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={scene.title}
-          initial={initial}
-          animate={enter}
-          exit={exitState}
-          transition={enterTrans}
-          style={{
-            fontWeight: 800,
-            fontSize: strip ? "clamp(22px,6vw,26px)" : "clamp(28px,3vw,40px)",
-            lineHeight: 1.15,
-            letterSpacing: "-0.02em",
-            color: "#fff",
-            textShadow: strip ? "none" : "0 2px 14px rgba(0,0,0,0.55)",
-          }}
-        >
-          {scene.title}
-        </motion.div>
-      </AnimatePresence>
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={scene.small}
-          initial={initial}
-          animate={enter}
-          exit={exitState}
-          transition={reducedMotion ? { duration: 0.01 } : { duration: 0.6, ease: EASE, delay: 0.1 }}
-          style={{
-            fontWeight: 500,
-            fontSize: strip ? 16 : "clamp(16px,1.4vw,20px)",
-            lineHeight: 1.4,
-            color: "rgba(255,255,255,0.9)",
-            textShadow: strip ? "none" : "0 1px 10px rgba(0,0,0,0.5)",
-            marginTop: 4,
-          }}
-        >
-          {scene.small}
-        </motion.div>
-      </AnimatePresence>
+      <div style={{ display: "grid" }}>
+        {SCENES.map((s, i) => layer(s.title, i, {
+          fontWeight: 800,
+          fontSize: titleSize,
+          lineHeight: 1.15,
+          letterSpacing: "-0.02em",
+          color: "#fff",
+          textShadow: strip ? "none" : "0 2px 14px rgba(0,0,0,0.55)",
+        }))}
+      </div>
+      <div style={{ display: "grid", marginTop: 4 }}>
+        {SCENES.map((s, i) => layer(s.small, i, {
+          fontWeight: 500,
+          fontSize: smallSize,
+          lineHeight: 1.4,
+          color: "rgba(255,255,255,0.9)",
+          textShadow: strip ? "none" : "0 1px 10px rgba(0,0,0,0.5)",
+        }))}
+      </div>
     </div>
   );
 }
@@ -92,6 +74,7 @@ function CaptionContent({ scene, reducedMotion, strip }) {
 export default function ExperienceFilm() {
   const sectionRef = useRef(null);
   const videoRef = useRef(null);
+  const mediaRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [saveData, setSaveData] = useState(false);
@@ -115,10 +98,13 @@ export default function ExperienceFilm() {
     };
   }, []);
 
-  // Autoplay when in view — only if no reduced-motion, no save-data, no manual pause.
+  // Autoplay when the media frame is sufficiently visible — like a live GIF.
+  // Play once >=50% of the frame is on screen and the tab is active; pause below
+  // 15% or when the tab hides. Manual pause always wins. No second load on
+  // re-entry, no currentTime reset on scroll.
   useEffect(() => {
     const v = videoRef.current;
-    const el = sectionRef.current;
+    const el = mediaRef.current;
     if (!v || !el) return;
     const canAutoplay = !reducedMotion && !saveData;
     const tryPlay = async () => {
@@ -133,14 +119,15 @@ export default function ExperienceFilm() {
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
-          if (e.isIntersecting) tryPlay();
-          else {
+          const ratio = e.intersectionRatio;
+          if (ratio >= 0.5) tryPlay();
+          else if (ratio < 0.15) {
             try { v.pause(); } catch (err) { /* ignore */ }
             setPlaying(false);
           }
         });
       },
-      { threshold: 0.45 }
+      { threshold: [0, 0.15, 0.5, 1] }
     );
     io.observe(el);
     const onVis = () => {
@@ -198,7 +185,6 @@ export default function ExperienceFilm() {
     }
   };
 
-  const scene = SCENES[activeScene];
   const strip = isMobile; // mobile: captions in a dark strip below the video
 
   const btnDark = {
@@ -257,6 +243,7 @@ export default function ExperienceFilm() {
           style={{ marginTop: 28, borderRadius: isMobile ? 20 : 34, overflow: "hidden" }}
         >
           <div
+            ref={mediaRef}
             style={{
               position: "relative",
               width: "100%",
@@ -271,9 +258,12 @@ export default function ExperienceFilm() {
             <video
               ref={videoRef}
               src={VIDEO_SRC}
+              poster={VIDEO_POSTER || undefined}
               muted
               playsInline
+              loop
               preload="metadata"
+              onEnded={() => setPlaying(false)}
               aria-label={ARIA_DESC}
               style={{
                 position: "absolute",
@@ -298,7 +288,7 @@ export default function ExperienceFilm() {
                   zIndex: 15,
                 }}
               >
-                <CaptionContent scene={scene} reducedMotion={reducedMotion} strip={false} />
+                <CaptionContent activeScene={activeScene} reducedMotion={reducedMotion} strip={false} />
               </div>
             )}
 
@@ -309,23 +299,22 @@ export default function ExperienceFilm() {
               aria-label={playing ? "השהה" : "נגן"}
               style={{
                 position: "absolute",
-                bottom: isMobile ? 12 : 16,
-                left: "50%",
-                transform: "translateX(-50%)",
+                bottom: isMobile ? 10 : 14,
+                left: isMobile ? 10 : 14,
                 zIndex: 20,
                 background: "rgba(255,255,255,0.92)",
                 backdropFilter: "blur(10px)",
                 WebkitBackdropFilter: "blur(10px)",
                 border: "1px solid rgba(23,25,29,0.10)",
                 borderRadius: 999,
-                height: isMobile ? 40 : 48,
-                width: isMobile ? 40 : 48,
+                height: 44,
+                width: 44,
                 padding: 0,
                 cursor: "pointer",
                 display: "inline-flex",
                 alignItems: "center",
                 justifyContent: "center",
-                boxShadow: isMobile ? "0 4px 14px rgba(0,0,0,0.14)" : "0 8px 24px rgba(0,0,0,0.18)",
+                boxShadow: "0 4px 14px rgba(0,0,0,0.18)",
               }}
             >
               {playing ? (
@@ -341,12 +330,10 @@ export default function ExperienceFilm() {
             <div
               style={{
                 background: "#0B0C0F",
-                borderRadius: "0 0 16px 16px",
                 padding: "14px 16px",
-                marginTop: -6,
               }}
             >
-              <CaptionContent scene={scene} reducedMotion={reducedMotion} strip={true} />
+              <CaptionContent activeScene={activeScene} reducedMotion={reducedMotion} strip={true} />
             </div>
           )}
         </RevealBlock>

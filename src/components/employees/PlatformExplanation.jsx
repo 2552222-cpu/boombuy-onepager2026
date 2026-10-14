@@ -19,41 +19,10 @@ const CARDS = [
   { icon: Coffee, kicker: "לרווחה", text: "בלי ספקים, בלי טלפונים. אנחנו מטפלים בהכול." },
 ];
 
-function Card({ c, active, i }) {
-  const Icon = c.icon;
-  return (
-    <div
-      className="pe-card"
-      style={{
-        scrollSnapAlign: "center",
-        flex: "0 0 78%",
-        maxWidth: 360,
-        background: CARD_BG,
-        border: `1px solid ${CARD_BORDER}`,
-        borderRadius: 24,
-        padding: "26px 24px",
-        boxSizing: "border-box",
-        textAlign: "right",
-        transform: active ? "scale(1)" : "scale(0.96)",
-        opacity: active ? 1 : 0.8,
-        transition: "transform .25s ease, opacity .25s ease",
-      }}
-    >
-      <span style={{ width: 44, height: 44, borderRadius: 12, background: "rgba(244,122,90,0.14)", color: CORAL, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
-        <Icon size={24} strokeWidth={2.2} />
-      </span>
-      <p style={{ color: CORAL, fontSize: 16, fontWeight: 600, margin: "14px 0 0", letterSpacing: "-0.01em" }}>{c.kicker}</p>
-      <p style={{ color: "rgba(255,255,255,0.78)", fontSize: "clamp(16px,1.1vw,18px)", fontWeight: 400, lineHeight: 1.6, margin: "10px 0 0" }}>{c.text}</p>
-    </div>
-  );
-}
-
 export default function PlatformExplanation() {
   const sectionRef = useRef(null);
   const firedView = useRef(false);
-  const scrollerRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
-  const [active, setActive] = useState(0);
   const reduce = typeof window !== "undefined" && typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "start 0.35"] });
   const panelScale = useTransform(scrollYProgress, [0, 1], [0.92, 1]);
@@ -84,19 +53,6 @@ export default function PlatformExplanation() {
     io.observe(el);
     return () => io.disconnect();
   }, []);
-
-  const onScroll = () => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    const center = el.getBoundingClientRect().left + el.clientWidth / 2;
-    let best = 0, bestD = Infinity;
-    Array.from(el.children).forEach((child, i) => {
-      const cc = child.getBoundingClientRect().left + child.clientWidth / 2;
-      const d = Math.abs(cc - center);
-      if (d < bestD) { bestD = d; best = i; }
-    });
-    setActive(best);
-  };
 
   return (
     <section
@@ -140,40 +96,22 @@ export default function PlatformExplanation() {
           </div>
 
           {isMobile ? (
-            <>
-              <div
-                ref={scrollerRef}
-                onScroll={onScroll}
-                style={{
-                  display: "flex",
-                  gap: 14,
-                  marginTop: 34,
-                  overflowX: "auto",
-                  scrollSnapType: "x mandatory",
-                  WebkitOverflowScrolling: "touch",
-                  scrollbarWidth: "none",
-                  padding: "0 4px",
-                }}
-              >
-                {CARDS.map((c, i) => (
-                  <Card key={c.kicker} c={c} active={i === active} i={i} />
-                ))}
-              </div>
-              <div style={{ display: "flex", justifyContent: "center", gap: 6, marginTop: 18 }}>
-                {CARDS.map((_, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    onClick={() => {
-                      const el = scrollerRef.current;
-                      if (el) el.scrollTo({ left: i * (el.clientWidth * 0.78 + 14), behavior: "smooth" });
-                    }}
-                    aria-label={`עבור ל${CARDS[i].kicker}`}
-                    style={{ width: i === active ? 22 : 8, height: 8, borderRadius: 999, border: "none", background: i === active ? CORAL : "rgba(255,255,255,0.25)", padding: 0, cursor: "pointer", transition: "width .25s ease, background .25s ease" }}
-                  />
-                ))}
-              </div>
-            </>
+            // Stack the three value cards (employees / org / welfare) vertically so
+            // the welfare card is visible without scrolling a second carousel.
+            <div style={{ display: "flex", flexDirection: "column", gap: 14, marginTop: 34 }}>
+              {CARDS.map((c) => {
+                const Icon = c.icon;
+                return (
+                  <div key={c.kicker} className="pe-card" style={{ background: CARD_BG, border: `1px solid ${CARD_BORDER}`, borderRadius: 24, padding: "26px 24px", boxSizing: "border-box", textAlign: "right" }}>
+                    <span style={{ width: 44, height: 44, borderRadius: 12, background: "rgba(244,122,90,0.14)", color: CORAL, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+                      <Icon size={24} strokeWidth={2.2} />
+                    </span>
+                    <p style={{ color: CORAL, fontSize: 16, fontWeight: 600, margin: "14px 0 0", letterSpacing: "-0.01em" }}>{c.kicker}</p>
+                    <p style={{ color: "rgba(255,255,255,0.78)", fontSize: "clamp(16px,1.1vw,18px)", fontWeight: 400, lineHeight: 1.6, margin: "10px 0 0" }}>{c.text}</p>
+                  </div>
+                );
+              })}
+            </div>
           ) : (
             <motion.div
               initial="hidden"
