@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { fitImg } from "@/lib/img";
-import { RevealHeading, RevealBlock } from "./motion";
+import { motion } from "framer-motion";
+import { RevealHeading, RevealBlock, EASE } from "./motion";
 import { SECTION } from "./layoutTokens";
 
 const BG = SECTION.BG_MIST;
@@ -38,6 +39,7 @@ const ITEMS = [
 function Card({ t, isMobile }) {
   return (
     <div
+      className="tm-card"
       style={{
         background: "#fff",
         borderRadius: 24,
@@ -51,14 +53,12 @@ function Card({ t, isMobile }) {
         height: "100%",
       }}
     >
-      <div style={{ height: 28, display: "flex", alignItems: "center", justifyContent: "flex-end", marginBottom: 16 }}>
+      <div style={{ height: 42, display: "flex", alignItems: "center", justifyContent: "flex-end", marginBottom: 18, dir: "ltr" }}>
         <img
           src={fitImg(t.logo, 400, 160)}
           alt={t.name}
-          width={400}
-          height={160}
           onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = t.logo; }}
-          style={{ height: 28, maxWidth: 130, objectFit: "contain", objectPosition: "right" }}
+          style={{ height: 38, width: "auto", maxWidth: 150, objectFit: "contain" }}
         />
       </div>
       <p style={{ fontSize: isMobile ? 19 : 22, fontWeight: 600, color: "#17191D", lineHeight: 1.45, letterSpacing: "-0.01em", margin: 0 }}>
@@ -127,7 +127,12 @@ export default function Testimonials() {
       dir="rtl"
       style={{ background: BG, fontFamily: "var(--font-heebo), Heebo, Arial, sans-serif", scrollMarginTop: 90, overflow: "hidden" }}
     >
-      <style>{`@media (max-width:768px){ #testimonials{ scroll-margin-top:72px; } .tm-scroller::-webkit-scrollbar{ display:none; } }`}</style>
+      <style>{`
+        @media (max-width:768px){ #testimonials{ scroll-margin-top:72px; } .tm-scroller::-webkit-scrollbar{ display:none; } }
+        .tm-card{ transition: transform .3s ease, box-shadow .3s ease; }
+        .tm-card:hover{ transform: translateY(-6px); box-shadow: 0 18px 44px rgba(19,21,25,0.12); }
+        @media (prefers-reduced-motion: reduce){ .tm-card{ transition:none; } .tm-card:hover{ transform:none; } }
+      `}</style>
 
       <div style={{ maxWidth: 1040, margin: "0 auto", textAlign: "center", padding: "0 16px" }}>
         <RevealBlock
@@ -196,9 +201,16 @@ export default function Testimonials() {
         ) : (
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20, marginTop: 44, textAlign: "right" }}>
             {ITEMS.map((t, i) => (
-              <RevealBlock key={t.name} delay={i * 0.07} style={{ height: "100%" }}>
+              <motion.div
+                key={t.name}
+                initial={{ opacity: 0, y: 28, scale: 0.97 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.6, ease: EASE, delay: i * 0.08 }}
+                style={{ height: "100%" }}
+              >
                 <Card t={t} isMobile={isMobile} />
-              </RevealBlock>
+              </motion.div>
             ))}
           </div>
         )}
