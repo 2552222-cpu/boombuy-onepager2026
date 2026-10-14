@@ -157,6 +157,7 @@ export default function Testimonials() {
                 marginTop: 30,
                 overflowX: "auto",
                 scrollSnapType: "x mandatory",
+                touchAction: "pan-x",
                 scrollPadding: "0 16px",
                 WebkitOverflowScrolling: "touch",
                 scrollbarWidth: "none",

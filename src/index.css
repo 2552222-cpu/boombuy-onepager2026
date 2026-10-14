@@ -92,6 +92,18 @@
   }
   h1, h2, h3 { text-wrap: balance; }
   p, li { text-wrap: pretty; }
+
+  /* Instant taps on touch: manipulation removes the ~300ms double-tap-zoom
+     delay without blocking pinch-zoom accessibility, and the transparent tap
+     highlight removes the gray flash that makes taps feel laggy on iOS. */
+  button, a, [role="button"], summary, input[type="checkbox"], input[type="radio"], input[type="submit"], label {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* No rubber-band / scroll-chain bounce at the page edges (removes the
+     "jump" at the top and bottom of the landing on mobile). */
+  html, body { overscroll-behavior-y: none; }
 }
 
 .bb-btn{ transition: transform .18s ease, box-shadow .18s ease; }

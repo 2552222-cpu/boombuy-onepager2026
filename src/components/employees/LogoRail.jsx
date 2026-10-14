@@ -79,7 +79,7 @@ export default function LogoRail() {
   if (reducedMotion) {
     return (
       <div role="region" aria-label="לקוחות boombuy" dir="rtl" aria-hidden={hidden} style={wrapStyle}>
-        <div style={{ flex: 1, minHeight: 0, display: "flex", alignItems: "center", overflowX: "auto", overflowY: "hidden", scrollbarWidth: "thin", padding: "0 12px", paddingBottom: "env(safe-area-inset-bottom)", WebkitMaskImage: "linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent)", maskImage: "linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent)" }}>
+        <div style={{ flex: 1, minHeight: 0, display: "flex", alignItems: "center", overflowX: "auto", overflowY: "hidden", touchAction: "pan-x", scrollbarWidth: "thin", padding: "0 12px", paddingBottom: "env(safe-area-inset-bottom)", WebkitMaskImage: "linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent)", maskImage: "linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent)" }}>
           {railLogos.map((l) => (
             <LogoRailItem key={l.name} {...logoProps(l)} />
           ))}
