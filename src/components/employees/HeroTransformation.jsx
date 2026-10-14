@@ -243,25 +243,33 @@ export default function HeroTransformation() {
       };
       const finish = () => { if (done) return; done = true; cleanup(); resolve(); };
       const fail = () => { if (done) return; done = true; cleanup(); reject(); };
-      const onRvfc = () => {
-        if (attemptRef.current !== attempt) { fail(); return; }
-        if (v.readyState >= 2 && (v.currentTime || 0) > 0) finish();
-        else { try { rvfcIdRef.current = v.requestVideoFrameCallback(onRvfc); } catch (e) { startRaf(); } }
-      };
+      const ready = () => attemptRef.current === attempt && v.readyState >= 2 && (v.currentTime || 0) > 0;
+      // rAF path is paint-independent: it resolves the moment currentTime
+      // advances. On mobile iOS, requestVideoFrameCallback never fires while
+      // the <video> sits at opacity:0 (no frame is painted), so the video
+      // appeared "stuck" until the 3s timeout. rAF detects playback directly.
       const startRaf = () => {
         const tick = () => {
           if (attemptRef.current !== attempt) { fail(); return; }
-          if (v.readyState >= 2 && (v.currentTime || 0) > 0) { finish(); return; }
+          if (ready()) { finish(); return; }
           rafRef.current = requestAnimationFrame(tick);
         };
         rafRef.current = requestAnimationFrame(tick);
       };
+      startRaf();
+      // rVFC (desktop) may resolve a touch earlier on paint; on mobile it simply
+      // never fires and the rAF path above wins.
       if (typeof v.requestVideoFrameCallback === "function") {
-        try { rvfcIdRef.current = v.requestVideoFrameCallback(onRvfc); } catch (e) { startRaf(); }
-      } else { startRaf(); }
+        const onRvfc = () => {
+          if (attemptRef.current !== attempt) { fail(); return; }
+          if (ready()) finish();
+          else { try { rvfcIdRef.current = v.requestVideoFrameCallback(onRvfc); } catch (e) { /* rAF still running */ } }
+        };
+        try { rvfcIdRef.current = v.requestVideoFrameCallback(onRvfc); } catch (e) { /* rAF still running */ }
+      }
       frameTimeoutRef.current = setTimeout(() => {
         if (attemptRef.current !== attempt) { fail(); return; }
-        if (v.readyState >= 2 && (v.currentTime || 0) > 0) finish(); else fail();
+        if (ready()) finish(); else fail();
       }, FRAME_TIMEOUT_MS);
     });
 
