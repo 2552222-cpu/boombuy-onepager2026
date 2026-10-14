@@ -53,12 +53,12 @@ function Card({ t, isMobile }) {
         height: "100%",
       }}
     >
-      <div style={{ height: 48, display: "flex", alignItems: "center", justifyContent: "flex-end", marginBottom: 18, dir: "ltr" }}>
+      <div style={{ height: 44, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 18, dir: "ltr" }}>
         <img
           src={fitImg(t.logo, 400, 160)}
           alt={t.name}
           onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = t.logo; }}
-          style={{ height: 46, width: 150, objectFit: "contain", objectPosition: "right center" }}
+          style={{ height: 38, width: "auto", maxWidth: 150, objectFit: "contain" }}
         />
       </div>
       <p style={{ fontSize: isMobile ? 19 : 22, fontWeight: 600, color: "#17191D", lineHeight: 1.45, letterSpacing: "-0.01em", margin: 0 }}>

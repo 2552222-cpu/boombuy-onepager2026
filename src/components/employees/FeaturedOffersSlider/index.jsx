@@ -446,7 +446,7 @@ export default function FeaturedOffersSlider() {
           transition={{ duration: 0.55, ease: EASE }}
           style={{ fontSize: "clamp(28px,4.6vw,46px)", fontWeight: 800, color: "#17191D", letterSpacing: "-0.03em", lineHeight: 1.12, margin: "0 0 14px", textWrap: "balance" }}
         >
-          כל בוקר משהו חדש. <span style={{ color: "#C24A2C" }}>ותמיד במחיר הכי נמוך בישראל.</span>
+          כל בוקר משהו חדש.
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 12 }}
@@ -599,7 +599,7 @@ export default function FeaturedOffersSlider() {
         </div>
 
         <p style={{ fontSize: 13, color: "#6E7177", lineHeight: 1.5, maxWidth: 660, margin: "16px auto 0" }}>
-          דוגמאות מהתקופה האחרונה. ההבטחה למחיר הנמוך בישראל חלה על ההטבה היומית ביום שלה.
+          דוגמאות מהתקופה האחרונה.
         </p>
 
         {!isMobile && (
