@@ -5,6 +5,8 @@ export const SALES_CALENDARS = ["talorsmile@gmail.com", "shiri@boombuy.co.il"];
 export const PRIMARY_CALENDAR = SALES_CALENDARS[0]; // tal or
 export const SLOT_MINUTES = 15;
 export const BOOKING_TZ = "Asia/Jerusalem";
+export const BOOKING_HORIZON_DAYS = 21;
+export const MIN_NOTICE_HOURS = 3;
 
 // Working periods in Jerusalem wall-clock hours. One slot returned per period.
 export const PERIODS = [
@@ -65,21 +67,20 @@ export async function getBusyFor(accessToken, calendarId, timeMin, timeMax) {
     body: JSON.stringify({ timeMin, timeMax, items: [{ id: calendarId }] }),
     signal: AbortSignal.timeout(10000),
   });
-  if (!res.ok) throw new Error("freebusy_failed");
+  if (!res.ok) throw Object.assign(new Error("calendar_unavailable"), { status: 503 });
   const data = await res.json();
   const cal = data.calendars?.[calendarId];
   if (!cal || cal.errors || !Array.isArray(cal.busy)) {
     // A missing calendar entry or a missing busy array is NOT "free all day" —
     // treat it as a clear failure so the caller never books on absent data.
     if (cal?.errors) console.error("calendar_not_accessible", calendarId, JSON.stringify(cal.errors));
-    throw new Error("calendar_not_accessible");
+    throw Object.assign(new Error("calendar_unavailable"), { status: 503 });
   }
   return cal.busy;
 }
 
-// freebusy for multiple calendars in one call. A calendar that returns `errors`
-// is logged and treated as fully busy (so the caller falls back to the other
-// calendar) rather than appearing free all day.
+// Require a verified response for every configured calendar. Provider failures
+// must propagate as failures, never as "busy" or silent cross-calendar fallback.
 export async function getBusyMap(accessToken, calendarIds, timeMin, timeMax) {
   const res = await fetch("https://www.googleapis.com/calendar/v3/freeBusy", {
     method: "POST",
@@ -87,16 +88,13 @@ export async function getBusyMap(accessToken, calendarIds, timeMin, timeMax) {
     body: JSON.stringify({ timeMin, timeMax, items: calendarIds.map((id) => ({ id })) }),
     signal: AbortSignal.timeout(10000),
   });
-  if (!res.ok) throw new Error("freebusy_failed");
+  if (!res.ok) throw Object.assign(new Error("calendar_unavailable"), { status: 503 });
   const data = await res.json();
   const out = {};
   for (const id of calendarIds) {
     const cal = data.calendars?.[id];
     if (!cal || cal.errors || !Array.isArray(cal.busy)) {
-      // Missing entry or missing busy array → NOT free (fully busy), so the
-      // slot finder falls through instead of booking on absent data.
-      if (cal?.errors) console.error("calendar_not_accessible", id, JSON.stringify(cal.errors));
-      out[id] = [{ start: timeMin, end: timeMax }];
+      throw Object.assign(new Error("calendar_unavailable"), { status: 503 });
     } else {
       out[id] = cal.busy;
     }
@@ -131,15 +129,10 @@ export async function getDaySlotsForDate(accessToken, y, mo, d, nowMs) {
   const dayEnd = midnight + 24 * 3600000;
   const timeMin = new Date(Math.min(nowMs, midnight)).toISOString();
   const timeMax = new Date(dayEnd).toISOString();
-  const minStart = nowMs + 3 * 3600000;
-  let busyMap;
-  try {
-    busyMap = await getBusyMap(accessToken, SALES_CALENDARS, timeMin, timeMax);
-  } catch (e) {
-    return [];
-  }
-  const primaryBusy = busyMap[PRIMARY_CALENDAR] || [];
-  const secBusy = busyMap[SALES_CALENDARS[1]] || [];
+  const minStart = nowMs + MIN_NOTICE_HOURS * 3600000;
+  const busyMap = await getBusyMap(accessToken, SALES_CALENDARS, timeMin, timeMax);
+  const primaryBusy = busyMap[PRIMARY_CALENDAR];
+  const secBusy = busyMap[SALES_CALENDARS[1]];
   const slots = [];
   for (const period of PERIODS) {
     const pStart = midnight + period.startHour * 3600000;
@@ -156,25 +149,20 @@ export async function getDaySlotsForDate(accessToken, y, mo, d, nowMs) {
 // Next 5 working days (Sun–Thu) with at least one free window.
 export async function getAvailableDays(accessToken) {
   const nowMs = Date.now();
-  const rangeEnd = nowMs + 21 * 86400000;
+  const rangeEnd = nowMs + BOOKING_HORIZON_DAYS * 86400000;
   const timeMin = new Date(nowMs).toISOString();
   const timeMax = new Date(rangeEnd).toISOString();
-  let busyMap;
-  try {
-    busyMap = await getBusyMap(accessToken, SALES_CALENDARS, timeMin, timeMax);
-  } catch (e) {
-    return [];
-  }
-  const primaryBusy = busyMap[PRIMARY_CALENDAR] || [];
-  const secBusy = busyMap[SALES_CALENDARS[1]] || [];
+  const busyMap = await getBusyMap(accessToken, SALES_CALENDARS, timeMin, timeMax);
+  const primaryBusy = busyMap[PRIMARY_CALENDAR];
+  const secBusy = busyMap[SALES_CALENDARS[1]];
   const out = [];
-  for (let i = 0; i < 21 && out.length < 5; i++) {
+  for (let i = 0; i < BOOKING_HORIZON_DAYS && out.length < 5; i++) {
     const t = nowMs + i * 86400000;
     const { y, mo, d } = jerDateParts(t);
     const dow = new Date(Date.UTC(y, mo - 1, d)).getUTCDay();
     if (dow > 4) continue; // Fri(5)/Sat(6)
     const midnight = jerMidnightUTC(y, mo, d);
-    const minStart = nowMs + 3 * 3600000;
+    const minStart = nowMs + MIN_NOTICE_HOURS * 3600000;
     let hasWindow = false;
     for (const period of PERIODS) {
       const pStart = midnight + period.startHour * 3600000;

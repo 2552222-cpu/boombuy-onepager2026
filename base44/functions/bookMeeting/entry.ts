@@ -1,5 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.52';
-import { SALES_CALENDARS, SLOT_MINUTES, checkFree, createMeetingEvent } from '../../shared/calendarBooking.ts';
+import { SALES_CALENDARS, checkFree, createMeetingEvent } from '../../shared/calendarBooking.ts';
+import { validateBookingStart } from '../../shared/bookingValidation.ts';
 import { sendMeetingEmail } from '../../shared/leadEmails.ts';
 
 function buildDesc(lead) {
@@ -22,9 +23,8 @@ export default async function(req) {
     const { sessionId, start } = await req.json();
     if (!sessionId || !start) return Response.json({ error: "missing params" }, { status: 400 });
 
-    const startMs = new Date(start).getTime();
-    const endMs = startMs + SLOT_MINUTES * 60000;
-    const startIso = new Date(startMs).toISOString();
+    if (typeof sessionId !== 'string' || sessionId.length > 200) return Response.json({ error: "invalid_session" }, { status: 400 });
+    const { startMs, endMs, startIso } = validateBookingStart(start);
 
     // filter() may return either a page ({ items, ... }) or a plain array
     // depending on the installed SDK; handle both so a booking never fails with
@@ -40,15 +40,20 @@ export default async function(req) {
       return Response.json({ ok: true, assignedTo: lead.assignedTo, meetingAt: lead.meetingAt, eventId: lead.eventId, reused: true });
     }
 
-    const { accessToken } = await base44.asServiceRole.connectors.getConnection('googlecalendar');
+    let accessToken;
+    try {
+      ({ accessToken } = await base44.asServiceRole.connectors.getConnection('googlecalendar'));
+    } catch {
+      return Response.json({ error: "calendar_unavailable" }, { status: 503 });
+    }
 
     // Re-check availability and assign to tal if free, else to shiri.
     let assignTo = null;
     for (const cal of SALES_CALENDARS) {
-      try {
-        const free = await checkFree(accessToken, cal, startMs, endMs);
-        if (free) { assignTo = cal; break; }
-      } catch (e) { /* try next */ }
+      // A verified busy calendar may use the existing secondary destination;
+      // an unavailable calendar must stop booking, never trigger silent fallback.
+      const free = await checkFree(accessToken, cal, startMs, endMs);
+      if (free) { assignTo = cal; break; }
     }
     if (!assignTo) return Response.json({ error: "slot_taken" }, { status: 409 });
 
@@ -75,6 +80,6 @@ export default async function(req) {
 
     return Response.json({ ok: true, assignedTo: assignTo, meetingAt: startIso, eventId: ev.id });
   } catch (error) {
-    return Response.json({ error: error.message }, { status: 500 });
+    return Response.json({ error: error.message }, { status: error.status || 500 });
   }
 }

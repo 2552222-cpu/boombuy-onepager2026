@@ -1,18 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Play, Calendar } from "lucide-react";
+import { Calendar } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { scrollToId } from "./uiHelpers";
-import {
-  BEFORE_IMG,
-  AFTER_IMG,
-  VIDEO_SRC,
-  CHARCOAL,
-  WARM_WHITE,
-} from "./hero/heroShared";
-import { photo } from "@/lib/img";
+import { CHARCOAL, WARM_WHITE } from "./hero/heroShared";
 import InlineLogoRail from "@/components/employees/InlineLogoRail";
 import MobileHeroMedia from "@/components/employees/hero/MobileHeroMedia";
-import useHeroPlayback from "@/components/employees/hero/useMobileHeroPlayback";
 
 const CORAL = "#F47A5A";
 const EASE = [0.22, 1, 0.36, 1];
@@ -52,7 +44,7 @@ function CountUp({ to, suffix, reducedMotion }) {
 export default function HeroTransformation() {
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
   const [isNarrow, setIsNarrow] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
 
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
@@ -60,9 +52,6 @@ export default function HeroTransformation() {
   const headingOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.3]);
   const mediaY = useTransform(scrollYProgress, [0, 1], [0, 40]);
   const mediaScale = useTransform(scrollYProgress, [0, 1], [1, 1.04]);
-
-  // Desktop shares the same play-once logic as mobile.
-  const { videoRef: desktopVideoRef, phase: desktopPhase, start: desktopStart, onPlaying: desktopOnPlaying, onEnded: desktopOnEnded, onError: desktopOnError } = useHeroPlayback(reducedMotion);
 
   const headingWords = [
     { t: "מועדון", c: false },
@@ -89,10 +78,6 @@ export default function HeroTransformation() {
       mq.removeEventListener?.("change", onMq);
     };
   }, []);
-
-  const showBeforeDesktop = ["idle", "loading", "failed"].includes(desktopPhase);
-  const imageStyle = { position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "50% 50%" };
-  const fade = reducedMotion ? "none" : "opacity 300ms ease";
 
   const inImageBtn = {
     position: "absolute",
@@ -190,56 +175,7 @@ export default function HeroTransformation() {
                   background: "#000",
                 }}
               >
-                {isMobile ? (
-                  <MobileHeroMedia reducedMotion={reducedMotion} buttonStyle={inImageBtn} />
-                ) : (
-                  <>
-                    <video
-                      ref={desktopVideoRef}
-                      src={VIDEO_SRC}
-                      muted
-                      playsInline
-                      preload={desktopPhase === "idle" ? "metadata" : "auto"}
-                      onPlaying={desktopOnPlaying}
-                      onEnded={desktopOnEnded}
-                      onError={desktopOnError}
-                      aria-label="סרטון השדרוג, עשר שניות ללא קול"
-                      style={{ ...imageStyle, zIndex: 2 }}
-                    >
-                      <track kind="captions" srcLang="he" label="עברית" src="/hero-captions.vtt" />
-                    </video>
-                    <img
-                      src={photo(BEFORE_IMG, 1280, 720, 76)}
-                      srcSet={`${photo(BEFORE_IMG, 800, 450, 72)} 800w, ${photo(BEFORE_IMG, 1280, 720, 76)} 1280w, ${photo(BEFORE_IMG, 1600, 900, 78)} 1600w`}
-                      sizes="(max-width:768px) 100vw, 1100px"
-                      alt="מנהלת רווחה בעומס"
-                      width={1600}
-                      height={900}
-                      fetchPriority="high"
-                      loading="eager"
-                      decoding="async"
-                      onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = BEFORE_IMG; }}
-                      style={{ ...imageStyle, zIndex: 3, opacity: showBeforeDesktop ? 1 : 0, transition: fade }}
-                    />
-                    <img
-                      src={photo(AFTER_IMG, 1600, 900)}
-                      srcSet={`${photo(AFTER_IMG, 960, 540)} 960w, ${photo(AFTER_IMG, 1600, 900)} 1600w`}
-                      sizes="(max-width:768px) 100vw, 1100px"
-                      alt="מנהלת רווחה רגועה עם קפה"
-                      width={1600}
-                      height={900}
-                      loading="lazy"
-                      decoding="async"
-                      onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = AFTER_IMG; }}
-                      style={{ ...imageStyle, zIndex: 4, opacity: desktopPhase === "complete" ? 1 : 0, transition: fade }}
-                    />
-                    {desktopPhase === "failed" && (
-                      <button type="button" onClick={() => desktopStart(false)} style={inImageBtn} aria-label="להפעיל את הסרטון">
-                        <Play size={16} color={CHARCOAL} strokeWidth={2.5} />להפעיל
-                      </button>
-                    )}
-                  </>
-                )}
+                <MobileHeroMedia reducedMotion={reducedMotion} buttonStyle={inImageBtn} />
               </div>
             </motion.div>
           </motion.div>

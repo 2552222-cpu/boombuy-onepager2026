@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { base44 } from "@/api/base44Client";
 import { trackLinkedInConversion } from "@/lib/linkedin";
@@ -23,7 +23,8 @@ export default function BookDemo() {
   const [loadingSlots, setLoadingSlots] = useState(false);
   const [booking, setBooking] = useState(false);
   const [done, setDone] = useState(false);
-  const [failed, setFailed] = useState(false);
+  const [failureMessage, setFailureMessage] = useState("");
+  const failed = !!failureMessage;
 
   useEffect(() => {
     const onFit = (e) => {
@@ -35,23 +36,30 @@ export default function BookDemo() {
     return () => window.removeEventListener("boom_fit_submitted", onFit);
   }, []);
 
+  const loadDays = useCallback(async () => {
+    setFailureMessage("");
+    setLoadingDays(true);
+    setDays([]);
+    setSlots([]);
+    setSelectedDay(null);
+    setSelectedSlot(null);
+    setStep("day");
+    try {
+      const res = await base44.functions.invoke("getAvailableDays", {});
+      if (res.data?.error || !Array.isArray(res.data?.days)) throw new Error("calendar_unavailable");
+      setDays(res.data.days);
+    } catch {
+      setFailureMessage("חיבור היומן אינו זמין כרגע. לא ניתן לבדוק זמינות או לקבוע פגישה. הפרטים שמסרתם נשמרו.");
+    } finally {
+      setLoadingDays(false);
+    }
+  }, []);
+
   useEffect(() => {
     if (!revealed) return;
     try { base44.analytics.track({ eventName: "calendar_opened" }); } catch (e) {}
-    (async () => {
-      setLoadingDays(true);
-      try {
-        const res = await base44.functions.invoke("getAvailableDays", {});
-        const d = res.data?.days || [];
-        setDays(d);
-        if (d.length === 0) setFailed(true);
-      } catch (e) {
-        setFailed(true);
-      } finally {
-        setLoadingDays(false);
-      }
-    })();
-  }, [revealed]);
+    loadDays();
+  }, [revealed, loadDays]);
 
   const pickDay = async (date) => {
     setSelectedDay(date);
@@ -60,9 +68,11 @@ export default function BookDemo() {
     setLoadingSlots(true);
     try {
       const res = await base44.functions.invoke("getDaySlots", { date });
-      setSlots(res.data?.slots || []);
-    } catch (e) {
+      if (res.data?.error || !Array.isArray(res.data?.slots)) throw new Error("calendar_unavailable");
+      setSlots(res.data.slots);
+    } catch {
       setSlots([]);
+      setFailureMessage("חיבור היומן אינו זמין כרגע. לא ניתן לבדוק זמינות או לקבוע פגישה. הפרטים שמסרתם נשמרו.");
     } finally {
       setLoadingSlots(false);
     }
@@ -79,10 +89,11 @@ export default function BookDemo() {
         try { base44.analytics.track({ eventName: "meeting_booked" }); } catch (e) {}
         try { trackLinkedInConversion(LINKEDIN_CONV_MEETING); } catch (e) {}
       } else {
-        setFailed(true);
+        setFailureMessage(res.data?.error === "slot_taken" ? "הזמן שנבחר כבר נתפס. נא לבחור מועד אחר." : "לא ניתן לקבוע פגישה כרגע. הפרטים שמסרתם נשמרו.");
       }
     } catch (e) {
-      setFailed(true);
+      const code = e.response?.data?.error;
+      setFailureMessage(code === "slot_taken" ? "הזמן שנבחר כבר נתפס. נא לבחור מועד אחר." : code === "calendar_unavailable" ? "חיבור היומן אינו זמין כרגע. הפרטים שמסרתם נשמרו." : "לא ניתן לקבוע פגישה כרגע. הפרטים שמסרתם נשמרו.");
     } finally {
       setBooking(false);
     }
@@ -114,7 +125,7 @@ export default function BookDemo() {
             {done ? "נקבע." : "בוחרים שיחת הדגמה"}
           </h2>
           <p style={{ color: "#6E7177", fontSize: 16, textAlign: "center", margin: "0 0 24px" }}>
-            {done ? "הזמנה ליומן וקישור לשיחה בדרך אליכם." : "30 דקות, אונליין, בזמן שנוח לכם."}
+            {done ? "הזמנה ליומן וקישור לשיחה בדרך אליכם." : "15 דקות, אונליין, בזמן שנוח לכם."}
           </p>
 
           <AnimatePresence mode="wait">
@@ -127,7 +138,8 @@ export default function BookDemo() {
               </motion.div>
             ) : failed ? (
               <motion.div key="wa" initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: "center" }}>
-                <p style={{ color: "#3A3C42", fontSize: 15, margin: "0 0 16px" }}>לא הצלחנו להציג זמינות כרגע. נשמח לתאם איתכם ישירות:</p>
+                <p role="alert" style={{ color: "#3A3C42", fontSize: 15, margin: "0 0 16px" }}>{failureMessage}</p>
+                <button type="button" onClick={loadDays} className="block mx-auto mb-4 rounded-full border border-border px-6 py-3 font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring">לנסות שוב</button>
                 <a href={`https://wa.me/${WA_NUMBER}?text=${waText}`} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 10, background: "#25D366", color: "#fff", borderRadius: 999, height: 52, padding: "0 24px", fontWeight: 700, fontSize: 16, textDecoration: "none" }}>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" /></svg>
                   תיאום בוואטסאפ
@@ -138,6 +150,8 @@ export default function BookDemo() {
                 <p style={{ color: CHARCOAL, fontSize: 17, fontWeight: 700, textAlign: "center", margin: "0 0 16px" }}>איזה יום נוח לכם?</p>
                 {loadingDays ? (
                   <div style={{ display: "flex", justifyContent: "center" }}><span style={{ width: 28, height: 28, borderRadius: "50%", border: "3px solid rgba(19,21,25,0.12)", borderTopColor: CORAL, animation: "bd-spin 0.8s linear infinite", display: "inline-block" }} /></div>
+                ) : days.length === 0 ? (
+                  <p role="status" style={{ color: "#6E7177", fontSize: 15, textAlign: "center" }}>אין כרגע מועדים פנויים בחלון ההזמנות.</p>
                 ) : (
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(100px,1fr))", gap: 10 }}>
                     {days.map((d) => (

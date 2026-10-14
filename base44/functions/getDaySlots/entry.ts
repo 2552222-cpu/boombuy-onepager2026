@@ -1,16 +1,18 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.52';
 import { getDaySlotsForDate } from '../../shared/calendarBooking.ts';
+import { validateBookingDate } from '../../shared/bookingValidation.ts';
 
 export default async function(req) {
   try {
     const base44 = createClientFromRequest(req);
     const { date } = await req.json();
-    if (!date) return Response.json({ error: "missing date", slots: [] }, { status: 400 });
+    const nowMs = Date.now();
+    const { y, mo, d } = validateBookingDate(date, nowMs);
     const { accessToken } = await base44.asServiceRole.connectors.getConnection('googlecalendar');
-    const parts = date.split("-").map(Number);
-    const slots = await getDaySlotsForDate(accessToken, parts[0], parts[1], parts[2], Date.now());
+    const slots = await getDaySlotsForDate(accessToken, y, mo, d, nowMs);
     return Response.json({ slots });
   } catch (error) {
-    return Response.json({ slots: [], error: error.message });
+    if (error.status === 400) return Response.json({ error: error.message }, { status: 400 });
+    return Response.json({ error: "calendar_unavailable", message: "חיבור היומן אינו זמין כרגע. נא לנסות שוב מאוחר יותר." }, { status: 503 });
   }
 }

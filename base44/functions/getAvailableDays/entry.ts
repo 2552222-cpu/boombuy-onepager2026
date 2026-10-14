@@ -8,8 +8,6 @@ export default async function(req) {
     const days = await getAvailableDays(accessToken);
     return Response.json({ days });
   } catch (error) {
-    // On any failure (connector not connected, API error), return empty days so the
-    // UI can fall back to the WhatsApp button.
-    return Response.json({ days: [], error: error.message });
+    return Response.json({ error: "calendar_unavailable", message: "חיבור היומן אינו זמין כרגע. נא לנסות שוב מאוחר יותר." }, { status: 503 });
   }
 }
