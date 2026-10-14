@@ -71,6 +71,7 @@ export default function HeroTransformation() {
   const [videoShown, setVideoShown] = useState(false);
   const [afterShown, setAfterShown] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isNarrow, setIsNarrow] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [mediaSize, setMediaSize] = useState({ w: 800, h: 450 });
   const [videoPreload, setVideoPreload] = useState("none");
@@ -106,7 +107,10 @@ export default function HeroTransformation() {
   const frameInView = useInView(frameRef, { amount: 0.6, once: true });
 
   useEffect(() => {
-    const c = () => setIsMobile(window.innerWidth < 768);
+    const c = () => {
+      setIsMobile(window.innerWidth < 768);
+      setIsNarrow(window.innerWidth <= 1024);
+    };
     c();
     window.addEventListener("resize", c);
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -613,7 +617,7 @@ export default function HeroTransformation() {
           ))}
         </div>
 
-        {isMobile && <InlineLogoRail />}
+        {isNarrow && <InlineLogoRail />}
       </div>
     </section>
   );
