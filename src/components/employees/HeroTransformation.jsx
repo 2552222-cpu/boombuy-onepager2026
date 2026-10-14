@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
-import { Play, RotateCcw, Calendar, Sparkles } from "lucide-react";
+import { Play, RotateCcw, Calendar } from "lucide-react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { scrollToId } from "./uiHelpers";
 import {
@@ -56,8 +56,8 @@ function InlineLogoRail() {
       <style>{`@keyframes ht-marq{from{transform:translateX(0)}to{transform:translateX(-50%)}} .ht-marq-track{display:flex;align-items:center;width:max-content;animation:ht-marq 42s linear infinite} .ht-marq-track:hover{animation-play-state:paused} @media (prefers-reduced-motion: reduce){ .ht-marq-track{ animation:none; } }`}</style>
       <div className="ht-marq-track">
         {[...railLogos, ...railLogos].map((l, i) => (
-          <span key={i} style={{ flex: "0 0 auto", display: "flex", alignItems: "center", justifyContent: "center", width: 132, padding: "0 8px" }}>
-            <img src={fitImg(l.url, 240, 96)} alt={l.name} height={40} loading="lazy" decoding="async" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = l.url; }} style={{ height: 40, maxWidth: 116, objectFit: "contain", filter: "grayscale(1) opacity(0.7)" }} />
+          <span key={i} style={{ flex: "0 0 auto", padding: "0 14px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <img src={fitImg(l.url, 240, 96)} alt={l.name} width={116} height={40} loading="lazy" decoding="async" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = l.url; }} style={{ height: 40, width: "auto", maxWidth: 116, flexShrink: 0, display: "block", objectFit: "contain", filter: "grayscale(1) opacity(0.7)" }} />
           </span>
         ))}
       </div>
@@ -436,11 +436,6 @@ export default function HeroTransformation() {
     cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 10,
     boxShadow: "0 8px 24px rgba(23,25,29,0.18)",
   };
-  const btnLight = {
-    background: "#fff", color: CHARCOAL, border: "1.5px solid rgba(23,25,29,0.18)", borderRadius: 999, height: 56,
-    padding: "0 26px", fontFamily: "inherit", fontWeight: 700, fontSize: "clamp(15px,1.1vw,17px)",
-    cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 10,
-  };
 
   const proof = [
     { num: 300, suffix: "+", small: "ארגונים כבר איתנו", ltr: true },
@@ -594,16 +589,6 @@ export default function HeroTransformation() {
             <Calendar size={18} color="#fff" strokeWidth={2.4} />
             לתיאום הדגמה של 15 דקות
           </button>
-          {isMobile ? (
-            <button type="button" onClick={() => scrollToId("benefits")} style={{ marginTop: 10, background: "none", border: "none", padding: 0, fontFamily: "inherit", fontSize: 15, fontWeight: 600, color: "#17191D", textDecoration: "underline", cursor: "pointer" }}>
-              לראות הטבות אמיתיות
-            </button>
-          ) : (
-            <button type="button" className="bb-btn" onClick={() => scrollToId("benefits")} style={btnLight}>
-              <Sparkles size={18} color={CORAL} strokeWidth={2.4} />
-              לראות הטבות אמיתיות
-            </button>
-          )}
         </div>
 
         {/* Proof row */}
