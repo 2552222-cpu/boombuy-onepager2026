@@ -506,8 +506,9 @@ export default function FeaturedOffersSlider() {
               initial={false}
               animate={{
                 x: show ? x : x + (circ <= 0 ? 90 : -90),
+                y: show ? 0 : 36,
                 opacity: show ? 1 : 0,
-                scale: isCenter ? 1 : abs === 1 ? 0.86 : 0.74,
+                scale: show ? (isCenter ? 1 : abs === 1 ? 0.86 : 0.74) : (isCenter ? 0.92 : abs === 1 ? 0.8 : 0.7),
                 rotateY: reducedMotion ? 0 : circ * 22,
               }}
               transition={
