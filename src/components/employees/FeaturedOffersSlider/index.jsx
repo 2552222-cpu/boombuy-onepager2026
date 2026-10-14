@@ -351,32 +351,49 @@ export default function FeaturedOffersSlider() {
   const maxVisible = isMobile ? 2 : 3;
   const stageH = imgH + (isMobile ? 50 : 70); // room for float + hover lift, so nothing is clipped top/bottom
 
-  // ── Drag (mouse + touch) via framer pan: works with a finger and a mouse, vertical page scroll stays native
-  const dragStartRef = useRef(0);
-  const onPanStart = () => {
-    dragX.stop();
-    dragStartRef.current = dragX.get();
+  // ── Drag (mouse + touch) via native pointer events: more reliable on mobile
+  // than framer's onPan. touch-action: pan-y keeps vertical page scroll native.
+  const dragState = useRef(null);
+  const onPointerDown = (e) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    dragState.current = { startX: e.clientX, baseX: dragX.get(), id: e.pointerId, moved: false };
     setDragging(true);
     suppressClickRef.current = false;
   };
-  const onPan = (e, info) => {
-    if (Math.abs(info.offset.x) > 6) suppressClickRef.current = true;
-    // light resistance so it feels physical, not loose
-    dragX.set(dragStartRef.current + info.offset.x * 0.9);
-  };
-  const onPanEnd = (e, info) => {
-    const dx = info.offset.x;
-    const vx = info.velocity.x;
-    // finger moves left (dx < 0) → next card, matching the "next" arrow
-    let shift = Math.round(-dx / spacing);
-    if (shift === 0 && Math.abs(vx) > 350) shift = vx < 0 ? 1 : -1;
-    shift = Math.max(-3, Math.min(3, shift));
-    // Cards spring to their new slots while the track springs back to 0: the sum is continuous, no jump
-    if (shift !== 0) setIndex((p) => (p + shift + n) % n);
-    animate(dragX, 0, SPRING);
-    setDragging(false);
-    window.setTimeout(() => { suppressClickRef.current = false; }, 80);
-  };
+  useEffect(() => {
+    const move = (e) => {
+      const s = dragState.current;
+      if (!s || s.id !== e.pointerId) return;
+      const dx = e.clientX - s.startX;
+      if (Math.abs(dx) > 6) { s.moved = true; suppressClickRef.current = true; }
+      dragX.set(s.baseX + dx * 0.9);
+    };
+    const end = (e, cancelled) => {
+      const s = dragState.current;
+      if (!s || s.id !== e.pointerId) return;
+      dragState.current = null;
+      setDragging(false);
+      if (!cancelled) {
+        const dx = e.clientX - s.startX;
+        let shift = Math.round(-dx / spacing);
+        if (shift === 0 && Math.abs(dx) > 40) shift = dx < 0 ? 1 : -1;
+        shift = Math.max(-3, Math.min(3, shift));
+        if (shift !== 0) setIndex((p) => (p + shift + n) % n);
+      }
+      animate(dragX, 0, SPRING);
+      window.setTimeout(() => { suppressClickRef.current = false; }, 80);
+    };
+    const up = (e) => end(e, false);
+    const cancel = (e) => end(e, true);
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+    window.addEventListener("pointercancel", cancel);
+    return () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+      window.removeEventListener("pointercancel", cancel);
+    };
+  }, [spacing, n, dragX]);
 
   // ── Trackpad / horizontal wheel: one card per gesture, vertical page scroll untouched
   const onWheel = (e) => {
@@ -476,9 +493,7 @@ export default function FeaturedOffersSlider() {
       <motion.div
         ref={viewportRef}
         className="fo-stage"
-        onPanStart={onPanStart}
-        onPan={onPan}
-        onPanEnd={onPanEnd}
+        onPointerDown={onPointerDown}
         onWheel={onWheel}
         onKeyDown={(e) => {
           if (e.key === "ArrowLeft") { e.preventDefault(); go(1); }
