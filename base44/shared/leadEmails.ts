@@ -19,11 +19,18 @@ function jerTimeLabel(iso) {
 }
 
 async function sendToMany(base44, to, subject, body) {
-  await Promise.allSettled(
+  // Don't swallow send failures: collect results, and throw if any recipient
+  // rejected, so callers can surface the failure instead of reporting success.
+  const results = await Promise.allSettled(
     to.map((email) =>
       base44.asServiceRole.integrations.Core.SendEmail({ to: email, subject, body })
     )
   );
+  const failed = results.filter((r) => r.status === "rejected");
+  if (failed.length) {
+    const reasons = failed.map((r) => (r.reason && r.reason.message) ? r.reason.message : String(r.reason)).join("; ");
+    throw new Error("email_failed: " + reasons);
+  }
 }
 
 export async function sendNewLeadEmail(base44, lead) {

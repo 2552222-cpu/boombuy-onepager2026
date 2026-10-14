@@ -1,73 +1,110 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+// Shared play-once logic for the hero video (mobile + desktop).
+// Behaviour:
+//  - Autoplay muted + playsInline once the media is 60% visible for 1 continuous
+//    second. No loop, no replay button.
+//  - On end, freeze on the AFTER image. `completed` persists for the component
+//    lifetime — scrolling back or returning to the tab never restarts.
+//  - Pause below 15% visibility or on tab hide; resume only when visible again
+//    AND not completed.
+//  - prefers-reduced-motion: start on the AFTER image, no autoplay.
+//  - If autoplay is blocked, fall back to 'failed' so an accessible play control
+//    can be shown (the only place a button appears).
 export default function useMobileHeroPlayback(reducedMotion) {
   const videoRef = useRef(null);
-  const phaseRef = useRef('idle');
-  const autoTried = useRef(false);
-  const autoTimer = useRef(null);
-  const [phase, setPhase] = useState('idle');
+  const phaseRef = useRef(reducedMotion ? 'complete' : 'idle');
+  const completedRef = useRef(!!reducedMotion);
+  const inViewRef = useRef(false);
+  const visibleTimer = useRef(null);
+  const [phase, setPhase] = useState(reducedMotion ? 'complete' : 'idle');
+
   const update = useCallback((next) => { phaseRef.current = next; setPhase(next); }, []);
 
-  // Both entry points share one synchronous lock and one native play request.
-  const start = useCallback((automatic = false) => {
+  const start = useCallback((automatic) => {
     const video = videoRef.current;
-    if (!video || ['loading', 'playing'].includes(phaseRef.current)) return;
-    autoTried.current = true;
-    clearTimeout(autoTimer.current);
+    if (!video || completedRef.current) return;
+    if (['loading', 'playing'].includes(phaseRef.current)) return;
     update('loading');
-    video.pause();
-    video.preload = 'auto';
-    video.currentTime = 0;
-    video.defaultPlaybackRate = 1;
-    video.playbackRate = 1;
-    // Call inside the tap, without awaiting downloads or resetting the source.
-    video.play().catch(() => {
-      if (videoRef.current === video && phaseRef.current === 'loading') {
-        update(automatic ? 'idle' : 'failed');
-      }
-    });
+    try { video.preload = 'auto'; } catch (e) { /* ignore */ }
+    try { video.currentTime = 0; } catch (e) { /* ignore */ }
+    const p = video.play();
+    if (p && typeof p.then === 'function') {
+      p.catch(() => {
+        if (videoRef.current === video && phaseRef.current === 'loading') update('failed');
+      });
+    }
   }, [update]);
 
-  useEffect(() => {
-    if (phase !== 'idle' || autoTried.current || reducedMotion) return;
+  const resume = useCallback(() => {
     const video = videoRef.current;
+    if (!video || completedRef.current || phaseRef.current !== 'playing') return;
+    const p = video.play();
+    if (p && typeof p.then === 'function') p.catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (reducedMotion) return; // static AFTER image, no autoplay
+    const video = videoRef.current;
+    if (!video) return;
     const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-    if (!video || connection?.saveData || (connection?.effectiveType && connection.effectiveType !== '4g')) return;
-    let visible = false;
-    const schedule = () => {
-      clearTimeout(autoTimer.current);
-      if (!visible || document.hidden || document.readyState !== 'complete') return;
-      autoTimer.current = setTimeout(() => {
-        if (visible && !document.hidden && phaseRef.current === 'idle' && !autoTried.current) start(true);
-      }, 2500);
+    if (connection?.saveData) return;
+
+    const clearTimer = () => { if (visibleTimer.current) { clearTimeout(visibleTimer.current); visibleTimer.current = null; } };
+    const armTimer = () => {
+      clearTimer();
+      if (!inViewRef.current || document.hidden || completedRef.current || phaseRef.current !== 'idle') return;
+      visibleTimer.current = setTimeout(() => {
+        if (inViewRef.current && !document.hidden && !completedRef.current && phaseRef.current === 'idle') start(true);
+      }, 1000);
     };
-    const observer = new IntersectionObserver(([entry]) => {
-      visible = entry.isIntersecting && entry.intersectionRatio >= 0.6;
-      schedule();
-    }, { threshold: [0, 0.6] });
-    observer.observe(video);
-    window.addEventListener('load', schedule);
-    document.addEventListener('visibilitychange', schedule);
+
+    const io = new IntersectionObserver(([entry]) => {
+      const ratio = entry.intersectionRatio;
+      inViewRef.current = ratio >= 0.6;
+      if (ratio < 0.15) {
+        try { video.pause(); } catch (e) { /* ignore */ }
+        clearTimer();
+      } else if (!inViewRef.current) {
+        clearTimer(); // dropped below 60% → reset the continuous-visibility timer
+      } else if (!completedRef.current && phaseRef.current === 'idle') {
+        armTimer();
+      } else if (!completedRef.current && phaseRef.current === 'playing') {
+        resume();
+      }
+    }, { threshold: [0, 0.15, 0.6, 1] });
+    io.observe(video);
+
+    const onVis = () => {
+      if (document.hidden) {
+        try { video.pause(); } catch (e) { /* ignore */ }
+        clearTimer();
+      } else if (inViewRef.current && phaseRef.current === 'playing' && !completedRef.current) {
+        resume();
+      } else if (inViewRef.current && phaseRef.current === 'idle' && !completedRef.current) {
+        armTimer();
+      }
+    };
+    document.addEventListener('visibilitychange', onVis);
     return () => {
-      clearTimeout(autoTimer.current);
-      observer.disconnect();
-      window.removeEventListener('load', schedule);
-      document.removeEventListener('visibilitychange', schedule);
+      io.disconnect();
+      document.removeEventListener('visibilitychange', onVis);
+      clearTimer();
     };
-  }, [phase, reducedMotion, start]);
+  }, [reducedMotion, start, resume]);
 
   useEffect(() => {
     const video = videoRef.current;
-    return () => { clearTimeout(autoTimer.current); video?.pause(); };
+    return () => { if (visibleTimer.current) clearTimeout(visibleTimer.current); try { video?.pause(); } catch (e) { /* ignore */ } };
   }, []);
 
   return {
     videoRef, phase, start,
     onPlaying: () => { if (phaseRef.current === 'loading') update('playing'); },
-    onEnded: () => { if (phaseRef.current === 'playing') update('complete'); },
+    onEnded: () => { completedRef.current = true; if (phaseRef.current === 'playing') update('complete'); },
     onError: () => {
       if (['loading', 'playing'].includes(phaseRef.current)) {
-        videoRef.current?.pause();
+        try { videoRef.current?.pause(); } catch (e) { /* ignore */ }
         update('failed');
       }
     },

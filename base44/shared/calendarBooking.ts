@@ -67,12 +67,14 @@ export async function getBusyFor(accessToken, calendarId, timeMin, timeMax) {
   });
   if (!res.ok) throw new Error("freebusy_failed");
   const data = await res.json();
-  const cal = data.calendars?.[calendarId] || {};
-  if (cal.errors) {
-    console.error("calendar_not_accessible", calendarId, JSON.stringify(cal.errors));
+  const cal = data.calendars?.[calendarId];
+  if (!cal || cal.errors || !Array.isArray(cal.busy)) {
+    // A missing calendar entry or a missing busy array is NOT "free all day" —
+    // treat it as a clear failure so the caller never books on absent data.
+    if (cal?.errors) console.error("calendar_not_accessible", calendarId, JSON.stringify(cal.errors));
     throw new Error("calendar_not_accessible");
   }
-  return Array.isArray(cal.busy) ? cal.busy : [];
+  return cal.busy;
 }
 
 // freebusy for multiple calendars in one call. A calendar that returns `errors`
@@ -89,12 +91,14 @@ export async function getBusyMap(accessToken, calendarIds, timeMin, timeMax) {
   const data = await res.json();
   const out = {};
   for (const id of calendarIds) {
-    const cal = data.calendars?.[id] || {};
-    if (cal.errors) {
-      console.error("calendar_not_accessible", id, JSON.stringify(cal.errors));
+    const cal = data.calendars?.[id];
+    if (!cal || cal.errors || !Array.isArray(cal.busy)) {
+      // Missing entry or missing busy array → NOT free (fully busy), so the
+      // slot finder falls through instead of booking on absent data.
+      if (cal?.errors) console.error("calendar_not_accessible", id, JSON.stringify(cal.errors));
       out[id] = [{ start: timeMin, end: timeMax }];
     } else {
-      out[id] = Array.isArray(cal.busy) ? cal.busy : [];
+      out[id] = cal.busy;
     }
   }
   return out;

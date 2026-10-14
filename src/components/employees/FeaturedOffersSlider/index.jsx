@@ -356,7 +356,7 @@ export default function FeaturedOffersSlider() {
   const dragState = useRef(null);
   const onPointerDown = (e) => {
     if (e.pointerType === "mouse" && e.button !== 0) return;
-    dragState.current = { startX: e.clientX, baseX: dragX.get(), id: e.pointerId, moved: false, axis: null };
+    dragState.current = { startX: e.clientX, startY: e.clientY, baseX: dragX.get(), id: e.pointerId, moved: false, axis: null };
     setDragging(true);
     suppressClickRef.current = false;
   };

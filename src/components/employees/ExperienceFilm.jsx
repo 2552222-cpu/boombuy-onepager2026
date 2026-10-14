@@ -75,6 +75,7 @@ export default function ExperienceFilm() {
   const sectionRef = useRef(null);
   const videoRef = useRef(null);
   const mediaRef = useRef(null);
+  const inViewRef = useRef(false);
   const [isMobile, setIsMobile] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [saveData, setSaveData] = useState(false);
@@ -120,6 +121,7 @@ export default function ExperienceFilm() {
       (entries) => {
         entries.forEach((e) => {
           const ratio = e.intersectionRatio;
+          inViewRef.current = ratio >= 0.5;
           if (ratio >= 0.5) tryPlay();
           else if (ratio < 0.15) {
             try { v.pause(); } catch (err) { /* ignore */ }
@@ -134,7 +136,7 @@ export default function ExperienceFilm() {
       if (document.hidden) {
         try { v.pause(); } catch (err) { /* ignore */ }
         setPlaying(false);
-      } else if (!userPaused && canAutoplay) tryPlay();
+      } else if (!userPaused && canAutoplay && inViewRef.current) tryPlay();
     };
     document.addEventListener("visibilitychange", onVis);
     return () => {
