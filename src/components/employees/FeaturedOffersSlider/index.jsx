@@ -453,13 +453,13 @@ export default function FeaturedOffersSlider() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.55, ease: EASE, delay: 0.08 }}
-          style={{ fontSize: "clamp(16px,1.4vw,20px)", color: "#3A3C42", lineHeight: 1.5, maxWidth: 680, margin: "0 auto 26px", textWrap: "pretty" }}
+          style={{ fontSize: "clamp(16px,1.4vw,20px)", color: "#3A3C42", lineHeight: 1.5, maxWidth: 680, margin: "0 auto 14px", textWrap: "pretty" }}
         >
           ככה נראו ההטבות היומיות של העובדים בשבועות האחרונים. גוללים, ולוחצים על הטבה כדי לראות את הפרטים.
         </motion.p>
       </div>
 
-      <WhatsAppMoment offer={offer} isMobile={isMobile} />
+      <WhatsAppMoment offer={offer} isMobile={isMobile} cardWidth={cardW} />
 
       {/* Stage wrapper: side arrows live outside the edge-fade mask so they stay crisp */}
       <div style={{ position: "relative" }}>

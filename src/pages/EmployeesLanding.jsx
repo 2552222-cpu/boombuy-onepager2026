@@ -30,7 +30,7 @@ export default function EmployeesLanding() {
     return () => window.removeEventListener("resize", c);
   }, []);
 
-  // Mobile: only the CTA is fixed (logos live inline in the hero). Desktop: rail + CTA.
+  // After the hero, the fixed rail and CTA share the reserved bottom space.
   const bottomReserve = pageBottomReserve(isMobile);
 
   return (

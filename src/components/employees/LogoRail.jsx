@@ -3,98 +3,24 @@ import { Pause, Play } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import { railLogos } from "../../utils/logoData";
 import { THEME } from "./designTokens";
-import { LAYOUT } from "./layoutTokens";
+import { LAYOUT, railHeight } from "./layoutTokens";
 import { useBottomUIVisibility } from "./useBottomUIVisibility";
-import { fitImg } from "@/lib/img";
-
-function SlotLogo({ src, name, alt, slotW, area, minH, maxH, scale = 1, hovered, onHover }) {
-  const [err, setErr] = useState(false);
-  const [h, setH] = useState(null);
-  const slotStyle = {
-    flex: `0 0 ${slotW}px`,
-    width: slotW,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  };
-  if (err) {
-    return (
-      <span style={slotStyle}>
-        <span
-          aria-label={name}
-          style={{
-            color: THEME.charcoal,
-            fontWeight: 600,
-            fontSize: 14,
-            opacity: 0.55,
-            whiteSpace: "nowrap",
-            textAlign: "center",
-          }}
-        >
-          {name}
-        </span>
-      </span>
-    );
-  }
-  const isHot = hovered === name;
-  const imgH = h != null ? h : maxH;
-  return (
-    <span
-      style={slotStyle}
-      onMouseEnter={() => onHover?.(name)}
-      onMouseLeave={() => onHover?.(null)}
-    >
-      <img
-        src={fitImg(src, 400, 160)}
-        alt={alt}
-        loading="lazy"
-        decoding="async"
-        width={400}
-        height={160}
-        onError={(e) => {
-          if (e.currentTarget.src !== src) { e.currentTarget.onerror = null; e.currentTarget.src = src; }
-          else { setErr(true); }
-        }}
-        onLoad={(e) => {
-          const nw = e.currentTarget.naturalWidth || 1;
-          const nh = e.currentTarget.naturalHeight || 1;
-          const ratio = nw / nh;
-          let calc = Math.sqrt(area / ratio);
-          calc = Math.max(minH, Math.min(maxH, calc)) * scale;
-          setH(Math.round(calc));
-        }}
-        style={{
-          height: imgH,
-          maxWidth: `calc(${slotW}px - 24px)`,
-          width: "auto",
-          objectFit: "contain",
-          display: "block",
-          filter: isHot ? "grayscale(0) contrast(1)" : "grayscale(1) contrast(1.05)",
-          opacity: isHot ? 1 : 0.72,
-          transition: "filter .25s ease, opacity .25s ease",
-        }}
-      />
-    </span>
-  );
-}
+import LogoRailItem from "@/components/employees/LogoRailItem";
 
 export default function LogoRail() {
-  const trackRef = useRef(null);
   const [isMobile, setIsMobile] = useState(() => typeof window !== "undefined" && window.innerWidth < 768);
   const [isWide, setIsWide] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [paused, setPaused] = useState(false);
   const [docHidden, setDocHidden] = useState(false);
-  const [dur, setDur] = useState(60);
   const [hovered, setHovered] = useState(null);
   const { hidden } = useBottomUIVisibility();
   const firedView = useRef(false);
 
-  const railH = LAYOUT.RAIL_HEIGHT_DESKTOP;
+  const railH = railHeight(isMobile);
   const slotW = isMobile ? LAYOUT.LOGO_SLOT_MOBILE : LAYOUT.LOGO_SLOT_DESKTOP;
-  const area = isMobile ? 4200 : 7200;
-  const minH = isMobile ? 24 : 30;
-  const maxH = isMobile ? 50 : 64;
+  const logoHeight = 38;
+  const dur = (railLogos.length * slotW) / LAYOUT.RAIL_SPEED_PX_PER_SEC;
 
   useEffect(() => {
     const c = () => {
@@ -117,23 +43,6 @@ export default function LogoRail() {
   }, []);
 
   useEffect(() => {
-    if (reducedMotion) return;
-    const measure = () => {
-      const el = trackRef.current;
-      if (!el) return;
-      const w = el.scrollWidth;
-      const single = w > 0 ? w / 2 : 0;
-      if (single <= 0) return;
-      const next = Math.max(single / LAYOUT.RAIL_SPEED_PX_PER_SEC, 12);
-      setDur((prev) => (Math.abs(prev - next) > prev * 0.05 + 0.5 ? next : prev));
-    };
-    measure();
-    const ro = new ResizeObserver(measure);
-    if (trackRef.current) ro.observe(trackRef.current);
-    return () => ro.disconnect();
-  }, [reducedMotion, isMobile]);
-
-  useEffect(() => {
     if (!hidden && !firedView.current) {
       firedView.current = true;
       try {
@@ -143,9 +52,6 @@ export default function LogoRail() {
       }
     }
   }, [hidden]);
-
-  // Mobile: logos live inline in the hero, so no fixed rail here.
-  if (isMobile) return null;
 
   const running = !hidden && !docHidden && !paused && !reducedMotion;
 
@@ -168,14 +74,14 @@ export default function LogoRail() {
     height: railH,
   };
 
-  const logoProps = (l) => ({ src: l.url, name: l.name, alt: l.name, slotW, area, minH, maxH, scale: l.scale || 1, hovered, onHover: setHovered });
+  const logoProps = (l) => ({ src: l.url, name: l.name, alt: l.name, slotW, logoHeight, hovered, onHover: setHovered });
 
   if (reducedMotion) {
     return (
       <div role="region" aria-label="לקוחות boombuy" dir="rtl" aria-hidden={hidden} style={wrapStyle}>
         <div style={{ flex: 1, minHeight: 0, display: "flex", alignItems: "center", overflowX: "auto", overflowY: "hidden", scrollbarWidth: "thin", padding: "0 12px", paddingBottom: "env(safe-area-inset-bottom)", WebkitMaskImage: "linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent)", maskImage: "linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent)" }}>
           {railLogos.map((l) => (
-            <SlotLogo key={l.name} {...logoProps(l)} />
+            <LogoRailItem key={l.name} {...logoProps(l)} />
           ))}
         </div>
       </div>
@@ -188,10 +94,10 @@ export default function LogoRail() {
         .lr-rail .lr-label{ flex:0 0 auto; display:flex; align-items:center; justify-content:center; width:120px; background:${THEME.bg}; border-left:1px solid rgba(23,25,29,0.06); }
         .lr-rail .lr-label span{ font-size:13px; font-weight:700; color:${THEME.charcoal}; line-height:1.25; text-align:center; opacity:0.82; letter-spacing:-0.01em; }
         .lr-rail .lr-viewport{ position:relative; flex:1; min-width:0; overflow:hidden; }
-        .lr-rail .lr-track{ position:absolute; top:0; bottom:0; left:0; display:flex; align-items:center; width:max-content; animation:lrMarquee ${dur}s linear infinite; will-change:transform; }
+        .lr-rail .lr-track{ position:absolute; top:0; bottom:0; left:0; display:flex; align-items:center; direction:ltr; width:max-content; animation:lrMarquee ${dur}s linear infinite; will-change:transform; }
         .lr-rail.lr-stopped .lr-track{ animation-play-state:paused; }
         .lr-rail:hover .lr-track, .lr-rail:focus-within .lr-track{ animation-play-state:paused; }
-        @keyframes lrMarquee{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+        @keyframes lrMarquee{ from{ transform:translate3d(0,0,0); } to{ transform:translate3d(-50%,0,0); } }
         .lr-rail .lr-edge{ position:absolute; top:0; bottom:0; width:60px; z-index:2; pointer-events:none; }
         .lr-rail .lr-edge-r{ right:0; background:linear-gradient(to left, ${THEME.bg}, rgba(251,250,248,0)); }
         .lr-rail .lr-edge-l{ left:0; background:linear-gradient(to right, ${THEME.bg}, rgba(251,250,248,0)); }
@@ -206,15 +112,15 @@ export default function LogoRail() {
       )}
 
       <div className="lr-viewport">
-        <div className="lr-track" ref={trackRef}>
+        <div className="lr-track">
           <div style={{ display: "flex", alignItems: "center", flex: "0 0 auto" }}>
             {railLogos.map((l) => (
-              <SlotLogo key={`a-${l.name}`} {...logoProps(l)} />
+              <LogoRailItem key={`a-${l.name}`} {...logoProps(l)} />
             ))}
           </div>
           <div aria-hidden="true" style={{ display: "flex", alignItems: "center", flex: "0 0 auto" }}>
             {railLogos.map((l) => (
-              <SlotLogo key={`b-${l.name}`} {...logoProps(l)} alt="" />
+              <LogoRailItem key={`b-${l.name}`} {...logoProps(l)} alt="" />
             ))}
           </div>
         </div>

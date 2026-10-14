@@ -44,17 +44,17 @@ export const LAYOUT = {
   CTA_H_DESKTOP: 48,
   CTA_H_MOBILE: 54,
   CTA_BOTTOM_MARGIN: 12, // gap above the rail
-  RAIL_SPEED_PX_PER_SEC: 16, // slow, calm
+  RAIL_SPEED_PX_PER_SEC: 8, // half the previous fixed-rail speed
 };
 
 export const railHeight = (isMobile) =>
-  isMobile ? 0 : LAYOUT.RAIL_HEIGHT_DESKTOP; // mobile hides the fixed rail (logos live in the hero)
+  isMobile ? LAYOUT.RAIL_HEIGHT_MOBILE : LAYOUT.RAIL_HEIGHT_DESKTOP;
 
 export const ctaHeight = (isMobile) =>
   isMobile ? LAYOUT.CTA_H_MOBILE : LAYOUT.CTA_H_DESKTOP;
 
 // Total reserved bottom space for the fixed stack (rail + CTA + safe area), used by the
 // page paddingBottom so nothing permanent hides behind the rail.
-// Mobile: CTA only (rail is inline in the hero), so no rail height.
+// Reserve the full stack on every viewport once the hero has scrolled away.
 export const pageBottomReserve = (isMobile) =>
   railHeight(isMobile) + ctaHeight(isMobile) + LAYOUT.CTA_BOTTOM_MARGIN;

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { base44 } from "@/api/base44Client";
-import { fitImg } from "@/lib/img";
+import NormalizedLogo from "@/components/employees/NormalizedLogo";
 import { motion } from "framer-motion";
 import { RevealHeading, RevealBlock, EASE } from "./motion";
 import { SECTION } from "./layoutTokens";
@@ -53,13 +53,8 @@ function Card({ t, isMobile }) {
         height: "100%",
       }}
     >
-      <div style={{ height: 44, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 18, dir: "ltr" }}>
-        <img
-          src={fitImg(t.logo, 400, 160)}
-          alt={t.name}
-          onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = t.logo; }}
-          style={{ height: 38, width: "auto", maxWidth: 150, objectFit: "contain" }}
-        />
+      <div dir="ltr" style={{ height: 44, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 18 }}>
+        <NormalizedLogo src={t.logo} alt={t.name} height={38} maxWidth={150} />
       </div>
       <p style={{ fontSize: isMobile ? 19 : 22, fontWeight: 600, color: "#17191D", lineHeight: 1.45, letterSpacing: "-0.01em", margin: 0 }}>
         ״{t.text}״
