@@ -3,6 +3,7 @@ import GlobalHeader from "../components/employees/GlobalHeader";
 import HeroTransformation from "../components/employees/HeroTransformation";
 import PlatformExplanation from "../components/employees/PlatformExplanation";
 import FeaturedOffersSlider from "../components/employees/FeaturedOffersSlider";
+import ExperienceFilm from "../components/employees/ExperienceFilm";
 import OperationSteps from "../components/employees/OperationSteps";
 import Testimonials from "../components/employees/Testimonials";
 import OrganizationFit from "../components/employees/OrganizationFit";
@@ -46,6 +47,7 @@ export default function EmployeesLanding() {
       <main>
       <HeroTransformation />
       <FeaturedOffersSlider />
+      <ExperienceFilm />
       <PlatformExplanation />
       <OfferPaths />
       <OperationSteps />
