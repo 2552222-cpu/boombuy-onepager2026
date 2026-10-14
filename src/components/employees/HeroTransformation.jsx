@@ -51,13 +51,17 @@ function CountUp({ to, suffix, reducedMotion }) {
 }
 
 function InlineLogoRail() {
+  // Fixed slot width keeps the track width stable, so lazy-loaded images
+  // (whose rendered width settles only after decode) never shift the -50%
+  // loop endpoint — that shift was the "jumps every second" bug.
+  const SLOT = 132;
   return (
-    <div dir="rtl" style={{ marginTop: 24, overflow: "hidden", WebkitMaskImage: "linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent)", maskImage: "linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent)" }}>
-      <style>{`@keyframes ht-marq{from{transform:translateX(0)}to{transform:translateX(-50%)}} .ht-marq-track{display:flex;align-items:center;width:max-content;animation:ht-marq 42s linear infinite} .ht-marq-track:hover{animation-play-state:paused} @media (prefers-reduced-motion: reduce){ .ht-marq-track{ animation:none; } }`}</style>
+    <div dir="rtl" style={{ marginTop: 40, overflow: "hidden", WebkitMaskImage: "linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent)", maskImage: "linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent)" }}>
+      <style>{`@keyframes ht-marq{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}} .ht-marq-track{display:flex;align-items:center;will-change:transform;backface-visibility:hidden;animation:ht-marq 64s linear infinite} .ht-marq-track:hover{animation-play-state:paused} @media (prefers-reduced-motion: reduce){ .ht-marq-track{ animation:none; } }`}</style>
       <div className="ht-marq-track">
         {[...railLogos, ...railLogos].map((l, i) => (
-          <span key={i} style={{ flex: "0 0 auto", padding: "0 14px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <img src={fitImg(l.url, 240, 96)} alt={l.name} width={116} height={40} loading="lazy" decoding="async" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = l.url; }} style={{ height: 40, width: "auto", maxWidth: 116, flexShrink: 0, display: "block", objectFit: "contain", filter: "grayscale(1) opacity(0.7)" }} />
+          <span key={i} style={{ flex: `0 0 ${SLOT}px`, width: SLOT, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+            <img src={fitImg(l.url, 240, 96)} alt={l.name} width={116} height={40} loading={i < railLogos.length ? "eager" : "lazy"} decoding="async" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = l.url; }} style={{ height: 40, width: "auto", maxWidth: SLOT - 16, flexShrink: 0, display: "block", objectFit: "contain", filter: "grayscale(1) opacity(0.7)" }} />
           </span>
         ))}
       </div>
