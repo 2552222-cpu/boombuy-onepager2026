@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import {
   X, RotateCcw, Type, Contrast, Moon, Palette,
   Link2, BookOpen, PauseCircle, MousePointer2,
@@ -123,6 +124,10 @@ export default function AccessibilityPanel({ settings, onChange, onReset, onClos
           <button type="button" className="bb-a11y-reset" onClick={onReset}>
             <RotateCcw size={16} /> איפוס הגדרות
           </button>
+
+          <Link to="/accessibility" onClick={onClose} className="bb-a11y-statement-link">
+            להצהרת הנגישות המלאה
+          </Link>
 
           <p className="bb-a11y-note">
             ההגדרות נשמרות בדפדפן שלכם. לפניות בנושא נגישות: support@boombuy.co.il

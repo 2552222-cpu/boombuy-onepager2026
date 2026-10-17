@@ -9,12 +9,13 @@ import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import { lazy, Suspense } from 'react';
 import EmployeesLanding from './pages/EmployeesLanding.jsx';
 import Privacy from './pages/Privacy';
+import AccessibilityStatement from './pages/AccessibilityStatement';
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
 const ResultsPage = lazy(() => import('./pages/ResultsPage'));
 const OrgPage = lazy(() => import('./pages/OrgPage'));
 // Add page imports here
 
-const PUBLIC_ROUTES = new Set(['/', '/privacy']);
+const PUBLIC_ROUTES = new Set(['/', '/privacy', '/accessibility']);
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -57,6 +58,7 @@ const AuthenticatedApp = () => {
           <Route path="/results" element={<ResultsPage />} />
           <Route path="/join/:orgSlug" element={<OrgPage />} />
           <Route path="/privacy" element={<Privacy />} />
+          <Route path="/accessibility" element={<AccessibilityStatement />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
         </Suspense>

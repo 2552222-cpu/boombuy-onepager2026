@@ -280,3 +280,8 @@ html.bb-a11y-dark .bb-a11y-ui { filter: invert(1) hue-rotate(180deg); }
 }
 .bb-a11y-reset:hover{ background: #000; }
 .bb-a11y-note{ margin: 16px 0 0; font-size: 12px; color: #6E7177; line-height: 1.5; }
+.bb-a11y-statement-link{
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 14px;
+  color: #C24A2C; font-size: 14px; font-weight: 800; text-decoration: underline; text-underline-offset: 3px;
+}
+.bb-a11y-statement-link:hover{ color: #17191D; }

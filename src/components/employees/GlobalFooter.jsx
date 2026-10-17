@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 // WhatsApp lives in the footer only on this page (also on desktop) — no floating button
 // that competes with the main "בדיקת התאמה" action. Link + phone number preserved.
@@ -27,6 +28,14 @@ export default function GlobalFooter() {
                 boombuyonepage.com
               </a>
             </p>
+            <nav className="flex flex-wrap items-center justify-center md:justify-start gap-x-4 gap-y-1 pt-1">
+              <Link to="/accessibility" className="text-xs md:text-sm text-muted-foreground hover:text-primary transition-colors">
+                הצהרת נגישות
+              </Link>
+              <Link to="/privacy" className="text-xs md:text-sm text-muted-foreground hover:text-primary transition-colors">
+                מדיניות פרטיות
+              </Link>
+            </nav>
           </div>
 
           {/* Left (RTL end): WhatsApp contact */}
