@@ -15,6 +15,7 @@ import { captureLeadSource } from "../lib/leadSource";
 import { initLinkedIn } from "../lib/linkedin";
 import PersistentCTA from "../components/employees/PersistentCTA";
 import LogoRail from "../components/employees/LogoRail";
+import AccessibilityWidget from "../components/employees/a11y/AccessibilityWidget";
 import { pageBottomReserve } from "../components/employees/layoutTokens";
 import { useLenis } from "@/hooks/useLenis";
 
@@ -59,6 +60,7 @@ export default function EmployeesLanding() {
       <GlobalFooter />
       <PersistentCTA />
       <LogoRail />
+      <AccessibilityWidget />
     </div>
   );
 }
