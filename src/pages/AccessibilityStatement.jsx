@@ -10,7 +10,7 @@ const CORAL = "#C24A2C";
 const UPDATED = "17 באוקטובר 2026";
 const EMAIL = "support@boombuy.co.il";
 const PHONE_DISPLAY = "054-2552222";
-const PHONE_HREF = "tel:+97254255222";
+const PHONE_HREF = "tel:+972542552222";
 
 const LIST = { margin: "8px 0 0", paddingInlineStart: 22, display: "flex", flexDirection: "column", gap: 4 };
 const LINK = { color: CORAL, fontWeight: 700, textDecoration: "underline" };

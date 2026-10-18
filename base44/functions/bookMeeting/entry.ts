@@ -5,6 +5,15 @@ import { sendMeetingEmail } from '../../shared/leadEmails.ts';
 
 const REQUEST_ID_RE = /^[A-Za-z0-9-]{8,64}$/;
 
+// TEMPORARY — automatic booking is switched off. The connected calendar grants
+// the email scope only, so availability cannot be verified and no event can be
+// created or confirmed. Until the calendar scope is granted, the flow keeps the
+// saved lead and asks us to schedule the intro call, and this endpoint refuses
+// to book so that no unverified meeting can ever be created from any client.
+// Restore automatic booking by setting this to true after re-authorising the
+// connector with the calendar.events scope.
+const AUTO_BOOKING_ENABLED = false;
+
 function buildDesc(lead) {
   return [
     "פגישת הדגמה — boombuy × " + (lead.orgName || ""),
@@ -23,6 +32,7 @@ export default async function(req) {
   try {
     const base44 = createClientFromRequest(req);
     const { sessionId, start, requestId } = await req.json();
+    if (!AUTO_BOOKING_ENABLED) return Response.json({ error: "booking_disabled" }, { status: 503 });
     if (!sessionId || !start) return Response.json({ error: "missing params" }, { status: 400 });
 
     if (typeof sessionId !== 'string' || sessionId.length > 200) return Response.json({ error: "invalid_session" }, { status: 400 });
