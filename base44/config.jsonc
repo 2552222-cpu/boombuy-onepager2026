@@ -1,5 +1,5 @@
 {
-  "name": "BoomBuy Onepager2026",
+  "name": "boombuy",
   "site": {
     "installCommand": "npm install",
     "buildCommand": "npm run build",
