@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { resolveSeo, FAQ_JSON_LD, SITE_ORIGIN } from "@/lib/seoRoutes";
+import { resolveSeo, SITE_ORIGIN } from "@/lib/seoRoutes";
+import syncStructuredData from "@/lib/structuredData";
 
 // Route-aware SEO, applied once per path for EVERY way a visitor can arrive:
 // direct entry, refresh and internal navigation all end here.
@@ -42,22 +43,6 @@ function setCanonical(href) {
   all.forEach((extra) => extra.remove());
 }
 
-function syncFaqJsonLd(keep) {
-  const blocks = [...head().querySelectorAll('script[type="application/ld+json"]')];
-  const faqBlocks = blocks.filter((s) => (s.textContent || "").includes('"FAQPage"'));
-  if (!keep) {
-    faqBlocks.forEach((s) => s.remove());
-    return;
-  }
-  // index.html already carries the mirrored FAQPage for this route — never add a
-  // second one, and repair the block if it is missing.
-  if (faqBlocks.length > 0) return;
-  const script = document.createElement("script");
-  script.type = "application/ld+json";
-  script.textContent = JSON.stringify(FAQ_JSON_LD);
-  head().appendChild(script);
-}
-
 export default function SeoManager() {
   const { pathname } = useLocation();
 
@@ -79,7 +64,7 @@ export default function SeoManager() {
     setNamed("twitter:description", seo.description);
 
     setCanonical(seo.canonical ? SITE_ORIGIN + seo.canonical : null);
-    syncFaqJsonLd(seo.faq);
+    syncStructuredData(seo.faq);
   }, [pathname]);
 
   return null;

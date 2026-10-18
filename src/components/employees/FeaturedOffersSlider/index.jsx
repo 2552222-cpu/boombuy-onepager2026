@@ -5,6 +5,8 @@ import { base44 } from "@/api/base44Client";
 import { scrollToId } from "../uiHelpers";
 import { fitImg } from "@/lib/img";
 import WhatsAppMoment from "../WhatsAppMoment";
+import PaginationDots from "@/components/employees/PaginationDots";
+import { offerSrc, offerSrcSet } from "@/lib/responsiveMedia";
 
 // ─── OFFERS DATA (9 items — preserved exactly, per-item labelOld) ────────────
 const OFFERS = [
@@ -248,7 +250,7 @@ function OfferModal({ offer, isMobile, onClose, onPrev, onNext, onSelectIdx, ope
             <button onClick={(e) => { e.stopPropagation(); onNext(); }} aria-label="הטבה הבאה" style={{ position: "absolute", left: 8, top: "50%", transform: "translateY(-50%)", background: "rgba(0,0,0,0.06)", border: "none", width: 44, height: 44, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", zIndex: 5 }}>
               <ChevronLeft size={22} color="#1D1D1F" />
             </button>
-            <img src={fitImg(offer.img, 640, 780)} alt={offer.productName} width={640} height={780} decoding="async" loading="lazy" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = offer.img; }} style={{ maxWidth: "82%", maxHeight: isMobile ? 200 : 340, objectFit: "contain" }} />
+            <img src={offerSrc(offer.img)} srcSet={offerSrcSet(offer.img)} sizes="(max-width: 767px) 164px, 280px" alt={offer.productName} width={640} height={780} decoding="async" loading="eager" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.removeAttribute('srcset'); e.currentTarget.src = offer.img; }} style={{ maxWidth: "82%", maxHeight: isMobile ? 200 : 340, objectFit: "contain" }} />
           </div>
           <div style={{ display: "flex", justifyContent: "center", gap: 6, padding: "10px 12px", overflowX: "auto", flexWrap: "nowrap", scrollbarWidth: "none", background: "#F5F5F7", flexShrink: 0 }}>
             {OFFERS.map((o) => (
@@ -306,6 +308,7 @@ export default function FeaturedOffersSlider() {
   const suppressClickRef = useRef(false);
   const wheelLockRef = useRef(0);
   const inView = useInView(viewportRef, { amount: 0.25 });
+  const loadImages = useInView(secRef, { once: true, margin: "300px 0px" });
   const [entered, setEntered] = useState(false);
 
   useEffect(() => {
@@ -558,6 +561,7 @@ export default function FeaturedOffersSlider() {
                 index={i}
                 cardW={cardW}
                 imgH={imgH}
+                loadImages={loadImages}
                 isCenter={isCenter}
                 depth={abs}
                 floating={!reducedMotion && inView && !dragging}
@@ -594,30 +598,13 @@ export default function FeaturedOffersSlider() {
         </div>
 
         {/* Controls */}
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 12, marginTop: 18 }}>
+        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: 12, marginTop: 18, maxWidth: "100%" }}>
           {isMobile && (
             <button type="button" className="fo-nav" onClick={() => go(-1)} aria-label="הטבה הקודמת" style={navBtn()}>
               <ChevronRight size={22} color="#17191D" />
             </button>
           )}
-          <div style={{ display: "flex", gap: 2 }}>
-            {OFFERS.map((_, i) => (
-              <button
-                key={i}
-                type="button"
-                onClick={() => setIndex(i)}
-                aria-label={`עבור להטבה ${i + 1}`}
-                aria-current={i === index}
-                style={{ width: isMobile ? 20 : 32, height: 44, border: "none", background: "transparent", padding: 0, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
-              >
-                <motion.span
-                  animate={{ width: i === index ? (isMobile ? 16 : 22) : 8, backgroundColor: i === index ? CORAL : "rgba(19,21,29,0.18)" }}
-                  transition={{ duration: 0.25 }}
-                  style={{ height: 8, borderRadius: 999, display: "block" }}
-                />
-              </button>
-            ))}
-          </div>
+          <PaginationDots count={OFFERS.length} active={index} label="עבור להטבה" onSelect={setIndex} className="order-first basis-full md:order-none md:basis-auto" />
           {isMobile && (
             <button type="button" className="fo-nav" onClick={() => go(1)} aria-label="הטבה הבאה" style={navBtn()}>
               <ChevronLeft size={22} color="#17191D" />
@@ -662,7 +649,7 @@ export default function FeaturedOffersSlider() {
 }
 
 // ─── Card: full-colour image, depth shading instead of fading, gentle float, light sheen on the centre card
-function Card({ offer, index, cardW, imgH, isCenter, depth, floating, tilt, onCardClick }) {
+function Card({ offer, index, cardW, imgH, loadImages, isCenter, depth, floating, tilt, onCardClick }) {
   const rx = useMotionValue(0);
   const ry = useMotionValue(0);
   const srx = useSpring(rx, { stiffness: 200, damping: 20 });
@@ -707,14 +694,17 @@ function Card({ offer, index, cardW, imgH, isCenter, depth, floating, tilt, onCa
         }}
       >
         <img
-          src={fitImg(offer.img, 640, 780)}
-          loading={index < 3 ? "eager" : "lazy"}
+          src={loadImages ? offerSrc(offer.img) : undefined}
+          srcSet={loadImages ? offerSrcSet(offer.img) : undefined}
+          sizes={`${cardW}px`}
+          loading="lazy"
+          fetchPriority="low"
           decoding="async"
           width={640}
           height={780}
           alt={offer.productName}
           draggable={false}
-          onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = offer.img; }}
+          onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.removeAttribute('srcset'); e.currentTarget.src = offer.img; }}
           style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", pointerEvents: "none" }}
         />
         {/* Depth shading: side cards get darker (keeps the blue, no washed-out look) */}

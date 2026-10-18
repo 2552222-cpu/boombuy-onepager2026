@@ -20,6 +20,32 @@ export const HOME_TITLE = "מועדון הטבות לעובדים במותג ה�
 export const HOME_DESCRIPTION =
   "boombuy מקימה ומפעילה מועדון הטבות בשם הארגון, לצד פעילות הרווחה הקיימת. הכירו דוגמאות להטבות, את תהליך ההקמה והשירות, ובדקו התאמה.";
 
+export const ORGANIZATION_JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": SITE_ORIGIN + "/#organization",
+  name: "boombuy",
+  url: SITE_ORIGIN + "/",
+  logo: "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/4cebf7412_15.png",
+  description: "פלטפורמה ישראלית שמקימה ומפעילה מועדון הטבות לעובדים במותג הארגון.",
+  contactPoint: {
+    "@type": "ContactPoint", telephone: "+972542552222",
+    email: "support@boombuy.co.il", contactType: "customer support",
+    areaServed: "IL", availableLanguage: ["Hebrew"],
+  },
+};
+
+export const WEBSITE_JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": SITE_ORIGIN + "/#website",
+  name: "boombuy",
+  url: SITE_ORIGIN + "/",
+  description: HOME_DESCRIPTION,
+  inLanguage: "he-IL",
+  publisher: { "@id": ORGANIZATION_JSON_LD["@id"] },
+};
+
 export const FAQ_JSON_LD = {
   "@context": "https://schema.org",
   "@type": "FAQPage",

@@ -4,6 +4,7 @@ import NormalizedLogo from "@/components/employees/NormalizedLogo";
 import { motion } from "framer-motion";
 import { RevealHeading, RevealBlock, EASE } from "./motion";
 import { SECTION } from "./layoutTokens";
+import PaginationDots from "@/components/employees/PaginationDots";
 
 const BG = SECTION.BG_MIST;
 const CHARCOAL = SECTION.CHARCOAL;
@@ -179,20 +180,11 @@ export default function Testimonials() {
                 </div>
               ))}
             </div>
-            <div style={{ display: "flex", justifyContent: "center", gap: 6, marginTop: 18 }}>
-              {ITEMS.map((_, i) => (
-                <button
-                  key={i}
-                  type="button"
-                  onClick={() => {
-                    const el = scrollerRef.current;
-                    const child = el && el.children[i];
-                    if (child) child.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-                  }}
-                  aria-label={`עבור להמלצה ${i + 1}`}
-                  style={{ width: i === active ? 18 : 6, height: 6, borderRadius: 999, border: "none", background: i === active ? CORAL : "rgba(19,21,29,0.18)", padding: 0, cursor: "pointer", transition: "width .25s ease, background .25s ease" }}
-                />
-              ))}
+            <div style={{ marginTop: 18 }}>
+              <PaginationDots count={ITEMS.length} active={active} label="עבור להמלצה" onSelect={(i) => {
+                const child = scrollerRef.current?.children[i];
+                child?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+              }} />
             </div>
           </>
         ) : (

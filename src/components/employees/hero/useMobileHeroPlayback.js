@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-export default function useMobileHeroPlayback(reducedMotion, source) {
+export default function useMobileHeroPlayback(reducedMotion, source, posterReady = true) {
   const videoRef = useRef(null);
   const connection = typeof navigator === 'undefined' ? null : navigator.connection || navigator.mozConnection || navigator.webkitConnection;
   const [saveData] = useState(() => !!connection?.saveData);
@@ -36,7 +36,7 @@ export default function useMobileHeroPlayback(reducedMotion, source) {
   }, [pause, update]);
   const start = useCallback(() => {
     const video = videoRef.current;
-    if (!video || completedRef.current || pendingRef.current || phaseRef.current === 'playing' || !visibleRef.current || document.hidden) return;
+    if (!posterReady || !video || completedRef.current || pendingRef.current || phaseRef.current === 'playing' || !visibleRef.current || document.hidden) return;
     clearTimers();
     const attempt = ++attemptRef.current;
     pendingRef.current = true;
@@ -59,7 +59,7 @@ export default function useMobileHeroPlayback(reducedMotion, source) {
     loadTimerRef.current = setTimeout(() => fail({ name: 'TimeoutError' }), 20000);
     const request = video.play();
     request?.catch(fail);
-  }, [clearTimers, source, update]);
+  }, [clearTimers, source, update, posterReady]);
 
   useEffect(() => {
     if (reducedMotion || saveData) complete();

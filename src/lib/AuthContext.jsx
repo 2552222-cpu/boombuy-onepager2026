@@ -29,7 +29,9 @@ export const AuthProvider = ({ children }) => {
         headers: {
           'X-App-Id': appParams.appId
         },
-        token: appParams.token, // Include token if available
+        // Public page configuration must not inherit a builder/support-panel token.
+        // Keep authenticated access checks unchanged for protected destinations.
+        token: ['/', '/privacy', '/accessibility'].includes(window.location.pathname) ? undefined : appParams.token,
         interceptResponses: true
       });
       

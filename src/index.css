@@ -5,6 +5,7 @@
 @layer base {
   :root {
     --font-heebo: 'Heebo', sans-serif;
+    --brand-coral: 12.47 87.5% 65.49%;
     --background: 0 0% 99%;
     --foreground: 220 20% 12%;
     --card: 0 0% 100%;
@@ -41,6 +42,7 @@
   }
 
   .dark {
+    --brand-coral: 12.47 87.5% 65.49%;
     --background: 220 20% 6%;
     --foreground: 0 0% 98%;
     --card: 220 20% 8%;

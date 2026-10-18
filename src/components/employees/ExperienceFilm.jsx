@@ -111,6 +111,7 @@ export default function ExperienceFilm() {
     const tryPlay = async () => {
       if (userPaused || !canAutoplay || document.hidden) return;
       try {
+        if (!v.getAttribute("src")) v.src = VIDEO_SRC;
         const p = v.play();
         if (p && typeof p.then === "function") await p;
       } catch (e) {
@@ -180,6 +181,7 @@ export default function ExperienceFilm() {
     if (!v) return;
     if (v.paused) {
       setUserPaused(false);
+      if (!v.getAttribute("src")) v.src = VIDEO_SRC;
       v.play().catch(() => setPlaying(false));
     } else {
       setUserPaused(true);
@@ -259,12 +261,11 @@ export default function ExperienceFilm() {
           >
             <video
               ref={videoRef}
-              src={VIDEO_SRC}
               poster={VIDEO_POSTER || undefined}
               muted
               playsInline
               loop
-              preload="metadata"
+              preload="none"
               onEnded={() => setPlaying(false)}
               aria-label={ARIA_DESC}
               style={{
