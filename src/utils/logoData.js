@@ -23,7 +23,7 @@ export const logoList = [
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/bbde088d4_23.png", name: "מילגם" },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/076c5871f_22.png", name: "AMOT", opticalScale: 1.10 },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e6509fd0a_32.png", name: "MAX" },
-  { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ee4dfeabe_-2026-03-22T223003872.png", name: "אלקטרה אפיקים", opticalScale: 1.08 },
+  { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ee4dfeabe_-2026-03-22T223003872.png", name: "אלקטרה אפיקים", opticalScale: 1.18 },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6862cd610_-2026-03-22T184752919.png", name: "דופלט" },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/62fa4ae8e_-2026-03-22T184709815.png", name: "בנק לאומי" },
   { url: "https://media.base44.com/images/public/69bc4105141d932b80ba9f27/be9e3de1a_-2026-03-22T184841801.png", name: "דלק" },
@@ -44,7 +44,7 @@ export const rowA = [
   "HOT mobile", "ONE", "MAX", "AMOT", "הבינלאומי", "תדהר",
 ].map(name => {
   const l = logoList.find(x => x.name === name);
-  return l ? { url: l.url, name: l.name } : null;
+  return l ? { url: l.url, name: l.name, ...(name === "אלקטרה אפיקים" ? { opticalScale: l.opticalScale } : {}) } : null;
 }).filter(Boolean);
 
 // שורה 2 — לפי שם
