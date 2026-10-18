@@ -1,17 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import GlobalHeader from "../components/employees/GlobalHeader";
 import GlobalFooter from "../components/employees/GlobalFooter";
 
 const CHARCOAL = "#17191D";
 const BODY = "#3A3C42";
 
+// Title, description, canonical, OG and structured data for this route are applied
+// centrally by SeoManager, which owns the head on every entry and navigation.
 export default function Privacy() {
-  useEffect(() => {
-    document.title = "מדיניות פרטיות · boombuy";
-    let m = document.querySelector('meta[name="robots"]');
-    if (!m) { m = document.createElement("meta"); m.name = "robots"; document.head.appendChild(m); }
-    m.setAttribute("content", "index,follow");
-  }, []);
   return (
     <div dir="rtl" style={{ background: "#FBFAF8", minHeight: "100vh", fontFamily: "var(--font-heebo), Heebo, Arial, sans-serif" }}>
       <GlobalHeader />

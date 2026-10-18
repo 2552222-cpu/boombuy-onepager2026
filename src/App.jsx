@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-route
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
+import SeoManager from '@/components/SeoManager';
 import { lazy, Suspense } from 'react';
 import EmployeesLanding from './pages/EmployeesLanding.jsx';
 import Privacy from './pages/Privacy';
@@ -72,6 +73,7 @@ function App() {
     <AuthProvider>
       <QueryClientProvider client={queryClientInstance}>
         <Router>
+          <SeoManager />
           <AuthenticatedApp />
         </Router>
         <Toaster />

@@ -1,31 +1,14 @@
-import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 // Clear, branded error page for a URL that does not exist.
 //
 // Indexing: the SPA host serves the app shell for unknown paths, so the HTTP
-// status is not under our control — a missing URL can answer 200. We therefore
-// mark the page noindex for as long as it is mounted (and restore the previous
-// value on unmount, so the tag never leaks onto a valid page).
+// status is not under our control — a missing URL can answer 200. The noindex tag
+// and the "not found" title/description for every unmapped path are applied
+// centrally by SeoManager, which owns the head for all routes.
 // We never redirect an unknown URL to the home page: the visitor chooses.
 export default function PageNotFound() {
   const location = useLocation();
-
-  useEffect(() => {
-    let meta = document.querySelector('meta[name="robots"]');
-    const created = !meta;
-    const previous = meta ? meta.getAttribute("content") : null;
-    if (!meta) {
-      meta = document.createElement("meta");
-      meta.name = "robots";
-      document.head.appendChild(meta);
-    }
-    meta.setAttribute("content", "noindex,follow");
-    return () => {
-      if (created) meta.remove();
-      else if (previous !== null) meta.setAttribute("content", previous);
-    };
-  }, []);
 
   return (
     <div

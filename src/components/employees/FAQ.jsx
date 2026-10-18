@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { RevealHeading, RevealBlock } from "./motion";
 import { FAQ_ITEMS } from "@/lib/faqData";
@@ -74,30 +74,30 @@ export default function FAQ() {
           ))}
         </div>
 
-        <AnimatePresence initial={false}>
-          {open && (
-            <motion.div
-              key="faq-more"
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.35, ease: EASE }}
-              style={{ overflow: "hidden" }}
-            >
-              <div>
-                {rest.map((item) => (
-                  <details key={item.q} className="faq-item">
-                    <summary>
-                      <span>{item.q}</span>
-                      <ChevronDown className="faq-chev" size={22} strokeWidth={2.4} aria-hidden="true" />
-                    </summary>
-                    <p className="faq-a">{item.a}</p>
-                  </details>
-                ))}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* All remaining questions are rendered on the FIRST render, not when the
+            toggle is pressed: the whole FAQ is in the DOM (and in the page source)
+            from the start, and the toggle only reveals it. When collapsed the group
+            is inert, so it is skipped by the keyboard and by screen readers even
+            though its text is present. */}
+        <motion.div
+          initial={false}
+          animate={{ height: open ? "auto" : 0, opacity: open ? 1 : 0 }}
+          transition={{ duration: 0.35, ease: EASE }}
+          style={{ overflow: "hidden" }}
+          inert={open ? undefined : ""}
+        >
+          <div>
+            {rest.map((item) => (
+              <details key={item.q} className="faq-item">
+                <summary>
+                  <span>{item.q}</span>
+                  <ChevronDown className="faq-chev" size={22} strokeWidth={2.4} aria-hidden="true" />
+                </summary>
+                <p className="faq-a">{item.a}</p>
+              </details>
+            ))}
+          </div>
+        </motion.div>
 
         <button type="button" className="faq-more" onClick={() => setOpen((v) => !v)} aria-expanded={open}>
           {open ? "פחות שאלות" : "עוד שאלות"}

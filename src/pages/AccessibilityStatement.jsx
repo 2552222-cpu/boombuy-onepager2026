@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import GlobalHeader from "@/components/employees/GlobalHeader";
 import GlobalFooter from "@/components/employees/GlobalFooter";
 import StatementSection from "@/components/employees/legal/StatementSection";
@@ -15,18 +15,9 @@ const PHONE_HREF = "tel:+97254255222";
 const LIST = { margin: "8px 0 0", paddingInlineStart: 22, display: "flex", flexDirection: "column", gap: 4 };
 const LINK = { color: CORAL, fontWeight: 700, textDecoration: "underline" };
 
+// Title, description, canonical, OG and structured data for this route are applied
+// centrally by SeoManager, which owns the head on every entry and navigation.
 export default function AccessibilityStatement() {
-  useEffect(() => {
-    document.title = "הצהרת נגישות · boombuy";
-    let m = document.querySelector('meta[name="robots"]');
-    if (!m) {
-      m = document.createElement("meta");
-      m.name = "robots";
-      document.head.appendChild(m);
-    }
-    m.setAttribute("content", "index,follow");
-  }, []);
-
   return (
     <div dir="rtl" style={{ background: "#FBFAF8", minHeight: "100vh", fontFamily: "var(--font-heebo), Heebo, Arial, sans-serif" }}>
       <GlobalHeader />

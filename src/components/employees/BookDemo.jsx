@@ -11,6 +11,33 @@ const WHITE = "#FFFFFF";
 const EASE = [0.22, 1, 0.36, 1];
 const WA_NUMBER = "972542552222";
 
+// One stable id per booking attempt, kept for the whole browser session: a retry
+// after a dropped network or a partial failure sends the SAME id, so the server
+// completes the booking it already started instead of creating a second meeting.
+function bookingRequestId(sessionId, slotStart) {
+  const key = `boom_booking_req:${sessionId}:${slotStart}`;
+  try {
+    const saved = sessionStorage.getItem(key);
+    if (saved) return saved;
+    const raw = typeof crypto !== "undefined" && crypto.randomUUID
+      ? crypto.randomUUID()
+      : `r${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    const id = raw.replace(/[^A-Za-z0-9-]/g, "").slice(0, 64);
+    sessionStorage.setItem(key, id);
+    return id;
+  } catch {
+    return `r${Date.now()}-${Math.random().toString(36).slice(2)}`.replace(/[^A-Za-z0-9-]/g, "").slice(0, 64);
+  }
+}
+
+function clearBookingRequestId(sessionId, slotStart) {
+  try {
+    sessionStorage.removeItem(`boom_booking_req:${sessionId}:${slotStart}`);
+  } catch {
+    /* ignore */
+  }
+}
+
 export default function BookDemo() {
   const [revealed, setRevealed] = useState(false);
   const [lead, setLead] = useState({ sessionId: "", orgName: "" });
@@ -49,7 +76,7 @@ export default function BookDemo() {
       if (res.data?.error || !Array.isArray(res.data?.days)) throw new Error("calendar_unavailable");
       setDays(res.data.days);
     } catch {
-      setFailureMessage("חיבור היומן אינו זמין כרגע. לא ניתן לבדוק זמינות או לקבוע פגישה. הפרטים שמסרתם נשמרו.");
+      setFailureMessage("חיבור היומן אינו זמין כרגע, ולכן לא נקבעה פגישה. הפרטים שמסרתם נשמרו ונחזור אליכם לתיאום.");
     } finally {
       setLoadingDays(false);
     }
@@ -72,28 +99,41 @@ export default function BookDemo() {
       setSlots(res.data.slots);
     } catch {
       setSlots([]);
-      setFailureMessage("חיבור היומן אינו זמין כרגע. לא ניתן לבדוק זמינות או לקבוע פגישה. הפרטים שמסרתם נשמרו.");
+      setFailureMessage("חיבור היומן אינו זמין כרגע, ולכן לא נקבעה פגישה. הפרטים שמסרתם נשמרו ונחזור אליכם לתיאום.");
     } finally {
       setLoadingSlots(false);
     }
   };
 
+  // Every failure ends in the contact-request state: the visitor is never told a
+  // meeting was set unless the server confirmed a real calendar event.
+  const failText = (code) => {
+    if (code === "slot_taken") return "הזמן שנבחר כבר נתפס. נא לבחור מועד אחר.";
+    if (code === "calendar_unavailable") return "חיבור היומן אינו זמין כרגע, ולכן לא נקבעה פגישה. הפרטים שמסרתם נשמרו ונחזור אליכם לתיאום.";
+    if (code === "booking_partial") return "הפגישה נוצרה ביומן אך שמירת הפרטים לא הושלמה. נסו שוב — המערכת תשלים את השמירה ולא תקבע פגישה נוספת.";
+    return "לא נקבעה פגישה. הפרטים שמסרתם נשמרו ונחזור אליכם לתיאום.";
+  };
+
   const book = async () => {
     if (!selectedSlot || !lead.sessionId) return;
     setBooking(true);
+    const requestId = bookingRequestId(lead.sessionId, selectedSlot.start);
     try {
-      const res = await base44.functions.invoke("bookMeeting", { sessionId: lead.sessionId, start: selectedSlot.start });
+      const res = await base44.functions.invoke("bookMeeting", { sessionId: lead.sessionId, start: selectedSlot.start, requestId });
       if (res.data?.ok) {
+        clearBookingRequestId(lead.sessionId, selectedSlot.start);
         setDone(true);
         setStep("done");
         try { base44.analytics.track({ eventName: "meeting_booked" }); } catch (e) {}
         try { trackLinkedInConversion(LINKEDIN_CONV_MEETING); } catch (e) {}
       } else {
-        setFailureMessage(res.data?.error === "slot_taken" ? "הזמן שנבחר כבר נתפס. נא לבחור מועד אחר." : "לא ניתן לקבוע פגישה כרגע. הפרטים שמסרתם נשמרו.");
+        if (res.data?.error === "slot_taken") clearBookingRequestId(lead.sessionId, selectedSlot.start);
+        setFailureMessage(failText(res.data?.error));
       }
     } catch (e) {
       const code = e.response?.data?.error;
-      setFailureMessage(code === "slot_taken" ? "הזמן שנבחר כבר נתפס. נא לבחור מועד אחר." : code === "calendar_unavailable" ? "חיבור היומן אינו זמין כרגע. הפרטים שמסרתם נשמרו." : "לא ניתן לקבוע פגישה כרגע. הפרטים שמסרתם נשמרו.");
+      if (code === "slot_taken") clearBookingRequestId(lead.sessionId, selectedSlot.start);
+      setFailureMessage(failText(code));
     } finally {
       setBooking(false);
     }

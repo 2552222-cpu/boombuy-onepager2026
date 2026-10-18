@@ -182,15 +182,55 @@ export async function checkFree(accessToken, calendarId, startMs, endMs) {
   return isFree(busy, startMs, endMs);
 }
 
+// ── Atomic duplicate guard ────────────────────────────────────────────────────
+// One deterministic event id per SLOT, derived from the slot instant only (never
+// from the visitor's request), so two concurrent requests for the same slot
+// resolve to the same event id. Google rejects a duplicate event id inside a
+// calendar, so the provider itself — not our read-then-write — is what makes the
+// claim atomic. Google allows lowercase a-v and digits 0-9, so a hex digest is a
+// legal id as-is; "bb" marks it as ours in the calendar UI.
+export function slotEventId(startIso) {
+  const s = String(startIso);
+  let h1 = 5381;
+  let h2 = 52711;
+  for (let i = 0; i < s.length; i++) {
+    const c = s.charCodeAt(i);
+    h1 = ((h1 * 33) ^ c) >>> 0;
+    h2 = ((h2 * 31) + c) >>> 0;
+  }
+  return "bb" + h1.toString(16).padStart(8, "0") + h2.toString(16).padStart(8, "0");
+}
+
+// The booking attempt that created an event, or null when the event is not ours.
+export function eventRequestId(event) {
+  return event?.extendedProperties?.private?.boomRequestId || null;
+}
+
+// null means "this calendar has no such event"; any other failure is a real
+// provider failure and must not be read as "free".
+export async function getEventById(accessToken, calendarId, eventId) {
+  const res = await fetch(
+    `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events/${encodeURIComponent(eventId)}`,
+    { headers: { Authorization: `Bearer ${accessToken}` }, signal: AbortSignal.timeout(10000) },
+  );
+  if (res.status === 404 || res.status === 410) return null;
+  if (!res.ok) throw Object.assign(new Error("calendar_unavailable"), { status: 503 });
+  return await res.json();
+}
+
 // Creates a 15-min event with Google Meet on the given calendar.
+// `eventId` + `requestId` make the write idempotent and race-safe: the id claims
+// the slot, the requestId says whose attempt it was.
 export async function createMeetingEvent(accessToken, calendarId, opts) {
-  const { title, startMs, endMs, attendees, description } = opts;
+  const { title, startMs, endMs, attendees, description, eventId, requestId } = opts;
   const body = {
+    ...(eventId ? { id: eventId } : {}),
     summary: title,
     description,
     start: { dateTime: new Date(startMs).toISOString(), timeZone: BOOKING_TZ },
     end: { dateTime: new Date(endMs).toISOString(), timeZone: BOOKING_TZ },
     attendees,
+    ...(requestId ? { extendedProperties: { private: { boomRequestId: String(requestId) } } } : {}),
     conferenceData: { createRequest: { requestId: "boom-" + Math.random().toString(36).slice(2), conferenceSolutionKey: { type: "hangoutsMeet" } } },
   };
   const res = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events?conferenceDataVersion=1&sendUpdates=all`, {
@@ -199,7 +239,11 @@ export async function createMeetingEvent(accessToken, calendarId, opts) {
     body: JSON.stringify(body),
     signal: AbortSignal.timeout(15000),
   });
+  // 409 = an event with this slot id already exists. Reported to the caller, which
+  // decides whether it is our own earlier attempt (recover) or someone else's
+  // booking (refuse). Never a silent second event.
+  if (res.status === 409) return { conflict: true };
   if (!res.ok) throw new Error("create_event_failed");
   const ev = await res.json();
-  return { hangoutLink: ev.hangoutLink, htmlLink: ev.htmlLink, id: ev.id };
+  return { hangoutLink: ev.hangoutLink, htmlLink: ev.htmlLink, id: ev.id, conflict: false };
 }

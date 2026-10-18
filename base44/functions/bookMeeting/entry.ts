@@ -1,7 +1,9 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.52';
-import { SALES_CALENDARS, checkFree, createMeetingEvent } from '../../shared/calendarBooking.ts';
+import { SALES_CALENDARS, checkFree, createMeetingEvent, getEventById, slotEventId, eventRequestId } from '../../shared/calendarBooking.ts';
 import { validateBookingStart } from '../../shared/bookingValidation.ts';
 import { sendMeetingEmail } from '../../shared/leadEmails.ts';
+
+const REQUEST_ID_RE = /^[A-Za-z0-9-]{8,64}$/;
 
 function buildDesc(lead) {
   return [
@@ -20,10 +22,15 @@ function buildDesc(lead) {
 export default async function(req) {
   try {
     const base44 = createClientFromRequest(req);
-    const { sessionId, start } = await req.json();
+    const { sessionId, start, requestId } = await req.json();
     if (!sessionId || !start) return Response.json({ error: "missing params" }, { status: 400 });
 
     if (typeof sessionId !== 'string' || sessionId.length > 200) return Response.json({ error: "invalid_session" }, { status: 400 });
+    // Stable id for THIS booking attempt, reused by the client on every retry, so
+    // a retried request can never create a second meeting.
+    if (requestId !== undefined && requestId !== null && (typeof requestId !== 'string' || !REQUEST_ID_RE.test(requestId))) {
+      return Response.json({ error: "invalid_request_id" }, { status: 400 });
+    }
     const { startMs, endMs, startIso } = validateBookingStart(start);
 
     // filter() may return either a page ({ items, ... }) or a plain array
@@ -34,8 +41,16 @@ export default async function(req) {
     const lead = items[0];
     if (!lead) return Response.json({ error: "lead_not_found" }, { status: 404 });
 
-    // Idempotent retry: if this lead already booked this exact slot, return the
-    // existing booking instead of creating a second calendar event.
+    const markBooked = (calendar, eventId, idempotent) =>
+      base44.asServiceRole.entities.OrganizationFitLead.update(lead.id, {
+        status: "meeting_booked",
+        meetingAt: startIso,
+        assignedTo: calendar,
+        eventId,
+        bookingRequestId: requestId || lead.bookingRequestId || "",
+      });
+
+    // Idempotent retry: this lead already holds this exact slot.
     if (lead.eventId && lead.status === "meeting_booked" && lead.meetingAt === startIso) {
       return Response.json({ ok: true, assignedTo: lead.assignedTo, meetingAt: lead.meetingAt, eventId: lead.eventId, reused: true });
     }
@@ -45,6 +60,24 @@ export default async function(req) {
       ({ accessToken } = await base44.asServiceRole.connectors.getConnection('googlecalendar'));
     } catch {
       return Response.json({ error: "calendar_unavailable" }, { status: 503 });
+    }
+
+    // One deterministic event id per SLOT (not per request). Google enforces
+    // uniqueness of an event id inside a calendar, so two concurrent requests for
+    // the same slot cannot both create an event: the second write conflicts.
+    const eventId = slotEventId(startIso);
+
+    // Who owns this slot, if anyone? Checked on every sales calendar before any
+    // write — this is what recovers a partial earlier attempt (the event exists
+    // but the lead was not updated) and what refuses a slot another visitor holds.
+    for (const cal of SALES_CALENDARS) {
+      const existing = await getEventById(accessToken, cal, eventId);
+      if (!existing) continue;
+      if (requestId && eventRequestId(existing) === requestId) {
+        await markBooked(cal, eventId, false);
+        return Response.json({ ok: true, assignedTo: cal, meetingAt: startIso, eventId, recovered: true });
+      }
+      return Response.json({ error: "slot_taken" }, { status: 409 });
     }
 
     // Re-check availability and assign to tal if free, else to shiri.
@@ -67,18 +100,34 @@ export default async function(req) {
       endMs,
       attendees,
       description: buildDesc(lead),
+      eventId,
+      requestId,
     });
 
-    await base44.asServiceRole.entities.OrganizationFitLead.update(lead.id, {
-      status: "meeting_booked",
-      meetingAt: startIso,
-      assignedTo: assignTo,
-      eventId: ev.id,
-    });
+    if (ev.conflict) {
+      // Lost the race between our availability check and our write. Resolve who
+      // won: our own attempt (same requestId) completes, anyone else's refuses.
+      const found = await getEventById(accessToken, assignTo, eventId);
+      if (!found || !requestId || eventRequestId(found) !== requestId) {
+        return Response.json({ error: "slot_taken" }, { status: 409 });
+      }
+      await markBooked(assignTo, eventId, false);
+      return Response.json({ ok: true, assignedTo: assignTo, meetingAt: startIso, eventId, recovered: true });
+    }
+
+    // From here the calendar event EXISTS. A failure while saving it to the lead
+    // is reported as a partial booking, never as a plain error: the retry path at
+    // the top of this function finds the event by its deterministic id and
+    // completes the record instead of creating a second meeting.
+    try {
+      await markBooked(assignTo, eventId, false);
+    } catch (e) {
+      return Response.json({ error: "booking_partial", meetingAt: startIso, eventId }, { status: 500 });
+    }
 
     try { await sendMeetingEmail(base44, lead, assignTo, startIso, ev.hangoutLink); } catch (e) { /* email best-effort */ }
 
-    return Response.json({ ok: true, assignedTo: assignTo, meetingAt: startIso, eventId: ev.id });
+    return Response.json({ ok: true, assignedTo: assignTo, meetingAt: startIso, eventId });
   } catch (error) {
     return Response.json({ error: error.message }, { status: error.status || 500 });
   }
