@@ -11,8 +11,9 @@ import syncStructuredData from "@/lib/structuredData";
 // duplicates must not survive next to them: each managed tag is updated in place
 // and any extra copy of the same property is removed.
 //
-// The FAQPage block is deliberately NOT re-created here when the route keeps it:
-// index.html already ships the mirrored block for crawlers without JavaScript.
+// Only this site's Organization/WebSite and FAQ nodes are synchronized; other
+// useful schema nodes stay intact. This is not a fix for initial server HTML:
+// the platform's SEO settings must separately match the static metadata.
 
 function head() {
   return document.head;
