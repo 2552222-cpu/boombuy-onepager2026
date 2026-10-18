@@ -106,6 +106,18 @@
   html, body { overscroll-behavior-y: none; }
 }
 
+/* Skip-to-content link: off-screen until it receives keyboard focus. */
+.bb-skip-link{
+  position: absolute; top: -120px; right: 16px; z-index: 100;
+  background: #17191D; color: #fff;
+  font-weight: 700; font-size: 15px; line-height: 1;
+  padding: 14px 20px; border-radius: 0 0 12px 12px;
+  text-decoration: none;
+  transition: top .18s ease;
+}
+.bb-skip-link:focus{ top: 0; outline: 3px solid #F47A5A; outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce){ .bb-skip-link{ transition: none; } }
+
 .bb-btn{ transition: transform .18s ease, box-shadow .18s ease; }
 .bb-btn:hover{ transform: translateY(-1px); }
 .bb-btn:active{ transform: scale(0.98); }

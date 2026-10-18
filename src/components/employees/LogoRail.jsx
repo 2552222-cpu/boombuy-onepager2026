@@ -3,9 +3,9 @@ import { Pause, Play } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import { railLogos } from "../../utils/logoData";
 import { THEME } from "./designTokens";
-import { LAYOUT, railHeight } from "./layoutTokens";
+import { LAYOUT, railHeight, logoCell, logoSlot } from "./layoutTokens";
 import { useBottomUIVisibility } from "./useBottomUIVisibility";
-import LogoRailItem from "@/components/employees/LogoRailItem";
+import LogoItem from "@/components/employees/LogoItem";
 
 export default function LogoRail() {
   const [isMobile, setIsMobile] = useState(() => typeof window !== "undefined" && window.innerWidth < 768);
@@ -18,9 +18,11 @@ export default function LogoRail() {
   const firedView = useRef(false);
 
   const railH = railHeight(isMobile);
-  const slotW = isMobile ? LAYOUT.LOGO_SLOT_MOBILE : LAYOUT.LOGO_SLOT_DESKTOP;
-  const logoHeight = 38;
-  const dur = (railLogos.length * slotW) / LAYOUT.RAIL_SPEED_PX_PER_SEC;
+  const cell = logoCell(isMobile);
+  const slot = logoSlot(isMobile);
+  // Constant px/sec. Both copies use the identical cell, so the repeat width is
+  // exact and the animation never jumps at the loop point.
+  const dur = (railLogos.length * slot) / LAYOUT.RAIL_SPEED_PX_PER_SEC;
 
   useEffect(() => {
     const c = () => {
@@ -74,14 +76,22 @@ export default function LogoRail() {
     height: railH,
   };
 
-  const logoProps = (l) => ({ src: l.url, name: l.name, alt: l.name, slotW, logoHeight, hovered, onHover: setHovered });
+  const logoProps = (logo, decorative) => ({
+    logo,
+    cell,
+    alt: decorative ? "" : logo.name,
+    decorative,
+    interactive: true,
+    hovered,
+    onHover: setHovered,
+  });
 
   if (reducedMotion) {
     return (
       <div role="region" aria-label="לקוחות boombuy" dir="rtl" aria-hidden={hidden} style={wrapStyle}>
         <div style={{ flex: 1, minHeight: 0, display: "flex", alignItems: "center", overflowX: "auto", overflowY: "hidden", touchAction: "pan-x", scrollbarWidth: "thin", padding: "0 12px", paddingBottom: "env(safe-area-inset-bottom)", WebkitMaskImage: "linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent)", maskImage: "linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent)" }}>
-          {railLogos.map((l) => (
-            <LogoRailItem key={l.name} {...logoProps(l)} />
+          {railLogos.map((logo) => (
+            <LogoItem key={logo.name} {...logoProps(logo, false)} />
           ))}
         </div>
       </div>
@@ -113,16 +123,17 @@ export default function LogoRail() {
 
       <div className="lr-viewport">
         <div className="lr-track">
-          <div style={{ display: "flex", alignItems: "center", flex: "0 0 auto" }}>
-            {railLogos.map((l) => (
-              <LogoRailItem key={`a-${l.name}`} {...logoProps(l)} />
-            ))}
-          </div>
-          <div aria-hidden="true" style={{ display: "flex", alignItems: "center", flex: "0 0 auto" }}>
-            {railLogos.map((l) => (
-              <LogoRailItem key={`b-${l.name}`} {...logoProps(l)} alt="" />
-            ))}
-          </div>
+          {[0, 1].map((copy) => (
+            <div
+              key={copy}
+              aria-hidden={copy === 1 || undefined}
+              style={{ display: "flex", alignItems: "center", flex: "0 0 auto" }}
+            >
+              {railLogos.map((logo) => (
+                <LogoItem key={`${copy}-${logo.name}`} {...logoProps(logo, copy === 1)} />
+              ))}
+            </div>
+          ))}
         </div>
 
         <div className="lr-edge lr-edge-r" />

@@ -37,10 +37,13 @@ export const SECTION = {
 export const LAYOUT = {
   RAIL_HEIGHT_DESKTOP: 100,
   RAIL_HEIGHT_MOBILE: 82,
-  LOGO_H_DESKTOP: 64,
-  LOGO_H_MOBILE: 50,
-  LOGO_SLOT_DESKTOP: 210,
-  LOGO_SLOT_MOBILE: 160,
+  // Uniform logo cell for the client rail (and for its animation copy): every logo
+  // gets the same cell box, the same symbol box inside it and the same spacing.
+  // symbolW/symbolH are the MAXIMUM visible artwork area — each logo keeps its own
+  // aspect ratio inside it (wide mark limited by width, square/round mark by height),
+  // so nothing is ever stretched or cropped.
+  LOGO_CELL_DESKTOP: { w: 144, h: 72, symbolW: 112, symbolH: 44, gap: 24 },
+  LOGO_CELL_MOBILE: { w: 112, h: 60, symbolW: 88, symbolH: 36, gap: 16 },
   CTA_H_DESKTOP: 48,
   CTA_H_MOBILE: 54,
   CTA_BOTTOM_MARGIN: 12, // gap above the rail
@@ -49,6 +52,16 @@ export const LAYOUT = {
 
 export const railHeight = (isMobile) =>
   isMobile ? LAYOUT.RAIL_HEIGHT_MOBILE : LAYOUT.RAIL_HEIGHT_DESKTOP;
+
+// Shared cell + slot for every logo in a rail. The slot (cell + gap) is the repeat
+// width, identical in the first and second copy, so the loop point never jumps.
+export const logoCell = (isMobile) =>
+  isMobile ? LAYOUT.LOGO_CELL_MOBILE : LAYOUT.LOGO_CELL_DESKTOP;
+
+export const logoSlot = (isMobile) => {
+  const c = logoCell(isMobile);
+  return c.w + c.gap;
+};
 
 export const ctaHeight = (isMobile) =>
   isMobile ? LAYOUT.CTA_H_MOBILE : LAYOUT.CTA_H_DESKTOP;

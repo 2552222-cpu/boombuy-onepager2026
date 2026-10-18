@@ -9,6 +9,7 @@ export default function GlobalHeader() {
 
   return (
     <header className="sticky top-0 z-50 bg-white" style={{ overflowX: 'hidden', maxWidth: '100vw' }}>
+      <a href="#main-content" className="bb-skip-link">דלג לתוכן הראשי</a>
       <div className="max-w-screen-xl mx-auto px-5 md:px-10 flex items-center justify-between" style={{ paddingTop: "12px", paddingBottom: "12px" }}>
         
         {/* Logo - Right Side */}

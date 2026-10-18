@@ -16,7 +16,7 @@ const CARD_BORDER = "rgba(255,255,255,0.10)";
 const CARDS = [
   { icon: Gift, kicker: "לעובדים", text: "הטבה חדשה כל בוקר, וולנס, תרבות וחופשות. כל השנה." },
   { icon: Building2, kicker: "לארגון", text: "מועדון בשם שלכם, שמרגישים בו את הארגון בכל יום." },
-  { icon: Coffee, kicker: "לרווחה", text: "בלי ספקים, בלי טלפונים. אנחנו מטפלים בהכול." },
+  { icon: Coffee, kicker: "לרווחה", text: "אנחנו מטפלים בהקמה, בתפעול ובשירות לעובדים. אתם מאשרים איתנו את התוכנית." },
 ];
 
 export default function PlatformExplanation() {
@@ -92,6 +92,13 @@ export default function PlatformExplanation() {
               style={{ color: TEXT_MUTED, fontSize: `clamp(${SECTION.BODY_MOBILE}px,1.4vw,21px)`, fontWeight: 400, lineHeight: 1.65, margin: "22px auto 0", maxWidth: 820 }}
             >
               אנחנו מקימים, ממתגים, מפעילים ונותנים שירות לעובדים. אתם רק מאשרים.
+            </RevealBlock>
+
+            <RevealBlock
+              delay={0.18}
+              style={{ color: TEXT_MUTED, fontSize: `clamp(${SECTION.BODY_MOBILE}px,1.25vw,19px)`, fontWeight: 400, lineHeight: 1.6, margin: "10px auto 0", maxWidth: 760 }}
+            >
+              המועדון פועל לצד פעילות הרווחה הקיימת בארגון.
             </RevealBlock>
           </div>
 

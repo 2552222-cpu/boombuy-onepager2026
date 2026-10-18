@@ -71,7 +71,7 @@ export default function OperationSteps() {
           delay={0.08}
           style={{ color: SECTION.BODY_COLOR, fontSize: `clamp(${SECTION.BODY_MOBILE}px,1.4vw,${SECTION.BODY_DESKTOP}px)`, lineHeight: SECTION.BODY_LH, margin: "14px auto 0", maxWidth: 640 }}
         >
-          אתם קובעים את הכללים. אנחנו עושים את כל השאר.
+          מגדירים יחד את התוכנית, הזכאות, התקציב והאישורים. אנחנו מטפלים בהקמה, בתפעול ובשירות בהתאם למסלול.
         </RevealBlock>
 
         {/* Desktop progress line */}

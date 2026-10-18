@@ -20,7 +20,7 @@ export default function GlobalFooter() {
             <p className="text-xs md:text-sm text-muted-foreground">
               לארגונים:{" "}
               <a
-                href="https://www.boombuyonepage.com"
+                href="https://boombuyonepage.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:underline"

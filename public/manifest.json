@@ -1,0 +1,20 @@
+{
+  "name": "boombuy · מועדון הטבות לעובדים",
+  "short_name": "boombuy",
+  "description": "boombuy מקימה ומפעילה מועדון הטבות לעובדים במותג הארגון, לצד פעילות הרווחה הקיימת.",
+  "lang": "he",
+  "dir": "rtl",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#FBFAF8",
+  "theme_color": "#FBFAF8",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

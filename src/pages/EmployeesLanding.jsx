@@ -45,7 +45,7 @@ export default function EmployeesLanding() {
       }}
     >
       <GlobalHeader />
-      <main>
+      <main id="main-content" tabIndex={-1}>
       <HeroTransformation />
       <FeaturedOffersSlider />
       <ExperienceFilm />

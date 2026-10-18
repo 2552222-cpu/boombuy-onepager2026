@@ -9,38 +9,6 @@ import MobileHeroMedia from "@/components/employees/hero/MobileHeroMedia";
 const CORAL = "#F47A5A";
 const EASE = [0.22, 1, 0.36, 1];
 
-function CountUp({ to, suffix, reducedMotion }) {
-  const ref = useRef(null);
-  const [val, setVal] = useState(reducedMotion ? to : 0);
-  const done = useRef(reducedMotion);
-  useEffect(() => {
-    if (reducedMotion) { setVal(to); return; }
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting && !done.current) {
-          done.current = true;
-          const start = performance.now();
-          const dur = 1200;
-          const tick = (now) => {
-            const t = Math.min(1, (now - start) / dur);
-            const eased = 1 - Math.pow(1 - t, 3);
-            setVal(Math.round(to * eased));
-            if (t < 1) requestAnimationFrame(tick);
-            else setVal(to);
-          };
-          requestAnimationFrame(tick);
-          io.disconnect();
-        }
-      });
-    }, { threshold: 0.5 });
-    io.observe(el);
-    return () => io.disconnect();
-  }, [to, reducedMotion]);
-  return <span ref={ref}>{val}{suffix}</span>;
-}
-
 export default function HeroTransformation() {
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
   const [isNarrow, setIsNarrow] = useState(false);
@@ -195,7 +163,7 @@ export default function HeroTransformation() {
           {proof.map((p) => (
             <div key={p.small} style={{ textAlign: "center", flex: isMobile ? "1 1 0" : "1 1 90px", maxWidth: 260, minWidth: 0 }}>
               <div style={{ color: CHARCOAL, fontSize: isMobile ? 22 : "clamp(20px,2.4vw,28px)", fontWeight: 800, lineHeight: 1.1 }} dir={p.ltr ? "ltr" : undefined}>
-                <CountUp to={p.num} suffix={p.suffix} reducedMotion={reducedMotion} />
+                {p.num}{p.suffix}
               </div>
               <div style={{ color: "#5A5C62", fontSize: isMobile ? 12 : "clamp(12px,1.1vw,14px)", fontWeight: 500, marginTop: 2, lineHeight: 1.3, display: isMobile ? "-webkit-box" : undefined, WebkitLineClamp: isMobile ? 2 : undefined, WebkitBoxOrient: isMobile ? "vertical" : undefined, overflow: isMobile ? "hidden" : undefined }}>
                 {p.small}
