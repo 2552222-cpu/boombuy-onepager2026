@@ -6,331 +6,332 @@
 <meta name="robots" content="noindex,nofollow">
 <title>בדיקת לוגואים — תצוגה סטטית</title>
 <style>
-  body{font-family:Heebo,Arial,sans-serif;background:#FBFAF8;color:#17191D;margin:0;padding:24px 20px 60px}
-  h1{font-size:22px;margin:0 0 6px}
-  h2{font-size:16px;margin:34px 0 10px;padding-top:10px;border-top:1px solid #E5E2DD}
-  .note{color:#5A5C62;font-size:13px;line-height:1.6;margin:0 0 4px;max-width:900px}
-  .grid{display:flex;flex-wrap:wrap;gap:0;background:#FBFAF8;border:1px dashed #E5E2DD;padding:8px;margin-top:8px}
+  body{font-family:Heebo,Arial,sans-serif;background:#FBFAF8;color:#17191D;margin:0;padding:24px 20px 70px}
+  h1{font-size:22px;margin:0 0 8px}
+  h2{font-size:16px;margin:36px 0 8px;padding-top:12px;border-top:1px solid #E5E2DD}
+  .note{color:#5A5C62;font-size:13px;line-height:1.65;margin:0 0 6px;max-width:960px}
+  .rail{display:flex;flex-wrap:nowrap;overflow:hidden;background:#fff;border:1px solid #E5E2DD;padding:6px 0}
+  .rail.wrap{flex-wrap:wrap;padding:10px}
   .cell{display:flex;align-items:center;justify-content:center;flex:0 0 auto}
   .crop{position:relative;display:inline-block;overflow:hidden}
   .crop img{position:absolute;display:block;max-width:none;filter:grayscale(1) contrast(1.05);opacity:.72}
   table{border-collapse:collapse;margin-top:12px;font-size:12.5px}
-  th,td{border:1px solid #E5E2DD;padding:5px 9px;text-align:right}
+  th,td{border:1px solid #E5E2DD;padding:5px 8px;text-align:right;white-space:nowrap}
   th{background:#F2F0EC}
-  code{background:#F2F0EC;padding:1px 5px;border-radius:4px}
+  .same{color:#9A9CA2}
 </style>
 </head>
 <body>
   <h1>בדיקת לוגואים — תצוגה סטטית</h1>
-  <p class="note">עמוד בדיקה בלבד (noindex, לא מקושר מהאתר). מציג את כל 29 הלוגואים יחד, באותה גיאומטריה בדיוק שבה המסילה מציירת אותם: תא, אזור סמל, חיתוך לפי גבולות התוכן ופילטר הזהב-אפור. הרווחים בין התאים כאן שוליים כדי שיהיה קל להשוות גדלים; במסילה שבין התאים יש 24px (מחשב) / 16px (נייד).</p>
+  <p class="note">עמוד בדיקה בלבד (noindex, לא מקושר מהאתר). התצוגה כאן זהה לחישוב של המסילה: אותו תא, אותו אזור סמל, אותו חיתוך לפי גבולות התוכן ואותם מקדמים אופטיים. תאים ורווחים מוצגים במידות האמיתיות (מחשב 144+24, נייד 112+16) כדי לראות את המסילה כמו שהיא, כולל המרווח שבין הלוגואים.</p>
 
-  <h2>מחשב — אחרי התיקון האופטי (תא 144×72, אזור סמל 112×44)</h2>
-  <div class="grid">
-      <div class="cell" style="width:144px;height:72px" title="Teva — תוכן 124.3×43.8">
-        <span class="crop" style="width:124.3px;height:43.8px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/440e21638_readytoboom93.png/v1/fit/w_279,h_279,q_82/img.webp" width="139" height="139" style="width:139.3px;height:139.3px;left:-7.5px;top:-47.3px" alt="Teva"></span>
+  <h2>המסילה במחשב — כל 29 הלוגואים ברצף (תא 144×72, אזור סמל 112×44, רווח 24)</h2>
+  <div class="rail wrap">
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="Teva — 112×39.5">
+        <span class="crop" style="width:112.0px;height:39.5px"><img alt="Teva" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/440e21638_readytoboom93.png/v1/fit/w_251,h_251,q_82/img.webp" width="125" height="125" style="width:125.5px;height:125.5px;left:-6.7px;top:-42.6px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="סלקום — תוכן 122.1×44.2">
-        <span class="crop" style="width:122.1px;height:44.2px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/f5d33c4f1_-2026-03-23T144912129.png/v1/fit/w_270,h_216,q_82/img.webp" width="135" height="108" style="width:134.7px;height:107.8px;left:-8.4px;top:-31.8px" alt="סלקום"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="סלקום — 112×40.5">
+        <span class="crop" style="width:112.0px;height:40.5px"><img alt="סלקום" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/f5d33c4f1_-2026-03-23T144912129.png/v1/fit/w_248,h_248,q_82/img.webp" width="124" height="99" style="width:123.6px;height:98.9px;left:-7.7px;top:-29.2px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="אלקטרה אפיקים — תוכן 97.0×44.0">
-        <span class="crop" style="width:97.0px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ee4dfeabe_-2026-03-22T223003872.png/v1/fit/w_196,h_157,q_82/img.webp" width="98" height="78" style="width:97.7px;height:78.2px;left:0.0px;top:0.0px" alt="אלקטרה אפיקים"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="אלקטרה אפיקים — 105×47.5">
+        <span class="crop" style="width:104.7px;height:47.5px"><img alt="אלקטרה אפיקים" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ee4dfeabe_-2026-03-22T223003872.png/v1/fit/w_212,h_212,q_82/img.webp" width="106" height="84" style="width:105.6px;height:84.4px;left:0.0px;top:0.0px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="Estee Lauder — תוכן 59.1×44.0">
-        <span class="crop" style="width:59.1px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a6011911e_42.png/v1/fit/w_216,h_216,q_82/img.webp" width="108" height="108" style="width:107.5px;height:107.5px;left:-26.0px;top:-31.8px" alt="Estee Lauder"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="Estee Lauder — 59×44.0">
+        <span class="crop" style="width:59.1px;height:44.0px"><img alt="Estee Lauder" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a6011911e_42.png/v1/fit/w_216,h_216,q_82/img.webp" width="108" height="108" style="width:107.5px;height:107.5px;left:-26.0px;top:-31.8px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="קרן קיימת — תוכן 38.0×44.0">
-        <span class="crop" style="width:38.0px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/dff369112_61.png/v1/fit/w_99,h_124,q_82/img.webp" width="49" height="62" style="width:49.2px;height:61.6px;left:-6.3px;top:-6.1px" alt="קרן קיימת"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="קרן קיימת — 38×44.0">
+        <span class="crop" style="width:38.0px;height:44.0px"><img alt="קרן קיימת" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/dff369112_61.png/v1/fit/w_124,h_124,q_82/img.webp" width="49" height="62" style="width:49.2px;height:61.6px;left:-6.3px;top:-6.1px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="בנק ישראל — תוכן 42.8×44.0">
-        <span class="crop" style="width:42.8px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/62d86b046_8.png/v1/fit/w_129,h_129,q_82/img.webp" width="64" height="64" style="width:64.3px;height:64.3px;left:-10.7px;top:-11.2px" alt="בנק ישראל"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="בנק ישראל — 43×44.0">
+        <span class="crop" style="width:42.8px;height:44.0px"><img alt="בנק ישראל" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/62d86b046_8.png/v1/fit/w_129,h_129,q_82/img.webp" width="64" height="64" style="width:64.3px;height:64.3px;left:-10.7px;top:-11.2px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="ZIM — תוכן 44.2×44.0">
-        <span class="crop" style="width:44.2px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ad90fe974_-2026-03-22T223323805.png/v1/fit/w_133,h_107,q_82/img.webp" width="66" height="53" style="width:66.4px;height:53.1px;left:-11.5px;top:-4.1px" alt="ZIM"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="ZIM — 44×44.0">
+        <span class="crop" style="width:44.2px;height:44.0px"><img alt="ZIM" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ad90fe974_-2026-03-22T223323805.png/v1/fit/w_133,h_133,q_82/img.webp" width="66" height="53" style="width:66.4px;height:53.1px;left:-11.5px;top:-4.1px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="מזרחי טפחות — תוכן 37.7×44.0">
-        <span class="crop" style="width:37.7px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3f66c2722_37.png/v1/fit/w_118,h_118,q_82/img.webp" width="59" height="59" style="width:59.0px;height:59.0px;left:-12.6px;top:-6.9px" alt="מזרחי טפחות"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="מזרחי טפחות — 38×44.0">
+        <span class="crop" style="width:37.7px;height:44.0px"><img alt="מזרחי טפחות" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3f66c2722_37.png/v1/fit/w_118,h_118,q_82/img.webp" width="59" height="59" style="width:59.0px;height:59.0px;left:-12.6px;top:-6.9px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="ORT — תוכן 109.4×44.0">
-        <span class="crop" style="width:109.4px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6ecb1d12e_48.png/v1/fit/w_224,h_279,q_82/img.webp" width="112" height="139" style="width:111.6px;height:139.5px;left:-1.1px;top:-44.4px" alt="ORT"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="ORT — 109×44.0">
+        <span class="crop" style="width:109.4px;height:44.0px"><img alt="ORT" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6ecb1d12e_48.png/v1/fit/w_279,h_279,q_82/img.webp" width="112" height="139" style="width:111.6px;height:139.5px;left:-1.1px;top:-44.4px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="אלבר — תוכן 132.2×36.8">
-        <span class="crop" style="width:132.2px;height:36.8px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/0d5a77386_2.png/v1/fit/w_400,h_345,q_82/img.webp" width="206" height="172" style="width:205.7px;height:172.3px;left:-35.8px;top:-63.9px" alt="אלבר"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="אלבר — 118×32.7">
+        <span class="crop" style="width:117.6px;height:32.7px"><img alt="אלבר" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/0d5a77386_2.png/v1/fit/w_367,h_367,q_82/img.webp" width="183" height="153" style="width:183.0px;height:153.3px;left:-31.8px;top:-56.8px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="בזן — תוכן 50.1×44.0">
-        <span class="crop" style="width:50.1px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/da1504162_47.png/v1/fit/w_146,h_182,q_82/img.webp" width="73" height="91" style="width:72.7px;height:90.8px;left:-13.0px;top:-30.3px" alt="בזן"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="בזן — 50×44.0">
+        <span class="crop" style="width:50.1px;height:44.0px"><img alt="בזן" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/da1504162_47.png/v1/fit/w_182,h_182,q_82/img.webp" width="73" height="91" style="width:72.7px;height:90.8px;left:-13.0px;top:-30.3px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="HOT mobile — תוכן 35.1×44.0">
-        <span class="crop" style="width:35.1px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/5f7a627b6_-2026-04-06T212635319.png/v1/fit/w_121,h_97,q_82/img.webp" width="60" height="48" style="width:60.4px;height:48.4px;left:-12.8px;top:-3.0px" alt="HOT mobile"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="HOT mobile — 35×44.0">
+        <span class="crop" style="width:35.1px;height:44.0px"><img alt="HOT mobile" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/5f7a627b6_-2026-04-06T212635319.png/v1/fit/w_121,h_121,q_82/img.webp" width="60" height="48" style="width:60.4px;height:48.4px;left:-12.8px;top:-3.0px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="ONE — תוכן 132.2×42.9">
-        <span class="crop" style="width:132.2px;height:42.9px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/1a493167d_27.png/v1/fit/w_278,h_278,q_82/img.webp" width="139" height="139" style="width:138.5px;height:138.5px;left:-4.5px;top:-50.1px" alt="ONE"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="ONE — 112×36.3">
+        <span class="crop" style="width:112.0px;height:36.3px"><img alt="ONE" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/1a493167d_27.png/v1/fit/w_235,h_235,q_82/img.webp" width="117" height="117" style="width:117.4px;height:117.4px;left:-3.8px;top:-42.4px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="MAX — תוכן 132.2×41.4">
-        <span class="crop" style="width:132.2px;height:41.4px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e6509fd0a_32.png/v1/fit/w_276,h_276,q_82/img.webp" width="138" height="138" style="width:137.5px;height:137.5px;left:-2.7px;top:-51.0px" alt="MAX"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="MAX — 112×35.1">
+        <span class="crop" style="width:112.0px;height:35.1px"><img alt="MAX" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e6509fd0a_32.png/v1/fit/w_234,h_234,q_82/img.webp" width="117" height="117" style="width:116.6px;height:116.6px;left:-2.3px;top:-43.3px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="AMOT — תוכן 132.2×34.9">
-        <span class="crop" style="width:132.2px;height:34.9px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/076c5871f_22.png/v1/fit/w_268,h_268,q_82/img.webp" width="134" height="134" style="width:134.0px;height:134.0px;left:-0.9px;top:-45.1px" alt="AMOT"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="AMOT — 123×32.6">
+        <span class="crop" style="width:123.2px;height:32.6px"><img alt="AMOT" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/076c5871f_22.png/v1/fit/w_250,h_250,q_82/img.webp" width="125" height="125" style="width:124.9px;height:124.9px;left:-0.9px;top:-42.1px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="הבינלאומי — תוכן 132.2×21.9">
-        <span class="crop" style="width:132.2px;height:21.9px"><img src="https://media.base44.com/images/public/69e48538aaee477b09fc7b49/21b67c2fa_GreenRetroTreeRootLogoTemplate10.png/v1/fit/w_268,h_268,q_82/img.webp" width="134" height="134" style="width:133.6px;height:133.6px;left:-0.4px;top:-52.3px" alt="הבינלאומי"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="הבינלאומי — 132×21.9">
+        <span class="crop" style="width:132.2px;height:21.9px"><img alt="הבינלאומי" src="https://media.base44.com/images/public/69e48538aaee477b09fc7b49/21b67c2fa_GreenRetroTreeRootLogoTemplate10.png/v1/fit/w_268,h_268,q_82/img.webp" width="134" height="134" style="width:133.6px;height:133.6px;left:-0.4px;top:-52.3px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="תדהר — תוכן 132.2×34.0">
-        <span class="crop" style="width:132.2px;height:34.0px"><img src="https://media.base44.com/images/public/69e48538aaee477b09fc7b49/1b494e55d_GreenRetroTreeRootLogoTemplate8.png/v1/fit/w_277,h_277,q_82/img.webp" width="138" height="138" style="width:138.3px;height:138.3px;left:-5.7px;top:-45.6px" alt="תדהר"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="תדהר — 123×31.7">
+        <span class="crop" style="width:123.2px;height:31.7px"><img alt="תדהר" src="https://media.base44.com/images/public/69e48538aaee477b09fc7b49/1b494e55d_GreenRetroTreeRootLogoTemplate8.png/v1/fit/w_258,h_258,q_82/img.webp" width="129" height="129" style="width:128.9px;height:128.9px;left:-5.3px;top:-42.5px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="ישראייר — תוכן 132.2×41.6">
-        <span class="crop" style="width:132.2px;height:41.6px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/f26a5145d_-2026-02-18T184914549.png/v1/fit/w_279,h_348,q_82/img.webp" width="139" height="174" style="width:139.1px;height:173.9px;left:-2.5px;top:-56.4px" alt="ישראייר"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="ישראייר — 118×37.0">
+        <span class="crop" style="width:117.6px;height:37.0px"><img alt="ישראייר" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/f26a5145d_-2026-02-18T184914549.png/v1/fit/w_310,h_310,q_82/img.webp" width="124" height="155" style="width:123.8px;height:154.8px;left:-2.3px;top:-50.2px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="תעש — תוכן 116.5×44.2">
-        <span class="crop" style="width:116.5px;height:44.2px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8003c0d5a_62.png/v1/fit/w_249,h_312,q_82/img.webp" width="124" height="156" style="width:124.4px;height:155.5px;left:-5.5px;top:-54.4px" alt="תעש"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="תעש — 112×42.5">
+        <span class="crop" style="width:112.0px;height:42.5px"><img alt="תעש" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8003c0d5a_62.png/v1/fit/w_300,h_300,q_82/img.webp" width="120" height="150" style="width:119.6px;height:149.5px;left:-5.3px;top:-52.3px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="מגן דוד אדום — תוכן 77.0×44.0">
-        <span class="crop" style="width:77.0px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/eb5f80934_24.png/v1/fit/w_174,h_174,q_82/img.webp" width="87" height="87" style="width:87.0px;height:87.0px;left:-5.1px;top:-18.4px" alt="מגן דוד אדום"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="מגן דוד אדום — 77×44.0">
+        <span class="crop" style="width:77.0px;height:44.0px"><img alt="מגן דוד אדום" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/eb5f80934_24.png/v1/fit/w_174,h_174,q_82/img.webp" width="87" height="87" style="width:87.0px;height:87.0px;left:-5.1px;top:-18.4px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="SAP — תוכן 88.2×44.0">
-        <span class="crop" style="width:88.2px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/c078c3ee8_25.png/v1/fit/w_207,h_207,q_82/img.webp" width="103" height="103" style="width:103.3px;height:103.3px;left:-10.5px;top:-29.6px" alt="SAP"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="SAP — 88×44.0">
+        <span class="crop" style="width:88.2px;height:44.0px"><img alt="SAP" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/c078c3ee8_25.png/v1/fit/w_207,h_207,q_82/img.webp" width="103" height="103" style="width:103.3px;height:103.3px;left:-10.5px;top:-29.6px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="מילגם — תוכן 34.9×44.0">
-        <span class="crop" style="width:34.9px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/bbde088d4_23.png/v1/fit/w_119,h_119,q_82/img.webp" width="59" height="59" style="width:59.1px;height:59.1px;left:-13.4px;top:-8.4px" alt="מילגם"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="מילגם — 35×44.0">
+        <span class="crop" style="width:34.9px;height:44.0px"><img alt="מילגם" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/bbde088d4_23.png/v1/fit/w_119,h_119,q_82/img.webp" width="59" height="59" style="width:59.1px;height:59.1px;left:-13.4px;top:-8.4px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="רשות המסים — תוכן 43.7×44.0">
-        <span class="crop" style="width:43.7px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/d27a9085c_26.png/v1/fit/w_113,h_113,q_82/img.webp" width="56" height="56" style="width:56.5px;height:56.5px;left:-7.4px;top:-7.4px" alt="רשות המסים"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="רשות המסים — 44×44.0">
+        <span class="crop" style="width:43.7px;height:44.0px"><img alt="רשות המסים" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/d27a9085c_26.png/v1/fit/w_113,h_113,q_82/img.webp" width="56" height="56" style="width:56.5px;height:56.5px;left:-7.4px;top:-7.4px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="בנק לאומי — תוכן 71.4×44.0">
-        <span class="crop" style="width:71.4px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/62fa4ae8e_-2026-03-22T184709815.png/v1/fit/w_154,h_123,q_82/img.webp" width="77" height="61" style="width:76.6px;height:61.3px;left:0.0px;top:0.0px" alt="בנק לאומי"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="בנק לאומי — 71×44.0">
+        <span class="crop" style="width:71.4px;height:44.0px"><img alt="בנק לאומי" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/62fa4ae8e_-2026-03-22T184709815.png/v1/fit/w_154,h_154,q_82/img.webp" width="77" height="61" style="width:76.6px;height:61.3px;left:0.0px;top:0.0px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="דלק — תוכן 50.2×44.0">
-        <span class="crop" style="width:50.2px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/be9e3de1a_-2026-03-22T184841801.png/v1/fit/w_123,h_99,q_82/img.webp" width="61" height="49" style="width:61.3px;height:49.0px;left:0.0px;top:0.0px" alt="דלק"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="דלק — 50×44.0">
+        <span class="crop" style="width:50.2px;height:44.0px"><img alt="דלק" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/be9e3de1a_-2026-03-22T184841801.png/v1/fit/w_123,h_123,q_82/img.webp" width="61" height="49" style="width:61.3px;height:49.0px;left:0.0px;top:0.0px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="רמלאל — תוכן 67.0×44.0">
-        <span class="crop" style="width:67.0px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ee6b05338_-2026-04-03T180125393.png/v1/fit/w_155,h_193,q_82/img.webp" width="77" height="96" style="width:77.0px;height:96.3px;left:-3.3px;top:-26.0px" alt="רמלאל"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="רמלאל — 67×44.0">
+        <span class="crop" style="width:67.0px;height:44.0px"><img alt="רמלאל" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ee6b05338_-2026-04-03T180125393.png/v1/fit/w_193,h_193,q_82/img.webp" width="77" height="96" style="width:77.0px;height:96.3px;left:-3.3px;top:-26.0px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="דופלט — תוכן 74.0×44.0">
-        <span class="crop" style="width:74.0px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6862cd610_-2026-03-22T184752919.png/v1/fit/w_151,h_121,q_82/img.webp" width="75" height="60" style="width:75.2px;height:60.2px;left:0.0px;top:0.0px" alt="דופלט"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="דופלט — 74×44.0">
+        <span class="crop" style="width:74.0px;height:44.0px"><img alt="דופלט" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6862cd610_-2026-03-22T184752919.png/v1/fit/w_151,h_151,q_82/img.webp" width="75" height="60" style="width:75.2px;height:60.2px;left:0.0px;top:0.0px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="איחוד הצלה — תוכן 52.9×44.0">
-        <span class="crop" style="width:52.9px;height:44.0px"><img src="https://media.base44.com/images/public/69e48538aaee477b09fc7b49/6bfd16a53_GreenRetroTreeRootLogoTemplate11.png/v1/fit/w_158,h_158,q_82/img.webp" width="79" height="79" style="width:78.7px;height:78.7px;left:-11.5px;top:-14.9px" alt="איחוד הצלה"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="איחוד הצלה — 53×44.0">
+        <span class="crop" style="width:52.9px;height:44.0px"><img alt="איחוד הצלה" src="https://media.base44.com/images/public/69e48538aaee477b09fc7b49/6bfd16a53_GreenRetroTreeRootLogoTemplate11.png/v1/fit/w_158,h_158,q_82/img.webp" width="79" height="79" style="width:78.7px;height:78.7px;left:-11.5px;top:-14.9px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="גינדי החזקות — תוכן 79.2×44.0">
-        <span class="crop" style="width:79.2px;height:44.0px"><img src="https://media.base44.com/images/public/69e48538aaee477b09fc7b49/f68a0b084_GreenRetroTreeRootLogoTemplate9.png/v1/fit/w_164,h_164,q_82/img.webp" width="82" height="82" style="width:81.7px;height:81.7px;left:-1.7px;top:-21.2px" alt="גינדי החזקות"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="גינדי החזקות — 79×44.0">
+        <span class="crop" style="width:79.2px;height:44.0px"><img alt="גינדי החזקות" src="https://media.base44.com/images/public/69e48538aaee477b09fc7b49/f68a0b084_GreenRetroTreeRootLogoTemplate9.png/v1/fit/w_164,h_164,q_82/img.webp" width="82" height="82" style="width:81.7px;height:81.7px;left:-1.7px;top:-21.2px"></span>
       </div>
   </div>
 
-  <h2>מחשב — לפני התיקון האופטי (אותו תא, בלי opticalScale)</h2>
-  <div class="grid">
-      <div class="cell" style="width:144px;height:72px" title="Teva — תוכן 112.0×39.5">
-        <span class="crop" style="width:112.0px;height:39.5px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/440e21638_readytoboom93.png/v1/fit/w_251,h_251,q_82/img.webp" width="125" height="125" style="width:125.5px;height:125.5px;left:-6.7px;top:-42.6px" alt="Teva"></span>
+  <h2>המסילה בנייד — (תא 112×60, אזור סמל 88×36, רווח 16)</h2>
+  <div class="rail wrap" style="max-width:420px">
+      <div class="cell" style="width:112px;height:60px;margin-inline-end:16px" title="Teva — 88×31.0">
+        <span class="crop" style="width:88.0px;height:31.0px"><img alt="Teva" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/440e21638_readytoboom93.png/v1/fit/w_198,h_198,q_82/img.webp" width="99" height="99" style="width:98.6px;height:98.6px;left:-5.3px;top:-33.5px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="סלקום — תוכן 112.0×40.5">
-        <span class="crop" style="width:112.0px;height:40.5px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/f5d33c4f1_-2026-03-23T144912129.png/v1/fit/w_248,h_198,q_82/img.webp" width="124" height="99" style="width:123.6px;height:98.9px;left:-7.7px;top:-29.2px" alt="סלקום"></span>
+      <div class="cell" style="width:112px;height:60px;margin-inline-end:16px" title="סלקום — 88×31.9">
+        <span class="crop" style="width:88.0px;height:31.9px"><img alt="סלקום" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/f5d33c4f1_-2026-03-23T144912129.png/v1/fit/w_195,h_195,q_82/img.webp" width="97" height="78" style="width:97.1px;height:77.7px;left:-6.0px;top:-22.9px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="אלקטרה אפיקים — תוכן 97.0×44.0">
-        <span class="crop" style="width:97.0px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ee4dfeabe_-2026-03-22T223003872.png/v1/fit/w_196,h_157,q_82/img.webp" width="98" height="78" style="width:97.7px;height:78.2px;left:0.0px;top:0.0px" alt="אלקטרה אפיקים"></span>
+      <div class="cell" style="width:112px;height:60px;margin-inline-end:16px" title="אלקטרה אפיקים — 86×38.9">
+        <span class="crop" style="width:85.7px;height:38.9px"><img alt="אלקטרה אפיקים" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ee4dfeabe_-2026-03-22T223003872.png/v1/fit/w_173,h_173,q_82/img.webp" width="86" height="69" style="width:86.4px;height:69.1px;left:0.0px;top:0.0px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="Estee Lauder — תוכן 59.1×44.0">
-        <span class="crop" style="width:59.1px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a6011911e_42.png/v1/fit/w_216,h_216,q_82/img.webp" width="108" height="108" style="width:107.5px;height:107.5px;left:-26.0px;top:-31.8px" alt="Estee Lauder"></span>
+      <div class="cell" style="width:112px;height:60px;margin-inline-end:16px" title="Estee Lauder — 48×36.0">
+        <span class="crop" style="width:48.4px;height:36.0px"><img alt="Estee Lauder" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a6011911e_42.png/v1/fit/w_176,h_176,q_82/img.webp" width="88" height="88" style="width:88.0px;height:88.0px;left:-21.3px;top:-26.0px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="קרן קיימת — תוכן 38.0×44.0">
-        <span class="crop" style="width:38.0px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/dff369112_61.png/v1/fit/w_99,h_124,q_82/img.webp" width="49" height="62" style="width:49.2px;height:61.6px;left:-6.3px;top:-6.1px" alt="קרן קיימת"></span>
+      <div class="cell" style="width:112px;height:60px;margin-inline-end:16px" title="קרן קיימת — 31×36.0">
+        <span class="crop" style="width:31.1px;height:36.0px"><img alt="קרן קיימת" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/dff369112_61.png/v1/fit/w_101,h_101,q_82/img.webp" width="40" height="50" style="width:40.3px;height:50.4px;left:-5.2px;top:-5.0px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="בנק ישראל — תוכן 42.8×44.0">
-        <span class="crop" style="width:42.8px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/62d86b046_8.png/v1/fit/w_129,h_129,q_82/img.webp" width="64" height="64" style="width:64.3px;height:64.3px;left:-10.7px;top:-11.2px" alt="בנק ישראל"></span>
+      <div class="cell" style="width:112px;height:60px;margin-inline-end:16px" title="בנק ישראל — 35×36.0">
+        <span class="crop" style="width:35.0px;height:36.0px"><img alt="בנק ישראל" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/62d86b046_8.png/v1/fit/w_106,h_106,q_82/img.webp" width="53" height="53" style="width:52.6px;height:52.6px;left:-8.7px;top:-9.2px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="ZIM — תוכן 44.2×44.0">
-        <span class="crop" style="width:44.2px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ad90fe974_-2026-03-22T223323805.png/v1/fit/w_133,h_107,q_82/img.webp" width="66" height="53" style="width:66.4px;height:53.1px;left:-11.5px;top:-4.1px" alt="ZIM"></span>
+      <div class="cell" style="width:112px;height:60px;margin-inline-end:16px" title="ZIM — 36×36.0">
+        <span class="crop" style="width:36.2px;height:36.0px"><img alt="ZIM" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ad90fe974_-2026-03-22T223323805.png/v1/fit/w_109,h_109,q_82/img.webp" width="54" height="43" style="width:54.3px;height:43.4px;left:-9.4px;top:-3.4px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="מזרחי טפחות — תוכן 37.7×44.0">
-        <span class="crop" style="width:37.7px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3f66c2722_37.png/v1/fit/w_118,h_118,q_82/img.webp" width="59" height="59" style="width:59.0px;height:59.0px;left:-12.6px;top:-6.9px" alt="מזרחי טפחות"></span>
+      <div class="cell" style="width:112px;height:60px;margin-inline-end:16px" title="מזרחי טפחות — 31×36.0">
+        <span class="crop" style="width:30.8px;height:36.0px"><img alt="מזרחי טפחות" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3f66c2722_37.png/v1/fit/w_97,h_97,q_82/img.webp" width="48" height="48" style="width:48.3px;height:48.3px;left:-10.3px;top:-5.7px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="ORT — תוכן 109.4×44.0">
-        <span class="crop" style="width:109.4px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6ecb1d12e_48.png/v1/fit/w_224,h_279,q_82/img.webp" width="112" height="139" style="width:111.6px;height:139.5px;left:-1.1px;top:-44.4px" alt="ORT"></span>
+      <div class="cell" style="width:112px;height:60px;margin-inline-end:16px" title="ORT — 88×35.4">
+        <span class="crop" style="width:88.0px;height:35.4px"><img alt="ORT" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6ecb1d12e_48.png/v1/fit/w_225,h_225,q_82/img.webp" width="90" height="112" style="width:89.8px;height:112.2px;left:-0.9px;top:-35.7px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="אלבר — תוכן 112.0×31.1">
-        <span class="crop" style="width:112.0px;height:31.1px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/0d5a77386_2.png/v1/fit/w_349,h_293,q_82/img.webp" width="174" height="146" style="width:174.3px;height:146.0px;left:-30.3px;top:-54.1px" alt="אלבר"></span>
+      <div class="cell" style="width:112px;height:60px;margin-inline-end:16px" title="אלבר — 92×25.7">
+        <span class="crop" style="width:92.4px;height:25.7px"><img alt="אלבר" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/0d5a77386_2.png/v1/fit/w_288,h_288,q_82/img.webp" width="144" height="120" style="width:143.8px;height:120.5px;left:-25.0px;top:-44.7px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="בזן — תוכן 50.1×44.0">
-        <span class="crop" style="width:50.1px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/da1504162_47.png/v1/fit/w_146,h_182,q_82/img.webp" width="73" height="91" style="width:72.7px;height:90.8px;left:-13.0px;top:-30.3px" alt="בזן"></span>
+      <div class="cell" style="width:112px;height:60px;margin-inline-end:16px" title="בזן — 41×36.0">
+        <span class="crop" style="width:41.0px;height:36.0px"><img alt="בזן" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/da1504162_47.png/v1/fit/w_149,h_149,q_82/img.webp" width="59" height="74" style="width:59.4px;height:74.3px;left:-10.7px;top:-24.8px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="HOT mobile — תוכן 35.1×44.0">
-        <span class="crop" style="width:35.1px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/5f7a627b6_-2026-04-06T212635319.png/v1/fit/w_121,h_97,q_82/img.webp" width="60" height="48" style="width:60.4px;height:48.4px;left:-12.8px;top:-3.0px" alt="HOT mobile"></span>
+      <div class="cell" style="width:112px;height:60px;margin-inline-end:16px" title="HOT mobile — 29×36.0">
+        <span class="crop" style="width:28.7px;height:36.0px"><img alt="HOT mobile" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/5f7a627b6_-2026-04-06T212635319.png/v1/fit/w_99,h_99,q_82/img.webp" width="49" height="40" style="width:49.5px;height:39.6px;left:-10.5px;top:-2.5px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="ONE — תוכן 112.0×36.3">
-        <span class="crop" style="width:112.0px;height:36.3px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/1a493167d_27.png/v1/fit/w_235,h_235,q_82/img.webp" width="117" height="117" style="width:117.4px;height:117.4px;left:-3.8px;top:-42.4px" alt="ONE"></span>
+      <div class="cell" style="width:112px;height:60px;margin-inline-end:16px" title="ONE — 88×28.6">
+        <span class="crop" style="width:88.0px;height:28.6px"><img alt="ONE" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/1a493167d_27.png/v1/fit/w_185,h_185,q_82/img.webp" width="92" height="92" style="width:92.2px;height:92.2px;left:-3.0px;top:-33.3px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="MAX — תוכן 112.0×35.1">
-        <span class="crop" style="width:112.0px;height:35.1px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e6509fd0a_32.png/v1/fit/w_234,h_234,q_82/img.webp" width="117" height="117" style="width:116.6px;height:116.6px;left:-2.3px;top:-43.3px" alt="MAX"></span>
+      <div class="cell" style="width:112px;height:60px;margin-inline-end:16px" title="MAX — 88×27.5">
+        <span class="crop" style="width:88.0px;height:27.5px"><img alt="MAX" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e6509fd0a_32.png/v1/fit/w_184,h_184,q_82/img.webp" width="92" height="92" style="width:91.6px;height:91.6px;left:-1.8px;top:-34.0px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="AMOT — תוכן 112.0×29.6">
-        <span class="crop" style="width:112.0px;height:29.6px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/076c5871f_22.png/v1/fit/w_228,h_228,q_82/img.webp" width="114" height="114" style="width:113.6px;height:113.6px;left:-0.8px;top:-38.3px" alt="AMOT"></span>
+      <div class="cell" style="width:112px;height:60px;margin-inline-end:16px" title="AMOT — 97×25.6">
+        <span class="crop" style="width:96.8px;height:25.6px"><img alt="AMOT" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/076c5871f_22.png/v1/fit/w_197,h_197,q_82/img.webp" width="98" height="98" style="width:98.1px;height:98.1px;left:-0.7px;top:-33.1px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="הבינלאומי — תוכן 112.0×18.6">
-        <span class="crop" style="width:112.0px;height:18.6px"><img src="https://media.base44.com/images/public/69e48538aaee477b09fc7b49/21b67c2fa_GreenRetroTreeRootLogoTemplate10.png/v1/fit/w_227,h_227,q_82/img.webp" width="113" height="113" style="width:113.2px;height:113.2px;left:-0.3px;top:-44.3px" alt="הבינלאומי"></span>
+      <div class="cell" style="width:112px;height:60px;margin-inline-end:16px" title="הבינלאומי — 104×17.2">
+        <span class="crop" style="width:103.8px;height:17.2px"><img alt="הבינלאומי" src="https://media.base44.com/images/public/69e48538aaee477b09fc7b49/21b67c2fa_GreenRetroTreeRootLogoTemplate10.png/v1/fit/w_210,h_210,q_82/img.webp" width="105" height="105" style="width:104.9px;height:104.9px;left:-0.3px;top:-41.1px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="תדהר — תוכן 112.0×28.8">
-        <span class="crop" style="width:112.0px;height:28.8px"><img src="https://media.base44.com/images/public/69e48538aaee477b09fc7b49/1b494e55d_GreenRetroTreeRootLogoTemplate8.png/v1/fit/w_235,h_235,q_82/img.webp" width="117" height="117" style="width:117.2px;height:117.2px;left:-4.8px;top:-38.6px" alt="תדהר"></span>
+      <div class="cell" style="width:112px;height:60px;margin-inline-end:16px" title="תדהר — 97×24.9">
+        <span class="crop" style="width:96.8px;height:24.9px"><img alt="תדהר" src="https://media.base44.com/images/public/69e48538aaee477b09fc7b49/1b494e55d_GreenRetroTreeRootLogoTemplate8.png/v1/fit/w_203,h_203,q_82/img.webp" width="101" height="101" style="width:101.3px;height:101.3px;left:-4.2px;top:-33.4px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="ישראייר — תוכן 112.0×35.3">
-        <span class="crop" style="width:112.0px;height:35.3px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/f26a5145d_-2026-02-18T184914549.png/v1/fit/w_236,h_295,q_82/img.webp" width="118" height="147" style="width:117.9px;height:147.4px;left:-2.2px;top:-47.8px" alt="ישראייר"></span>
+      <div class="cell" style="width:112px;height:60px;margin-inline-end:16px" title="ישראייר — 92×29.1">
+        <span class="crop" style="width:92.4px;height:29.1px"><img alt="ישראייר" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/f26a5145d_-2026-02-18T184914549.png/v1/fit/w_244,h_244,q_82/img.webp" width="97" height="122" style="width:97.3px;height:121.6px;left:-1.8px;top:-39.4px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="תעש — תוכן 112.0×42.5">
-        <span class="crop" style="width:112.0px;height:42.5px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8003c0d5a_62.png/v1/fit/w_240,h_300,q_82/img.webp" width="120" height="150" style="width:119.6px;height:149.5px;left:-5.3px;top:-52.3px" alt="תעש"></span>
+      <div class="cell" style="width:112px;height:60px;margin-inline-end:16px" title="תעש — 88×33.4">
+        <span class="crop" style="width:88.0px;height:33.4px"><img alt="תעש" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8003c0d5a_62.png/v1/fit/w_235,h_235,q_82/img.webp" width="94" height="117" style="width:94.0px;height:117.5px;left:-4.1px;top:-41.1px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="מגן דוד אדום — תוכן 77.0×44.0">
-        <span class="crop" style="width:77.0px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/eb5f80934_24.png/v1/fit/w_174,h_174,q_82/img.webp" width="87" height="87" style="width:87.0px;height:87.0px;left:-5.1px;top:-18.4px" alt="מגן דוד אדום"></span>
+      <div class="cell" style="width:112px;height:60px;margin-inline-end:16px" title="מגן דוד אדום — 63×36.0">
+        <span class="crop" style="width:63.0px;height:36.0px"><img alt="מגן דוד אדום" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/eb5f80934_24.png/v1/fit/w_143,h_143,q_82/img.webp" width="71" height="71" style="width:71.2px;height:71.2px;left:-4.2px;top:-15.1px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="SAP — תוכן 88.2×44.0">
-        <span class="crop" style="width:88.2px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/c078c3ee8_25.png/v1/fit/w_207,h_207,q_82/img.webp" width="103" height="103" style="width:103.3px;height:103.3px;left:-10.5px;top:-29.6px" alt="SAP"></span>
+      <div class="cell" style="width:112px;height:60px;margin-inline-end:16px" title="SAP — 72×36.0">
+        <span class="crop" style="width:72.2px;height:36.0px"><img alt="SAP" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/c078c3ee8_25.png/v1/fit/w_170,h_170,q_82/img.webp" width="85" height="85" style="width:84.6px;height:84.6px;left:-8.6px;top:-24.2px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="מילגם — תוכן 34.9×44.0">
-        <span class="crop" style="width:34.9px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/bbde088d4_23.png/v1/fit/w_119,h_119,q_82/img.webp" width="59" height="59" style="width:59.1px;height:59.1px;left:-13.4px;top:-8.4px" alt="מילגם"></span>
+      <div class="cell" style="width:112px;height:60px;margin-inline-end:16px" title="מילגם — 29×36.0">
+        <span class="crop" style="width:28.5px;height:36.0px"><img alt="מילגם" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/bbde088d4_23.png/v1/fit/w_97,h_97,q_82/img.webp" width="48" height="48" style="width:48.3px;height:48.3px;left:-11.0px;top:-6.8px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="רשות המסים — תוכן 43.7×44.0">
-        <span class="crop" style="width:43.7px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/d27a9085c_26.png/v1/fit/w_113,h_113,q_82/img.webp" width="56" height="56" style="width:56.5px;height:56.5px;left:-7.4px;top:-7.4px" alt="רשות המסים"></span>
+      <div class="cell" style="width:112px;height:60px;margin-inline-end:16px" title="רשות המסים — 36×36.0">
+        <span class="crop" style="width:35.7px;height:36.0px"><img alt="רשות המסים" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/d27a9085c_26.png/v1/fit/w_93,h_93,q_82/img.webp" width="46" height="46" style="width:46.2px;height:46.2px;left:-6.1px;top:-6.1px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="בנק לאומי — תוכן 71.4×44.0">
-        <span class="crop" style="width:71.4px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/62fa4ae8e_-2026-03-22T184709815.png/v1/fit/w_154,h_123,q_82/img.webp" width="77" height="61" style="width:76.6px;height:61.3px;left:0.0px;top:0.0px" alt="בנק לאומי"></span>
+      <div class="cell" style="width:112px;height:60px;margin-inline-end:16px" title="בנק לאומי — 58×36.0">
+        <span class="crop" style="width:58.4px;height:36.0px"><img alt="בנק לאומי" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/62fa4ae8e_-2026-03-22T184709815.png/v1/fit/w_126,h_126,q_82/img.webp" width="63" height="50" style="width:62.7px;height:50.1px;left:0.0px;top:0.0px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="דלק — תוכן 50.2×44.0">
-        <span class="crop" style="width:50.2px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/be9e3de1a_-2026-03-22T184841801.png/v1/fit/w_123,h_99,q_82/img.webp" width="61" height="49" style="width:61.3px;height:49.0px;left:0.0px;top:0.0px" alt="דלק"></span>
+      <div class="cell" style="width:112px;height:60px;margin-inline-end:16px" title="דלק — 41×36.0">
+        <span class="crop" style="width:41.1px;height:36.0px"><img alt="דלק" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/be9e3de1a_-2026-03-22T184841801.png/v1/fit/w_101,h_101,q_82/img.webp" width="50" height="40" style="width:50.2px;height:40.1px;left:0.0px;top:0.0px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="רמלאל — תוכן 67.0×44.0">
-        <span class="crop" style="width:67.0px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ee6b05338_-2026-04-03T180125393.png/v1/fit/w_155,h_193,q_82/img.webp" width="77" height="96" style="width:77.0px;height:96.3px;left:-3.3px;top:-26.0px" alt="רמלאל"></span>
+      <div class="cell" style="width:112px;height:60px;margin-inline-end:16px" title="רמלאל — 55×36.0">
+        <span class="crop" style="width:54.8px;height:36.0px"><img alt="רמלאל" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ee6b05338_-2026-04-03T180125393.png/v1/fit/w_158,h_158,q_82/img.webp" width="63" height="79" style="width:63.0px;height:78.8px;left:-2.7px;top:-21.3px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="דופלט — תוכן 74.0×44.0">
-        <span class="crop" style="width:74.0px;height:44.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6862cd610_-2026-03-22T184752919.png/v1/fit/w_151,h_121,q_82/img.webp" width="75" height="60" style="width:75.2px;height:60.2px;left:0.0px;top:0.0px" alt="דופלט"></span>
+      <div class="cell" style="width:112px;height:60px;margin-inline-end:16px" title="דופלט — 61×36.0">
+        <span class="crop" style="width:60.5px;height:36.0px"><img alt="דופלט" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6862cd610_-2026-03-22T184752919.png/v1/fit/w_124,h_124,q_82/img.webp" width="62" height="49" style="width:61.5px;height:49.2px;left:0.0px;top:0.0px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="איחוד הצלה — תוכן 52.9×44.0">
-        <span class="crop" style="width:52.9px;height:44.0px"><img src="https://media.base44.com/images/public/69e48538aaee477b09fc7b49/6bfd16a53_GreenRetroTreeRootLogoTemplate11.png/v1/fit/w_158,h_158,q_82/img.webp" width="79" height="79" style="width:78.7px;height:78.7px;left:-11.5px;top:-14.9px" alt="איחוד הצלה"></span>
+      <div class="cell" style="width:112px;height:60px;margin-inline-end:16px" title="איחוד הצלה — 43×36.0">
+        <span class="crop" style="width:43.3px;height:36.0px"><img alt="איחוד הצלה" src="https://media.base44.com/images/public/69e48538aaee477b09fc7b49/6bfd16a53_GreenRetroTreeRootLogoTemplate11.png/v1/fit/w_129,h_129,q_82/img.webp" width="64" height="64" style="width:64.4px;height:64.4px;left:-9.4px;top:-12.2px"></span>
       </div>
-      <div class="cell" style="width:144px;height:72px" title="גינדי החזקות — תוכן 79.2×44.0">
-        <span class="crop" style="width:79.2px;height:44.0px"><img src="https://media.base44.com/images/public/69e48538aaee477b09fc7b49/f68a0b084_GreenRetroTreeRootLogoTemplate9.png/v1/fit/w_164,h_164,q_82/img.webp" width="82" height="82" style="width:81.7px;height:81.7px;left:-1.7px;top:-21.2px" alt="גינדי החזקות"></span>
+      <div class="cell" style="width:112px;height:60px;margin-inline-end:16px" title="גינדי החזקות — 65×36.0">
+        <span class="crop" style="width:64.8px;height:36.0px"><img alt="גינדי החזקות" src="https://media.base44.com/images/public/69e48538aaee477b09fc7b49/f68a0b084_GreenRetroTreeRootLogoTemplate9.png/v1/fit/w_134,h_134,q_82/img.webp" width="67" height="67" style="width:66.9px;height:66.9px;left:-1.4px;top:-17.3px"></span>
       </div>
   </div>
 
-  <h2>נייד — אחרי התיקון האופטי (תא 112×60, אזור סמל 88×36)</h2>
-  <div class="grid">
-      <div class="cell" style="width:112px;height:60px" title="Teva — תוכן 97.7×34.4">
-        <span class="crop" style="width:97.7px;height:34.4px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/440e21638_readytoboom93.png/v1/fit/w_219,h_219,q_82/img.webp" width="109" height="109" style="width:109.4px;height:109.4px;left:-5.9px;top:-37.2px" alt="Teva"></span>
+  <h2>השוואה — הגרסה הקודמת של המקדמים (אותם תאים בדיוק)</h2>
+  <div class="rail wrap">
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="Teva — 124×43.8">
+        <span class="crop" style="width:124.3px;height:43.8px"><img alt="Teva" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/440e21638_readytoboom93.png/v1/fit/w_279,h_279,q_82/img.webp" width="139" height="139" style="width:139.3px;height:139.3px;left:-7.5px;top:-47.3px"></span>
       </div>
-      <div class="cell" style="width:112px;height:60px" title="סלקום — תוכן 95.9×34.7">
-        <span class="crop" style="width:95.9px;height:34.7px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/f5d33c4f1_-2026-03-23T144912129.png/v1/fit/w_212,h_170,q_82/img.webp" width="106" height="85" style="width:105.9px;height:84.7px;left:-6.6px;top:-25.0px" alt="סלקום"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="סלקום — 122×44.2">
+        <span class="crop" style="width:122.1px;height:44.2px"><img alt="סלקום" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/f5d33c4f1_-2026-03-23T144912129.png/v1/fit/w_270,h_270,q_82/img.webp" width="135" height="108" style="width:134.7px;height:107.8px;left:-8.4px;top:-31.8px"></span>
       </div>
-      <div class="cell" style="width:112px;height:60px" title="אלקטרה אפיקים — תוכן 79.3×36.0">
-        <span class="crop" style="width:79.3px;height:36.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ee4dfeabe_-2026-03-22T223003872.png/v1/fit/w_160,h_128,q_82/img.webp" width="80" height="64" style="width:80.0px;height:64.0px;left:0.0px;top:0.0px" alt="אלקטרה אפיקים"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="אלקטרה אפיקים — 97×44.0">
+        <span class="crop" style="width:97.0px;height:44.0px"><img alt="אלקטרה אפיקים" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ee4dfeabe_-2026-03-22T223003872.png/v1/fit/w_196,h_196,q_82/img.webp" width="98" height="78" style="width:97.7px;height:78.2px;left:0.0px;top:0.0px"></span>
       </div>
-      <div class="cell" style="width:112px;height:60px" title="Estee Lauder — תוכן 48.4×36.0">
-        <span class="crop" style="width:48.4px;height:36.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a6011911e_42.png/v1/fit/w_176,h_176,q_82/img.webp" width="88" height="88" style="width:88.0px;height:88.0px;left:-21.3px;top:-26.0px" alt="Estee Lauder"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="Estee Lauder — 59×44.0">
+        <span class="crop" style="width:59.1px;height:44.0px"><img alt="Estee Lauder" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/a6011911e_42.png/v1/fit/w_216,h_216,q_82/img.webp" width="108" height="108" style="width:107.5px;height:107.5px;left:-26.0px;top:-31.8px"></span>
       </div>
-      <div class="cell" style="width:112px;height:60px" title="קרן קיימת — תוכן 31.1×36.0">
-        <span class="crop" style="width:31.1px;height:36.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/dff369112_61.png/v1/fit/w_81,h_101,q_82/img.webp" width="40" height="50" style="width:40.3px;height:50.4px;left:-5.2px;top:-5.0px" alt="קרן קיימת"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="קרן קיימת — 38×44.0">
+        <span class="crop" style="width:38.0px;height:44.0px"><img alt="קרן קיימת" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/dff369112_61.png/v1/fit/w_124,h_124,q_82/img.webp" width="49" height="62" style="width:49.2px;height:61.6px;left:-6.3px;top:-6.1px"></span>
       </div>
-      <div class="cell" style="width:112px;height:60px" title="בנק ישראל — תוכן 35.0×36.0">
-        <span class="crop" style="width:35.0px;height:36.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/62d86b046_8.png/v1/fit/w_106,h_106,q_82/img.webp" width="53" height="53" style="width:52.6px;height:52.6px;left:-8.7px;top:-9.2px" alt="בנק ישראל"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="בנק ישראל — 43×44.0">
+        <span class="crop" style="width:42.8px;height:44.0px"><img alt="בנק ישראל" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/62d86b046_8.png/v1/fit/w_129,h_129,q_82/img.webp" width="64" height="64" style="width:64.3px;height:64.3px;left:-10.7px;top:-11.2px"></span>
       </div>
-      <div class="cell" style="width:112px;height:60px" title="ZIM — תוכן 36.2×36.0">
-        <span class="crop" style="width:36.2px;height:36.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ad90fe974_-2026-03-22T223323805.png/v1/fit/w_109,h_87,q_82/img.webp" width="54" height="43" style="width:54.3px;height:43.4px;left:-9.4px;top:-3.4px" alt="ZIM"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="ZIM — 44×44.0">
+        <span class="crop" style="width:44.2px;height:44.0px"><img alt="ZIM" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ad90fe974_-2026-03-22T223323805.png/v1/fit/w_133,h_133,q_82/img.webp" width="66" height="53" style="width:66.4px;height:53.1px;left:-11.5px;top:-4.1px"></span>
       </div>
-      <div class="cell" style="width:112px;height:60px" title="מזרחי טפחות — תוכן 30.8×36.0">
-        <span class="crop" style="width:30.8px;height:36.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3f66c2722_37.png/v1/fit/w_97,h_97,q_82/img.webp" width="48" height="48" style="width:48.3px;height:48.3px;left:-10.3px;top:-5.7px" alt="מזרחי טפחות"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="מזרחי טפחות — 38×44.0">
+        <span class="crop" style="width:37.7px;height:44.0px"><img alt="מזרחי טפחות" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/3f66c2722_37.png/v1/fit/w_118,h_118,q_82/img.webp" width="59" height="59" style="width:59.0px;height:59.0px;left:-12.6px;top:-6.9px"></span>
       </div>
-      <div class="cell" style="width:112px;height:60px" title="ORT — תוכן 88.0×35.4">
-        <span class="crop" style="width:88.0px;height:35.4px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6ecb1d12e_48.png/v1/fit/w_180,h_225,q_82/img.webp" width="90" height="112" style="width:89.8px;height:112.2px;left:-0.9px;top:-35.7px" alt="ORT"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="ORT — 109×44.0">
+        <span class="crop" style="width:109.4px;height:44.0px"><img alt="ORT" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6ecb1d12e_48.png/v1/fit/w_279,h_279,q_82/img.webp" width="112" height="139" style="width:111.6px;height:139.5px;left:-1.1px;top:-44.4px"></span>
       </div>
-      <div class="cell" style="width:112px;height:60px" title="אלבר — תוכן 103.8×28.9">
-        <span class="crop" style="width:103.8px;height:28.9px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/0d5a77386_2.png/v1/fit/w_324,h_271,q_82/img.webp" width="162" height="135" style="width:161.6px;height:135.4px;left:-28.1px;top:-50.2px" alt="אלבר"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="אלבר — 132×36.8">
+        <span class="crop" style="width:132.2px;height:36.8px"><img alt="אלבר" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/0d5a77386_2.png/v1/fit/w_412,h_412,q_82/img.webp" width="206" height="172" style="width:205.7px;height:172.3px;left:-35.8px;top:-63.9px"></span>
       </div>
-      <div class="cell" style="width:112px;height:60px" title="בזן — תוכן 41.0×36.0">
-        <span class="crop" style="width:41.0px;height:36.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/da1504162_47.png/v1/fit/w_119,h_149,q_82/img.webp" width="59" height="74" style="width:59.4px;height:74.3px;left:-10.7px;top:-24.8px" alt="בזן"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="בזן — 50×44.0">
+        <span class="crop" style="width:50.1px;height:44.0px"><img alt="בזן" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/da1504162_47.png/v1/fit/w_182,h_182,q_82/img.webp" width="73" height="91" style="width:72.7px;height:90.8px;left:-13.0px;top:-30.3px"></span>
       </div>
-      <div class="cell" style="width:112px;height:60px" title="HOT mobile — תוכן 28.7×36.0">
-        <span class="crop" style="width:28.7px;height:36.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/5f7a627b6_-2026-04-06T212635319.png/v1/fit/w_99,h_80,q_82/img.webp" width="49" height="40" style="width:49.5px;height:39.6px;left:-10.5px;top:-2.5px" alt="HOT mobile"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="HOT mobile — 35×44.0">
+        <span class="crop" style="width:35.1px;height:44.0px"><img alt="HOT mobile" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/5f7a627b6_-2026-04-06T212635319.png/v1/fit/w_121,h_121,q_82/img.webp" width="60" height="48" style="width:60.4px;height:48.4px;left:-12.8px;top:-3.0px"></span>
       </div>
-      <div class="cell" style="width:112px;height:60px" title="ONE — תוכן 103.8×33.7">
-        <span class="crop" style="width:103.8px;height:33.7px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/1a493167d_27.png/v1/fit/w_218,h_218,q_82/img.webp" width="109" height="109" style="width:108.8px;height:108.8px;left:-3.5px;top:-39.3px" alt="ONE"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="ONE — 132×42.9">
+        <span class="crop" style="width:132.2px;height:42.9px"><img alt="ONE" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/1a493167d_27.png/v1/fit/w_278,h_278,q_82/img.webp" width="139" height="139" style="width:138.5px;height:138.5px;left:-4.5px;top:-50.1px"></span>
       </div>
-      <div class="cell" style="width:112px;height:60px" title="MAX — תוכן 103.8×32.5">
-        <span class="crop" style="width:103.8px;height:32.5px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e6509fd0a_32.png/v1/fit/w_217,h_217,q_82/img.webp" width="108" height="108" style="width:108.1px;height:108.1px;left:-2.1px;top:-40.1px" alt="MAX"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="MAX — 132×41.4">
+        <span class="crop" style="width:132.2px;height:41.4px"><img alt="MAX" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/e6509fd0a_32.png/v1/fit/w_276,h_276,q_82/img.webp" width="138" height="138" style="width:137.5px;height:137.5px;left:-2.7px;top:-51.0px"></span>
       </div>
-      <div class="cell" style="width:112px;height:60px" title="AMOT — תוכן 103.8×27.5">
-        <span class="crop" style="width:103.8px;height:27.5px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/076c5871f_22.png/v1/fit/w_211,h_211,q_82/img.webp" width="105" height="105" style="width:105.3px;height:105.3px;left:-0.7px;top:-35.5px" alt="AMOT"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="AMOT — 132×34.9">
+        <span class="crop" style="width:132.2px;height:34.9px"><img alt="AMOT" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/076c5871f_22.png/v1/fit/w_268,h_268,q_82/img.webp" width="134" height="134" style="width:134.0px;height:134.0px;left:-0.9px;top:-45.1px"></span>
       </div>
-      <div class="cell" style="width:112px;height:60px" title="הבינלאומי — תוכן 103.8×17.2">
-        <span class="crop" style="width:103.8px;height:17.2px"><img src="https://media.base44.com/images/public/69e48538aaee477b09fc7b49/21b67c2fa_GreenRetroTreeRootLogoTemplate10.png/v1/fit/w_210,h_210,q_82/img.webp" width="105" height="105" style="width:104.9px;height:104.9px;left:-0.3px;top:-41.1px" alt="הבינלאומי"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="הבינלאומי — 132×21.9">
+        <span class="crop" style="width:132.2px;height:21.9px"><img alt="הבינלאומי" src="https://media.base44.com/images/public/69e48538aaee477b09fc7b49/21b67c2fa_GreenRetroTreeRootLogoTemplate10.png/v1/fit/w_268,h_268,q_82/img.webp" width="134" height="134" style="width:133.6px;height:133.6px;left:-0.4px;top:-52.3px"></span>
       </div>
-      <div class="cell" style="width:112px;height:60px" title="תדהר — תוכן 103.8×26.7">
-        <span class="crop" style="width:103.8px;height:26.7px"><img src="https://media.base44.com/images/public/69e48538aaee477b09fc7b49/1b494e55d_GreenRetroTreeRootLogoTemplate8.png/v1/fit/w_218,h_218,q_82/img.webp" width="109" height="109" style="width:108.7px;height:108.7px;left:-4.5px;top:-35.8px" alt="תדהר"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="תדהר — 132×34.0">
+        <span class="crop" style="width:132.2px;height:34.0px"><img alt="תדהר" src="https://media.base44.com/images/public/69e48538aaee477b09fc7b49/1b494e55d_GreenRetroTreeRootLogoTemplate8.png/v1/fit/w_277,h_277,q_82/img.webp" width="138" height="138" style="width:138.3px;height:138.3px;left:-5.7px;top:-45.6px"></span>
       </div>
-      <div class="cell" style="width:112px;height:60px" title="ישראייר — תוכן 103.8×32.7">
-        <span class="crop" style="width:103.8px;height:32.7px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/f26a5145d_-2026-02-18T184914549.png/v1/fit/w_219,h_274,q_82/img.webp" width="109" height="137" style="width:109.3px;height:136.7px;left:-2.0px;top:-44.3px" alt="ישראייר"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="ישראייר — 132×41.6">
+        <span class="crop" style="width:132.2px;height:41.6px"><img alt="ישראייר" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/f26a5145d_-2026-02-18T184914549.png/v1/fit/w_348,h_348,q_82/img.webp" width="139" height="174" style="width:139.1px;height:173.9px;left:-2.5px;top:-56.4px"></span>
       </div>
-      <div class="cell" style="width:112px;height:60px" title="תעש — תוכן 91.5×34.7">
-        <span class="crop" style="width:91.5px;height:34.7px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8003c0d5a_62.png/v1/fit/w_196,h_245,q_82/img.webp" width="98" height="122" style="width:97.7px;height:122.2px;left:-4.3px;top:-42.7px" alt="תעש"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="תעש — 116×44.2">
+        <span class="crop" style="width:116.5px;height:44.2px"><img alt="תעש" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/8003c0d5a_62.png/v1/fit/w_312,h_312,q_82/img.webp" width="124" height="156" style="width:124.4px;height:155.5px;left:-5.5px;top:-54.4px"></span>
       </div>
-      <div class="cell" style="width:112px;height:60px" title="מגן דוד אדום — תוכן 63.0×36.0">
-        <span class="crop" style="width:63.0px;height:36.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/eb5f80934_24.png/v1/fit/w_143,h_143,q_82/img.webp" width="71" height="71" style="width:71.2px;height:71.2px;left:-4.2px;top:-15.1px" alt="מגן דוד אדום"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="מגן דוד אדום — 77×44.0">
+        <span class="crop" style="width:77.0px;height:44.0px"><img alt="מגן דוד אדום" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/eb5f80934_24.png/v1/fit/w_174,h_174,q_82/img.webp" width="87" height="87" style="width:87.0px;height:87.0px;left:-5.1px;top:-18.4px"></span>
       </div>
-      <div class="cell" style="width:112px;height:60px" title="SAP — תוכן 72.2×36.0">
-        <span class="crop" style="width:72.2px;height:36.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/c078c3ee8_25.png/v1/fit/w_170,h_170,q_82/img.webp" width="85" height="85" style="width:84.6px;height:84.6px;left:-8.6px;top:-24.2px" alt="SAP"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="SAP — 88×44.0">
+        <span class="crop" style="width:88.2px;height:44.0px"><img alt="SAP" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/c078c3ee8_25.png/v1/fit/w_207,h_207,q_82/img.webp" width="103" height="103" style="width:103.3px;height:103.3px;left:-10.5px;top:-29.6px"></span>
       </div>
-      <div class="cell" style="width:112px;height:60px" title="מילגם — תוכן 28.5×36.0">
-        <span class="crop" style="width:28.5px;height:36.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/bbde088d4_23.png/v1/fit/w_97,h_97,q_82/img.webp" width="48" height="48" style="width:48.3px;height:48.3px;left:-11.0px;top:-6.8px" alt="מילגם"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="מילגם — 35×44.0">
+        <span class="crop" style="width:34.9px;height:44.0px"><img alt="מילגם" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/bbde088d4_23.png/v1/fit/w_119,h_119,q_82/img.webp" width="59" height="59" style="width:59.1px;height:59.1px;left:-13.4px;top:-8.4px"></span>
       </div>
-      <div class="cell" style="width:112px;height:60px" title="רשות המסים — תוכן 35.7×36.0">
-        <span class="crop" style="width:35.7px;height:36.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/d27a9085c_26.png/v1/fit/w_93,h_93,q_82/img.webp" width="46" height="46" style="width:46.2px;height:46.2px;left:-6.1px;top:-6.1px" alt="רשות המסים"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="רשות המסים — 44×44.0">
+        <span class="crop" style="width:43.7px;height:44.0px"><img alt="רשות המסים" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/d27a9085c_26.png/v1/fit/w_113,h_113,q_82/img.webp" width="56" height="56" style="width:56.5px;height:56.5px;left:-7.4px;top:-7.4px"></span>
       </div>
-      <div class="cell" style="width:112px;height:60px" title="בנק לאומי — תוכן 58.4×36.0">
-        <span class="crop" style="width:58.4px;height:36.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/62fa4ae8e_-2026-03-22T184709815.png/v1/fit/w_126,h_101,q_82/img.webp" width="63" height="50" style="width:62.7px;height:50.1px;left:0.0px;top:0.0px" alt="בנק לאומי"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="בנק לאומי — 71×44.0">
+        <span class="crop" style="width:71.4px;height:44.0px"><img alt="בנק לאומי" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/62fa4ae8e_-2026-03-22T184709815.png/v1/fit/w_154,h_154,q_82/img.webp" width="77" height="61" style="width:76.6px;height:61.3px;left:0.0px;top:0.0px"></span>
       </div>
-      <div class="cell" style="width:112px;height:60px" title="דלק — תוכן 41.1×36.0">
-        <span class="crop" style="width:41.1px;height:36.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/be9e3de1a_-2026-03-22T184841801.png/v1/fit/w_101,h_81,q_82/img.webp" width="50" height="40" style="width:50.2px;height:40.1px;left:0.0px;top:0.0px" alt="דלק"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="דלק — 50×44.0">
+        <span class="crop" style="width:50.2px;height:44.0px"><img alt="דלק" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/be9e3de1a_-2026-03-22T184841801.png/v1/fit/w_123,h_123,q_82/img.webp" width="61" height="49" style="width:61.3px;height:49.0px;left:0.0px;top:0.0px"></span>
       </div>
-      <div class="cell" style="width:112px;height:60px" title="רמלאל — תוכן 54.8×36.0">
-        <span class="crop" style="width:54.8px;height:36.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ee6b05338_-2026-04-03T180125393.png/v1/fit/w_127,h_158,q_82/img.webp" width="63" height="79" style="width:63.0px;height:78.8px;left:-2.7px;top:-21.3px" alt="רמלאל"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="רמלאל — 67×44.0">
+        <span class="crop" style="width:67.0px;height:44.0px"><img alt="רמלאל" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/ee6b05338_-2026-04-03T180125393.png/v1/fit/w_193,h_193,q_82/img.webp" width="77" height="96" style="width:77.0px;height:96.3px;left:-3.3px;top:-26.0px"></span>
       </div>
-      <div class="cell" style="width:112px;height:60px" title="דופלט — תוכן 60.5×36.0">
-        <span class="crop" style="width:60.5px;height:36.0px"><img src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6862cd610_-2026-03-22T184752919.png/v1/fit/w_124,h_99,q_82/img.webp" width="62" height="49" style="width:61.5px;height:49.2px;left:0.0px;top:0.0px" alt="דופלט"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="דופלט — 74×44.0">
+        <span class="crop" style="width:74.0px;height:44.0px"><img alt="דופלט" src="https://media.base44.com/images/public/69bc4105141d932b80ba9f27/6862cd610_-2026-03-22T184752919.png/v1/fit/w_151,h_151,q_82/img.webp" width="75" height="60" style="width:75.2px;height:60.2px;left:0.0px;top:0.0px"></span>
       </div>
-      <div class="cell" style="width:112px;height:60px" title="איחוד הצלה — תוכן 43.3×36.0">
-        <span class="crop" style="width:43.3px;height:36.0px"><img src="https://media.base44.com/images/public/69e48538aaee477b09fc7b49/6bfd16a53_GreenRetroTreeRootLogoTemplate11.png/v1/fit/w_129,h_129,q_82/img.webp" width="64" height="64" style="width:64.4px;height:64.4px;left:-9.4px;top:-12.2px" alt="איחוד הצלה"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="איחוד הצלה — 53×44.0">
+        <span class="crop" style="width:52.9px;height:44.0px"><img alt="איחוד הצלה" src="https://media.base44.com/images/public/69e48538aaee477b09fc7b49/6bfd16a53_GreenRetroTreeRootLogoTemplate11.png/v1/fit/w_158,h_158,q_82/img.webp" width="79" height="79" style="width:78.7px;height:78.7px;left:-11.5px;top:-14.9px"></span>
       </div>
-      <div class="cell" style="width:112px;height:60px" title="גינדי החזקות — תוכן 64.8×36.0">
-        <span class="crop" style="width:64.8px;height:36.0px"><img src="https://media.base44.com/images/public/69e48538aaee477b09fc7b49/f68a0b084_GreenRetroTreeRootLogoTemplate9.png/v1/fit/w_134,h_134,q_82/img.webp" width="67" height="67" style="width:66.9px;height:66.9px;left:-1.4px;top:-17.3px" alt="גינדי החזקות"></span>
+      <div class="cell" style="width:144px;height:72px;margin-inline-end:24px" title="גינדי החזקות — 79×44.0">
+        <span class="crop" style="width:79.2px;height:44.0px"><img alt="גינדי החזקות" src="https://media.base44.com/images/public/69e48538aaee477b09fc7b49/f68a0b084_GreenRetroTreeRootLogoTemplate9.png/v1/fit/w_164,h_164,q_82/img.webp" width="82" height="82" style="width:81.7px;height:81.7px;left:-1.7px;top:-21.2px"></span>
       </div>
   </div>
 
   <h2>מידות בפועל</h2>
-  <p class="note">גובה התוכן במחשב לפני/אחרי. היעד: כל הלוגואים שנכנסים ברוחב המקסימלי מגיעים לגובה תוכן זהה (44px), וכל היתר גדלים עד תקרת הרוחב (132px) — בלי מתיחה ובלי חיתוך אותיות.</p>
+  <p class="note">"רוחב×גובה" הוא גודל התוכן הנראה בפועל (החיתוך), לא גודל התא. עמודת השינוי מציגה את המקדם האופטי הקודם והחדש.</p>
   <table>
-    <thead><tr><th>לוגו</th><th>יחס תוכן</th><th>opticalScale</th><th>גובה לפני</th><th>גובה אחרי</th><th>רוחב אחרי</th></tr></thead>
+    <thead><tr><th>לוגו</th><th>יחס תוכן</th><th>כיסוי דיו %</th><th>בהירות</th><th>מקדם אופטי</th><th>מחשב — קודם</th><th>מחשב — כעת</th><th>נייד — כעת</th></tr></thead>
     <tbody>
-        <tr><td>Teva</td><td>2.84</td><td>1.11</td><td>39.5</td><td>43.8</td><td>124</td></tr>
-        <tr><td>סלקום</td><td>2.76</td><td>1.09</td><td>40.5</td><td>44.2</td><td>122</td></tr>
-        <tr><td>אלקטרה אפיקים</td><td>2.20</td><td>1</td><td>44.0</td><td>44.0</td><td>97</td></tr>
-        <tr><td>Estee Lauder</td><td>1.34</td><td>1</td><td>44.0</td><td>44.0</td><td>59</td></tr>
-        <tr><td>קרן קיימת</td><td>0.86</td><td>1</td><td>44.0</td><td>44.0</td><td>38</td></tr>
-        <tr><td>בנק ישראל</td><td>0.97</td><td>1</td><td>44.0</td><td>44.0</td><td>43</td></tr>
-        <tr><td>ZIM</td><td>1.00</td><td>1</td><td>44.0</td><td>44.0</td><td>44</td></tr>
-        <tr><td>מזרחי טפחות</td><td>0.86</td><td>1</td><td>44.0</td><td>44.0</td><td>38</td></tr>
-        <tr><td>ORT</td><td>2.49</td><td>1</td><td>44.0</td><td>44.0</td><td>109</td></tr>
-        <tr><td>אלבר</td><td>3.60</td><td>1.18</td><td>31.1</td><td>36.8</td><td>132</td></tr>
-        <tr><td>בזן</td><td>1.14</td><td>1</td><td>44.0</td><td>44.0</td><td>50</td></tr>
-        <tr><td>HOT mobile</td><td>0.80</td><td>1</td><td>44.0</td><td>44.0</td><td>35</td></tr>
-        <tr><td>ONE</td><td>3.08</td><td>1.18</td><td>36.3</td><td>42.9</td><td>132</td></tr>
-        <tr><td>MAX</td><td>3.19</td><td>1.18</td><td>35.1</td><td>41.4</td><td>132</td></tr>
-        <tr><td>AMOT</td><td>3.78</td><td>1.18</td><td>29.6</td><td>34.9</td><td>132</td></tr>
-        <tr><td>הבינלאומי</td><td>6.03</td><td>1.18</td><td>18.6</td><td>21.9</td><td>132</td></tr>
-        <tr><td>תדהר</td><td>3.89</td><td>1.18</td><td>28.8</td><td>34.0</td><td>132</td></tr>
-        <tr><td>ישראייר</td><td>3.18</td><td>1.18</td><td>35.3</td><td>41.6</td><td>132</td></tr>
-        <tr><td>תעש</td><td>2.64</td><td>1.04</td><td>42.5</td><td>44.2</td><td>116</td></tr>
-        <tr><td>מגן דוד אדום</td><td>1.75</td><td>1</td><td>44.0</td><td>44.0</td><td>77</td></tr>
-        <tr><td>SAP</td><td>2.00</td><td>1</td><td>44.0</td><td>44.0</td><td>88</td></tr>
-        <tr><td>מילגם</td><td>0.79</td><td>1</td><td>44.0</td><td>44.0</td><td>35</td></tr>
-        <tr><td>רשות המסים</td><td>0.99</td><td>1</td><td>44.0</td><td>44.0</td><td>44</td></tr>
-        <tr><td>בנק לאומי</td><td>1.62</td><td>1</td><td>44.0</td><td>44.0</td><td>71</td></tr>
-        <tr><td>דלק</td><td>1.14</td><td>1</td><td>44.0</td><td>44.0</td><td>50</td></tr>
-        <tr><td>רמלאל</td><td>1.52</td><td>1</td><td>44.0</td><td>44.0</td><td>67</td></tr>
-        <tr><td>דופלט</td><td>1.68</td><td>1</td><td>44.0</td><td>44.0</td><td>74</td></tr>
-        <tr><td>איחוד הצלה</td><td>1.20</td><td>1</td><td>44.0</td><td>44.0</td><td>53</td></tr>
-        <tr><td>גינדי החזקות</td><td>1.80</td><td>1</td><td>44.0</td><td>44.0</td><td>79</td></tr>
+        <tr><td>Teva</td><td>2.84</td><td>50</td><td>76</td><td><b>1.11 → 1</b></td><td>124×43.8</td><td><b>112×39.5</b></td><td>88×31.0</td></tr>
+        <tr><td>סלקום</td><td>2.76</td><td>34</td><td>65</td><td><b>1.09 → 1</b></td><td>122×44.2</td><td><b>112×40.5</b></td><td>88×31.9</td></tr>
+        <tr><td>אלקטרה אפיקים</td><td>2.20</td><td>33</td><td>130</td><td><b>1 → 1.08</b></td><td>97×44.0</td><td><b>105×47.5</b></td><td>86×38.9</td></tr>
+        <tr><td>Estee Lauder</td><td>1.34</td><td>21</td><td>41</td><td><span class="same">1</span></td><td>59×44.0</td><td><b>59×44.0</b></td><td>48×36.0</td></tr>
+        <tr><td>קרן קיימת</td><td>0.86</td><td>65</td><td>109</td><td><span class="same">1</span></td><td>38×44.0</td><td><b>38×44.0</b></td><td>31×36.0</td></tr>
+        <tr><td>בנק ישראל</td><td>0.97</td><td>32</td><td>132</td><td><span class="same">1</span></td><td>43×44.0</td><td><b>43×44.0</b></td><td>35×36.0</td></tr>
+        <tr><td>ZIM</td><td>1.00</td><td>46</td><td>54</td><td><span class="same">1</span></td><td>44×44.0</td><td><b>44×44.0</b></td><td>36×36.0</td></tr>
+        <tr><td>מזרחי טפחות</td><td>0.86</td><td>74</td><td>36</td><td><span class="same">1</span></td><td>38×44.0</td><td><b>38×44.0</b></td><td>31×36.0</td></tr>
+        <tr><td>ORT</td><td>2.49</td><td>39</td><td>63</td><td><span class="same">1</span></td><td>109×44.0</td><td><b>109×44.0</b></td><td>88×35.4</td></tr>
+        <tr><td>אלבר</td><td>3.60</td><td>66</td><td>68</td><td><b>1.18 → 1.05</b></td><td>132×36.8</td><td><b>118×32.7</b></td><td>92×25.7</td></tr>
+        <tr><td>בזן</td><td>1.14</td><td>39</td><td>63</td><td><span class="same">1</span></td><td>50×44.0</td><td><b>50×44.0</b></td><td>41×36.0</td></tr>
+        <tr><td>HOT mobile</td><td>0.80</td><td>51</td><td>42</td><td><span class="same">1</span></td><td>35×44.0</td><td><b>35×44.0</b></td><td>29×36.0</td></tr>
+        <tr><td>ONE</td><td>3.08</td><td>77</td><td>-</td><td><b>1.18 → 1</b></td><td>132×42.9</td><td><b>112×36.3</b></td><td>88×28.6</td></tr>
+        <tr><td>MAX</td><td>3.19</td><td>64</td><td>36</td><td><b>1.18 → 1</b></td><td>132×41.4</td><td><b>112×35.1</b></td><td>88×27.5</td></tr>
+        <tr><td>AMOT</td><td>3.78</td><td>42</td><td>23</td><td><b>1.18 → 1.1</b></td><td>132×34.9</td><td><b>123×32.6</b></td><td>97×25.6</td></tr>
+        <tr><td>הבינלאומי</td><td>6.03</td><td>45</td><td>86</td><td><span class="same">1.18</span></td><td>132×21.9</td><td><b>132×21.9</b></td><td>104×17.2</td></tr>
+        <tr><td>תדהר</td><td>3.89</td><td>54</td><td>78</td><td><b>1.18 → 1.1</b></td><td>132×34.0</td><td><b>123×31.7</b></td><td>97×24.9</td></tr>
+        <tr><td>ישראייר</td><td>3.18</td><td>29</td><td>96</td><td><b>1.18 → 1.05</b></td><td>132×41.6</td><td><b>118×37.0</b></td><td>92×29.1</td></tr>
+        <tr><td>תעש</td><td>2.64</td><td>33</td><td>80</td><td><b>1.04 → 1</b></td><td>116×44.2</td><td><b>112×42.5</b></td><td>88×33.4</td></tr>
+        <tr><td>מגן דוד אדום</td><td>1.75</td><td>31</td><td>92</td><td><span class="same">1</span></td><td>77×44.0</td><td><b>77×44.0</b></td><td>63×36.0</td></tr>
+        <tr><td>SAP</td><td>2.00</td><td>47</td><td>60</td><td><span class="same">1</span></td><td>88×44.0</td><td><b>88×44.0</b></td><td>72×36.0</td></tr>
+        <tr><td>מילגם</td><td>0.79</td><td>37</td><td>89</td><td><span class="same">1</span></td><td>35×44.0</td><td><b>35×44.0</b></td><td>29×36.0</td></tr>
+        <tr><td>רשות המסים</td><td>0.99</td><td>28</td><td>61</td><td><span class="same">1</span></td><td>44×44.0</td><td><b>44×44.0</b></td><td>36×36.0</td></tr>
+        <tr><td>בנק לאומי</td><td>1.62</td><td>52</td><td>84</td><td><span class="same">1</span></td><td>71×44.0</td><td><b>71×44.0</b></td><td>58×36.0</td></tr>
+        <tr><td>דלק</td><td>1.14</td><td>71</td><td>96</td><td><span class="same">1</span></td><td>50×44.0</td><td><b>50×44.0</b></td><td>41×36.0</td></tr>
+        <tr><td>רמלאל</td><td>1.52</td><td>32</td><td>63</td><td><span class="same">1</span></td><td>67×44.0</td><td><b>67×44.0</b></td><td>55×36.0</td></tr>
+        <tr><td>דופלט</td><td>1.68</td><td>32</td><td>107</td><td><span class="same">1</span></td><td>74×44.0</td><td><b>74×44.0</b></td><td>61×36.0</td></tr>
+        <tr><td>איחוד הצלה</td><td>1.20</td><td>25</td><td>110</td><td><span class="same">1</span></td><td>53×44.0</td><td><b>53×44.0</b></td><td>43×36.0</td></tr>
+        <tr><td>גינדי החזקות</td><td>1.80</td><td>14</td><td>28</td><td><span class="same">1</span></td><td>79×44.0</td><td><b>79×44.0</b></td><td>65×36.0</td></tr>
     </tbody>
   </table>
 </body>
