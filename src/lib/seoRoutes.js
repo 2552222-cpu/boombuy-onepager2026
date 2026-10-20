@@ -16,9 +16,9 @@ export const SITE_ORIGIN = "https://boombuyonepage.com";
 
 // Same values as the static tags in index.html, so the crawler that reads the raw
 // HTML and the one that runs JavaScript see one set of strings, not two.
-export const HOME_TITLE = "מועדון הטבות לעובדים במותג הארגון | boombuy";
+export const HOME_TITLE = "בום ביי | מועדון הטבות לעובדים במותג הארגון";
 export const HOME_DESCRIPTION =
-  "boombuy מקימה ומפעילה מועדון הטבות בשם הארגון, לצד פעילות הרווחה הקיימת. הכירו דוגמאות להטבות, את תהליך ההקמה והשירות, ובדקו התאמה.";
+  "בום ביי מקימה ומפעילה מועדון הטבות בשם הארגון, לצד פעילות הרווחה הקיימת. הכירו דוגמאות להטבות, את תהליך ההקמה והשירות, ובדקו התאמה.";
 
 export const ORGANIZATION_JSON_LD = {
   "@context": "https://schema.org",

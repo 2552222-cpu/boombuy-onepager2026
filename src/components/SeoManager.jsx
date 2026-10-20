@@ -6,10 +6,10 @@ import syncStructuredData from "@/lib/structuredData";
 // Route-aware SEO, applied once per path for EVERY way a visitor can arrive:
 // direct entry, refresh and internal navigation all end here.
 //
-// The platform injects its own title/description/og tags (project name and app
-// metadata) into the served HTML, so ours must win at runtime and the injected
-// duplicates must not survive next to them: each managed tag is updated in place
-// and any extra copy of the same property is removed.
+// Home title/description values in seoRoutes match index.html and the published
+// SEO settings, so loading the app keeps the same Hebrew copy (also for OG/Twitter).
+// Only managed tags are updated and deduplicated; verification and image tags
+// remain untouched, and each other route keeps its own metadata.
 //
 // Only this site's Organization/WebSite and FAQ nodes are synchronized; other
 // useful schema nodes stay intact. This is not a fix for initial server HTML:
@@ -28,7 +28,8 @@ function setNamed(name, content) {
 
 function setProperty(property, content) {
   const all = [...head().querySelectorAll(`meta[property="${property}"]`)];
-  const el = all.shift() || head().appendChild(Object.assign(document.createElement("meta"), { property }));
+  const el = all.shift() || head().appendChild(document.createElement("meta"));
+  el.setAttribute("property", property);
   el.setAttribute("content", content);
   all.forEach((extra) => extra.remove());
 }
