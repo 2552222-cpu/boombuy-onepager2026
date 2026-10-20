@@ -1,17 +1,10 @@
-// Single source of truth for the landing FAQ (visible accordion).
-//
-// index.html carries a MIRRORED copy of these questions and answers: the FAQPage
-// JSON-LD block plus the no-JS <dl> fallback inside #root, for crawlers that do not
-// run JavaScript. When an answer changes here, update index.html to match — do NOT
-// inject a second runtime JSON-LD block, otherwise Google sees duplicate FAQPage
-// entities that contradict each other.
-//
-// `featured` items are always visible; the rest are revealed by the "עוד שאלות" toggle.
-// Every item stays in the DOM (inside <details>) for SEO/AI readability.
+// Shared by the accessible accordion, build-time public HTML, and FAQPage.
+import { TARGET_AUDIENCE } from "../components/employees/homeContent.js";
+
 export const FAQ_ITEMS = [
   {
     q: "מה כלול ומה העלות?",
-    a: "לחברות עד 1,000 עובדים יש מסלול חינם עם אתר הטבות. מועדון ממותג בשם הארגון עולה 10 ₪ לעובד לחודש, וארגון שמעביר דרכנו את מתנות החג מקבל עליו זיכוי.",
+    a: "לחברות עד 1,000 עובדים יש מסלול חינם עם אתר הטבות. דמי התפעול החודשיים של מועדון ממותג בשם הארגון הם 10 ₪ לעובד, וארגון שמעביר דרכנו את מתנות החג מקבל עליו זיכוי.",
     featured: true,
   },
   {
@@ -22,7 +15,7 @@ export const FAQ_ITEMS = [
   { q: "תוך כמה זמן עולים לאוויר?", a: "14 עד 21 יום מרגע ההחלטה.", featured: true },
   {
     q: "לאילו ארגונים זה מתאים?",
-    a: "לארגונים, לוועדים, לאיגודים ולמועדוני לקוחות. יותר מ־300 ארגונים עובדים איתנו, מעשרות עובדים ועד עשרות אלפים.",
+    a: TARGET_AUDIENCE,
     featured: true,
   },
   {
@@ -30,7 +23,7 @@ export const FAQ_ITEMS = [
     a: "אנחנו מקימים ומפעילים את מועדון ההטבות של הארגון, במותג שלכם: האתר, ההטבות, הספקים, ההשקה והשירות לעובדים.",
     featured: false,
   },
-  { q: "איך מתחילים?", a: "משאירים פרטים בבדיקת ההתאמה, בוחרים יום ושעה, ומדברים איתנו 15 דקות.", featured: false },
+  { q: "איך מתחילים?", a: "משאירים פרטים בטופס, והצוות שלנו חוזר לתיאום שיחת היכרות ולבדיקת התאמה לארגון.", featured: false },
   {
     q: "מה זו ההטבה היומית?",
     a: "כל בוקר העובדים מקבלים הטבה חדשה על מוצר. מצאו את המוצר זול יותר באותו יום? מקבלים את ההפרש בנקודות.",

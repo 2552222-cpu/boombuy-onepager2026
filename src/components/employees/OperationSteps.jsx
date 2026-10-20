@@ -8,11 +8,7 @@ const BG = SECTION.BG_WHITE;
 const CHARCOAL = SECTION.CHARCOAL;
 const CORAL = SECTION.BTN_CORAL;
 
-const STEPS = [
-  { n: "1", title: "מסכמים תוכנית וכללים", text: "מגדירים יחד את התוכנית, הזכאות, התקציב והאישורים." },
-  { n: "2", title: "מקימים ומשיקים", text: "אנחנו מטפלים במיתוג, בספקים ובהשקה." },
-  { n: "3", title: "מפעילים ותומכים לאורך השנה", text: "מטפלים בהזמנות, בתקשורת ובשירות לעובדים, ומדווחים לכם." },
-];
+import { START_STEPS as STEPS } from "@/components/employees/homeContent";
 
 export default function OperationSteps() {
   const ref = useRef(null);
@@ -58,13 +54,13 @@ export default function OperationSteps() {
       <div style={{ maxWidth: 1000, margin: "0 auto", textAlign: "center", padding: "0 16px" }}>
         <RevealBlock style={{ color: SECTION.CORAL_TEXT, fontWeight: SECTION.KICKER_WEIGHT, fontSize: SECTION.KICKER_SIZE, letterSpacing: "-0.01em", margin: "0 0 8px" }}>איך זה עובד</RevealBlock>
         <motion.h2
-          initial={{ opacity: 0, y: 16 }}
+          initial={false}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           style={{ color: CHARCOAL, fontSize: `clamp(${SECTION.H2_MOBILE}px,4vw,48px)`, fontWeight: SECTION.H2_WEIGHT, lineHeight: SECTION.H2_LH, letterSpacing: "-0.025em", margin: 0 }}
         >
-          אתם מחליטים. <span style={{ color: SECTION.CORAL_TEXT }}>אנחנו מבצעים.</span>
+          איך <span style={{ color: SECTION.CORAL_TEXT }}>מתחילים?</span>
         </motion.h2>
 
         <RevealBlock

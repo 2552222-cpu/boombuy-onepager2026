@@ -190,6 +190,13 @@ export default function OrganizationFit() {
       setError("כתובת האימייל אינה תקינה.");
       return;
     }
+    const phoneDigits = form.phone.replace(/\D/g, "");
+    if (phoneDigits.length < 9 || phoneDigits.length > 15) {
+      submittingRef.current = false;
+      setSubmitting(false);
+      setError("מספר הטלפון אינו תקין.");
+      return;
+    }
     if (!form.consent) {
       submittingRef.current = false;
       setSubmitting(false);
@@ -247,11 +254,8 @@ export default function OrganizationFit() {
     } catch (err) {
       /* ignore */
     }
-    try {
-      base44.functions.invoke("notifyNewLead", { sessionId: sessionIdRef.current });
-    } catch (err) {
-      /* best-effort */
-    }
+    // Saving a lead is not a booking or proof of email delivery.
+    base44.functions.invoke("notifyNewLead", { sessionId: sessionIdRef.current }).catch(() => undefined);
     try {
       trackLinkedInConversion(LINKEDIN_CONV_LEAD);
     } catch (err) {
@@ -302,7 +306,7 @@ export default function OrganizationFit() {
         </RevealHeading>
 
         <motion.p
-          initial={{ opacity: 0, y: 16 }}
+          initial={false}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.55, ease: EASE, delay: 0.08 }}
@@ -338,10 +342,10 @@ export default function OrganizationFit() {
                   tabIndex={-1}
                   style={{ color: CHARCOAL, fontSize: "clamp(22px,2.6vw,30px)", fontWeight: 700, lineHeight: 1.2, letterSpacing: "-0.02em", margin: "0 0 10px", textAlign: "center", outline: "none" }}
                 >
-                  תודה! הפרטים נשמרו.
+                  הפרטים התקבלו.
                 </h3>
                 <p style={{ color: "#6E7177", fontSize: 16, margin: 0, textAlign: "center" }}>
-                  ניצור איתכם קשר לתיאום הדגמה של 15 דקות.
+                  נחזור אליכם לתיאום שיחת היכרות.
                 </p>
               </motion.div>
             ) : isQuestion ? (

@@ -10,7 +10,7 @@ import LogoItem from "@/components/employees/LogoItem";
 export default function LogoRail() {
   const [isMobile, setIsMobile] = useState(() => typeof window !== "undefined" && window.innerWidth < 768);
   const [isWide, setIsWide] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(() => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   const [paused, setPaused] = useState(false);
   const [docHidden, setDocHidden] = useState(false);
   const [hovered, setHovered] = useState(null);
@@ -89,7 +89,7 @@ export default function LogoRail() {
   if (reducedMotion) {
     return (
       <div role="region" aria-label="לקוחות boombuy" dir="rtl" aria-hidden={hidden} style={wrapStyle}>
-        <div style={{ flex: 1, minHeight: 0, display: "flex", alignItems: "center", overflowX: "auto", overflowY: "hidden", touchAction: "pan-x", scrollbarWidth: "thin", padding: "0 12px", paddingBottom: "env(safe-area-inset-bottom)", WebkitMaskImage: "linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent)", maskImage: "linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent)" }}>
+        <div style={{ flex: 1, minWidth: 0, minHeight: 0, display: "flex", alignItems: "center", overflowX: "auto", overflowY: "hidden", touchAction: "pan-x", scrollbarWidth: "thin", padding: "0 12px", paddingBottom: "env(safe-area-inset-bottom)", WebkitMaskImage: "linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent)", maskImage: "linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent)" }}>
           {railLogos.map((logo) => (
             <LogoItem key={logo.name} {...logoProps(logo, false)} />
           ))}

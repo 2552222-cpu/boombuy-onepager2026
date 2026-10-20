@@ -4,6 +4,7 @@ import { RevealHeading, RevealBlock } from "./motion";
 import { EXPERIENCES_VIDEO } from "@/lib/videoAssets";
 import { SECTION } from "./layoutTokens";
 import { scrollToId } from "./uiHelpers";
+import { VIDEO_EXPLANATION } from "@/components/employees/homeContent";
 
 // Experience film — a short, muted clip that shows the wider world of the
 // club (sport, shows, wellness, trips). Sits right below the offers slider.
@@ -261,6 +262,8 @@ export default function ExperienceFilm() {
           >
             <video
               ref={videoRef}
+              width={1600}
+              height={900}
               poster={VIDEO_POSTER || undefined}
               muted
               playsInline
@@ -352,7 +355,7 @@ export default function ExperienceFilm() {
             maxWidth: 680,
           }}
         >
-          וגם הצגות, סטנדאפ ועוד. כל השנה, במועדון שלכם.
+          {VIDEO_EXPLANATION}
         </p>
 
         <div style={{ marginTop: isMobile ? 18 : 22, display: "flex", justifyContent: "center" }}>

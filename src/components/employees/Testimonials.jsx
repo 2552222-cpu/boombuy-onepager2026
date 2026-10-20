@@ -10,32 +10,7 @@ const BG = SECTION.BG_MIST;
 const CHARCOAL = SECTION.CHARCOAL;
 const CORAL = SECTION.BTN_CORAL;
 
-const ITEMS = [
-  {
-    name: "יניב דוד",
-    role: "מזכיר כללי, ארגון העובדים בבנק לאומי",
-    logo: "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/333366c6f_.png",
-    text: "ההשקעה הטובה ביותר שעשינו למען העובדים. העובדים מדברים על זה יום יום.",
-  },
-  {
-    name: "יחזקאל מזרחי",
-    role: 'יו"ר ועד עובדי עיריית תל אביב - אגף שפע',
-    logo: "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/5325ce61f_.png",
-    text: "boombuy יצרה חוויית עובד אחרת. הם מספקים רמת שירות וטכנולוגיה מתוחכמת שקובעת סטנדרט שלא הכרנו לפני.",
-  },
-  {
-    name: "שירה סיירי",
-    role: "ראש מטה הנהלה, עמותת שלוה",
-    logo: "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/febd43cdc_KUUV.png",
-    text: "boombuy היא שותפה אמיתית לדרך. השירות האנושי, החום האישי והמקצועיות מורגשים בכל פרט. אתר ההטבות מגוון, משתלם ואטרקטיבי, והעובדים שלנו נהנים ממנו מאוד!",
-  },
-  {
-    name: "יקירה שינדר",
-    role: "משאבי אנוש, סוכנות לביטוח שקל",
-    logo: "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/2279bccfc_.png",
-    text: "חברת boombuy דואגת כל יום להטבה יומית. דבר שיצר באז חיובי ומדהים אצל העובדים. השירות והמקצועיות מעל הכל!",
-  },
-];
+import { TESTIMONIALS as ITEMS } from "@/components/employees/testimonialsData";
 
 function Card({ t, isMobile }) {
   return (
@@ -127,7 +102,7 @@ export default function Testimonials() {
         @media (max-width:768px){ #testimonials{ scroll-margin-top:72px; } .tm-scroller::-webkit-scrollbar{ display:none; } }
         .tm-card{ transition: transform .3s ease, box-shadow .3s ease; }
         .tm-card:hover{ transform: translateY(-6px); box-shadow: 0 18px 44px rgba(19,21,25,0.12); }
-        @media (prefers-reduced-motion: reduce){ .tm-card{ transition:none; } .tm-card:hover{ transform:none; } }
+        @media (prefers-reduced-motion: reduce){ .tm-card, .tm-scroller > div{ transition:none !important; } .tm-card:hover, .tm-scroller > div{ transform:none !important; } }
       `}</style>
 
       <div style={{ maxWidth: 1040, margin: "0 auto", textAlign: "center", padding: "0 16px" }}>
@@ -183,7 +158,7 @@ export default function Testimonials() {
             <div style={{ marginTop: 18 }}>
               <PaginationDots count={ITEMS.length} active={active} label="עבור להמלצה" onSelect={(i) => {
                 const child = scrollerRef.current?.children[i];
-                child?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+                child?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", inline: "center", block: "nearest" });
               }} />
             </div>
           </>
@@ -192,7 +167,7 @@ export default function Testimonials() {
             {ITEMS.map((t, i) => (
               <motion.div
                 key={t.name}
-                initial={{ opacity: 0, y: 28, scale: 0.97 }}
+                initial={false}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.6, ease: EASE, delay: i * 0.08 }}

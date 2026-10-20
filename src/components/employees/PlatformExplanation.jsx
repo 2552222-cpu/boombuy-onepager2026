@@ -4,6 +4,7 @@ import { Gift, Building2, Coffee } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import { RevealHeading, RevealBlock, EASE } from "./motion";
 import { SECTION } from "./layoutTokens";
+import { PRODUCT_EXPLANATION } from "@/components/employees/homeContent";
 
 const PANEL_BG = "#15171B";
 const PANEL_GRADIENT = "radial-gradient(circle at 50% 18%, rgba(244,122,90,0.10), transparent 40%)";
@@ -91,7 +92,7 @@ export default function PlatformExplanation() {
               delay={0.12}
               style={{ color: TEXT_MUTED, fontSize: `clamp(${SECTION.BODY_MOBILE}px,1.4vw,21px)`, fontWeight: 400, lineHeight: 1.65, margin: "22px auto 0", maxWidth: 820 }}
             >
-              אנחנו מקימים, ממתגים, מפעילים ונותנים שירות לעובדים. אתם רק מאשרים.
+              {PRODUCT_EXPLANATION}
             </RevealBlock>
 
             <RevealBlock

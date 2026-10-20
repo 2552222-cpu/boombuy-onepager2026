@@ -11,40 +11,8 @@
 // visible in the accordion, the no-JS mirror inside index.html and the JSON-LD can
 // never drift apart.
 import { FAQ_ITEMS } from "@/lib/faqData";
-
-export const SITE_ORIGIN = "https://boombuyonepage.com";
-
-// Same values as the static tags in index.html, so the crawler that reads the raw
-// HTML and the one that runs JavaScript see one set of strings, not two.
-export const HOME_TITLE = "בום ביי | מועדון הטבות לעובדים במותג הארגון";
-export const HOME_DESCRIPTION =
-  "בום ביי מקימה ומפעילה מועדון הטבות בשם הארגון, לצד פעילות הרווחה הקיימת. הכירו דוגמאות להטבות, את תהליך ההקמה והשירות, ובדקו התאמה.";
-
-export const ORGANIZATION_JSON_LD = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "@id": SITE_ORIGIN + "/#organization",
-  name: "boombuy",
-  url: SITE_ORIGIN + "/",
-  logo: "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/4cebf7412_15.png",
-  description: "פלטפורמה ישראלית שמקימה ומפעילה מועדון הטבות לעובדים במותג הארגון.",
-  contactPoint: {
-    "@type": "ContactPoint", telephone: "+972542552222",
-    email: "support@boombuy.co.il", contactType: "customer support",
-    areaServed: "IL", availableLanguage: ["Hebrew"],
-  },
-};
-
-export const WEBSITE_JSON_LD = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "@id": SITE_ORIGIN + "/#website",
-  name: "boombuy",
-  url: SITE_ORIGIN + "/",
-  description: HOME_DESCRIPTION,
-  inLanguage: "he-IL",
-  publisher: { "@id": ORGANIZATION_JSON_LD["@id"] },
-};
+import { HOME_TITLE, HOME_DESCRIPTION, SITE_ORIGIN, ORGANIZATION_JSON_LD, WEBSITE_JSON_LD } from "@/components/seo/siteIdentity";
+export { HOME_TITLE, HOME_DESCRIPTION, SITE_ORIGIN, ORGANIZATION_JSON_LD, WEBSITE_JSON_LD };
 
 export const FAQ_JSON_LD = {
   "@context": "https://schema.org",

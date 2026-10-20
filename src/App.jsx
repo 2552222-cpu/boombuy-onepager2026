@@ -1,5 +1,5 @@
 import { Toaster } from "@/components/ui/toaster"
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
@@ -21,6 +21,7 @@ const PUBLIC_ROUTES = new Set(['/', '/privacy', '/accessibility']);
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
   const location = useLocation();
+  const reducedMotion = useReducedMotion();
   const isPublic = PUBLIC_ROUTES.has(location.pathname);
 
   // Public pages (landing + privacy) render immediately — no auth spinner, so the
@@ -46,10 +47,10 @@ const AuthenticatedApp = () => {
     <AnimatePresence mode="wait">
       <motion.div
         key={location.pathname}
-        initial={{ opacity: 0, y: 24 }}
+        initial={false}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -12 }}
-        transition={{ duration: 0.38, ease: 'easeOut' }}
+        exit={reducedMotion ? { opacity: 1 } : { opacity: 0, y: -12 }}
+        transition={{ duration: reducedMotion ? 0 : 0.38, ease: 'easeOut' }}
         style={{ minHeight: '100vh' }}
       >
         <Suspense fallback={null}>

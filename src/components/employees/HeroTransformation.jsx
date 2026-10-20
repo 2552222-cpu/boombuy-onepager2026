@@ -165,7 +165,7 @@ export default function HeroTransformation() {
               <div style={{ color: CHARCOAL, fontSize: isMobile ? 22 : "clamp(20px,2.4vw,28px)", fontWeight: 800, lineHeight: 1.1 }} dir={p.ltr ? "ltr" : undefined}>
                 {p.num}{p.suffix}
               </div>
-              <div style={{ color: "#5A5C62", fontSize: isMobile ? 12 : "clamp(12px,1.1vw,14px)", fontWeight: 500, marginTop: 2, lineHeight: 1.3, display: isMobile ? "-webkit-box" : undefined, WebkitLineClamp: isMobile ? 2 : undefined, WebkitBoxOrient: isMobile ? "vertical" : undefined, overflow: isMobile ? "hidden" : undefined }}>
+              <div style={{ color: "#5A5C62", fontSize: isMobile ? 12 : "clamp(12px,1.1vw,14px)", fontWeight: 500, marginTop: 2, lineHeight: 1.3 }}>
                 {p.small}
               </div>
             </div>

@@ -1,0 +1,8 @@
+{
+  "label": "לפני סבב תיקון ממוקד 20.10.2026",
+  "baseline_commit": "048be93252a200353aae69e25ccf4042c09683cb",
+  "working_tree_clean_when_recorded": true,
+  "scope": "קוד הפרויקט בלבד; לא צילום מצב של נתוני לידים, סודות או הגדרות SEO בדשבורד",
+  "restore": "שחזור גרסת הקוד מה-commit המצוין; שחזור נתונים והגדרות אירוח הוא פעולה נפרדת",
+  "automatic_publish": false
+}

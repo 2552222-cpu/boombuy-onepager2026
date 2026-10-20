@@ -23,7 +23,7 @@ export default function MobileHeroMedia({ reducedMotion, buttonStyle }) {
   };
   return (
     <>
-      <video ref={videoRef} muted playsInline preload="none"
+      <video ref={videoRef} width={1600} height={900} muted playsInline preload="none"
         onPlaying={onPlaying} onPause={onPause} onEnded={onEnded} onError={onError}
         aria-label="סרטון השדרוג, עשר שניות ללא קול" style={{ ...imageStyle, zIndex: 2 }}>
         <track kind="captions" srcLang="he" label="עברית" src="/hero-captions.vtt" />

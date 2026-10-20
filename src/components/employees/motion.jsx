@@ -35,7 +35,7 @@ export function RevealHeading({ children, style, as = "h2", amount = 0.2 }) {
   return (
     <Tag
       ref={ref}
-      initial={reduce ? { opacity: 0 } : { opacity: 0, clipPath: "inset(100% 0 0 0)" }}
+      initial={false}
       animate={shown ? (reduce ? { opacity: 1 } : { opacity: 1, clipPath: "inset(0 0 0 0)" }) : undefined}
       transition={reduce ? { duration: 0.15 } : { duration: 0.7, ease: EASE }}
       style={style}
@@ -53,7 +53,7 @@ export function RevealBlock({ children, style, delay = 0, amount = 0.15, as = "d
   return (
     <Tag
       ref={ref}
-      initial={{ opacity: 0, y: reduce ? 0 : 24 }}
+      initial={false}
       animate={shown ? { opacity: 1, y: 0 } : undefined}
       transition={reduce ? { duration: 0.15 } : { duration: 0.6, ease: EASE, delay }}
       style={style}

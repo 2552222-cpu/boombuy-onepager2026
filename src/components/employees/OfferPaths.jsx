@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { RevealHeading, RevealBlock } from "./motion";
 import { SECTION } from "./layoutTokens";
+import { TARGET_AUDIENCE } from "@/components/employees/homeContent";
 
 const BG = SECTION.BG_MIST;
 const CHARCOAL = SECTION.CHARCOAL;
@@ -10,7 +11,7 @@ const EASE = [0.22, 1, 0.36, 1];
 
 const PATHS = [
   { title: "ארגונים", text: "חברות שרוצות לתת לעובדים יותר, מאותו תקציב." },
-  { title: "איגודים ומועדונים", text: "גופים שרוצים לתת לחברים ערך, ולהרוויח מזה." },
+  { title: "ועדי עובדים", text: "ועדים שרוצים להציע לעובדים הטבות ושירות לאורך השנה." },
 ];
 
 const MODULES = ["מתנות חג", "הטבות יומיות", "וולנס", "תרבות", "חופשות ונסיעות", "מותגים וקניות"];
@@ -55,14 +56,14 @@ export default function OfferPaths() {
           as="h2"
           style={{ color: CHARCOAL, fontSize: `clamp(${SECTION.H2_MOBILE}px,4vw,48px)`, fontWeight: SECTION.H2_WEIGHT, lineHeight: SECTION.H2_LH, letterSpacing: "-0.025em", margin: 0 }}
         >
-          למי זה <span style={{ color: SECTION.CORAL_TEXT }}>מתאים</span>
+          למי זה <span style={{ color: SECTION.CORAL_TEXT }}>מתאים?</span>
         </RevealHeading>
 
         <RevealBlock
           delay={0.08}
           style={{ color: BODY, fontSize: `clamp(${SECTION.BODY_MOBILE}px,1.4vw,${SECTION.BODY_DESKTOP}px)`, lineHeight: SECTION.BODY_LH, margin: "14px auto 0", maxWidth: 660 }}
         >
-          לכל ארגון עם עובדים או חברים, מעשרות ועד עשרות אלפים.
+          {TARGET_AUDIENCE}
         </RevealBlock>
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: isMobile ? 10 : 20, marginTop: isMobile ? 28 : 44, justifyContent: "center" }}>

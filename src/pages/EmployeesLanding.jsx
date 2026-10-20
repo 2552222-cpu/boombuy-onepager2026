@@ -18,6 +18,7 @@ import LogoRail from "../components/employees/LogoRail";
 import AccessibilityWidget from "../components/employees/a11y/AccessibilityWidget";
 import { pageBottomReserve } from "../components/employees/layoutTokens";
 import { useLenis } from "@/hooks/useLenis";
+import AboutContact from "@/components/employees/AboutContact";
 
 export default function EmployeesLanding() {
   const [isMobile, setIsMobile] = useState(false);
@@ -53,6 +54,7 @@ export default function EmployeesLanding() {
       <OfferPaths />
       <OperationSteps />
       <Testimonials />
+      <AboutContact />
       <FAQ />
       <OrganizationFit />
       <BookDemo />

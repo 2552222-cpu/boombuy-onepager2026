@@ -14,6 +14,7 @@ export default function InlineLogoRail() {
   return (
     <div
       dir="ltr"
+      className="ht-logo-viewport"
       style={{
         width: "100%",
         minWidth: 0,
@@ -27,7 +28,11 @@ export default function InlineLogoRail() {
         @keyframes ht-marq{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
         .ht-marq-track{display:flex;align-items:center;width:max-content;will-change:transform;backface-visibility:hidden;animation:ht-marq ${DURATION_S}s linear infinite}
         .ht-marq-track:hover, .ht-marq-track:focus-within{animation-play-state:paused}
-        @media (prefers-reduced-motion: reduce){.ht-marq-track{animation:none;overflow-x:auto}}
+        @media (prefers-reduced-motion: reduce){
+          .ht-logo-viewport{overflow-x:auto !important;overflow-y:hidden}
+          .ht-marq-track{animation:none;transform:none;will-change:auto}
+          .ht-marq-track > div[aria-hidden="true"]{display:none !important}
+        }
       `}</style>
       <div className="ht-marq-track">
         {[0, 1].map((copy) => (
