@@ -12,6 +12,24 @@
 # זמן עלייה לאוויר: 14 עד 21 יום מרגע ההחלטה.
 # 8 מתוך 10 עובדים מצטרפים תוך שבועות, ו־60% קונים שוב.
 
+# Key facts (from the site's FAQ):
+# What is included: for organizations up to 1,000 employees there is a free plan with a benefits site; a club branded in the organization's name carries monthly operation fees of 10 ILS per employee, and an organization that routes its holiday gifts through boombuy receives credit for it.
+# What the organization does: approve policy, eligibility and budget. Branding, suppliers, launch, communications, orders and employee service (reply by end of business day) are handled by boombuy.
+# Start: leave details in the form; the team returns to schedule an introductory call and check fit. Demo calls take 15 minutes.
+# The club runs under the organization's own name and logo, alongside the existing welfare activity.
+# Daily benefit: one product offer every morning; if the employee finds the same product cheaper that day, the difference is credited in points.
+# Unions get a partnership model: a club in the union's name plus a revenue source from members' purchases.
+# Employee data is shared between the organization and boombuy and is deleted when the engagement ends.
+
+# עובדות מרכזיות (מתוך השאלות הנפוצות באתר):
+# מה כלול: לארגונים עד 1,000 עובדים יש מסלול חינם עם אתר הטבות; מועדון ממותג בשם הארגון כרוך בדמי תפעול חודשיים של 10 ₪ לעובד, וארגון שמעביר דרכנו את מתנות החג מקבל עליהן זיכוי.
+# מה הארגון עושה: מאשר מדיניות, זכאות ותקציב. מיתוג, ספקים, השקה, תקשורת, הזמנות ושירות לעובדים (מענה עד סוף יום העסקים) באחריות boombuy.
+# איך מתחילים: משאירים פרטים בטופס, והצוות חוזר לתיאום שיחת היכרות ובדיקת התאמה. שיחת ההיכרות נמשכת 15 דקות.
+# המועדון פועל בשם הארגון ובלוגו שלו, לצד פעילות הרווחה הקיימת.
+# הטבה יומית: בכל בוקר הטבה חדשה על מוצר; אם העובד מוצא את אותו מוצר זול יותר באותו יום, ההפרש נזקף בנקודות.
+# לאיגודים יש מודל שותפות: מועדון בשם האיגוד ומקור הכנסה מהרכישות של החברים.
+# נתוני העובדים משותפים לארגון ול־boombuy ונמחקים בסיום ההתקשרות.
+
 Links:
 - https://boombuyonepage.com/
 - https://boombuyonepage.com/privacy

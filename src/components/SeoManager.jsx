@@ -66,7 +66,7 @@ export default function SeoManager() {
     setNamed("twitter:description", seo.description);
 
     setCanonical(seo.canonical ? SITE_ORIGIN + seo.canonical : null);
-    syncStructuredData(seo.faq);
+    syncStructuredData(seo);
   }, [pathname]);
 
   return null;

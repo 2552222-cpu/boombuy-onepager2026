@@ -14,11 +14,10 @@ export default function publicHtmlPlugin() {
       order: "pre",
       handler(html) {
         if (FAQ_ITEMS.length !== 12 || new Set(FAQ_ITEMS.map((item) => item.q)).size !== 12) throw new Error("Expected the existing 12 unique FAQ items");
-        const faqSchema = {
-          "@context": "https://schema.org", "@type": "FAQPage",
-          mainEntity: FAQ_ITEMS.map(({ q, a }) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })),
-        };
-        const graph = { "@context": "https://schema.org", "@graph": [ORGANIZATION_JSON_LD, WEBSITE_JSON_LD, faqSchema] };
+        // One index.html is served for every path, so only site-wide identity ships
+        // here. Per-route nodes (WebPage, and FAQPage on the home page alone) are
+        // added at runtime by SeoManager, which knows the current path.
+        const graph = { "@context": "https://schema.org", "@graph": [ORGANIZATION_JSON_LD, WEBSITE_JSON_LD] };
         const body = staticHome({ copy, faq: FAQ_ITEMS, testimonials: TESTIMONIALS, contact: CONTACT, video: EXPERIENCES_VIDEO, organization: ORGANIZATION_JSON_LD });
         if (!html.includes("<!-- bb:public-content -->") || !html.includes("<!-- bb:structured-data -->")) throw new Error("Public HTML markers are missing");
         const output = html.replace("<!-- bb:public-content -->", body)
