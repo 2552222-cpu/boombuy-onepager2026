@@ -409,6 +409,7 @@ export default function OrganizationFit() {
                 exit={{ opacity: 0, y: -14 }}
                 transition={{ duration: qDur, ease: EASE }}
                 onAnimationComplete={() => onEnterDone("form")}
+                className="of-form-safe"
                 style={{ maxWidth: 480, margin: "0 auto", textAlign: "right" }}
               >
                 <h3 style={{ color: CHARCOAL, fontSize: "clamp(22px,2.6vw,30px)", fontWeight: 700, lineHeight: 1.2, letterSpacing: "-0.02em", margin: "0 0 6px", textAlign: "center" }}>
