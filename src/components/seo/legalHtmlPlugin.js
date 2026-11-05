@@ -31,7 +31,7 @@ export function render(route) {
         ["/accessibility", "הצהרת נגישות | boombuy", "התאמות הנגישות באתר boombuy ודרכי הפנייה לקבלת סיוע."]
       ];
       for (const [route,title,description] of routes) {
-        const canonical = "https://boombuyonepage.com" + route;
+        const canonical = "https://boombuyonepage.com" + route + ".html";
         let html = String(index.source)
           .replace(/<title>[\s\S]*?<\/title>/, "<title>"+title+"</title>")
           .replace(/(<meta (?:name|property)="(?:description|og:description|twitter:description)" content=")[^"]*"/g, '$1'+description+'"')
