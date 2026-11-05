@@ -36,14 +36,14 @@ export const ROUTE_SEO = {
     title: "מדיניות פרטיות | boombuy",
     description:
       "איזה פרטים נאספים בטופס בדיקת ההתאמה, למה הם משמשים, אילו ספקים מעורבים בעיבודם ומהן הזכויות שלכם לפנות אלינו בבקשה לעיין או למחוק.",
-    canonical: "/privacy",
+    canonical: "/privacy.html",
     faq: false,
   },
   "/accessibility": {
     title: "הצהרת נגישות | boombuy",
     description:
       "הצהרת הנגישות של אתר boombuy: רמת הנגישות לפי ת\"י 5568 (WCAG 2.0 AA), אמצעי הנגישות הזמינים באתר, הסדרי שירות חלופיים ודרכי פנייה לרכז הנגישות.",
-    canonical: "/accessibility",
+    canonical: "/accessibility.html",
     faq: false,
   },
 };
@@ -62,6 +62,7 @@ export const NOT_FOUND_SEO = {
 };
 
 export function resolveSeo(pathname) {
+  pathname = pathname.replace(/\\.html$/, "").replace(/\\/$/, "") || "/";
   if (ROUTE_SEO[pathname]) {
     const r = ROUTE_SEO[pathname];
     return { ...r, index: true, url: SITE_ORIGIN + r.canonical };
