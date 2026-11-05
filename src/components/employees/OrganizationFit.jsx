@@ -446,7 +446,7 @@ export default function OrganizationFit() {
                     />
                     <span>אני מאשר/ת ל-boombuy ליצור איתי קשר בנוגע להדגמת המערכת.</span>
                   </label>
-                  <a href="/privacy" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", fontSize: 13, color: "#6E7177", textDecoration: "underline", marginTop: 2 }}>מדיניות הפרטיות</a>
+                  <a href="/privacy.html" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", fontSize: 13, color: "#6E7177", textDecoration: "underline", marginTop: 2 }}>מדיניות הפרטיות</a>
 
                   {error && <p role="alert" style={{ color: "#C0392B", fontSize: 15, margin: "4px 0 0" }}>{error}</p>}
 

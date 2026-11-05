@@ -125,7 +125,7 @@ export default function AccessibilityPanel({ settings, onChange, onReset, onClos
             <RotateCcw size={16} /> איפוס הגדרות
           </button>
 
-          <Link to="/accessibility" onClick={onClose} className="bb-a11y-statement-link">
+          <Link to="/accessibility.html" onClick={onClose} className="bb-a11y-statement-link">
             להצהרת הנגישות המלאה
           </Link>
 
