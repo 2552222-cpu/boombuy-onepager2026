@@ -62,7 +62,8 @@ export const NOT_FOUND_SEO = {
 };
 
 export function resolveSeo(pathname) {
-  pathname = pathname.replace(/\\.html$/, "").replace(/\\/$/, "") || "/";
+  if (pathname.endsWith("/")) pathname = pathname.slice(0, -1) || "/";
+  if (pathname.endsWith(".html")) pathname = pathname.slice(0, -5);
   if (ROUTE_SEO[pathname]) {
     const r = ROUTE_SEO[pathname];
     return { ...r, index: true, url: SITE_ORIGIN + r.canonical };
