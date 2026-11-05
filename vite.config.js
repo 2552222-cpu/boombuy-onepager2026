@@ -2,6 +2,7 @@ import base44 from "@base44/vite-plugin"
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 import publicHtmlPlugin from './src/components/seo/publicHtmlPlugin.js'
+import legalHtmlPlugin from './src/components/seo/legalHtmlPlugin.js'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -18,5 +19,6 @@ export default defineConfig({
       visualEditAgent: true
     }),
     react(),
+    legalHtmlPlugin(),
   ]
 });
