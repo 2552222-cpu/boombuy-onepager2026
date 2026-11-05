@@ -16,7 +16,7 @@ const ResultsPage = lazy(() => import('./pages/ResultsPage'));
 const OrgPage = lazy(() => import('./pages/OrgPage'));
 // Add page imports here
 
-const PUBLIC_ROUTES = new Set(['/', '/privacy', '/accessibility']);
+const PUBLIC_ROUTES = new Set(['/', '/privacy', '/accessibility', '/privacy.html', '/accessibility.html']);
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -60,6 +60,8 @@ const AuthenticatedApp = () => {
           <Route path="/results" element={<ResultsPage />} />
           <Route path="/join/:orgSlug" element={<OrgPage />} />
           <Route path="/privacy" element={<Privacy />} />
+          <Route path="/privacy.html" element={<Privacy />} />
+          <Route path="/accessibility.html" element={<AccessibilityStatement />} />
           <Route path="/accessibility" element={<AccessibilityStatement />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
