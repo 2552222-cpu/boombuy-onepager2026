@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { motion } from "framer-motion";
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie } from "recharts";
+import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import GlobalHeader from "../components/employees/GlobalHeader";
 import { useAuth } from "@/lib/AuthContext";
 import GlobalFooter from "../components/employees/GlobalFooter";
-import { Phone } from "lucide-react";
 
 export default function ResultsPage() {
   const { user, isLoadingAuth } = useAuth();

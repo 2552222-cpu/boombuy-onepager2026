@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingCart, Smartphone, Plane, Zap } from "lucide-react"; // kept for potential future use
+// kept for potential future use
 import FeaturedOffersSlider from "../components/employees/FeaturedOffersSlider";
 import NetLiftCalculator from "../components/employees/NetLiftCalculator";
 import { base44 } from "@/api/base44Client";
 import { buildWaMessage, buildLetterMessage, buildSurveyInsights } from "@/utils/messages";
-import ILS from "../components/employees/ILS";
 
 const TARGET_1 = 10;
 const TARGET_2 = 20;
