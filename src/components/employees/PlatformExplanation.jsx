@@ -4,7 +4,7 @@ import { Gift, Building2, Coffee } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import { RevealHeading, RevealBlock, EASE } from "./motion";
 import { SECTION } from "./layoutTokens";
-import { PRODUCT_EXPLANATION } from "@/components/employees/homeContent";
+import { PRODUCT_EXPLANATION, OPERATING_MODEL } from "@/components/employees/homeContent";
 
 const PANEL_BG = "#15171B";
 const PANEL_GRADIENT = "radial-gradient(circle at 50% 18%, rgba(244,122,90,0.10), transparent 40%)";
@@ -99,7 +99,7 @@ export default function PlatformExplanation() {
               delay={0.18}
               style={{ color: TEXT_MUTED, fontSize: `clamp(${SECTION.BODY_MOBILE}px,1.25vw,19px)`, fontWeight: 400, lineHeight: 1.6, margin: "10px auto 0", maxWidth: 760 }}
             >
-              המועדון פועל לצד פעילות הרווחה הקיימת בארגון.
+              {OPERATING_MODEL} המועדון פועל לצד פעילות הרווחה הקיימת בארגון.
             </RevealBlock>
           </div>
 
