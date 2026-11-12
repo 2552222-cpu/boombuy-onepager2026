@@ -20,10 +20,10 @@ const CORAL_BTN = SECTION.BTN_CORAL;
 // Scenes 0 & 1 share the same small line; only the title changes between them,
 // so the small line does NOT re-animate across that boundary.
 const SCENES = [
-  { start: 0, end: 2.458, title: "משחקי כדורגל בחו״ל", small: "Secret Seats · עד 100 אירו לכרטיס" },
-  { start: 2.458, end: 4.958, title: "הופעות בינלאומיות", small: "Secret Seats · עד 100 אירו לכרטיס" },
-  { start: 4.958, end: 7.458, title: "עיסויים וטיפולים משלימים", small: "עד 150 ₪ לטיפול" },
-  { start: 7.458, end: Infinity, title: "חופשות בארץ ובחו״ל", small: "ועוד חוויות לעובדים שלכם" },
+  { start: 0, end: 7, title: "משחקי כדורגל בחו״ל", small: "Secret Seats · עד 100 אירו לכרטיס" },
+  { start: 7, end: 9.5, title: "הופעות בינלאומיות", small: "Secret Seats · עד 100 אירו לכרטיס" },
+  { start: 9.5, end: 12, title: "עיסויים וטיפולים משלימים", small: "עד 150 ₪ לטיפול" },
+  { start: 12, end: Infinity, title: "חופשות בארץ ובחו״ל", small: "ועוד חוויות לעובדים שלכם" },
 ];
 
 function sceneAt(t) {
