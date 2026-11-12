@@ -100,7 +100,7 @@ export default function PlatformExplanation() {
               style={{ color: TEXT_MUTED, fontSize: `clamp(${SECTION.BODY_MOBILE}px,1.25vw,19px)`, fontWeight: 400, lineHeight: 1.6, margin: "10px auto 0", maxWidth: 760 }}
             >
               {OPERATING_MODEL} המועדון פועל לצד פעילות הרווחה הקיימת בארגון.
-              <a href="https://boombuy.co.il/WelfareBudgetGuide" style={{display:"block",marginTop:20,color:WHITE,textDecoration:"underline",textUnderlineOffset:5}}>התקציב נשאר. מה אפשר לתת לעובדים מעבר למתנות החג? למדריך המלא</a>
+              <a href="https://boombuy.co.il/WelfareBudgetGuide.html" style={{display:"block",marginTop:20,color:WHITE,textDecoration:"underline",textUnderlineOffset:5}}>התקציב נשאר. מה אפשר לתת לעובדים מעבר למתנות החג? למדריך המלא</a>
             </RevealBlock>
           </div>
 
