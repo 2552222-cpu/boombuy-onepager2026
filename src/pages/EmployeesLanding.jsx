@@ -19,6 +19,7 @@ import AccessibilityWidget from "../components/employees/a11y/AccessibilityWidge
 import { pageBottomReserve } from "../components/employees/layoutTokens";
 import { useLenis } from "@/hooks/useLenis";
 import AboutContact from "@/components/employees/AboutContact";
+import { scrollToId } from "../components/employees/uiHelpers";
 
 export default function EmployeesLanding() {
   const [isMobile, setIsMobile] = useState(false);
@@ -30,6 +31,30 @@ export default function EmployeesLanding() {
     c();
     window.addEventListener("resize", c);
     return () => window.removeEventListener("resize", c);
+  }, []);
+
+  // External guide links arrive before React mounts the target section.
+  useEffect(() => {
+    let cancelled = false;
+    let frame;
+    const followGuideLink = () => {
+      if (window.location.hash !== "#organization-fit") return;
+      Promise.resolve(document.fonts?.ready).then(() => {
+        if (cancelled) return;
+        frame = requestAnimationFrame(() => {
+          frame = requestAnimationFrame(() => {
+            if (!cancelled) scrollToId("organization-fit");
+          });
+        });
+      });
+    };
+    followGuideLink();
+    window.addEventListener("hashchange", followGuideLink);
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(frame);
+      window.removeEventListener("hashchange", followGuideLink);
+    };
   }, []);
 
   // After the hero, the fixed rail and CTA share the reserved bottom space.
