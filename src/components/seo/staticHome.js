@@ -10,7 +10,7 @@ export default function staticHome({ copy, faq, testimonials, contact, video, or
     <main id="main-content" class="mx-auto max-w-5xl px-4 pb-10 text-foreground">
       <section class="py-8"><h1 class="text-4xl font-extrabold">${e(copy.HOME_HEADING)}</h1><p class="mt-5 text-lg leading-relaxed">${e(copy.PRODUCT_EXPLANATION)}</p></section>
       ${section("platform-explanation", "תשתית אחת, הפעלה לאורך השנה", `<p>${e(copy.OPERATING_MODEL)} המועדון פועל לצד פעילות הרווחה הקיימת בארגון.</p>`)}
-      <p class="my-6">${link("https://boombuy.co.il/WelfareBudgetGuide", "התקציב נשאר. מה אפשר לתת לעובדים מעבר למתנות החג? למדריך המלא")}</p>
+      <p class="my-6">${link("https://boombuy.co.il/WelfareBudgetGuide.html", "התקציב נשאר. מה אפשר לתת לעובדים מעבר למתנות החג? למדריך המלא")}</p>
       ${section("offer-paths", "למי זה מתאים?", `<p>${e(copy.TARGET_AUDIENCE)}</p>`)}
       ${section("operation-steps", "איך מתחילים?", `<ol class="list-inside list-decimal space-y-3">${copy.START_STEPS.map((step) => `<li>${e(step.title)} ${e(step.text)}</li>`).join("")}</ol>`)}
       ${section("testimonials", "מה אומרים מי שכבר שדרגו?", testimonials.map((item) => `<figure class="my-6"><blockquote><p>״${e(item.text)}״</p></blockquote><figcaption>${e(item.name)}, ${e(item.role)}</figcaption></figure>`).join(""))}
