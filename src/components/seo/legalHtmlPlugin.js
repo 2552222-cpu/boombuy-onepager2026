@@ -42,9 +42,9 @@ export function render(route) {
           .replace(/(<meta property="og:url" content=")[^"]*"/g, '$1'+canonical+'"')
           .replace(/<div id="root">[\s\S]*<\/div>(\s*<script|\s*<\/body>)/, '<div id="root">'+mod.exports.render(route)+'</div>$1');
         if (route === "/404") {
-          html = html.replace(/<link\\b[^>]*rel="canonical"[^>]*>/g, "")
-            .replace(/<meta\\b[^>]*name="robots"[^>]*>/g, "")
-            .replace(/<meta\\b[^>]*property="og:url"[^>]*>/g, "")
+          html = html.replace(/<link\b[^>]*rel="canonical"[^>]*>/g, "")
+            .replace(/<meta\b[^>]*name="robots"[^>]*>/g, "")
+            .replace(/<meta\b[^>]*property="og:url"[^>]*>/g, "")
             .replace("</head>", '<meta name="robots" content="noindex,follow"/><meta name="prerender-status-code" data-bb-static-404="true" content="404"/></head>');
         }
         if (html.includes('id="faq"') || (html.match(/<h1\b/g)||[]).length !== 1) throw new Error("Invalid legal fallback: "+route);
