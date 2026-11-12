@@ -51,6 +51,8 @@ export default function SeoManager() {
   useEffect(() => {
     const seo = resolveSeo(pathname);
 
+    // Remove a build-time 404 hint when navigation reaches a real page.
+    if (seo.index) document.querySelectorAll('meta[name="prerender-status-code"][data-bb-static-404]').forEach((el) => el.remove());
     document.title = seo.title;
     setNamed("description", seo.description);
     setNamed("robots", seo.index ? "index,follow" : "noindex,follow");
