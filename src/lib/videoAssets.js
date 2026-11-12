@@ -15,12 +15,12 @@ export const VIDEO_ASSETS = {
   },
   employeeExperiences: {
     name: "boombuy-employee-experiences.mp4",
-    src: "https://media.base44.com/videos/public/69e48538aaee477b09fc7b49/3dae91cde_gemini_generated_video_74de224c.mp4",
+    src: "https://media.base44.com/videos/public/69e48538aaee477b09fc7b49/8afe405af_boombuy-experiences-goal-fixed.mp4",
     usage: "ExperienceFilm — חוויות עובדים (כדורגל, הופעות, ספא, חופשות)",
-    bytes: 5269656,
-    sha256: "33bf8df0e9eeb1c031958e611e42bc7b1c0e24e23224b4be88dd3da1063e7467",
+    bytes: 6609466,
+    sha256: "1eeb61a670e388007a4151f8bc272aa5309c8e8d1ab67dea9722fd8137c4d486",
     contentType: "video/mp4",
-    poster: null, // TODO: capture a first-frame still and upload; null = no poster yet
+    poster: "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/81c1955c3_boombuy-experiences-goal-poster.jpg",
   },
 };
 
