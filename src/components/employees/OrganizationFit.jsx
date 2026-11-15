@@ -101,6 +101,7 @@ export default function OrganizationFit() {
   // Stable submit id per lead — reused on retry of the SAME lead (lets a server-side
   // dedup work). Not a browser-only idempotency lock.
   const sessionIdRef = useRef("");
+  const measurementEventIdRef = useRef(""); // Independent of lead/customer/session identifiers.
   // The key of whichever step is currently rendered (so the entering element's
   // onAnimationComplete — not the exiting one's — clears the lock).
   const currentKeyRef = useRef("q-0");
@@ -245,7 +246,8 @@ export default function OrganizationFit() {
     submittingRef.current = false;
     setSubmitting(false);
     setSubmitted(true);
-    setMeasurementUrl(leadMeasurementUrl({ consent: measurementConsent, eventId: sessionIdRef.current, isTest: payload.is_test, oppref: getOpenAIClickReference() }));
+    if (measurementConsent && !measurementEventIdRef.current) measurementEventIdRef.current = genSessionId();
+    setMeasurementUrl(leadMeasurementUrl({ consent: measurementConsent, eventId: measurementEventIdRef.current, isTest: payload.is_test, oppref: getOpenAIClickReference() }));
     if (!payload.is_test) {
     try {
       base44.analytics.track({
