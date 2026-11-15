@@ -10,13 +10,17 @@ export function captureLeadSource() {
     const data = {};
     PARAMS.forEach((p) => {
       const v = u.searchParams.get(p);
-      if (v) data[p] = v;
+      if (v && v.length <= 120 && /^[a-zA-Z0-9_ .\-\u0590-\u05ff]+$/.test(v)) data[p] = v;
     });
-    const m = document.cookie.match(/(?:^|;\s*)li_fat_id=([^;]+)/);
-    if (m) data.li_fat_id = decodeURIComponent(m[1]);
-    data.landing_url = window.location.href;
+    const oppref = u.searchParams.get("oppref");
+    if (oppref && oppref.length <= 2048 && /^[A-Za-z0-9_=-]+$/.test(oppref)) data.oppref = oppref;
     const existing = readLeadSource();
-    sessionStorage.setItem(KEY, JSON.stringify({ ...existing, ...data }));
+    const tagged = PARAMS.some(p => data[p]) || Boolean(data.oppref);
+    if (!tagged && existing.captured_at) return;
+    data.landing_url = u.origin + "/";
+    data.captured_at = Date.now();
+    try { data.referrer_host = document.referrer ? new URL(document.referrer).hostname : ""; } catch {}
+    sessionStorage.setItem(KEY, JSON.stringify(data));
   } catch (e) {
     /* ignore */
   }
@@ -25,7 +29,9 @@ export function captureLeadSource() {
 export function readLeadSource() {
   if (typeof window === "undefined") return {};
   try {
-    return JSON.parse(sessionStorage.getItem(KEY) || "{}");
+    const saved = JSON.parse(sessionStorage.getItem(KEY) || "{}");
+    const age = Date.now() - saved.captured_at;
+    return age >= 0 && age < 30 * 60 * 1000 ? saved : {};
   } catch (e) {
     return {};
   }
