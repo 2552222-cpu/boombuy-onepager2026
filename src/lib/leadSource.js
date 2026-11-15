@@ -1,7 +1,7 @@
-// Captures lead-source attribution (UTM params + LinkedIn li_fat_id + landing URL)
-// from the URL/cookies on page load, persists to sessionStorage, and sends it with the lead.
-const KEY = "boom_lead_source";
-const PARAMS = ["utm_source", "utm_medium", "utm_campaign", "utm_content"];
+// Session attribution; never retain arbitrary query strings or contact data.
+export const ATTRIBUTION_KEY = "boom_lead_source";
+const KEY = ATTRIBUTION_KEY;
+const PARAMS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
 
 export function captureLeadSource() {
   if (typeof window === "undefined") return;
