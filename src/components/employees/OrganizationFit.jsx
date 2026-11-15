@@ -4,6 +4,7 @@ import { base44 } from "@/api/base44Client";
 import { scrollToId } from "./uiHelpers";
 import { RevealHeading, RevealBlock } from "./motion";
 import { readLeadSource } from "@/lib/leadSource";
+import { leadMeasurementUrl, getOpenAIClickReference } from "@/lib/leadMeasurement";
 import { trackLinkedInConversion } from "@/lib/linkedin";
 import { LINKEDIN_CONV_LEAD } from "@/lib/siteConfig";
 
@@ -85,6 +86,8 @@ export default function OrganizationFit() {
   const [step, setStep] = useState(0); // 0..2 questions, 3 = details form
   const [answers, setAnswers] = useState({});
   const [form, setForm] = useState({ fullName: "", orgName: "", phone: "", email: "", consent: false });
+  const [measurementConsent, setMeasurementConsent] = useState(false);
+  const [measurementUrl, setMeasurementUrl] = useState("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -220,11 +223,16 @@ export default function OrganizationFit() {
       utm_medium: source.utm_medium || "",
       utm_campaign: source.utm_campaign || "",
       utm_content: source.utm_content || "",
-      li_fat_id: source.li_fat_id || "",
+      utm_term: source.utm_term || "",
+      referrer_host: source.referrer_host || "",
+      is_test: /^QA-BOOMBUY\\b/i.test(form.orgName.trim()),
+      measurement_consent: measurementConsent,
+      consent_recorded_at: new Date().toISOString(),
       landing_url: source.landing_url || "",
     };
     try {
-      await base44.entities.OrganizationFitLead.create(payload);
+      const savedLead = await base44.entities.OrganizationFitLead.create(payload);
+      if (!savedLead?.id) throw new Error("lead_save_unconfirmed");
     } catch (err) {
       // Save failed: keep the details, surface a clear retry. Do NOT report success,
       // do NOT advance, and keep the same sessionId for a stable retry.
@@ -237,6 +245,8 @@ export default function OrganizationFit() {
     submittingRef.current = false;
     setSubmitting(false);
     setSubmitted(true);
+    setMeasurementUrl(leadMeasurementUrl({ consent: measurementConsent, eventId: sessionIdRef.current, isTest: payload.is_test, oppref: getOpenAIClickReference() }));
+    if (!payload.is_test) {
     try {
       base44.analytics.track({
         eventName: "lead_submitted",
@@ -253,6 +263,7 @@ export default function OrganizationFit() {
       base44.analytics.track({ eventName: "organization_fit_completed" });
     } catch (err) {
       /* ignore */
+    }
     }
     // Saving a lead is not a booking or proof of email delivery.
     base44.functions.invoke("notifyNewLead", { sessionId: sessionIdRef.current }).catch(() => undefined);
@@ -344,6 +355,7 @@ export default function OrganizationFit() {
                 >
                   הפרטים התקבלו.
                 </h3>
+                {measurementUrl && <img src={measurementUrl} width="1" height="1" alt="" aria-hidden="true" referrerPolicy="origin" style={{ position: "absolute", width: 1, height: 1, opacity: 0, pointerEvents: "none" }} />}
                 <p style={{ color: "#6E7177", fontSize: 16, margin: 0, textAlign: "center" }}>
                   נחזור אליכם לתיאום שיחת היכרות.
                 </p>
@@ -445,6 +457,10 @@ export default function OrganizationFit() {
                       style={{ width: 20, height: 20, marginTop: 2, accentColor: CORAL, flex: "0 0 auto" }}
                     />
                     <span>אני מאשר/ת ל-boombuy ליצור איתי קשר בנוגע להדגמת המערכת.</span>
+                  </label>
+                  <label style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 14, color: "#3A3C42", cursor: "pointer", lineHeight: 1.5 }}>
+                    <input type="checkbox" checked={measurementConsent} onChange={(e) => setMeasurementConsent(e.target.checked)} style={{ width: 20, height: 20, marginTop: 2, accentColor: CORAL, flex: "0 0 auto" }} />
+                    <span>אפשר למדוד את הצלחת הפנייה באמצעות OpenAI. פרטי הקשר שמילאתי לא יישלחו ל־OpenAI. האישור לבחירתי ואינו תנאי לשליחת הטופס.</span>
                   </label>
                   <a href="/privacy.html" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", fontSize: 13, color: "#6E7177", textDecoration: "underline", marginTop: 2 }}>מדיניות הפרטיות</a>
 
