@@ -1,3 +1,4 @@
+import { PROGRAM_DETAILS } from "../employees/programDetails.js";
 // Visible static HTML for ALL visitors, replaced (not duplicated) by React's root.
 // This is a build-time fallback, not SSR or a solution to the host's route/status handling.
 const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
@@ -16,6 +17,7 @@ export default function staticHome({ copy, faq, testimonials, contact, video, or
       ${section("testimonials", "מה אומרים מי שכבר שדרגו?", testimonials.map((item) => `<figure class="my-6"><blockquote><p>״${e(item.text)}״</p></blockquote><figcaption>${e(item.name)}, ${e(item.role)}</figcaption></figure>`).join(""))}
       ${section("experience-film", "חוויות לעובדים לאורך השנה", `<p class="mb-4">${e(copy.VIDEO_EXPLANATION)}</p><video controls muted playsinline preload="none" width="1600" height="900" class="h-auto w-full" src="${e(video.src)}" aria-label="סרטון דוגמאות לחוויות לעובדים ללא קול"></video>`)}
       ${section("about-contact", "מי עומד מאחורי המועדון?", `<p>${e(copy.ABOUT_TEXT)}</p><p class="mt-5 flex flex-wrap gap-5">${link(contact.companyUrl, "אתר החברה: boombuy.co.il")}${link("tel:" + contact.telephone, contact.phone)}${link("mailto:" + contact.email, contact.email)}</p>`)}
+      ${PROGRAM_DETAILS.map((item, index) => section(["club-costs", "holiday-gifts", "birthday-gifts"][index], item.title, `<p>${e(item.text)}</p>${(item.questions || []).map(qa => `<details class="my-4"><summary>${e(qa.q)}</summary><p>${e(qa.a)}</p></details>`).join("")}`)).join("")}
       ${section("faq", "שאלות נפוצות", faq.map((item) => `<section class="my-5"><h3 class="text-xl font-bold">${e(item.q)}</h3><p class="mt-2 leading-relaxed">${e(item.a)}</p></section>`).join(""))}
     </main><footer class="mx-auto flex max-w-5xl flex-wrap gap-6 px-4 py-8">${link("/privacy.html", "מדיניות פרטיות")}${link("/accessibility.html", "הצהרת נגישות")}</footer>`;
 }
