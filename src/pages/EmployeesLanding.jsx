@@ -11,6 +11,7 @@ import BookDemo from "../components/employees/BookDemo";
 import GlobalFooter from "../components/employees/GlobalFooter";
 import OfferPaths from "../components/employees/OfferPaths";
 import FAQ from "../components/employees/FAQ";
+import ProgramDetails from "../components/employees/ProgramDetails";
 import { captureLeadSource } from "../lib/leadSource";
 import { initLinkedIn } from "../lib/linkedin";
 import PersistentCTA from "../components/employees/PersistentCTA";
@@ -80,6 +81,7 @@ export default function EmployeesLanding() {
       <OperationSteps />
       <Testimonials />
       <AboutContact />
+      <ProgramDetails />
       <FAQ />
       <OrganizationFit />
       <BookDemo />
