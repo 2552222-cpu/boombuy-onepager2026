@@ -225,7 +225,7 @@ export default function OrganizationFit() {
       utm_content: source.utm_content || "",
       utm_term: source.utm_term || "",
       referrer_host: source.referrer_host || "",
-      is_test: /^QA-BOOMBUY\\b/i.test(form.orgName.trim()),
+      is_test: /^QA-BOOMBUY\b/i.test(form.orgName.trim()),
       measurement_consent: measurementConsent,
       consent_recorded_at: new Date().toISOString(),
       landing_url: source.landing_url || "",
