@@ -34,7 +34,7 @@ async function sendToMany(base44, to, subject, body) {
 }
 
 export async function sendNewLeadEmail(base44, lead) {
-  const subject = `ליד חדש מה־One Pager: ${lead.orgName || ""} · ${lead.orgSize || ""}`;
+  const subject = `${lead.is_test ? "[בדיקת מערכת — לא ליד מכירה] " : ""}ליד חדש מה־One Pager: ${lead.orgName || ""} · ${lead.orgSize || ""}`;
   const body = lines([
     "ליד חדש מה־One Pager",
     "",
@@ -51,6 +51,9 @@ export async function sendNewLeadEmail(base44, lead) {
     "utm_medium: " + (lead.utm_medium || "-"),
     "utm_campaign: " + (lead.utm_campaign || "-"),
     "utm_content: " + (lead.utm_content || "-"),
+    "utm_term: " + (lead.utm_term || "-"),
+    "referrer_host: " + (lead.referrer_host || "-"),
+    "Lead ID: " + (lead.id || "-"),
     "li_fat_id: " + (lead.li_fat_id || "-"),
     "landing_url: " + (lead.landing_url || "-"),
   ]);
