@@ -16,7 +16,14 @@ export default async function(req) {
 
     // Surface email failures honestly — sendNewLeadEmail throws on any rejected
     // recipient, so we never report success when the team wasn't notified.
-    await sendNewLeadEmail(base44, lead);
+    if (lead.notification_status === "sent") return Response.json({ ok: true, emailSent: true, alreadySent: true });
+    try {
+      await sendNewLeadEmail(base44, lead);
+    } catch (error) {
+      await base44.asServiceRole.entities.OrganizationFitLead.update(lead.id, { notification_status: "failed" }).catch(() => undefined);
+      throw error;
+    }
+    await base44.asServiceRole.entities.OrganizationFitLead.update(lead.id, { notification_status: "sent", notification_at: new Date().toISOString() });
     return Response.json({ ok: true, emailSent: true });
   } catch (error) {
     return Response.json({ ok: false, error: error.message }, { status: 500 });
