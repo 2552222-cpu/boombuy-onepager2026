@@ -15,7 +15,7 @@ export default function ProgramDetails() {
       .bb-program details p{margin-top:12px}
       @media(max-width:600px){.bb-program{padding:36px 16px;scroll-margin-top:72px}.bb-program article{padding:22px 18px}.bb-program p{font-size:16px}}
     `}</style>
-    <div className="bb-program-wrap">{PROGRAM_DETAILS.map((item,index)=><article key={item.title} id={["club-costs","holiday-gifts","birthday-gifts"][index]}>
+    <div className="bb-program-wrap">{PROGRAM_DETAILS.map((item,index)=><article key={item.title} id={["plus-plan","premium-plan","club-costs","holiday-gifts","birthday-gifts"][index]}>
       <h2>{item.title}</h2><p>{item.text}</p>
       {item.questions?.map(qa=><details key={qa.q}><summary>{qa.q}</summary><p>{qa.a}</p></details>)}
     </article>)}</div>
