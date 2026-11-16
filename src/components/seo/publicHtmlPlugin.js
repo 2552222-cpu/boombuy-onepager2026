@@ -13,7 +13,7 @@ export default function publicHtmlPlugin() {
     transformIndexHtml: {
       order: "pre",
       handler(html) {
-        if (FAQ_ITEMS.length !== 12 || new Set(FAQ_ITEMS.map((item) => item.q)).size !== 12) throw new Error("Expected the existing 12 unique FAQ items");
+        if (!FAQ_ITEMS.length || FAQ_ITEMS.some((item) => !item.q?.trim() || !item.a?.trim()) || new Set(FAQ_ITEMS.map((item) => item.q)).size !== FAQ_ITEMS.length) throw new Error("Expected complete, unique FAQ items");
         // One index.html is served for every path, so only site-wide identity ships
         // here. Per-route nodes (WebPage, and FAQPage on the home page alone) are
         // added at runtime by SeoManager, which knows the current path.
@@ -25,7 +25,7 @@ export default function publicHtmlPlugin() {
           .replace(/<title>[\s\S]*?<\/title>/, `<title>${HOME_TITLE}</title>`)
           .replace(/(<meta (?:name|property)="(?:description|og:description|twitter:description)" content=")[^"]*("\s*\/?>)/g, `$1${HOME_DESCRIPTION}$2`)
           .replace(/(<meta (?:name|property)="(?:og:title|twitter:title)" content=")[^"]*("\s*\/?>)/g, `$1${HOME_TITLE}$2`);
-        console.info(`[public-html artifact only] FAQ ${FAQ_ITEMS.length}/12; testimonials ${TESTIMONIALS.length}/4; Organization 1; WebSite 1; H1 ${(body.match(/<h1\b/g) || []).length}; links ${(body.match(/<a\b/g) || []).length}`);
+        console.info(`[public-html artifact only] FAQ ${FAQ_ITEMS.length}; testimonials ${TESTIMONIALS.length}/4; Organization 1; WebSite 1; H1 ${(body.match(/<h1\b/g) || []).length}; links ${(body.match(/<a\b/g) || []).length}`);
         return output;
       },
     },
