@@ -315,7 +315,7 @@ export default function OrganizationFit() {
           amount={0.5}
           style={{ color: CHARCOAL, fontSize: "clamp(28px,4vw,52px)", fontWeight: 800, lineHeight: 1.12, letterSpacing: "-0.025em", margin: 0 }}
         >
-          בדיקת <span style={{ color: "#C24A2C" }}>התאמה</span>
+          רוצים לראות איך זה יכול לעבוד אצלכם?
         </RevealHeading>
 
         <motion.p
@@ -325,9 +325,10 @@ export default function OrganizationFit() {
           transition={{ duration: 0.55, ease: EASE, delay: 0.08 }}
           style={{ color: "#3A3C42", fontSize: "clamp(16px,1.4vw,20px)", fontWeight: 400, lineHeight: 1.6, margin: "16px auto 0", maxWidth: 600 }}
         >
-          3 שאלות קצרות לקראת הדגמה של 15 דקות.
+          בשיחה קצרה נכיר את הארגון ואת מה שחשוב לכם. אחריה, אם תרצו, נציג לכם את המערכת בהדגמה קצרה: מה העובדים רואים בנייד, איך בוחרים מתנות והטבות ואיך אתם מנהלים את הפעילות.
         </motion.p>
 
+        <p style={{color:"#3A3C42",fontSize:18,lineHeight:1.7,margin:"18px 0"}}>מתחילים בטלפון. הדגמה בזום רק אם תרצו.<br/><a href="https://boombuy.co.il/gift-examples.html" style={{color:"#17191D",textDecoration:"underline",textUnderlineOffset:5}}>קודם אראה דוגמאות</a></p>
         {!submitted && (
           <div style={{ maxWidth: 360, margin: "30px auto 0", height: 6, borderRadius: 999, background: "rgba(19,21,25,0.10)", overflow: "hidden" }}>
             <motion.div
@@ -458,7 +459,7 @@ export default function OrganizationFit() {
                       onChange={(e) => setForm({ ...form, consent: e.target.checked })}
                       style={{ width: 20, height: 20, marginTop: 2, accentColor: CORAL, flex: "0 0 auto" }}
                     />
-                    <span>אני מאשר/ת ל-boombuy ליצור איתי קשר בנוגע להדגמת המערכת.</span>
+                    <span>אני מאשר/ת ל-boombuy ליצור איתי קשר לשיחת היכרות ולתיאום הדגמה אם ארצה.</span>
                   </label>
                   <label style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 14, color: "#3A3C42", cursor: "pointer", lineHeight: 1.5 }}>
                     <input type="checkbox" checked={measurementConsent} onChange={(e) => setMeasurementConsent(e.target.checked)} style={{ width: 20, height: 20, marginTop: 2, accentColor: CORAL, flex: "0 0 auto" }} />
@@ -493,7 +494,7 @@ export default function OrganizationFit() {
                     }}
                   >
                     <span className="bb-pulse-dot" style={{ width: 8, height: 8, borderRadius: "50%", background: CORAL, display: "inline-block", flexShrink: 0 }} />
-                    {submitting ? "שומר…" : "שליחה ותיאום הדגמה"}
+                    {submitting ? "שומר…" : "בואו נדבר ונראה אם זה מתאים"}
                   </button>
 
                   <button type="button" onClick={back} style={{ background: "none", border: "none", color: "#6E7177", fontFamily: "inherit", fontSize: 15, cursor: "pointer", textDecoration: "underline", marginTop: 4 }}>
