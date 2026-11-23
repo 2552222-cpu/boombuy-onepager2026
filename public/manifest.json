@@ -11,9 +11,9 @@
   "theme_color": "#FBFAF8",
   "icons": [
     {
-      "src": "/favicon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "https://media.base44.com/images/public/69e48538aaee477b09fc7b49/a62d9c7f070cdd4d4aee861fe1b1539d_boombuy-tab-icon.png",
+      "sizes": "256x256",
+      "type": "image/png",
       "purpose": "any"
     }
   ]
